@@ -23,13 +23,63 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What rate of return should I use in a compound interest calculator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends on what the money is invested in and the phase of life you're modeling. A common long-run assumption for a diversified U.S. stock portfolio is 7% (roughly the historical inflation-adjusted average), while bond-heavy retirement portfolios are often modeled at 4-5%. Multi-phase modeling lets you use different rates for different periods - for example, 7% during accumulation and 4% during a more conservative retirement drawdown."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does this calculator compound interest?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Monthly. Each month, the balance grows by one-twelfth of the annual rate, then the monthly contribution (or withdrawal) is added. Monthly compounding with monthly contributions closely matches how most people actually invest - regular contributions from each paycheck - and produces slightly higher results than annual compounding at the same stated rate."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a drawdown phase?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A drawdown phase is a period where you withdraw money instead of contributing - typically retirement. In this calculator, enter a negative monthly amount (like -2500) to model withdrawals. The balance keeps compounding at your chosen rate while withdrawals reduce it, which shows whether your savings outlast your retirement or deplete early."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this calculator adjust for inflation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not automatically - all figures are nominal. The simplest way to think in today's dollars is to use a real (inflation-adjusted) return: if you expect 10% nominal growth and 3% inflation, enter roughly 7%. Then every result reads in today's purchasing power."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my balance hit zero before the end?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Your withdrawal rate is outrunning growth. When monthly withdrawals exceed what the balance earns, the principal shrinks, which shrinks next month's growth, which accelerates the decline - compounding in reverse. The calculator flags the year this happens so you can adjust the withdrawal amount, the rate, or the length of earlier accumulation phases."
+      }
+    }
+  ]
+}
+</script>
+
+
 <style>
   :root {
     --ink: #0F1B2D;
     --ink-raised: #142539;
     --parchment: #EDE6D6;
     --parchment-dim: #B8AF9C;
-    --parchment-faint: #6E6859;
+    --parchment-faint: #948D79;
     --amber: #C9A45C;
     --amber-dim: #4A3C24;
     --slate: #5B7A9D;
@@ -55,11 +105,48 @@
     padding: 56px 24px 80px;
   }
 
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .wordmark svg { display: block; }
+  .wordmark span {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    letter-spacing: 0.02em;
+    color: var(--parchment);
+  }
+  .brandbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--seam);
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .wordmark svg { display: block; }
+  .wordmark span {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    letter-spacing: 0.01em;
+    color: var(--parchment);
+  }
   .sitenav {
     display: flex;
-    gap: 20px;
+    gap: 18px;
     flex-wrap: wrap;
-    margin-bottom: 20px;
     font-family: 'IBM Plex Mono', monospace;
     font-size: 11.5px;
     letter-spacing: 0.03em;
@@ -394,6 +481,82 @@
   td.clipped { color: var(--warn); }
   .footnote { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--parchment-faint); margin-top: 8px; }
 
+  /* Article */
+  .article {
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--seam);
+  }
+  .article h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+  }
+  .article h2:first-child { margin-top: 0; }
+  .article h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 28px 0 8px;
+  }
+  .article p {
+    color: var(--parchment-dim);
+    font-size: 16.5px;
+    line-height: 1.7;
+    margin: 0 0 18px;
+  }
+  .article strong { color: var(--parchment); font-weight: 500; }
+  .article a { color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber-dim); }
+  .article a:hover { border-bottom-color: var(--amber); }
+  .article .formula {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+    color: var(--parchment);
+    background: var(--ink-raised);
+    padding: 14px 18px;
+    border-left: 2px solid var(--amber);
+    margin: 0 0 18px;
+  }
+  .faq-item { margin-bottom: 24px; }
+  .faq-item h3 { margin-bottom: 6px; }
+  .faq-item p { margin-bottom: 0; }
+
+
+  /* Article */
+  .article {
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--seam);
+  }
+  .article h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+  }
+  .article h2:first-child { margin-top: 0; }
+  .article h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 28px 0 8px;
+  }
+  .article p {
+    color: var(--parchment-dim);
+    font-size: 16.5px;
+    line-height: 1.7;
+    margin: 0 0 18px;
+  }
+  .article strong { color: var(--parchment); font-weight: 500; }
+  .article a { color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber-dim); }
+  .article a:hover { border-bottom-color: var(--amber); }
+  .faq-item { margin-bottom: 24px; }
+  .faq-item h3 { margin-bottom: 6px; }
+  .faq-item p { margin-bottom: 0; }
+
   .support-footer {
     margin-top: 48px;
     padding-top: 20px;
@@ -424,15 +587,19 @@
 <body>
 <div class="wrap">
 
-  <nav class="sitenav">
-    <a href="/" class="current">Compound Interest</a>
-    <a href="/trump-account-calculator">Trump Account</a>
-    <a href="/about">About</a>
-    <a href="/privacy">Privacy</a>
-  </nav>
+
+  <header class="brandbar">
+    <a class="wordmark" href="/"><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="7" width="12" height="18" fill="#C9A45C"/><rect x="16.5" y="7" width="8.5" height="18" fill="#8A6E3D"/><rect x="27" y="7" width="3.5" height="18" fill="#5B7A9D"/></svg><span>Phases</span></a>
+    <nav class="sitenav">
+      <a href="/" class="current">Compound Interest</a>
+      <a href="/trump-account-calculator">Trump Account</a>
+      <a href="/heloc-payment-calculator">HELOC</a>
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </header>
 
   <div class="masthead">
-    <p class="eyebrow">Phases</p>
     <h1>A multi-phase compound interest calculator</h1>
     <p>Most calculators assume one flat rate for your whole life. Build a sequence of phases instead — each with its own contribution, rate, and duration — to model how money actually moves through decades.</p>
   </div>
@@ -477,6 +644,48 @@
 
   <div id="summary-table"></div>
 
+  <article class="article">
+    <h2>How this compound interest calculator works</h2>
+    <p>Most compound interest calculators ask for one rate, one contribution, and one time horizon — as if your financial life were a single flat line. Real money doesn't work that way. You contribute $300 a month in your twenties and $1,500 in your forties. You earn equity-like returns while accumulating and shift conservative near retirement. You inherit money once, buy a house once, and eventually stop contributing entirely and start withdrawing.</p>
+    <p>This calculator models that reality as <strong>phases</strong>: a sequence of periods, each with its own duration, monthly contribution (or withdrawal), and expected annual return. Within each phase, the balance compounds monthly — each month the balance grows by one-twelfth of the annual rate, then the month's contribution is added. One-time lump sums (an inheritance, a bonus, a home down payment leaving the portfolio) can be dropped anywhere on the timeline. The chart stitches the phases together so you can see the whole arc, from first paycheck to final withdrawal.</p>
+
+    <h2>The formula, and why contributions change everything</h2>
+    <p>The textbook compound interest formula covers a lump sum left alone:</p>
+    <p class="formula">A = P(1 + r/n)<sup>nt</sup></p>
+    <p>where P is the starting principal, r the annual rate, n the number of compounding periods per year, and t the years. $10,000 at 7% compounded monthly for 30 years becomes about $81,200 — an eightfold increase without adding a cent.</p>
+    <p>But almost nobody invests as a single lump sum. The moment you add regular contributions, each deposit becomes its own little principal compounding from its own start date, and the math (a future-value-of-annuity series) stops being something you want to do by hand. That's the real job of this calculator: it runs the month-by-month arithmetic across every phase, contribution, and lump sum, so the only thing you need to bring is honest assumptions.</p>
+
+    <h2>What the phases teach that one flat rate can't</h2>
+    <p><strong>Early money dominates.</strong> Run a scenario with $300/month for the first ten years and nothing after, against nothing for ten years and $600/month for the next ten. The early saver usually wins despite contributing half as much per month — those first dollars compound for decades. Seeing that on your own numbers is more convincing than any lecture about starting early.</p>
+    <p><strong>Drawdown is a phase, not an afterthought.</strong> Model retirement as a phase with a negative monthly contribution — say −$2,500/month at a 4% return. The calculator shows whether the balance outlives the plan or hits zero, and warns you when it depletes. One honest limitation: this is a deterministic model, meaning it assumes the same return every single year. Real markets deliver returns unevenly, and a bad stretch early in retirement (sequence-of-returns risk) can sink a plan that looks fine on average. If your drawdown phase barely survives, treat that as a plan that needs more margin, not one that works.</p>
+    <p><strong>Rate changes compound too.</strong> Dropping from 7% to 4% at retirement sounds small; over a 20-year drawdown it's often the difference between ending with a surplus and running dry. Phases make that visible.</p>
+
+    <h2>Choosing honest assumptions</h2>
+    <p>For long-run U.S. stock returns, roughly 10% annually before inflation and about 7% after inflation are the commonly cited historical averages — useful defaults for accumulation phases, with the reminder that history is not a guarantee. Bonds and cash run lower, so blended portfolios and retirement phases are often modeled at 4–5%. Results here are in nominal, pre-tax dollars: to think in today's purchasing power, subtract expected inflation from your rate; to think after taxes, remember that a 401(k) or IRA compounds untaxed while a brokerage account loses a slice to taxes each year. For newer account types with their own rules, see the <a href="/heloc-payment-calculator">HELOC payment calculator</a> for borrowing-side math or the <a href="/trump-account-calculator">Trump Account calculator</a> for the new children's accounts.</p>
+
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <h3>What interest rate should I use?</h3>
+      <p>Match it to the investment. Long-run U.S. stocks: ~7% real / ~10% nominal historically. Blended or conservative portfolios: 4–6%. Model accumulation and drawdown phases at different rates — that's what the phases are for.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How is compound interest different from simple interest?</h3>
+      <p>Simple interest pays only on the original principal; compound interest pays on principal plus all previously earned interest, so growth accelerates. At 7%, $10,000 earns $700 in year one either way — but by year ten, the compounded version earns over $1,300 a year.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does monthly vs. annual compounding matter?</h3>
+      <p>Modestly. $10,000 at 7% for 30 years: about $76,100 compounded annually vs. $81,200 monthly. This calculator compounds monthly, which also matches how people actually contribute.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does it account for inflation or taxes?</h3>
+      <p>No — results are nominal and pre-tax. Subtract expected inflation from your rate for real-dollar results, and remember tax treatment depends on the account (401(k)/IRA vs. taxable brokerage).</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can it model running out of money?</h3>
+      <p>Yes — give a phase a negative monthly contribution and the calculator flags the year the balance hits zero. Because it assumes steady returns, treat a barely-surviving plan as one that needs more cushion.</p>
+    </div>
+  </article>
+
   <div class="support-footer">
     <p class="support-line">
       If this calculator was useful, a tip helps keep it free and ad-free —
@@ -497,7 +706,7 @@
   const WARN = '#C46552';
   const SEAM = '#24344A';
   const PARCHMENT_DIM = '#B8AF9C';
-  const PARCHMENT_FAINT = '#6E6859';
+  const PARCHMENT_FAINT = '#948D79';
 
   const LIMITS = {
     startingBalance: { min: 0, max: 1000000000 },
