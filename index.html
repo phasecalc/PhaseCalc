@@ -227,6 +227,62 @@
     color: var(--parchment-dim);
   }
 
+  /* Floating help bubbles */
+  .tip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: 1px;
+    cursor: help;
+    outline: none;
+  }
+  .tip .tip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid var(--parchment-faint);
+    color: var(--parchment-faint);
+    font-size: 9px;
+    line-height: 1;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .tip:hover .tip-icon, .tip:focus .tip-icon { border-color: var(--amber); color: var(--amber); }
+  .tip .tip-box {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 9px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 230px;
+    max-width: calc(100vw - 56px);
+    background: var(--ink);
+    border: 1px solid var(--seam);
+    border-radius: 3px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--parchment-dim);
+    white-space: normal;
+    z-index: 20;
+  }
+  .tip .tip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--seam);
+  }
+  .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
+
   input[type="number"], input[type="text"] {
     background: transparent;
     border: none;
@@ -956,15 +1012,15 @@
         <div class="field-grid">
           <div class="field"><label>Years (1\u2013${maxYearsHere})</label>
             <input type="number" data-field="years" data-min="${LIMITS.years.min}" data-max="${maxYearsHere}" value="${p.years}" step="1" /></div>
-          <div class="field"><label>Monthly $ (+/-)</label>
+          <div class="field"><label>Monthly $ (+/-)<span class="tip" tabindex="0" aria-label="Help: monthly amount"><span class="tip-icon">?</span><span class="tip-box">Positive = money you add each month. Negative (e.g. -2500) = money you withdraw each month — use this to model retirement drawdown.</span></span></label>
             <input type="number" data-field="monthly" data-min="${LIMITS.monthly.min}" data-max="${LIMITS.monthly.max}" value="${p.monthly}" step="50" /></div>
-          <div class="field"><label>Annual rate % (${LIMITS.rate.min} to ${LIMITS.rate.max})</label>
+          <div class="field"><label>Annual rate % (${LIMITS.rate.min} to ${LIMITS.rate.max})<span class="tip" tabindex="0" aria-label="Help: annual rate"><span class="tip-icon">?</span><span class="tip-box">Expected average yearly return for this phase. 7% is a common long-run assumption for U.S. stocks; use lower for bonds or cash, and consider a conservative rate near retirement.</span></span></label>
             <input type="number" data-field="rate" data-min="${LIMITS.rate.min}" data-max="${LIMITS.rate.max}" value="${p.rate}" step="0.1" /></div>
         </div>
         <div data-section="lump">
           <button type="button" class="lump-toggle" data-action="toggle-lump" style="${hasLump ? 'display:none;' : ''}">+ add one-time lump sum</button>
           <div class="lump-fields" data-el="lump-fields" style="${hasLump ? '' : 'display:none;'}">
-            <div class="field"><label>Lump sum $ (+/-)</label>
+            <div class="field"><label>Lump sum $ (+/-)<span class="tip" tabindex="0" aria-label="Help: lump sum"><span class="tip-icon">?</span><span class="tip-box">A one-time event: an inheritance or bonus arriving (+), or a house down payment leaving the portfolio (−).</span></span></label>
               <input type="number" data-field="lumpSum" data-min="${LIMITS.lumpSum.min}" data-max="${LIMITS.lumpSum.max}" value="${p.lumpSum || 0}" step="1000" /></div>
             <div class="field"><label>Years into phase</label>
               <input type="number" data-field="lumpAt" data-min="0" data-max="${p.years}" value="${p.lumpAt || 0}" step="1" /></div>

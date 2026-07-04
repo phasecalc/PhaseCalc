@@ -4,20 +4,20 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Trump Account Calculator — project growth, tax-free basis, and taxable earnings</title>
-<meta name="description" content="Free Trump Account calculator. Project your child's account growth to age 18 and beyond, including the $1,000 federal seed, employer contributions, and the tax-free vs. taxable split at withdrawal." />
+<meta name="description" content="Free Trump Account calculator. Project your child's account growth to age 18 and beyond — the $1,000 federal seed, the tax-free vs. taxable split at withdrawal, the age-18 Roth conversion strategy, and the kiddie tax trap to avoid." />
 <link rel="canonical" href="https://phasecalc.com/trump-account-calculator" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content="Phases" />
 <meta property="og:url" content="https://phasecalc.com/trump-account-calculator" />
 <meta property="og:title" content="Trump Account Calculator — growth, tax-free basis, and taxable earnings" />
-<meta property="og:description" content="Project a Trump Account to age 18 and beyond, including the $1,000 federal seed and the tax-free vs. taxable split every other calculator skips." />
+<meta property="og:description" content="Project a Trump Account to age 18 and beyond — the $1,000 federal seed, the tax-free vs. taxable split every other calculator skips, and the age-18 Roth conversion play." />
 <meta property="og:image" content="https://phasecalc.com/og-image.png" />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="630" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Trump Account Calculator — growth, tax-free basis, and taxable earnings" />
-<meta name="twitter:description" content="Project a Trump Account to age 18 and beyond, including the $1,000 federal seed and the tax-free vs. taxable split every other calculator skips." />
+<meta name="twitter:description" content="Project a Trump Account to age 18 and beyond — the $1,000 federal seed, the tax-free vs. taxable split every other calculator skips, and the age-18 Roth conversion play." />
 <meta name="twitter:image" content="https://phasecalc.com/og-image.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -66,6 +66,14 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "They solve different problems. A 529 offers tax-FREE growth for education expenses; a Trump Account offers tax-DEFERRED growth for retirement, locked until 18. If your child qualifies for the $1,000 federal seed or your employer contributes, the free money makes a Trump Account worth opening. For education savings, a 529 generally remains stronger. Many families will sensibly use both."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can a Trump Account be converted to a Roth IRA?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. From January 1 of the year the child turns 18, a Trump Account is a traditional IRA, so it can be converted to a Roth IRA in whole or in parts. The taxable portion converted (earnings, federal seed, employer contributions) counts as ordinary income in the conversion year, while after-tax basis converts tax-free. Converting during low-income college or early-career years can lock in low tax rates — but beware the kiddie tax, which can tax a dependent student's unearned income above a small threshold at the parents' marginal rate through age 23."
       }
     },
     {
@@ -236,6 +244,62 @@
     font-size: 18px;
     color: var(--parchment-dim);
   }
+
+  /* Floating help bubbles */
+  .tip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: 1px;
+    cursor: help;
+    outline: none;
+  }
+  .tip .tip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid var(--parchment-faint);
+    color: var(--parchment-faint);
+    font-size: 9px;
+    line-height: 1;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .tip:hover .tip-icon, .tip:focus .tip-icon { border-color: var(--amber); color: var(--amber); }
+  .tip .tip-box {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 9px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 230px;
+    max-width: calc(100vw - 56px);
+    background: var(--ink);
+    border: 1px solid var(--seam);
+    border-radius: 3px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--parchment-dim);
+    white-space: normal;
+    z-index: 20;
+  }
+  .tip .tip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--seam);
+  }
+  .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
 
   input[type="number"] {
     background: transparent;
@@ -491,27 +555,27 @@
   <div class="panel">
     <div class="field-grid">
       <div class="field">
-        <label>Child's birth year</label>
+        <label>Child's birth year<span class="tip" tabindex="0" aria-label="Help: child's birth year"><span class="tip-icon">?</span><span class="tip-box">Any child under 18 can have a Trump Account, but only U.S. citizen children born 2025–2028 get the $1,000 federal seed. A 2025 baby gets 17 contribution years (the program opened in 2026); 2026 and later get 18.</span></span></label>
         <input type="number" id="birth-year" value="2025" min="2009" max="2028" step="1" />
       </div>
       <div class="field">
-        <label>Family $ / year (after-tax)</label>
+        <label>Family $ / year (after-tax)<span class="tip" tabindex="0" aria-label="Help: family contributions"><span class="tip-icon">?</span><span class="tip-box">Money from parents, grandparents, and friends. It's after-tax, so it comes back out tax-free as basis. Family + employer share one combined $5,000/year cap.</span></span></label>
         <div class="input-row"><span class="prefix">$</span><input type="number" id="family-contrib" value="2500" min="0" max="5000" step="250" /></div>
       </div>
       <div class="field">
-        <label>Employer $ / year (pre-tax)</label>
+        <label>Employer $ / year (pre-tax)<span class="tip" tabindex="0" aria-label="Help: employer contributions"><span class="tip-icon">?</span><span class="tip-box">Employers can contribute up to $2,500/year, excluded from your wages. It counts against the same $5,000 cap and is taxable when withdrawn. Leave at 0 if no employer plan.</span></span></label>
         <div class="input-row"><span class="prefix">$</span><input type="number" id="employer-contrib" value="0" min="0" max="2500" step="250" /></div>
       </div>
       <div class="field">
-        <label>Annual return %</label>
+        <label>Annual return %<span class="tip" tabindex="0" aria-label="Help: annual return"><span class="tip-icon">?</span><span class="tip-box">Expected average yearly growth. 7% is a common long-run assumption for U.S. stock index funds (the only allowed investment before 18) — a planning guess, not a prediction.</span></span></label>
         <div class="input-row"><input type="number" id="rate" value="7" min="0" max="15" step="0.1" /><span class="suffix">%</span></div>
       </div>
       <div class="field">
-        <label>Hold untouched to age</label>
+        <label>Hold untouched to age<span class="tip" tabindex="0" aria-label="Help: hold age"><span class="tip-icon">?</span><span class="tip-box">The account unlocks the year your child turns 18, but nothing forces a withdrawal. This models leaving it fully invested until the age you pick.</span></span></label>
         <input type="number" id="hold-age" value="30" min="18" max="70" step="1" />
       </div>
       <div class="field">
-        <label>Tax rate at withdrawal %</label>
+        <label>Tax rate at withdrawal %<span class="tip" tabindex="0" aria-label="Help: tax rate at withdrawal"><span class="tip-icon">?</span><span class="tip-box">Your child's future ordinary income tax bracket when they eventually withdraw the taxable portion (earnings + seed + employer money). Nobody knows this decades out — 22% is a middle-income guess. Basis is never taxed again.</span></span></label>
         <div class="input-row"><input type="number" id="tax-rate" value="22" min="0" max="50" step="1" /><span class="suffix">%</span></div>
       </div>
     </div>
@@ -552,11 +616,12 @@
   <p class="basis-caption" id="basis-caption"></p>
 
   <div class="chart-wrap">
-    <canvas id="chart" role="img" aria-label="Stacked area chart of projected Trump Account balance by age, split into tax-free basis and the taxable portion made up of earnings, seed money, and employer contributions.">Projected balance by age, split into tax-free basis and the taxable-at-withdrawal portion.</canvas>
+    <canvas id="chart" role="img" aria-label="Line chart of projected Trump Account balance by age. The yellow line is the tax-free basis, the blue line is the total balance, and the shaded area between the two lines is the portion taxed as ordinary income at withdrawal.">Projected balance by age: yellow line is tax-free basis, blue line is total balance, shaded gap between them is the taxable portion.</canvas>
   </div>
   <div class="legend">
-    <span><span class="swatch" style="background:#C9A45C"></span>Tax-free basis (family contributions)</span>
-    <span><span class="swatch" style="background:#5B7A9D"></span>Taxable at withdrawal (earnings + seed + employer)</span>
+    <span><span class="swatch" style="background:#C9A45C"></span>Tax-free basis — yellow line (family contributions)</span>
+    <span><span class="swatch" style="background:#5B7A9D"></span>Total balance — blue line</span>
+    <span><span class="swatch" style="background:rgba(91,122,157,0.35)"></span>Shaded gap between the lines — taxable at withdrawal (earnings + seed + employer)</span>
     <span><span class="swatch" style="background:#B07A4E"></span>Age 18 — account becomes a traditional IRA</span>
   </div>
 
@@ -572,18 +637,25 @@
     <h2>How this Trump Account calculator works</h2>
     <p>Trump Accounts — formally section 530A accounts, created by the One Big Beautiful Bill Act of 2025 — opened for contributions on <strong>July 4, 2026</strong>. They're a new kind of custodial traditional IRA for children: anyone can contribute up to a <strong>combined $5,000 per year</strong> (indexed for inflation after 2027), with no earned-income requirement, and the money must sit in low-cost U.S. equity index funds (expense ratios capped at 0.10%) until the year the child turns 18.</p>
     <p>This calculator models contributions from your child's first eligible year (2026 at the earliest) through December 31 of the year they turn 17 — the last year outside money can go in. It compounds annually at your chosen return, applies the one-time <strong>$1,000 federal seed</strong> for eligible children born 2025–2028, optionally adds the Dell Foundation's $250 grant, and then lets the balance ride untouched to whatever age you choose. The default 7% return is a common long-run assumption for U.S. equities; it is not a prediction.</p>
+    <p><strong>Why the result differs from a plain compound-interest calculator.</strong> Two structural reasons, both deliberate. First, contributions can't start before the program opened in 2026 — so a child born in 2025 gets only <strong>17 contribution years</strong> before 18, not 18 (children born 2026 or later get the full 18). Second, this calculator deposits each contribution at the <strong>start</strong> of the calendar year, matching the incentive to contribute early; most generic calculators assume end-of-year deposits, and some compound monthly. At the defaults ($1,000 seed, $2,500/year, 7%, born 2025), this page shows about $85,700 at 18, while a generic 18-year end-of-year calculator shows about $88,400. Same compounding math — different assumptions about when the money arrives.</p>
 
     <h2>The tax treatment nobody explains</h2>
     <p>Here is the detail that most coverage — and every other calculator — glosses over: <strong>a Trump Account is not a Roth</strong>. It's a traditional IRA with special childhood rules. That means the ending balance is really two different pools of money:</p>
-    <p><strong>Tax-free basis.</strong> After-tax contributions from parents, grandparents, and other individuals come back out tax-free. If you contribute $2,500 a year for 16 years, that's $40,000 of basis your child will never pay tax on again.</p>
+    <p><strong>Tax-free basis.</strong> After-tax contributions from parents, grandparents, and other individuals come back out tax-free. If you contribute $2,500 a year from 2026 through the year your child turns 17, that's $42,500 of basis (17 years, for a 2025 baby) your child will never pay tax on again.</p>
     <p><strong>Taxable at withdrawal.</strong> Everything else — all investment earnings, the $1,000 federal seed, charitable grants, and pre-tax employer contributions — is taxed as <strong>ordinary income</strong> when withdrawn. And because the account follows traditional IRA rules from age 18, withdrawals before 59½ generally add a 10% penalty on top, unless an exception applies (qualified higher education expenses and a first-home purchase up to $10,000 are the notable ones).</p>
-    <p>That's why the amber-and-slate split above matters more than the headline number. Over long horizons, compounding means the taxable slate portion dominates: hold the account to retirement age and 80–90% of the balance may be earnings taxed at your child's future ordinary rate. The headline projections you've seen in the news — six or seven figures by retirement — are pre-tax numbers.</p>
+    <p>That's why the gap between the two lines on the chart matters more than the headline number. The yellow <strong>tax-free basis</strong> line is the money your child can always take out tax-free; the blue <strong>total balance</strong> line is everything in the account; and the shaded area between them is the portion the IRS taxes at withdrawal. Over long horizons, compounding means that shaded gap dominates: hold the account to retirement age and 80–90% of the balance may be earnings taxed at your child's future ordinary rate. The headline projections you've seen in the news — six or seven figures by retirement — are pre-tax numbers.</p>
 
     <h2>Contribution rules worth knowing</h2>
     <p><strong>The $5,000 cap is shared.</strong> Family and employer contributions count against the same combined limit. An employer can put in up to $2,500 per year (pre-tax, excluded from the employee's wages), but that leaves only $2,500 of room for family money that year. Excess contributions draw a 6% annual penalty until removed.</p>
     <p><strong>Free money sits outside the cap.</strong> The $1,000 federal pilot contribution and qualified charitable grants (like Dell's $250) do not count against the $5,000 limit — but note they land in the <em>taxable</em> pool at withdrawal, since nobody paid tax on them going in.</p>
     <p><strong>Calendar-year deadline.</strong> Unlike IRAs, there's no April 15 grace period. Contributions must land within the calendar year.</p>
     <p><strong>Contributions are gifts.</strong> Individual contributions are generally treated as gifts for federal gift-tax purposes, which matters mostly for grandparents doing larger multi-account giving.</p>
+
+    <h2>The age-18 Roth conversion play — and the kiddie tax trap</h2>
+    <p>Because a Trump Account becomes an ordinary <strong>traditional IRA</strong> on January 1 of the year your child turns 18, it inherits a powerful traditional-IRA feature: it can be <strong>converted to a Roth IRA</strong>, in whole or in slices. The taxable portion converted (earnings, seed, employer money) counts as ordinary income in the year of conversion; the after-tax basis converts tax-free. Once inside the Roth, all future growth is tax-free forever.</p>
+    <p>The reason to do this young is bracket arbitrage. An 18-to-23-year-old in college or early career sits in the 0%, 10%, or 12% bracket — likely the lowest tax rates of their entire life. Converting then means paying tax on today's modest taxable portion at a low rate, instead of paying ordinary income tax decades later on a vastly larger sum. At the defaults, roughly $43,000 of the age-18 balance is taxable; convert it across a few low-income years at 10–12% and the lifetime tax bill can shrink dramatically compared with withdrawing hundreds of thousands of taxable dollars at retirement rates.</p>
+    <p>The trap is the <strong>kiddie tax</strong>. Conversion income is <em>unearned</em> income, and the kiddie tax applies not just to minors but to 18-year-olds whose earned income doesn't cover more than half their own support — and to full-time students up to age 23 in the same position. Above a small threshold (roughly the first $2,700 of unearned income in 2025, indexed annually), the child's unearned income is taxed at the <strong>parents' marginal rate</strong>, which erases the whole point of converting early.</p>
+    <p>The playbook, then: either <strong>wait until the kiddie tax no longer applies</strong> (typically age 24 for full-time students, or as soon as your child's earned income exceeds half their support), or <strong>convert in small annual slices</strong> that stay under the kiddie-tax threshold during the college years, then convert the rest in low-income years afterward. A new graduate's gap between finishing school and their first big salary is often the single best conversion window. This is exactly the kind of move worth confirming with a CPA — pro-rata rules across other IRAs, state taxes, and financial-aid effects (conversion income counts on the FAFSA) can all change the answer.</p>
 
     <h2>Trump Account vs. 529 vs. custodial Roth IRA</h2>
     <table>
@@ -616,6 +688,14 @@
     <div class="faq-item">
       <h3>Is it better than a 529?</h3>
       <p>Different jobs. 529s win for education (tax-free growth); Trump Accounts win for capturing the federal seed and employer money, and for retirement-length compounding with no earned-income requirement. Many families will use both.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can a Trump Account be converted to a Roth IRA?</h3>
+      <p>Yes — from age 18 it's a traditional IRA, so Roth conversion rules apply. The taxable portion converted counts as ordinary income that year. Converting during low-income college or early-career years can lock in 10–12% rates, but watch the kiddie tax: it can apply to full-time students up to age 23 and taxes unearned income above ~$2,700 at the parents' rate.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why doesn't this match other compound-interest calculators?</h3>
+      <p>Children born in 2025 get only 17 contribution years (the program opened in 2026), and this calculator deposits contributions at the start of each year with annual compounding. Generic calculators typically assume 18 end-of-year deposits, and some compound monthly — small timing differences that move the age-18 number by a few thousand dollars.</p>
     </div>
 
     <p style="margin-top:32px;"><em>This calculator is for education, not tax or investment advice. Trump Account rules are new and Treasury guidance is still evolving — confirm specifics with a CPA before acting.</em></p>
@@ -733,7 +813,12 @@
 
     const firstContribYear = Math.max(PROGRAM_START, i.birthYear);
     const lastContribYear = i.birthYear + 17;              // through Dec 31 of the year the child turns 17
-    const endYear = i.birthYear + i.holdAge;
+    // The series labels the end-of-year balance as age (year - birthYear + 1),
+    // i.e. "balance at 18" = the balance when the account unlocks on Jan 1 of the
+    // year the child turns 18. The last compounding year is therefore
+    // birthYear + holdAge - 1 — looping to birthYear + holdAge would add an
+    // extra year of growth beyond the chosen hold age.
+    const endYear = i.birthYear + i.holdAge - 1;
     const startAge = Math.max(0, firstContribYear - i.birthYear);
 
     let balance = 0, basis = 0;
@@ -841,7 +926,7 @@
     const ctx = document.getElementById('chart');
     const labels = r.series.map(s => String(s.age));
     const basisData = r.series.map(s => Math.round(s.basis));
-    const taxableData = r.series.map(s => Math.round(Math.max(0, s.balance - s.basis)));
+    const totalData = r.series.map(s => Math.round(s.balance));
 
     if (chart) chart.destroy();
     chart = new Chart(ctx, {
@@ -851,13 +936,13 @@
           label: 'Tax-free basis',
           data: basisData,
           borderColor: AMBER, backgroundColor: 'rgba(201,164,92,0.18)',
-          fill: true, tension: 0.15, pointRadius: 0, borderWidth: 2, stack: 's'
+          fill: true, tension: 0.15, pointRadius: 0, borderWidth: 2
         },
         {
-          label: 'Taxable at withdrawal',
-          data: taxableData,
-          borderColor: SLATE, backgroundColor: 'rgba(91,122,157,0.15)',
-          fill: true, tension: 0.15, pointRadius: 0, borderWidth: 2, stack: 's'
+          label: 'Total balance',
+          data: totalData,
+          borderColor: SLATE, backgroundColor: 'rgba(91,122,157,0.22)',
+          fill: '-1', tension: 0.15, pointRadius: 0, borderWidth: 2
         }
       ]},
       options: {
@@ -868,7 +953,11 @@
           tooltip: {
             callbacks: {
               title: items => 'Age ' + items[0].label + ' (' + (r.inputs.birthYear + parseInt(items[0].label, 10)) + ')',
-              label: item => item.dataset.label + ': ' + fmt(item.parsed.y)
+              label: item => item.dataset.label + ': ' + fmt(item.parsed.y),
+              afterBody: items => {
+                const idx = items[0].dataIndex;
+                return 'Taxable portion (shaded gap): ' + fmt(Math.max(0, totalData[idx] - basisData[idx]));
+              }
             }
           }
         },
@@ -879,7 +968,6 @@
             grid: { display: false }, border: { color: SEAM }
           },
           y: {
-            stacked: true,
             ticks: { callback: v => '$' + (Math.abs(v) >= 1000000 ? (v/1000000).toFixed(1) + 'M' : Math.abs(v) >= 1000 ? Math.round(v/1000) + 'k' : v), color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
             grid: { color: SEAM }, border: { color: SEAM }
           }

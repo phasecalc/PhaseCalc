@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>HELOC Payment Calculator — interest-only draw, repayment, and payment shock</title>
-<meta name="description" content="Free HELOC payment calculator. See your interest-only payment during the draw period, the jump when repayment starts, total interest cost, and whether your interest is tax-deductible." />
+<meta name="description" content="Free HELOC payment calculator. See your interest-only payment during the draw period, the jump when repayment starts, total interest cost, and whether your interest is tax-deductible — with a worked example of how revolving draws work." />
 <link rel="canonical" href="https://phasecalc.com/heloc-payment-calculator" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta property="og:type" content="website" />
@@ -34,6 +34,14 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "During the draw period (typically 10 years), most HELOCs require interest-only payments: your balance times the annual rate, divided by 12. On a $60,000 balance at 7.25%, that's $362.50/month. When the draw period ends, the loan converts to fully amortizing principal-and-interest payments over the repayment period (typically 20 years) — often 30% or more higher than the interest-only payment."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I pay interest on the full HELOC credit line or just what I've drawn?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only on the drawn balance. A HELOC is a revolving line — during the draw period you can borrow, repay, and borrow again, and the required interest-only payment floats with the outstanding balance. Example on a $100,000 line at 7.25%: draw $40,000 and pay about $242/month; pay $15,000 back and the payment drops to about $151/month; draw another $35,000 and it rises to about $363/month. Whatever is outstanding when the draw period ends converts to principal-and-interest payments. The unused limit costs nothing beyond any annual fee."
       }
     },
     {
@@ -198,6 +206,62 @@
     font-size: 18px;
     color: var(--parchment-dim);
   }
+
+  /* Floating help bubbles */
+  .tip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: 1px;
+    cursor: help;
+    outline: none;
+  }
+  .tip .tip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid var(--parchment-faint);
+    color: var(--parchment-faint);
+    font-size: 9px;
+    line-height: 1;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .tip:hover .tip-icon, .tip:focus .tip-icon { border-color: var(--amber); color: var(--amber); }
+  .tip .tip-box {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 9px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 230px;
+    max-width: calc(100vw - 56px);
+    background: var(--ink);
+    border: 1px solid var(--seam);
+    border-radius: 3px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--parchment-dim);
+    white-space: normal;
+    z-index: 20;
+  }
+  .tip .tip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--seam);
+  }
+  .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
 
   input[type="number"] {
     background: transparent;
@@ -435,27 +499,27 @@
   <div class="panel">
     <div class="field-grid">
       <div class="field">
-        <label>Balance drawn</label>
+        <label>Balance drawn<span class="tip" tabindex="0" aria-label="Help: balance drawn"><span class="tip-icon">?</span><span class="tip-box">The amount you actually borrow — not your credit limit. You only pay interest on what's drawn. If you'll draw in stages, enter the balance you expect to be carrying.</span></span></label>
         <div class="input-row"><span class="prefix">$</span><input type="number" id="balance" value="60000" min="1000" max="2000000" step="5000" /></div>
       </div>
       <div class="field">
-        <label>Interest rate %</label>
+        <label>Interest rate %<span class="tip" tabindex="0" aria-label="Help: interest rate"><span class="tip-icon">?</span><span class="tip-box">HELOC rates are almost always variable (prime + a margin). This calculator holds the rate constant — re-run it 1–2 points higher to stress-test your budget.</span></span></label>
         <div class="input-row"><input type="number" id="rate" value="7.25" min="0.1" max="20" step="0.05" /><span class="suffix">%</span></div>
       </div>
       <div class="field">
-        <label>Draw period (yrs)</label>
+        <label>Draw period (yrs)<span class="tip" tabindex="0" aria-label="Help: draw period"><span class="tip-icon">?</span><span class="tip-box">The years you can borrow from the line, typically 10. During this phase most lenders require interest-only payments, so the balance doesn't shrink on its own.</span></span></label>
         <input type="number" id="draw-years" value="10" min="1" max="15" step="1" />
       </div>
       <div class="field">
-        <label>Repayment period (yrs)</label>
+        <label>Repayment period (yrs)<span class="tip" tabindex="0" aria-label="Help: repayment period"><span class="tip-icon">?</span><span class="tip-box">After the draw period ends, the remaining balance converts to full principal-and-interest payments over this many years — typically 20. Check your agreement; terms vary.</span></span></label>
         <input type="number" id="repay-years" value="20" min="5" max="30" step="1" />
       </div>
       <div class="field">
-        <label>Extra principal $/mo (draw)</label>
+        <label>Extra principal $/mo (draw)<span class="tip" tabindex="0" aria-label="Help: extra principal"><span class="tip-icon">?</span><span class="tip-box">Optional voluntary principal you pay during the draw period, on top of required interest. Even modest amounts shrink the payment jump and lifetime interest.</span></span></label>
         <div class="input-row"><span class="prefix">$</span><input type="number" id="extra" value="0" min="0" max="50000" step="50" /></div>
       </div>
       <div class="field">
-        <label>Marginal tax rate % (if deductible)</label>
+        <label>Marginal tax rate % (if deductible)<span class="tip" tabindex="0" aria-label="Help: marginal tax rate"><span class="tip-icon">?</span><span class="tip-box">Leave at 0 unless ALL three are true: the funds buy, build, or substantially improve this home; combined mortgage + HELOC debt is under $750k; and you itemize deductions. If so, enter your tax bracket to see after-tax interest cost.</span></span></label>
         <div class="input-row"><input type="number" id="tax-rate" value="0" min="0" max="50" step="1" /><span class="suffix">%</span></div>
       </div>
     </div>
@@ -505,8 +569,19 @@
   <article class="article">
     <h2>How this HELOC calculator works</h2>
     <p>A home equity line of credit has two distinct phases, and confusing them is the most expensive mistake borrowers make. During the <strong>draw period</strong> — typically 10 years — you can borrow against the line, and most lenders require only interest payments on whatever you've drawn. The math is simple: balance × annual rate ÷ 12. Draw $60,000 at 7.25% and the required payment is $362.50 a month, none of which touches the principal.</p>
-    <p>Then the draw period ends, the line closes to new borrowing, and the loan converts to the <strong>repayment period</strong> — typically 20 years of fully amortizing principal-and-interest payments, calculated with the standard mortgage amortization formula on whatever balance remains. This calculator models both phases: it assumes the balance is drawn on day one, applies any extra principal payments you choose to make during the draw, then amortizes the remaining balance over the repayment period. The chart shows the balance (amber) and cumulative interest paid (slate), with the copper line marking the conversion.</p>
+    <p>Then the draw period ends, the line closes to new borrowing, and the loan converts to the <strong>repayment period</strong> — typically 20 years of fully amortizing principal-and-interest payments, calculated with the standard mortgage amortization formula on whatever balance remains. This calculator models both phases: it assumes the balance is drawn on day one, applies any extra principal payments you choose to make during the draw, then amortizes the remaining balance over the repayment period. On the chart, the solid yellow line is your remaining balance, the dashed blue line is cumulative interest paid, and the vertical orange marker is where the draw period converts to repayment.</p>
     <p>One honest simplification: nearly all HELOCs carry <strong>variable rates</strong> tied to prime, and this calculator holds the rate constant. Treat the output as a snapshot at today's rate — and stress-test your budget by re-running the numbers a point or two higher, because over a 30-year total term, rates will not sit still.</p>
+
+    <h2>How the revolving part actually works — a worked example</h2>
+    <p>A HELOC is a <strong>revolving</strong> line, like a credit card secured by your house: during the draw period you can borrow, repay, and borrow again, and you only pay interest on what's outstanding — never on the unused limit. Your required payment floats with the balance. Here's what a realistic decade looks like on a <strong>$100,000 line at 7.25%</strong>:</p>
+    <table>
+      <tr><th>When</th><th>Action</th><th>Balance</th><th>Required payment</th></tr>
+      <tr><td>Year 1</td><td>Draw $40,000 — kitchen remodel</td><td>$40,000</td><td class="hi">$242/mo</td></tr>
+      <tr><td>Year 3</td><td>Pay back $15,000</td><td>$25,000</td><td class="hi">$151/mo</td></tr>
+      <tr><td>Year 6</td><td>Draw $35,000 — roof + HVAC</td><td>$60,000</td><td class="hi">$363/mo</td></tr>
+      <tr><td>Year 10</td><td>Draw ends; $60,000 converts to repayment</td><td>$60,000</td><td class="hi">$474/mo</td></tr>
+    </table>
+    <p style="margin-top:16px;">Notice two things. The payment tracks the balance up <em>and</em> down during the draw — that flexibility is the product's whole appeal for staged projects and uncertain costs. And whatever is outstanding when the draw ends is what converts to principal-and-interest, regardless of when you borrowed it. This calculator simplifies by assuming your balance is drawn on day one, which slightly overstates draw-period interest for staged borrowers — for the payment-shock math that matters, just enter the balance you expect to carry into conversion.</p>
 
     <h2>The payment shock nobody budgets for</h2>
     <p>The bar above the chart is the point of this page. Interest-only payments feel comfortable — that's the product design. But at the default numbers, the required payment jumps roughly 31% the month the draw period ends, and the borrower gets no vote. On larger balances or shorter repayment periods, the jump is bigger. Regulators have flagged this "payment shock" for years because it reliably surprises people who set their budget around the draw-period payment a decade earlier.</p>
@@ -531,6 +606,10 @@
     <div class="faq-item">
       <h3>How is a HELOC payment calculated?</h3>
       <p>Draw period: balance × rate ÷ 12, interest-only. Repayment period: standard amortization of the remaining balance over the repayment term. This page computes both and the jump between them.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Do I pay interest on the full credit line or just what I've drawn?</h3>
+      <p>Only on the drawn balance. A HELOC is revolving — you can borrow, repay, and re-borrow during the draw period, and the required payment floats with the outstanding balance. The unused limit costs nothing beyond any annual fee.</p>
     </div>
     <div class="faq-item">
       <h3>What is payment shock?</h3>
@@ -760,14 +839,14 @@
     const el = document.getElementById('summary-table');
     const rows = [];
     const drawEnd = r.series.find(s => s.month === r.drawMonths);
-    rows.push({ label: 'End of draw period (yr ' + r.inputs.drawYears + ')', balance: drawEnd.balance, cum: drawEnd.cumInterest, hi: true });
+    rows.push({ label: 'End of draw period (year ' + r.inputs.drawYears + ')', balance: drawEnd.balance, cum: drawEnd.cumInterest, hi: true });
     for (let y = 5; y < r.inputs.repayYears; y += 5) {
       const pt = r.series.find(s => s.month === r.drawMonths + y * 12);
-      if (pt && pt.balance > 0) rows.push({ label: 'Repayment year ' + y, balance: pt.balance, cum: pt.cumInterest, hi: false });
+      if (pt && pt.balance > 0) rows.push({ label: 'Repayment year ' + y + ' (year ' + (r.inputs.drawYears + y) + ')', balance: pt.balance, cum: pt.cumInterest, hi: false });
     }
     const last = r.series[r.series.length - 1];
     const payoffYr = r.paidOffMonth ? Math.ceil(r.paidOffMonth / 12) : r.inputs.drawYears + r.inputs.repayYears;
-    rows.push({ label: 'Paid off (yr ' + payoffYr + ')', balance: 0, cum: last.cumInterest, hi: true });
+    rows.push({ label: 'Paid off (year ' + payoffYr + ')', balance: 0, cum: last.cumInterest, hi: true });
 
     let html = '<table><tr><th>Milestone</th><th>Balance</th><th>Cumulative interest</th></tr>';
     rows.forEach(row => {
