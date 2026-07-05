@@ -312,7 +312,7 @@
   }
   .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
 
-  input[type="number"] {
+  input[type="number"], input[type="text"] {
     background: transparent;
     border: none;
     border-bottom: 1px solid var(--seam);
@@ -588,7 +588,7 @@
     <div class="field-grid">
       <div class="field">
         <label>Lump-sum contribution<span class="tip" tabindex="0" aria-label="Help: lump-sum contribution"><span class="tip-icon">?</span><span class="tip-box">The total amount deposited today, split evenly among your contributors below. In 2026, five years of exclusion per contributor is $95,000 ($19,000 x 5) — $190,000 for two contributors.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="lump-sum" value="190000" min="0" max="1000000" step="1000" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="lump-sum" value="190,000" min="0" max="1000000" step="1000" /></div>
       </div>
       <div class="field">
         <label>Number of contributors<span class="tip" tabindex="0" aria-label="Help: number of contributors"><span class="tip-icon">?</span><span class="tip-box">Each person who gifts to this beneficiary has their own separate annual exclusion. Two parents each gifting is the common case; grandparents can also each use their own.</span></span></label>
@@ -596,7 +596,7 @@
       </div>
       <div class="field">
         <label>Annual gift tax exclusion<span class="tip" tabindex="0" aria-label="Help: annual gift tax exclusion"><span class="tip-icon">?</span><span class="tip-box">The amount one person can gift another per year, tax-free and exemption-free ($19,000 in 2026). This is indexed for inflation and changes most years — edit it to model a different year.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="exclusion" value="19000" min="1000" max="50000" step="500" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="exclusion" value="19,000" min="1000" max="50000" step="500" /></div>
       </div>
       <div class="field">
         <label>Expected annual return %<span class="tip" tabindex="0" aria-label="Help: annual return"><span class="tip-icon">?</span><span class="tip-box">Expected average yearly growth of the 529 investment portfolio. 5-7% is a common long-run assumption for an equity-heavy age-based portfolio — a planning guess, not a prediction.</span></span></label>
@@ -754,6 +754,10 @@
 
 <script>
 (function(){
+  // Shim parseFloat so every existing call site transparently tolerates
+  // comma-grouped input ("100,000") without needing to touch each call site.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
   const AMBER = '#C9A45C';
   const SLATE = '#5B7A9D';
   const SEAM = '#24344A';
@@ -773,6 +777,13 @@
   function fmt(n) {
     const sign = n < 0 ? '-' : '';
     return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  // Same as fmt() but without the leading $ — used to redisplay money input
+  // fields themselves with thousands separators after the user leaves them.
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
   }
   function clamp(val, min, max) {
     if (isNaN(val)) return min;
@@ -811,9 +822,9 @@
     } catch (e) { return null; }
   }
   function applyState(s) {
-    document.getElementById('lump-sum').value = clamp(s.l, LIMITS.lumpSum.min, LIMITS.lumpSum.max);
+    document.getElementById('lump-sum').value = formatMoneyValue(clamp(s.l, LIMITS.lumpSum.min, LIMITS.lumpSum.max));
     document.getElementById('contributors').value = clamp(s.c, LIMITS.contributors.min, LIMITS.contributors.max);
-    document.getElementById('exclusion').value = clamp(s.x, LIMITS.exclusion.min, LIMITS.exclusion.max);
+    document.getElementById('exclusion').value = formatMoneyValue(clamp(s.x, LIMITS.exclusion.min, LIMITS.exclusion.max));
     document.getElementById('rate').value = clamp(s.r, LIMITS.rate.min, LIMITS.rate.max);
     document.getElementById('years').value = clamp(s.y, LIMITS.years.min, LIMITS.years.max);
     document.getElementById('five-year-election').checked = !!s.f;
@@ -1009,12 +1020,12 @@
 
   // Wire inputs with the same input/blur clamp pattern as the Phases calculator.
   [
-    ['lump-sum', LIMITS.lumpSum],
-    ['contributors', LIMITS.contributors],
-    ['exclusion', LIMITS.exclusion],
-    ['rate', LIMITS.rate],
-    ['years', LIMITS.years]
-  ].forEach(([id, lim]) => {
+    ['lump-sum', LIMITS.lumpSum, true],
+    ['contributors', LIMITS.contributors, false],
+    ['exclusion', LIMITS.exclusion, true],
+    ['rate', LIMITS.rate, false],
+    ['years', LIMITS.years, false]
+  ].forEach(([id, lim, isMoney]) => {
     const el = document.getElementById(id);
     el.addEventListener('input', () => {
       markValidity(el, parseFloat(el.value), lim.min, lim.max);
@@ -1022,7 +1033,7 @@
     });
     el.addEventListener('blur', () => {
       const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
-      el.value = corrected;
+      el.value = isMoney ? formatMoneyValue(corrected) : corrected;
       el.classList.remove('invalid');
       update();
     });

@@ -113,7 +113,7 @@
       "name": "Why does the lump sum usually win in this calculator?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Because the lump sum puts the full amount to work on day one, while DCA holds part of the money in cash during the deployment period. With a positive expected return, more time invested means more expected growth. The lump sum's win rate grows with the schedule length — roughly two-thirds over 6-12 month windows, and around 90% over a 10-year schedule at stock-like assumptions. But also check the 10th percentile outcomes, where DCA's damage control shows up."
+        "text": "Because the lump sum puts the full amount to work on day one, while DCA holds part of the money in cash during the deployment window. With a positive expected return, more time invested means more expected growth. At a realistic 6-12 month deployment window, that's worth roughly two-thirds of simulated markets at stock-like assumptions — matching the well-known Vanguard research — regardless of how far out you forecast afterward, since both strategies simply hold once DCA finishes deploying. Stretch the deployment window itself out to years instead of months and the win rate climbs much higher, but at that point it's no longer a real windfall-timing decision — it's just comparing money you have now to money you'd save gradually later. Also check the 10th percentile outcomes, where DCA's damage control shows up."
       }
     },
     {
@@ -310,7 +310,7 @@
   }
   .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
 
-  input[type="number"], select {
+  input[type="number"], input[type="text"], select {
     background: transparent;
     border: none;
     border-bottom: 1px solid var(--seam);
@@ -573,17 +573,17 @@
 
   <div class="masthead">
     <h1>Dollar-cost averaging calculator</h1>
-    <p>Model a fixed investment schedule against realistic market volatility — not a flat line — and see how it stacks up against investing the whole amount on day one.</p>
+    <p>Model spreading a windfall out over a realistic deployment window — not a flat line, real market volatility — then forecast both strategies forward to see how the timing decision actually plays out over the long run.</p>
   </div>
 
   <div class="panel">
     <div class="field-grid">
       <div class="field">
-        <label>Amount per interval<span class="tip" tabindex="0" aria-label="Help: amount per interval"><span class="tip-icon">?</span><span class="tip-box">The fixed amount you invest each time — the essence of DCA is that this number never changes with market conditions.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="amount" value="500" min="10" max="100000" step="50" /></div>
+        <label>Amount per interval<span class="tip" tabindex="0" aria-label="Help: amount per interval"><span class="tip-icon">?</span><span class="tip-box">The fixed amount you invest each time during the deployment window — the essence of DCA is that this number never changes with market conditions.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="amount" value="5,000" min="10" max="100000" step="50" /></div>
       </div>
       <div class="field">
-        <label>Frequency<span class="tip" tabindex="0" aria-label="Help: frequency"><span class="tip-icon">?</span><span class="tip-box">How often you invest. Weekly vs. monthly barely changes long-run results — consistency matters far more than frequency. Monthly matches most paychecks.</span></span></label>
+        <label>Frequency<span class="tip" tabindex="0" aria-label="Help: frequency"><span class="tip-icon">?</span><span class="tip-box">How often you invest during the deployment window. Weekly vs. monthly barely changes long-run results — consistency matters far more than frequency.</span></span></label>
         <select id="freq">
           <option value="52">Weekly</option>
           <option value="12" selected>Monthly</option>
@@ -591,8 +591,12 @@
         </select>
       </div>
       <div class="field">
-        <label>Duration (years)<span class="tip" tabindex="0" aria-label="Help: duration"><span class="tip-icon">?</span><span class="tip-box">How long the schedule runs. Contributions land at the start of each interval for the whole duration.</span></span></label>
-        <input type="number" id="years" value="10" min="1" max="40" step="1" />
+        <label>Deployment period (months)<span class="tip" tabindex="0" aria-label="Help: deployment period"><span class="tip-icon">?</span><span class="tip-box">How long you spread the windfall out before you're fully invested. This is the actual DCA-vs-lump-sum decision — realistic windows are 6-12 months, which is what the well-known "two-thirds of the time" research is based on. A decade-long "deployment" isn't really DCA, it's just slow saving.</span></span></label>
+        <input type="number" id="deploy-months" value="12" min="1" max="120" step="1" />
+      </div>
+      <div class="field">
+        <label>Total time horizon (years)<span class="tip" tabindex="0" aria-label="Help: total time horizon"><span class="tip-icon">?</span><span class="tip-box">How far out to forecast both strategies after the deployment window ends. Once DCA finishes deploying, both portfolios simply hold and compound together — this shows whether an early timing edge (or setback) persists, shrinks, or grows over time.</span></span></label>
+        <input type="number" id="horizon-years" value="10" min="1" max="40" step="1" />
       </div>
       <div class="field">
         <label>Expected annual return %<span class="tip" tabindex="0" aria-label="Help: expected return"><span class="tip-icon">?</span><span class="tip-box">Treated as the long-run compound growth rate (CAGR). 7% is a common assumption for U.S. stocks before inflation. The median simulated outcome lands on this rate.</span></span></label>
@@ -603,14 +607,14 @@
         <div class="input-row"><input type="number" id="vol" value="15" min="0" max="40" step="1" /><span class="suffix">%</span></div>
       </div>
       <div class="field">
-        <label>Total contributed<span class="tip" tabindex="0" aria-label="Help: total contributed"><span class="tip-icon">?</span><span class="tip-box">Amount × number of intervals — computed for you. The lump-sum comparison invests this exact total on day one, so both strategies put in the same money.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="total-display" value="60000" disabled /></div>
+        <label>Total deployed<span class="tip" tabindex="0" aria-label="Help: total deployed"><span class="tip-icon">?</span><span class="tip-box">Amount × number of intervals in the deployment window — computed for you. The lump-sum comparison invests this exact total on day one, so both strategies put in the same money.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="total-display" value="60,000" disabled /></div>
       </div>
     </div>
     <div class="toggles">
       <label class="toggle">
         <input type="checkbox" id="compare-ls" checked />
-        <span>Compare a day-one lump sum <span class="hint">(same total, same simulated markets)</span></span>
+        <span>Compare a day-one lump sum <span class="hint">(same total, same simulated markets, held for the same horizon)</span></span>
       </label>
     </div>
   </div>
@@ -640,13 +644,14 @@
   <p class="duel-caption" id="duel-caption"></p>
 
   <div class="chart-wrap">
-    <canvas id="chart" role="img" aria-label="Line chart over the investment period. A stepped grey line shows cumulative cost basis, a yellow line shows the median simulated DCA portfolio value with a shaded band from the 10th to 90th percentile of outcomes, and an optional blue line shows the median lump-sum portfolio value.">Cost basis climbs as a stepped line while the yellow median DCA value line and its shaded 10th–90th percentile band show simulated growth; the blue line, when enabled, shows the median lump-sum path.</canvas>
+    <canvas id="chart" role="img" aria-label="Line chart over the full time horizon. A stepped grey line shows cumulative cost basis flattening out once the deployment window ends, a yellow line shows the median simulated DCA portfolio value with a shaded band from the 10th to 90th percentile of outcomes, an optional blue line shows the median lump-sum portfolio value, and a copper marker shows the month DCA finishes deploying.">Cost basis climbs as a stepped line then flattens once deployment ends, while the yellow median DCA value line and its shaded 10th–90th percentile band show simulated growth; the blue line, when enabled, shows the median lump-sum path, and the copper marker shows where the deployment window ends.</canvas>
   </div>
   <div class="legend">
     <span><span class="swatch" style="background:#948D79"></span>Cost basis (money in) — stepped line</span>
     <span><span class="swatch" style="background:#C9A45C"></span>DCA median value — yellow line</span>
     <span><span class="swatch" style="background:rgba(201,164,92,0.22)"></span>10th–90th percentile of 500 simulated markets</span>
     <span id="legend-ls"><span class="swatch" style="background:#5B7A9D"></span>Lump-sum median value — blue line</span>
+    <span><span class="swatch" style="background:#B07A4E"></span>Deployment window ends — copper marker</span>
   </div>
 
   <div id="summary-table"></div>
@@ -659,8 +664,8 @@
 
   <article class="article">
     <h2>How this dollar-cost averaging calculator works</h2>
-    <p>Set your amount, schedule, and horizon, plus two return assumptions: the <strong>expected annual return</strong> (treated as the long-run compound growth rate) and the <strong>annual volatility</strong> (how violently returns swing around that average). Instead of drawing one smooth flat-rate curve, the calculator simulates <strong>500 possible markets</strong> with those characteristics and shows the median path in yellow with a shaded band covering the 10th to 90th percentile of outcomes. The stepped grey line underneath is your <strong>cost basis</strong> — money in — so the gap between the lines is your profit at a glance.</p>
-    <p>The lump-sum toggle answers the question every DCA calculator dodges: what if you'd invested the same total on day one? The comparison is honest because both strategies face the <em>identical</em> 500 simulated markets — same crashes, same rallies, only the timing of your money differs. The duel bar above the chart shows both median outcomes side by side, along with how often each strategy won.</p>
+    <p>This calculator separates two things every other DCA tool conflates: how long you actually spread a windfall out (the <strong>deployment period</strong> — realistically 6-12 months, not years), and how far out you want to <strong>forecast</strong> the result (the <strong>total time horizon</strong> — years or decades). Set your amount, schedule, and deployment window, plus two return assumptions: the <strong>expected annual return</strong> (treated as the long-run compound growth rate) and the <strong>annual volatility</strong> (how violently returns swing around that average). The calculator simulates <strong>500 possible markets</strong> with those characteristics; DCA contributes on schedule until the deployment window ends, then simply holds — exactly like the lump sum has been doing since day one — all the way out to your chosen horizon. The median path is shown in yellow with a shaded band covering the 10th to 90th percentile of outcomes, and the stepped grey line is your <strong>cost basis</strong> — money in — which flattens out once deployment finishes.</p>
+    <p>The lump-sum toggle answers the question every DCA calculator dodges: what if you'd invested the same total on day one? The comparison is honest because both strategies face the <em>identical</em> 500 simulated markets — same crashes, same rallies, only the timing of your money differs — and both are then held for the same total horizon, so you can see whether an early timing edge (or setback) persists, fades, or compounds over the years that follow. The duel bar above the chart shows both median outcomes side by side, along with how often each strategy won.</p>
 
     <h2>What dollar-cost averaging is</h2>
     <p>Dollar-cost averaging means investing a fixed dollar amount on a fixed schedule — $500 every month, rain or shine — instead of trying to pick moments. The mechanism that makes it interesting is arithmetic, not magic: a fixed amount buys <strong>more shares when prices are low and fewer when prices are high</strong>. Over a volatile stretch, your average cost per share ends up below the average of the prices you bought at (the harmonic mean sits under the arithmetic mean). You didn't predict anything; the fixed dollar amount did the timing for you, automatically leaning into weakness and away from froth.</p>
@@ -671,7 +676,8 @@
     <p>DCA hurts when markets rise during the deployment — which, historically, is most of the time. Money sitting in cash waiting for its scheduled entry misses growth, and with a positive expected return, the earlier a dollar is invested the more it's expected to earn. That's the whole case for the lump sum, and it's a strong one.</p>
 
     <h2>The lump-sum-usually-wins nuance</h2>
-    <p>Vanguard's research made the short-window version famous: spread a lump sum over 6–12 months and the day-one deployment ends higher in roughly <strong>two-thirds of markets</strong>. And the longer you stretch the schedule, the more lopsided it gets — run this calculator's 10-year default and the lump sum wins around 90% of simulated markets, because a decade of partial cash drag is a decade of missed compounding. Expected value favors immediacy; that's not a quirk of this calculator, it's the arithmetic of markets that rise more years than they fall. So why does DCA survive as advice? Because the average hides the tails. The lump sum's worst cases — everything invested the week before a 30% drawdown — are uglier than DCA's worst cases, and real humans don't experience averages, they experience one path. The investor who panic-sells after seeing a windfall crater has turned a temporary loss into a permanent one, and DCA's genuine contribution is making that scenario rarer. The honest framing: <strong>lump sum maximizes expected wealth; DCA minimizes expected regret</strong>. Pick based on which failure you're more likely to commit, then automate the choice and stop looking. Whichever way you deploy, the destination matters more than the entrance: the <a href="/">multi-phase compound interest calculator</a> models the decades after the money is in, and the <a href="/coast-fire-calculator">Coast FIRE calculator</a> shows when those steady contributions have already done enough that you could stop making them.</p>
+    <p>Vanguard's research made the short-window version famous: spread a lump sum over 6–12 months and the day-one deployment ends higher in roughly <strong>two-thirds of markets</strong>. This calculator's own default — a $60,000 windfall deployed over 12 months, both strategies then held out to a 10-year horizon — lands at almost exactly that figure: the lump sum wins about <strong>67% of simulated markets</strong>. That's the realistic comparison, because a 12-month deployment window is what people actually mean by "should I DCA my windfall." Stretch the deployment window itself out to a decade — $500 a month for 10 years instead of a real windfall spread over months — and the win rate for the lump sum climbs toward 90%, but at that point you're not really comparing DCA-vs-lump-sum anymore; you're comparing "having the money now" against "earning and saving it gradually over 10 years," which is a different question with an obvious answer (money in hand is better than money you haven't earned yet). The deployment-period field above is deliberately capped for that reason — realistic windfall timing decisions live in the 6-12 month range.</p>
+    <p>Expected value favors immediacy; that's not a quirk of this calculator, it's the arithmetic of markets that rise more years than they fall. So why does DCA survive as advice? Because the average hides the tails. At the realistic 12-month deployment window, DCA's worst-case (10th percentile) outcome is genuinely better than the lump sum's worst case — real downside protection, not just a smaller number. The investor who panic-sells after seeing a windfall crater has turned a temporary loss into a permanent one, and DCA's genuine contribution is making that scenario rarer. The honest framing: <strong>lump sum maximizes expected wealth; DCA minimizes expected regret</strong>, and that trade-off is real and worth roughly a coin flip's worth of odds against you, not a near-certainty. Pick based on which failure you're more likely to commit, then automate the choice and stop looking. Whichever way you deploy, the destination matters more than the entrance: the <a href="/">multi-phase compound interest calculator</a> models the decades after the money is in, and the <a href="/coast-fire-calculator">Coast FIRE calculator</a> shows when those steady contributions have already done enough that you could stop making them.</p>
 
     <h2>Frequently asked questions</h2>
     <div class="faq-item">
@@ -716,7 +722,7 @@
     </div>
     <div class="faq-item">
       <h3>Why does the lump sum usually win here?</h3>
-      <p>It puts all the money to work on day one, while DCA's later contributions sit in cash first. The win rate grows with the schedule length: ~two-thirds over 6–12 month windows, ~90% over a 10-year schedule. Check the 10th percentiles to see DCA's side of the trade.</p>
+      <p>It puts all the money to work on day one, while DCA's later contributions sit in cash first. At a realistic 6–12 month deployment window, that's worth roughly two-thirds of simulated markets, no matter how far out you forecast afterward. Check the 10th percentiles to see DCA's side of the trade.</p>
     </div>
     <div class="faq-item">
       <h3>Does DCA work for crypto or single stocks?</h3>
@@ -740,6 +746,10 @@
 
 <script>
 (function(){
+  // Shim parseFloat so every existing call site transparently tolerates
+  // comma-grouped input ("100,000") without needing to touch each call site.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
   const AMBER = '#C9A45C';
   const SLATE = '#5B7A9D';
   const COPPER = '#B07A4E';
@@ -751,7 +761,8 @@
 
   const LIMITS = {
     amount: { min: 10, max: 100000 },
-    years: { min: 1, max: 40 },
+    deployMonths: { min: 1, max: 120 },
+    horizonYears: { min: 1, max: 40 },
     rate: { min: 0, max: 15 },
     vol: { min: 0, max: 40 }
   };
@@ -761,6 +772,13 @@
   function fmt(n) {
     const sign = n < 0 ? '-' : '';
     return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  // Same as fmt() but without the leading $ — used to redisplay money input
+  // fields themselves with thousands separators after the user leaves them.
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
   }
   function fmtShort(n) {
     const a = Math.abs(n);
@@ -777,10 +795,14 @@
     el.classList.toggle('invalid', bad);
   }
   function getInputs() {
+    const deployMonths = Math.round(clamp(parseFloat(document.getElementById('deploy-months').value), LIMITS.deployMonths.min, LIMITS.deployMonths.max));
+    let horizonYears = Math.round(clamp(parseFloat(document.getElementById('horizon-years').value), LIMITS.horizonYears.min, LIMITS.horizonYears.max));
+    const horizonClamped = horizonYears * 12 < deployMonths;
+    if (horizonClamped) horizonYears = Math.ceil(deployMonths / 12);
     return {
       amount: clamp(parseFloat(document.getElementById('amount').value), LIMITS.amount.min, LIMITS.amount.max),
       freq: parseInt(document.getElementById('freq').value, 10),
-      years: Math.round(clamp(parseFloat(document.getElementById('years').value), LIMITS.years.min, LIMITS.years.max)),
+      deployMonths, horizonYears, horizonClamped,
       rate: clamp(parseFloat(document.getElementById('rate').value), LIMITS.rate.min, LIMITS.rate.max),
       vol: clamp(parseFloat(document.getElementById('vol').value), LIMITS.vol.min, LIMITS.vol.max),
       compareLS: document.getElementById('compare-ls').checked
@@ -816,7 +838,7 @@
   // --- Shareable link encode/decode (same pattern as the other Phases calculators) ---
   function encodeState() {
     const i = getInputs();
-    const state = { a: i.amount, f: i.freq, y: i.years, r: i.rate, v: i.vol, l: i.compareLS ? 1 : 0 };
+    const state = { a: i.amount, f: i.freq, dm: i.deployMonths, hy: i.horizonYears, r: i.rate, v: i.vol, l: i.compareLS ? 1 : 0 };
     const json = JSON.stringify(state);
     const b64 = btoa(unescape(encodeURIComponent(json)));
     return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -831,9 +853,10 @@
     } catch (e) { return null; }
   }
   function applyState(s) {
-    document.getElementById('amount').value = clamp(s.a, LIMITS.amount.min, LIMITS.amount.max);
+    document.getElementById('amount').value = formatMoneyValue(clamp(s.a, LIMITS.amount.min, LIMITS.amount.max));
     if ([52, 12, 4].includes(parseInt(s.f, 10))) document.getElementById('freq').value = String(s.f);
-    document.getElementById('years').value = clamp(s.y, LIMITS.years.min, LIMITS.years.max);
+    document.getElementById('deploy-months').value = clamp(s.dm, LIMITS.deployMonths.min, LIMITS.deployMonths.max);
+    document.getElementById('horizon-years').value = clamp(s.hy, LIMITS.horizonYears.min, LIMITS.horizonYears.max);
     document.getElementById('rate').value = clamp(s.r, LIMITS.rate.min, LIMITS.rate.max);
     document.getElementById('vol').value = clamp(s.v, LIMITS.vol.min, LIMITS.vol.max);
     document.getElementById('compare-ls').checked = !!s.l;
@@ -858,19 +881,29 @@
 
   function computeSeries() {
     const i = getInputs();
-    const steps = i.years * i.freq;
-    const total = i.amount * steps;
+    // Deployment window: DCA only contributes during these steps. After it
+    // ends, DCA simply holds and compounds — same as the lump sum has been
+    // doing since day one — so the whole horizon shows whether an early
+    // timing edge (or setback) persists, shrinks, or grows.
+    const steps = i.horizonYears * i.freq;
+    const deploySteps = Math.max(1, Math.min(steps, Math.round(i.deployMonths * i.freq / 12)));
+    const total = i.amount * deploySteps;
     // Expected return is treated as the long-run CAGR: log-return drift per
     // step is ln(1+r)/freq, so the MEDIAN simulated path compounds at exactly
     // the stated rate. Volatility spreads outcomes around that median.
     const drift = Math.log(1 + i.rate / 100) / i.freq;
     const sigma = (i.vol / 100) / Math.sqrt(i.freq);
 
-    // Sample ~100 points for the chart regardless of horizon.
+    // Sample ~100 points for the chart regardless of horizon, but always
+    // include the exact step where deployment ends so the chart can mark it.
     const sampleEvery = Math.max(1, Math.ceil(steps / 100));
     const samplePoints = [];
     for (let s = sampleEvery; s <= steps; s += sampleEvery) samplePoints.push(s);
     if (samplePoints[samplePoints.length - 1] !== steps) samplePoints.push(steps);
+    if (!samplePoints.includes(deploySteps)) {
+      samplePoints.push(deploySteps);
+      samplePoints.sort((a, b) => a - b);
+    }
 
     // dcaAt[k][sim], lsAt[k][sim]
     const dcaAt = samplePoints.map(() => new Float64Array(SIMS));
@@ -884,9 +917,14 @@
       let k = 0;
       for (let m = 1; m <= steps; m++) {
         // Contribution lands at the start of the interval, then the interval's
-        // return applies to everything.
+        // return applies to everything. Once the deployment window ends, DCA
+        // stops contributing and just compounds like the lump sum does.
         const growth = Math.exp(drift + sigma * gauss());
-        dca = (dca + i.amount) * growth;
+        if (m <= deploySteps) {
+          dca = (dca + i.amount) * growth;
+        } else {
+          dca = dca * growth;
+        }
         ls = ls * growth;
         if (samplePoints[k] === m) {
           dcaAt[k][sim] = dca;
@@ -904,7 +942,7 @@
       const l = Array.from(lsAt[k]).sort((a, b) => a - b);
       series.push({
         t: m / i.freq,
-        basis: i.amount * m,
+        basis: i.amount * Math.min(m, deploySteps),
         p10: percentile(d, 10),
         p50: percentile(d, 50),
         p90: percentile(d, 90),
@@ -913,8 +951,10 @@
       });
     });
 
+    const deployEndYears = deploySteps / i.freq;
     const last = series[series.length - 1];
     return {
+      deploySteps, deployEndYears,
       inputs: i, steps, total, series,
       dcaMedian: last.p50, dcaP10: last.p10, dcaP90: last.p90,
       lsMedian: last.ls50, lsP10: last.ls10,
@@ -925,6 +965,18 @@
   function renderWarnings(r) {
     const el = document.getElementById('warnings');
     el.innerHTML = '';
+    if (r.inputs.horizonClamped) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = 'Total time horizon must be at least as long as the deployment period — using ' + r.inputs.horizonYears + ' year' + (r.inputs.horizonYears === 1 ? '' : 's') + '.';
+      el.appendChild(div);
+    }
+    if (r.inputs.deployMonths > 24) {
+      const div = document.createElement('div');
+      div.className = 'info-note';
+      div.textContent = 'A ' + r.inputs.deployMonths + '-month deployment window is longer than the realistic windfall-timing decision (6-12 months is the classic case). Stretching it out further isn’t really "DCA" anymore — it’s just slow, gradual saving, and it mechanically favors the lump sum more and more the longer it runs.';
+      el.appendChild(div);
+    }
     if (r.inputs.vol === 0) {
       const div = document.createElement('div');
       div.className = 'info-note';
@@ -964,19 +1016,19 @@
 
     const winner = r.lsWinPct >= 50 ? 'lump sum' : 'DCA';
     const winPct = Math.round(r.lsWinPct >= 50 ? r.lsWinPct : 100 - r.lsWinPct);
-    cap.innerHTML = 'Same ' + fmt(r.total) + ' in, same ' + SIMS + ' simulated markets: <span class="win">' + winner + ' ended higher ' + winPct + '% of the time</span> — but in the worst tenth of markets, DCA held ' + fmtShort(r.dcaP10) + ' vs ' + fmtShort(r.lsP10) + ' for the lump sum.';
+    cap.innerHTML = fmt(r.total) + ' deployed over ' + r.inputs.deployMonths + ' month' + (r.inputs.deployMonths === 1 ? '' : 's') + ' vs. day one, both held to year ' + r.inputs.horizonYears + ', same ' + SIMS + ' simulated markets: <span class="win">' + winner + ' ended higher ' + winPct + '% of the time</span> — but in the worst tenth of markets, DCA held ' + fmtShort(r.dcaP10) + ' vs ' + fmtShort(r.lsP10) + ' for the lump sum.';
   }
 
   function renderSummaryTable(r) {
     const el = document.getElementById('summary-table');
-    const marks = [0.25, 0.5, 0.75, 1].map(f => Math.round(r.inputs.years * f)).filter((v, idx, a) => v >= 1 && a.indexOf(v) === idx);
+    const marks = [0.25, 0.5, 0.75, 1].map(f => Math.round(r.inputs.horizonYears * f)).filter((v, idx, a) => v >= 1 && a.indexOf(v) === idx);
 
     let html = '<table><tr><th>Year</th><th>Contributed</th><th>DCA median</th><th>10th pct</th><th>90th pct</th>' + (r.inputs.compareLS ? '<th>Lump-sum median</th>' : '') + '</tr>';
     marks.forEach(y => {
       // find nearest sample point at or before year y
       let pt = r.series[0];
       for (const s of r.series) { if (s.t <= y + 1e-9) pt = s; else break; }
-      html += '<tr><td>' + y + (y === r.inputs.years ? ' — end' : '') + '</td><td>' + fmt(pt.basis) + '</td>' +
+      html += '<tr><td>' + y + (y === r.inputs.horizonYears ? ' — end' : (Math.abs(y - r.deployEndYears) < 0.5 ? ' — fully deployed' : '')) + '</td><td>' + fmt(pt.basis) + '</td>' +
         '<td class="hi">' + fmt(pt.p50) + '</td><td>' + fmt(pt.p10) + '</td><td>' + fmt(pt.p90) + '</td>' +
         (r.inputs.compareLS ? '<td>' + fmt(pt.ls50) + '</td>' : '') + '</tr>';
     });
@@ -985,9 +1037,10 @@
 
     const freqName = r.inputs.freq === 52 ? 'weekly' : r.inputs.freq === 12 ? 'monthly' : 'quarterly';
     document.getElementById('assumptions-note').textContent =
-      'Assumes ' + fmt(r.inputs.amount) + ' invested ' + freqName + ' at the start of each interval for ' + r.inputs.years +
-      ' years (' + fmt(r.total) + ' total). Returns are log-normal with a ' + r.inputs.rate + '% long-run CAGR and ' + r.inputs.vol +
-      '% annual volatility, across ' + SIMS + ' simulated markets with a fixed seed (reproducible). The lump-sum comparison invests the same total on day one into the same markets. No taxes, fees, or dividends modeled.';
+      'Assumes ' + fmt(r.inputs.amount) + ' invested ' + freqName + ' at the start of each interval for ' + r.inputs.deployMonths +
+      ' months (' + fmt(r.total) + ' total), then held with no further contributions through year ' + r.inputs.horizonYears +
+      '. Returns are log-normal with a ' + r.inputs.rate + '% long-run CAGR and ' + r.inputs.vol +
+      '% annual volatility, across ' + SIMS + ' simulated markets with a fixed seed (reproducible). The lump-sum comparison invests the same total on day one into the same markets and holds it for the same horizon. No taxes, fees, or dividends modeled.';
   }
 
   function renderChart(r) {
@@ -1034,6 +1087,8 @@
       });
     }
 
+    const deployIdx = r.series.findIndex(s => Math.abs(s.t - r.deployEndYears) < 1e-6);
+
     if (chart) chart.destroy();
     chart = new Chart(ctx, {
       type: 'line',
@@ -1067,13 +1122,31 @@
             grid: { color: SEAM }, border: { color: SEAM }
           }
         }
-      }
+      },
+      plugins: [{
+        id: 'deployEndLine',
+        afterDraw(c) {
+          if (deployIdx < 0) return;
+          const { ctx, chartArea, scales } = c;
+          const x = scales.x.getPixelForValue(deployIdx);
+          if (x < chartArea.left || x > chartArea.right) return;
+          ctx.save();
+          ctx.strokeStyle = COPPER;
+          ctx.lineWidth = 1.5;
+          ctx.setLineDash([4, 3]);
+          ctx.beginPath(); ctx.moveTo(x, chartArea.top); ctx.lineTo(x, chartArea.bottom); ctx.stroke();
+          ctx.setLineDash([]);
+          ctx.fillStyle = COPPER;
+          ctx.beginPath(); ctx.arc(x, chartArea.top + 6, 3, 0, Math.PI * 2); ctx.fill();
+          ctx.restore();
+        }
+      }]
     });
   }
 
   function update() {
     const r = computeSeries();
-    document.getElementById('total-display').value = r.total;
+    document.getElementById('total-display').value = formatMoneyValue(r.total);
     document.getElementById('total-contrib').textContent = fmt(r.total);
     document.getElementById('dca-median').textContent = fmt(r.dcaMedian);
     document.getElementById('dca-range').textContent = fmtShort(r.dcaP10) + ' – ' + fmtShort(r.dcaP90);
@@ -1088,11 +1161,12 @@
 
   // Wire inputs with the same input/blur clamp pattern as the other Phases calculators.
   [
-    ['amount', LIMITS.amount],
-    ['years', LIMITS.years],
-    ['rate', LIMITS.rate],
-    ['vol', LIMITS.vol]
-  ].forEach(([id, lim]) => {
+    ['amount', LIMITS.amount, true],
+    ['deploy-months', LIMITS.deployMonths, false],
+    ['horizon-years', LIMITS.horizonYears, false],
+    ['rate', LIMITS.rate, false],
+    ['vol', LIMITS.vol, false]
+  ].forEach(([id, lim, isMoney]) => {
     const el = document.getElementById(id);
     el.addEventListener('input', () => {
       markValidity(el, parseFloat(el.value), lim.min, lim.max);
@@ -1100,7 +1174,7 @@
     });
     el.addEventListener('blur', () => {
       const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
-      el.value = corrected;
+      el.value = isMoney ? formatMoneyValue(corrected) : corrected;
       el.classList.remove('invalid');
       update();
     });

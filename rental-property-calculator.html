@@ -329,7 +329,7 @@
   }
   .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
 
-  input[type="number"], select {
+  input[type="number"], input[type="text"], select {
     background: transparent;
     border: none;
     border-bottom: 1px solid var(--seam);
@@ -572,7 +572,7 @@
     <div class="field-grid">
       <div class="field">
         <label>Purchase price<span class="tip" tabindex="0" aria-label="Help: purchase price"><span class="tip-icon">?</span><span class="tip-box">The agreed price of the property. Closing costs (typically 2–5% extra) aren't modeled here — see the notes below the results.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="price" value="300000" min="10000" max="20000000" step="5000" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="price" value="300,000" min="10000" max="20000000" step="5000" /></div>
       </div>
       <div class="field">
         <label>Down payment<span class="tip" tabindex="0" aria-label="Help: down payment"><span class="tip-icon">?</span><span class="tip-box">Investment properties usually require 20–25% down. This is the cash the cash-on-cash return is measured against.</span></span></label>
@@ -594,19 +594,19 @@
     <div class="field-grid">
       <div class="field">
         <label>Monthly rent<span class="tip" tabindex="0" aria-label="Help: monthly rent"><span class="tip-icon">?</span><span class="tip-box">Market rent for the unit. Check actual comparable listings, not the seller's pro forma.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="rent" value="2600" min="0" max="100000" step="50" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="rent" value="2,600" min="0" max="100000" step="50" /></div>
       </div>
       <div class="field">
         <label>Property tax $/yr<span class="tip" tabindex="0" aria-label="Help: property tax"><span class="tip-icon">?</span><span class="tip-box">Annual property tax. Check the county assessor — and note taxes often reassess upward after a sale.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="tax" value="3600" min="0" max="200000" step="100" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="tax" value="3,600" min="0" max="200000" step="100" /></div>
       </div>
       <div class="field">
         <label>Insurance $/yr<span class="tip" tabindex="0" aria-label="Help: insurance"><span class="tip-icon">?</span><span class="tip-box">Landlord (dwelling fire) policy — usually 15–25% more than a homeowner's policy on the same house.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="insurance" value="1500" min="0" max="100000" step="100" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="insurance" value="1,500" min="0" max="100000" step="100" /></div>
       </div>
       <div class="field">
         <label>HOA $/mo<span class="tip" tabindex="0" aria-label="Help: HOA"><span class="tip-icon">?</span><span class="tip-box">Monthly HOA or condo fee, if any. Condo fees often include some insurance and exterior maintenance — avoid double counting.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="hoa" value="0" min="0" max="5000" step="25" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="hoa" value="0" min="0" max="5000" step="25" /></div>
       </div>
       <div class="field">
         <label>Maintenance reserve<span class="tip" tabindex="0" aria-label="Help: maintenance"><span class="tip-icon">?</span><span class="tip-box">% of rent set aside for repairs. 5–15% is typical depending on property age. This is the line first-time landlords most often skip.</span></span></label>
@@ -767,6 +767,10 @@
 
 <script>
 (function(){
+  // Shim parseFloat so every existing call site transparently tolerates
+  // comma-grouped input ("100,000") without needing to touch each call site.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
   const AMBER = '#C9A45C';
   const SLATE = '#5B7A9D';
   const COPPER = '#B07A4E';
@@ -796,6 +800,13 @@
   function fmt(n) {
     const sign = n < 0 ? '-' : '';
     return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  // Same as fmt() but without the leading $ — used to redisplay money input
+  // fields themselves with thousands separators after the user leaves them.
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
   }
   function pct1(v) {
     return (Math.abs(v - Math.round(v)) < 0.05 ? Math.round(v) : v.toFixed(1)) + '%';
@@ -846,11 +857,14 @@
     } catch (e) { return null; }
   }
   function applyState(s) {
-    const set = (id, val, lim) => { document.getElementById(id).value = clamp(val, lim.min, lim.max); };
-    set('price', s.p, LIMITS.price); set('down-pct', s.d, LIMITS.downPct);
+    const set = (id, val, lim, isMoney) => {
+      const corrected = clamp(val, lim.min, lim.max);
+      document.getElementById(id).value = isMoney ? formatMoneyValue(corrected) : corrected;
+    };
+    set('price', s.p, LIMITS.price, true); set('down-pct', s.d, LIMITS.downPct);
     set('rate', s.r, LIMITS.rate); set('term', s.t, LIMITS.term);
-    set('rent', s.m, LIMITS.rent); set('tax', s.x, LIMITS.tax);
-    set('insurance', s.n, LIMITS.insurance); set('hoa', s.h, LIMITS.hoa);
+    set('rent', s.m, LIMITS.rent, true); set('tax', s.x, LIMITS.tax, true);
+    set('insurance', s.n, LIMITS.insurance, true); set('hoa', s.h, LIMITS.hoa, true);
     set('maint-pct', s.a, LIMITS.maintPct); set('vacancy-pct', s.v, LIMITS.vacancyPct);
     set('mgmt-pct', s.g, LIMITS.mgmtPct); set('rent-growth', s.w, LIMITS.rentGrowth);
     set('appreciation', s.q, LIMITS.appreciation);
@@ -1103,11 +1117,11 @@
 
   // Wire inputs with the same input/blur clamp pattern as the other Phases calculators.
   [
-    ['price', LIMITS.price], ['down-pct', LIMITS.downPct], ['rate', LIMITS.rate], ['term', LIMITS.term],
-    ['rent', LIMITS.rent], ['tax', LIMITS.tax], ['insurance', LIMITS.insurance], ['hoa', LIMITS.hoa],
-    ['maint-pct', LIMITS.maintPct], ['vacancy-pct', LIMITS.vacancyPct], ['mgmt-pct', LIMITS.mgmtPct],
-    ['rent-growth', LIMITS.rentGrowth], ['appreciation', LIMITS.appreciation]
-  ].forEach(([id, lim]) => {
+    ['price', LIMITS.price, true], ['down-pct', LIMITS.downPct, false], ['rate', LIMITS.rate, false], ['term', LIMITS.term, false],
+    ['rent', LIMITS.rent, true], ['tax', LIMITS.tax, true], ['insurance', LIMITS.insurance, true], ['hoa', LIMITS.hoa, true],
+    ['maint-pct', LIMITS.maintPct, false], ['vacancy-pct', LIMITS.vacancyPct, false], ['mgmt-pct', LIMITS.mgmtPct, false],
+    ['rent-growth', LIMITS.rentGrowth, false], ['appreciation', LIMITS.appreciation, false]
+  ].forEach(([id, lim, isMoney]) => {
     const el = document.getElementById(id);
     el.addEventListener('input', () => {
       markValidity(el, parseFloat(el.value), lim.min, lim.max);
@@ -1115,7 +1129,7 @@
     });
     el.addEventListener('blur', () => {
       const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
-      el.value = corrected;
+      el.value = isMoney ? formatMoneyValue(corrected) : corrected;
       el.classList.remove('invalid');
       update();
     });

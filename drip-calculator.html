@@ -310,7 +310,7 @@
   }
   .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
 
-  input[type="number"] {
+  input[type="number"], input[type="text"] {
     background: transparent;
     border: none;
     border-bottom: 1px solid var(--seam);
@@ -578,15 +578,15 @@
   </header>
 
   <div class="masthead">
-    <h1>Dividend reinvestment calculator</h1>
-    <p>See what reinvesting dividends actually does: shares buying shares, income raising itself, and a gap versus taking the cash that widens every single year.</p>
+    <h1>Dividend reinvestment (DRIP) calculator</h1>
+    <p><strong>DRIP</strong> stands for <strong>D</strong>ividend <strong>R</strong>e<strong>i</strong>nvestment <strong>P</strong>lan — automatically using each dividend payout to buy more shares instead of taking the cash. See what that actually does: shares buying shares, income raising itself, and a gap versus taking the cash that widens every single year.</p>
   </div>
 
   <div class="panel">
     <div class="field-grid">
       <div class="field">
         <label>Initial investment<span class="tip" tabindex="0" aria-label="Help: initial investment"><span class="tip-icon">?</span><span class="tip-box">Your starting position. The simulation tracks the shares this buys and every share the dividends add after it.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="initial" value="10000" min="100" max="10000000" step="1000" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="initial" value="10,000" min="100" max="10000000" step="1000" /></div>
       </div>
       <div class="field">
         <label>Dividend yield %<span class="tip" tabindex="0" aria-label="Help: dividend yield"><span class="tip-icon">?</span><span class="tip-box">Today's annual dividend as a % of price. Broad dividend ETFs run 2–4%. Above 8% is often a red flag — see the yield-trap section below.</span></span></label>
@@ -606,7 +606,7 @@
       </div>
       <div class="field">
         <label>Year-1 dividend income<span class="tip" tabindex="0" aria-label="Help: year one income"><span class="tip-icon">?</span><span class="tip-box">Initial investment × yield — computed for you. Watch how far above this the final-year income climbs in the chart below.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="income-display" value="300" disabled /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="income-display" value="300" disabled /></div>
       </div>
     </div>
     <div class="toggles">
@@ -750,6 +750,10 @@
 
 <script>
 (function(){
+  // Shim parseFloat so every existing call site transparently tolerates
+  // comma-grouped input ("100,000") without needing to touch each call site.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
   const AMBER = '#C9A45C';
   const SLATE = '#5B7A9D';
   const COPPER = '#B07A4E';
@@ -770,6 +774,13 @@
   function fmt(n) {
     const sign = n < 0 ? '-' : '';
     return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  // Same as fmt() but without the leading $ — used to redisplay money input
+  // fields themselves with thousands separators after the user leaves them.
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
   }
   function fmtShort(n) {
     const a = Math.abs(n);
@@ -814,7 +825,7 @@
     } catch (e) { return null; }
   }
   function applyState(s) {
-    document.getElementById('initial').value = clamp(s.i, LIMITS.initial.min, LIMITS.initial.max);
+    document.getElementById('initial').value = formatMoneyValue(clamp(s.i, LIMITS.initial.min, LIMITS.initial.max));
     document.getElementById('yield').value = clamp(s.y, LIMITS.yield.min, LIMITS.yield.max);
     document.getElementById('div-growth').value = clamp(s.d, LIMITS.divGrowth.min, LIMITS.divGrowth.max);
     document.getElementById('px-growth').value = clamp(s.p, LIMITS.pxGrowth.min, LIMITS.pxGrowth.max);
@@ -1051,7 +1062,7 @@
 
   function update() {
     const r = computeSeries();
-    document.getElementById('income-display').value = Math.round(r.inputs.initial * r.inputs.yield / 100);
+    document.getElementById('income-display').value = formatMoneyValue(Math.round(r.inputs.initial * r.inputs.yield / 100));
     document.getElementById('drip-value').textContent = fmt(r.dripValue);
     document.getElementById('cash-value').textContent = fmt(r.cashValue);
     document.getElementById('cash-collected').textContent = fmt(r.cashCollected);
@@ -1066,12 +1077,12 @@
 
   // Wire inputs with the same input/blur clamp pattern as the other Phases calculators.
   [
-    ['initial', LIMITS.initial],
-    ['yield', LIMITS.yield],
-    ['div-growth', LIMITS.divGrowth],
-    ['px-growth', LIMITS.pxGrowth],
-    ['years', LIMITS.years]
-  ].forEach(([id, lim]) => {
+    ['initial', LIMITS.initial, true],
+    ['yield', LIMITS.yield, false],
+    ['div-growth', LIMITS.divGrowth, false],
+    ['px-growth', LIMITS.pxGrowth, false],
+    ['years', LIMITS.years, false]
+  ].forEach(([id, lim, isMoney]) => {
     const el = document.getElementById(id);
     el.addEventListener('input', () => {
       markValidity(el, parseFloat(el.value), lim.min, lim.max);
@@ -1079,7 +1090,7 @@
     });
     el.addEventListener('blur', () => {
       const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
-      el.value = corrected;
+      el.value = isMoney ? formatMoneyValue(corrected) : corrected;
       el.classList.remove('invalid');
       update();
     });

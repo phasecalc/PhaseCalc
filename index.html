@@ -678,7 +678,7 @@
         <label>Starting balance</label>
         <div class="input-row">
           <span class="prefix">$</span>
-          <input type="number" id="starting-balance" value="10000" min="0" step="1000" />
+          <input type="text" inputmode="decimal" id="starting-balance" value="10,000" min="0" step="1000" />
         </div>
       </div>
       <div class="field">
@@ -768,6 +768,10 @@
 
 <script>
 (function(){
+  // Shim parseFloat so every existing call site transparently tolerates
+  // comma-grouped input ("100,000") without needing to touch each call site.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
   const AMBER = '#C9A45C';
   const SLATE = '#5B7A9D';
   const COPPER = '#B07A4E';
@@ -797,6 +801,13 @@
   function fmt(n) {
     const sign = n < 0 ? '-' : '';
     return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  // Same as fmt() but without the leading $ — used to redisplay money input
+  // fields themselves with thousands separators after the user leaves them.
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
   }
   function clamp(val, min, max) {
     if (isNaN(val)) return min;
@@ -841,7 +852,7 @@
   }
 
   function applyState(state) {
-    document.getElementById('starting-balance').value = clamp(state.sb, LIMITS.startingBalance.min, LIMITS.startingBalance.max);
+    document.getElementById('starting-balance').value = formatMoneyValue(clamp(state.sb, LIMITS.startingBalance.min, LIMITS.startingBalance.max));
     document.getElementById('starting-year').value = clamp(state.sy, LIMITS.startingYear.min, LIMITS.startingYear.max);
     let loadedPhases = state.p.map(ph => ({
       id: nextId++,
@@ -1025,7 +1036,7 @@
           <div class="field"><label>Years (1\u2013${maxYearsHere})</label>
             <input type="number" data-field="years" data-min="${LIMITS.years.min}" data-max="${maxYearsHere}" value="${p.years}" step="1" /></div>
           <div class="field"><label>Monthly $ (+/-)<span class="tip" tabindex="0" aria-label="Help: monthly amount"><span class="tip-icon">?</span><span class="tip-box">Positive = money you add each month. Negative (e.g. -2500) = money you withdraw each month — use this to model retirement drawdown.</span></span></label>
-            <input type="number" data-field="monthly" data-min="${LIMITS.monthly.min}" data-max="${LIMITS.monthly.max}" value="${p.monthly}" step="50" /></div>
+            <input type="text" inputmode="decimal" data-field="monthly" data-money="1" data-min="${LIMITS.monthly.min}" data-max="${LIMITS.monthly.max}" value="${formatMoneyValue(p.monthly)}" step="50" /></div>
           <div class="field"><label>Annual rate % (${LIMITS.rate.min} to ${LIMITS.rate.max})<span class="tip" tabindex="0" aria-label="Help: annual rate"><span class="tip-icon">?</span><span class="tip-box">Expected average yearly return for this phase. 7% is a common long-run assumption for U.S. stocks; use lower for bonds or cash, and consider a conservative rate near retirement.</span></span></label>
             <input type="number" data-field="rate" data-min="${LIMITS.rate.min}" data-max="${LIMITS.rate.max}" value="${p.rate}" step="0.1" /></div>
         </div>
@@ -1033,7 +1044,7 @@
           <button type="button" class="lump-toggle" data-action="toggle-lump" style="${hasLump ? 'display:none;' : ''}">+ add one-time lump sum</button>
           <div class="lump-fields" data-el="lump-fields" style="${hasLump ? '' : 'display:none;'}">
             <div class="field"><label>Lump sum $ (+/-)<span class="tip" tabindex="0" aria-label="Help: lump sum"><span class="tip-icon">?</span><span class="tip-box">A one-time event: an inheritance or bonus arriving (+), or a house down payment leaving the portfolio (−).</span></span></label>
-              <input type="number" data-field="lumpSum" data-min="${LIMITS.lumpSum.min}" data-max="${LIMITS.lumpSum.max}" value="${p.lumpSum || 0}" step="1000" /></div>
+              <input type="text" inputmode="decimal" data-field="lumpSum" data-money="1" data-min="${LIMITS.lumpSum.min}" data-max="${LIMITS.lumpSum.max}" value="${formatMoneyValue(p.lumpSum || 0)}" step="1000" /></div>
             <div class="field"><label>Years into phase</label>
               <input type="number" data-field="lumpAt" data-min="0" data-max="${p.years}" value="${p.lumpAt || 0}" step="1" /></div>
             <button type="button" class="lump-remove" data-action="remove-lump">\u00d7 remove lump sum</button>
@@ -1051,10 +1062,12 @@
         update(true);
       });
 
-      card.querySelectorAll('input[type="number"][data-field]').forEach(inp => {
+      card.querySelectorAll('input[data-field]').forEach(inp => {
         const field = inp.dataset.field;
+        const isMoney = inp.dataset.money === '1';
         const min = parseFloat(inp.dataset.min);
         const max = parseFloat(inp.dataset.max);
+        if (field === 'label') return; // handled separately below — not a numeric field
         inp.addEventListener('input', () => {
           const raw = parseFloat(inp.value);
           let effectiveMax = max;
@@ -1069,7 +1082,7 @@
           if (field === 'lumpAt') effectiveMax = p.years;
           const corrected = clamp(raw, min, effectiveMax);
           p[field] = corrected;
-          inp.value = corrected;
+          inp.value = isMoney ? formatMoneyValue(corrected) : corrected;
           inp.classList.remove('invalid');
           update(field === 'years');
         });
@@ -1201,7 +1214,7 @@
   });
   startingBalanceInput.addEventListener('blur', () => {
     const corrected = clamp(parseFloat(startingBalanceInput.value), LIMITS.startingBalance.min, LIMITS.startingBalance.max);
-    startingBalanceInput.value = corrected;
+    startingBalanceInput.value = formatMoneyValue(corrected);
     startingBalanceInput.classList.remove('invalid');
     update(false);
   });

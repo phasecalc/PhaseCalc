@@ -310,7 +310,7 @@
   }
   .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
 
-  input[type="number"], select {
+  input[type="number"], input[type="text"], select {
     background: transparent;
     border: none;
     border-bottom: 1px solid var(--seam);
@@ -582,7 +582,7 @@
     <div class="field-grid">
       <div class="field">
         <label>Margin loan balance<span class="tip" tabindex="0" aria-label="Help: loan balance"><span class="tip-icon">?</span><span class="tip-box">How much you're borrowing against your portfolio. Reg T caps the initial loan at 50% of a marginable stock purchase.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="balance" value="50000" min="1000" max="10000000" step="1000" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="balance" value="50,000" min="1000" max="10000000" step="1000" /></div>
       </div>
       <div class="field">
         <label>Margin rate (annual)<span class="tip" tabindex="0" aria-label="Help: margin rate"><span class="tip-icon">?</span><span class="tip-box">Your broker's quoted annual rate. Tiered brokers (IBKR-style) charge roughly benchmark +1.5% under $100k, +1% to $1M, +0.75% above — about 5.1% / 4.6% / 4.4% as of mid-2026. Full-service brokers often post 4–7 points over the benchmark for small balances.</span></span></label>
@@ -602,7 +602,7 @@
       </div>
       <div class="field">
         <label>Interest, first month<span class="tip" tabindex="0" aria-label="Help: first month interest"><span class="tip-icon">?</span><span class="tip-box">Balance × rate ÷ 12 — the concrete monthly bill your positions must out-earn. Computed for you.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="monthly-display" value="0" disabled /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="monthly-display" value="0" disabled /></div>
       </div>
     </div>
     <div class="toggles">
@@ -737,6 +737,10 @@
 
 <script>
 (function(){
+  // Shim parseFloat so every existing call site transparently tolerates
+  // comma-grouped input ("100,000") without needing to touch each call site.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
   const AMBER = '#C9A45C';
   const SLATE = '#5B7A9D';
   const COPPER = '#B07A4E';
@@ -756,6 +760,13 @@
   function fmt(n) {
     const sign = n < 0 ? '-' : '';
     return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  // Same as fmt() but without the leading $ — used to redisplay money input
+  // fields themselves with thousands separators after the user leaves them.
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
   }
   function fmtShort(n) {
     const a = Math.abs(n);
@@ -800,7 +811,7 @@
     } catch (e) { return null; }
   }
   function applyState(s) {
-    document.getElementById('balance').value = clamp(s.b, LIMITS.balance.min, LIMITS.balance.max);
+    document.getElementById('balance').value = formatMoneyValue(clamp(s.b, LIMITS.balance.min, LIMITS.balance.max));
     document.getElementById('rate').value = clamp(s.r, LIMITS.rate.min, LIMITS.rate.max);
     document.getElementById('years').value = clamp(s.y, LIMITS.years.min, LIMITS.years.max);
     document.getElementById('expret').value = clamp(s.e, LIMITS.expret.min, LIMITS.expret.max);
@@ -1032,7 +1043,7 @@
   function update() {
     const r = compute();
     document.getElementById('apy-display').value = (r.breakEven * 100).toFixed(2);
-    document.getElementById('monthly-display').value = Math.round(r.inputs.balance * r.inputs.rate / 100 / 12);
+    document.getElementById('monthly-display').value = formatMoneyValue(Math.round(r.inputs.balance * r.inputs.rate / 100 / 12));
     document.getElementById('total-interest').textContent = fmt(r.totalInterest);
     document.getElementById('total-owed').textContent = fmt(r.totalOwed);
     document.getElementById('break-even').textContent = (r.breakEven * 100).toFixed(2) + '%/yr';
@@ -1055,11 +1066,11 @@
 
   // Wire inputs with the same input/blur clamp pattern as the other Phases calculators.
   [
-    ['balance', LIMITS.balance],
-    ['rate', LIMITS.rate],
-    ['years', LIMITS.years],
-    ['expret', LIMITS.expret]
-  ].forEach(([id, lim]) => {
+    ['balance', LIMITS.balance, true],
+    ['rate', LIMITS.rate, false],
+    ['years', LIMITS.years, false],
+    ['expret', LIMITS.expret, false]
+  ].forEach(([id, lim, isMoney]) => {
     const el = document.getElementById(id);
     el.addEventListener('input', () => {
       markValidity(el, parseFloat(el.value), lim.min, lim.max);
@@ -1067,7 +1078,7 @@
     });
     el.addEventListener('blur', () => {
       const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
-      el.value = corrected;
+      el.value = isMoney ? formatMoneyValue(corrected) : corrected;
       el.classList.remove('invalid');
       update();
     });

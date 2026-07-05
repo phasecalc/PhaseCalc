@@ -315,7 +315,7 @@
   }
   .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
 
-  input[type="number"] {
+  input[type="number"], input[type="text"] {
     background: transparent;
     border: none;
     border-bottom: 1px solid var(--seam);
@@ -611,7 +611,7 @@
     <div class="field-grid">
       <div class="field">
         <label>Mortgage balance<span class="tip" tabindex="0" aria-label="Help: mortgage balance"><span class="tip-icon">?</span><span class="tip-box">What you still owe on your first mortgage today. This is the balance a cash-out refi would reprice — and a HELOC would leave untouched.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="balance" value="300000" min="10000" max="5000000" step="10000" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="balance" value="300,000" min="10000" max="5000000" step="10000" /></div>
       </div>
       <div class="field">
         <label>Current rate<span class="tip" tabindex="0" aria-label="Help: current rate"><span class="tip-icon">?</span><span class="tip-box">Your existing mortgage rate. The bigger the gap between this and today's refi rates, the more a cash-out refi costs you.</span></span></label>
@@ -623,11 +623,11 @@
       </div>
       <div class="field">
         <label>Home value<span class="tip" tabindex="0" aria-label="Help: home value"><span class="tip-icon">?</span><span class="tip-box">Today's market value. Used for loan-to-value checks: cash-out refis typically cap at 80% LTV, HELOCs at 80–90% combined LTV.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="home-value" value="550000" min="50000" max="20000000" step="10000" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="home-value" value="550,000" min="50000" max="20000000" step="10000" /></div>
       </div>
       <div class="field">
         <label>Cash needed<span class="tip" tabindex="0" aria-label="Help: cash needed"><span class="tip-icon">?</span><span class="tip-box">The equity you want to extract. The refi adds it to your new loan; the HELOC path borrows it on the line.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="cash" value="60000" min="5000" max="2000000" step="5000" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="cash" value="60,000" min="5000" max="2000000" step="5000" /></div>
       </div>
     </div>
   </div>
@@ -802,6 +802,10 @@
 
 <script>
 (function(){
+  // Shim parseFloat so every existing call site transparently tolerates
+  // comma-grouped input ("100,000") without needing to touch each call site.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
   const AMBER = '#C9A45C';
   const SLATE = '#5B7A9D';
   const COPPER = '#B07A4E';
@@ -826,6 +830,13 @@
   function fmt(n) {
     const sign = n < 0 ? '-' : '';
     return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  // Same as fmt() but without the leading $ — used to redisplay money input
+  // fields themselves with thousands separators after the user leaves them.
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
   }
   function clamp(val, min, max) {
     if (isNaN(val)) return min;
@@ -869,10 +880,13 @@
     } catch (e) { return null; }
   }
   function applyState(s) {
-    const set = (id, val, lim) => { document.getElementById(id).value = clamp(val, lim.min, lim.max); };
-    set('balance', s.b, LIMITS.balance); set('cur-rate', s.c, LIMITS.curRate);
-    set('years-left', s.y, LIMITS.yearsLeft); set('home-value', s.v, LIMITS.homeValue);
-    set('cash', s.k, LIMITS.cash); set('refi-rate', s.r, LIMITS.refiRate);
+    const set = (id, val, lim, isMoney) => {
+      const corrected = clamp(val, lim.min, lim.max);
+      document.getElementById(id).value = isMoney ? formatMoneyValue(corrected) : corrected;
+    };
+    set('balance', s.b, LIMITS.balance, true); set('cur-rate', s.c, LIMITS.curRate);
+    set('years-left', s.y, LIMITS.yearsLeft); set('home-value', s.v, LIMITS.homeValue, true);
+    set('cash', s.k, LIMITS.cash, true); set('refi-rate', s.r, LIMITS.refiRate);
     set('refi-term', s.t, LIMITS.refiTerm); set('heloc-rate', s.h, LIMITS.helocRate);
     set('draw-years', s.d, LIMITS.drawYears); set('repay-years', s.p, LIMITS.repayYears);
   }
@@ -1169,11 +1183,11 @@
 
   // Wire inputs with the same input/blur clamp pattern as the other Phases calculators.
   [
-    ['balance', LIMITS.balance], ['cur-rate', LIMITS.curRate], ['years-left', LIMITS.yearsLeft],
-    ['home-value', LIMITS.homeValue], ['cash', LIMITS.cash],
-    ['refi-rate', LIMITS.refiRate], ['refi-term', LIMITS.refiTerm],
-    ['heloc-rate', LIMITS.helocRate], ['draw-years', LIMITS.drawYears], ['repay-years', LIMITS.repayYears]
-  ].forEach(([id, lim]) => {
+    ['balance', LIMITS.balance, true], ['cur-rate', LIMITS.curRate, false], ['years-left', LIMITS.yearsLeft, false],
+    ['home-value', LIMITS.homeValue, true], ['cash', LIMITS.cash, true],
+    ['refi-rate', LIMITS.refiRate, false], ['refi-term', LIMITS.refiTerm, false],
+    ['heloc-rate', LIMITS.helocRate, false], ['draw-years', LIMITS.drawYears, false], ['repay-years', LIMITS.repayYears, false]
+  ].forEach(([id, lim, isMoney]) => {
     const el = document.getElementById(id);
     el.addEventListener('input', () => {
       markValidity(el, parseFloat(el.value), lim.min, lim.max);
@@ -1181,7 +1195,7 @@
     });
     el.addEventListener('blur', () => {
       const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
-      el.value = corrected;
+      el.value = isMoney ? formatMoneyValue(corrected) : corrected;
       el.classList.remove('invalid');
       update();
     });

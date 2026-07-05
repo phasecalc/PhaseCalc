@@ -318,7 +318,7 @@
   }
   .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
 
-  input[type="number"] {
+  input[type="number"], input[type="text"] {
     background: transparent;
     border: none;
     border-bottom: 1px solid var(--seam);
@@ -595,7 +595,7 @@
     <div class="field-grid">
       <div class="field">
         <label>Annual contribution<span class="tip" tabindex="0" aria-label="Help: annual contribution"><span class="tip-icon">?</span><span class="tip-box">The same dollar amount goes into each account for a fair race. 2026 limits: $24,500 for a 401(k), $7,500 for an IRA (higher with catch-ups at 50+).</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="contribution" value="10000" min="500" max="80000" step="500" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="contribution" value="10,000" min="500" max="80000" step="500" /></div>
       </div>
       <div class="field">
         <label>Current age<span class="tip" tabindex="0" aria-label="Help: current age"><span class="tip-icon">?</span><span class="tip-box">Your age today. Contributions run from now until your retirement age.</span></span></label>
@@ -761,6 +761,10 @@
 
 <script>
 (function(){
+  // Shim parseFloat so every existing call site transparently tolerates
+  // comma-grouped input ("100,000") without needing to touch each call site.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
   const AMBER = '#C9A45C';
   const SLATE = '#5B7A9D';
   const COPPER = '#B07A4E';
@@ -787,6 +791,13 @@
   function fmt(n) {
     const sign = n < 0 ? '-' : '';
     return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  // Same as fmt() but without the leading $ — used to redisplay money input
+  // fields themselves with thousands separators after the user leaves them.
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
   }
   function pct1(v) {
     return (Math.abs(v - Math.round(v)) < 0.05 ? Math.round(v) : v.toFixed(1)) + '%';
@@ -833,7 +844,7 @@
     } catch (e) { return null; }
   }
   function applyState(s) {
-    document.getElementById('contribution').value = clamp(s.c, LIMITS.contribution.min, LIMITS.contribution.max);
+    document.getElementById('contribution').value = formatMoneyValue(clamp(s.c, LIMITS.contribution.min, LIMITS.contribution.max));
     document.getElementById('cur-age').value = clamp(s.a, LIMITS.curAge.min, LIMITS.curAge.max);
     document.getElementById('ret-age').value = clamp(s.g, LIMITS.retAge.min, LIMITS.retAge.max);
     document.getElementById('rate').value = clamp(s.r, LIMITS.rate.min, LIMITS.rate.max);
@@ -1085,13 +1096,13 @@
 
   // Wire inputs with the same input/blur clamp pattern as the other Phases calculators.
   [
-    ['contribution', LIMITS.contribution],
-    ['cur-age', LIMITS.curAge],
-    ['ret-age', LIMITS.retAge],
-    ['rate', LIMITS.rate],
-    ['tax-now', LIMITS.taxNow],
-    ['tax-ret', LIMITS.taxRet]
-  ].forEach(([id, lim]) => {
+    ['contribution', LIMITS.contribution, true],
+    ['cur-age', LIMITS.curAge, false],
+    ['ret-age', LIMITS.retAge, false],
+    ['rate', LIMITS.rate, false],
+    ['tax-now', LIMITS.taxNow, false],
+    ['tax-ret', LIMITS.taxRet, false]
+  ].forEach(([id, lim, isMoney]) => {
     const el = document.getElementById(id);
     el.addEventListener('input', () => {
       markValidity(el, parseFloat(el.value), lim.min, lim.max);
@@ -1099,7 +1110,7 @@
     });
     el.addEventListener('blur', () => {
       const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
-      el.value = corrected;
+      el.value = isMoney ? formatMoneyValue(corrected) : corrected;
       el.classList.remove('invalid');
       update();
     });

@@ -310,7 +310,7 @@
   }
   .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
 
-  input[type="number"], input[type="date"] {
+  input[type="number"], input[type="date"], input[type="text"] {
     background: transparent;
     border: none;
     border-bottom: 1px solid var(--seam);
@@ -588,15 +588,15 @@
     <div class="field-grid">
       <div class="field">
         <label>Savings goal<span class="tip" tabindex="0" aria-label="Help: savings goal"><span class="tip-icon">?</span><span class="tip-box">The total amount you're aiming to save — $100,000, a house down payment, a wedding fund, an emergency fund target, anything with a number attached.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="goal" value="100000" min="100" max="100000000" step="1000" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="goal" value="100,000" min="100" max="100000000" step="1000" /></div>
       </div>
       <div class="field">
         <label>Current balance<span class="tip" tabindex="0" aria-label="Help: current balance"><span class="tip-icon">?</span><span class="tip-box">What you've already got set aside toward this specific goal. Don't double-count money earmarked for something else, like your emergency fund.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="current-balance" value="5000" min="0" max="100000000" step="500" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="current-balance" value="5,000" min="0" max="100000000" step="500" /></div>
       </div>
       <div class="field">
         <label>Monthly contribution<span class="tip" tabindex="0" aria-label="Help: monthly contribution"><span class="tip-icon">?</span><span class="tip-box">How much you plan to add each month. In "solve for contribution" mode below, this becomes a computed result instead of an input.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="contrib" value="750" min="0" max="500000" step="25" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="contrib" value="750" min="0" max="500000" step="25" /></div>
       </div>
       <div class="field">
         <label>Annual rate % (HYSA-style)<span class="tip" tabindex="0" aria-label="Help: annual rate"><span class="tip-icon">?</span><span class="tip-box">Built around high-yield savings account rates — a safe, FDIC-insured, fixed-ish rate, not market returns. Top HYSAs are commonly running about 4-4.5% APY in mid-2026; the national average is far lower.</span></span></label>
@@ -640,10 +640,11 @@
   <p class="progress-caption" id="progress-caption"></p>
 
   <div class="chart-wrap">
-    <canvas id="chart" role="img" aria-label="Line chart of projected balance growing month by month toward the savings goal. A dashed horizontal line marks the goal amount, and a copper marker highlights the month the balance crosses it.">Projected balance growth: amber line shows the balance over time, the dashed line marks the goal amount, and the copper marker highlights the month the balance crosses the goal.</canvas>
+    <canvas id="chart" role="img" aria-label="Line chart of projected balance growing month by month toward the savings goal. A stepped grey line shows cumulative contributions with no growth, a dashed horizontal line marks the goal amount, and a copper marker highlights the month the balance crosses it.">Projected balance growth: amber line shows the balance over time, a stepped slate line shows cumulative contributions with no growth, the dashed line marks the goal amount, and the copper marker highlights the month the balance crosses the goal.</canvas>
   </div>
   <div class="legend">
     <span><span class="swatch" style="background:#C9A45C"></span>Projected balance — amber line</span>
+    <span><span class="swatch" style="background:#5B7A9D"></span>Contributions — no growth, stepped line</span>
     <span><span class="swatch" style="background:#948D79"></span>Savings goal — dashed line</span>
     <span><span class="swatch" style="background:#B07A4E"></span>Crossing point — the month you hit it</span>
   </div>
@@ -658,7 +659,7 @@
 
   <article class="article">
     <h2>How this savings goal calculator works</h2>
-    <p>Enter your savings goal, what you've already got saved, your monthly contribution, and an interest rate — this calculator is built around <strong>HYSA-style rates</strong>, meaning a safe, FDIC-insured savings account rate rather than a market return, since that's the right tool for a fixed dollar goal you can't afford to watch shrink. It simulates your balance month by month, compounding at your rate and adding your contribution at the end of each month, and reports the exact month you cross your goal. Flip the "solve for required monthly contribution" toggle to work the problem backward: pick a target date instead, and the calculator computes the monthly contribution needed to land on your goal by then, given your current balance and rate.</p>
+    <p>Enter your savings goal, what you've already got saved, your monthly contribution, and an interest rate — this calculator is built around <strong>HYSA-style rates</strong>, meaning a safe, FDIC-insured savings account rate rather than a market return, since that's the right tool for a fixed dollar goal you can't afford to watch shrink. It simulates your balance month by month, compounding at your rate and adding your contribution at the end of each month, and reports the exact month you cross your goal. Flip the "solve for required monthly contribution" toggle to work the problem backward: pick a target date instead, and the calculator computes the monthly contribution needed to land on your goal by then, given your current balance and rate. The chart plots a third, stepped line alongside the balance — your <strong>contributions with no growth at all</strong> — so the gap between it and the amber balance line is a direct picture of how much interest is doing versus how much your own saving is doing.</p>
 
     <h2>How long does it actually take to save $100,000?</h2>
     <p>There's no single answer — it's a function of three numbers you control (starting balance, monthly contribution, timeline) and one you mostly don't (your interest rate). But the shape of the answer is consistent: for a goal inside 10 years, your own contributions do the majority of the work, and interest is a meaningful but secondary accelerant. Saving $1,000 a month from a $0 start reaches $100,000 in almost exactly 100 months (about 8 years 4 months) with no interest at all. Add a 4.25% APY high-yield savings rate to that same plan and you shave off about 14 months — more than a year — bringing it to roughly 7 years 2 months. That's useful, but it's not going to turn an 8-year goal into a 3-year one. That's a deliberate contrast with market-investing calculators, where the same rate difference compounded over 30 years reshapes the entire outcome. Over a savings-goal timeframe, the lesson is: don't expect your interest rate to save you from an under-funded monthly contribution, but don't ignore it either — free money is still free money.</p>
@@ -742,6 +743,11 @@
 
 <script>
 (function(){
+  // Shim parseFloat so every existing call site in this file transparently
+  // tolerates comma-grouped input ("100,000") without needing to touch each
+  // call site individually. Harmless no-op for values with no commas.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
   const AMBER = '#C9A45C';
   const SLATE = '#5B7A9D';
   const COPPER = '#B07A4E';
@@ -763,6 +769,13 @@
   function fmt(n) {
     const sign = n < 0 ? '-' : '';
     return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  // Same as fmt() but without the leading $ — used to redisplay the money
+  // input fields themselves with thousands separators after the user leaves them.
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
   }
   function clamp(val, min, max) {
     if (isNaN(val)) return min;
@@ -833,9 +846,9 @@
     } catch (e) { return null; }
   }
   function applyState(s) {
-    document.getElementById('goal').value = clamp(s.g, LIMITS.goal.min, LIMITS.goal.max);
-    document.getElementById('current-balance').value = clamp(s.b, LIMITS.balance.min, LIMITS.balance.max);
-    document.getElementById('contrib').value = clamp(s.c, LIMITS.contrib.min, LIMITS.contrib.max);
+    document.getElementById('goal').value = formatMoneyValue(clamp(s.g, LIMITS.goal.min, LIMITS.goal.max));
+    document.getElementById('current-balance').value = formatMoneyValue(clamp(s.b, LIMITS.balance.min, LIMITS.balance.max));
+    document.getElementById('contrib').value = formatMoneyValue(clamp(s.c, LIMITS.contrib.min, LIMITS.contrib.max));
     document.getElementById('rate').value = clamp(s.r, LIMITS.rate.min, LIMITS.rate.max);
     document.getElementById('solve-contrib').checked = !!s.m;
     if (s.t) document.getElementById('target-date').value = s.t;
@@ -926,10 +939,12 @@
     const interval = horizon <= 36 ? 1 : horizon <= 120 ? 3 : 12;
 
     let bal = i.balance;
-    const series = [{ m: 0, balance: bal }];
+    let contributedSoFar = i.balance;
+    const series = [{ m: 0, balance: bal, contributed: contributedSoFar }];
     for (let m = 1; m <= horizon; m++) {
       bal = bal * (1 + mr) + contrib;
-      if (m % interval === 0 || m === horizon) series.push({ m, balance: bal });
+      contributedSoFar += contrib;
+      if (m % interval === 0 || m === horizon) series.push({ m, balance: bal, contributed: contributedSoFar });
     }
 
     const totalContributed = contrib * effectiveMonths;
@@ -1033,6 +1048,7 @@
     const ctx = document.getElementById('chart');
     const labels = r.series.map(s => monthLabel(r.t0, s.m));
     const balData = r.series.map(s => Math.round(s.balance));
+    const contribData = r.series.map(s => Math.round(s.contributed));
     const goalData = r.series.map(() => Math.round(r.inputs.goal));
     const crossingIdx = r.months !== null ? r.months / r.interval : -1;
 
@@ -1045,6 +1061,12 @@
           data: balData,
           borderColor: AMBER, backgroundColor: 'rgba(201,164,92,0.10)',
           fill: true, tension: 0.15, pointRadius: 0, borderWidth: 2
+        },
+        {
+          label: 'Contributions (no growth)',
+          data: contribData,
+          borderColor: SLATE, backgroundColor: 'transparent',
+          fill: false, stepped: true, pointRadius: 0, borderWidth: 1.5
         },
         {
           label: 'Savings goal',
@@ -1108,7 +1130,7 @@
     if (!i0.solveContrib) {
       dateEl.value = isoDate(r.targetDate);
     } else {
-      contribEl.value = r.contrib;
+      contribEl.value = formatMoneyValue(r.contrib);
     }
 
     renderResults(r);
@@ -1120,12 +1142,14 @@
   }
 
   // Wire inputs with the same input/blur clamp pattern as the other Phases calculators.
+  // Money fields (isMoney=true) redisplay with thousands separators on blur;
+  // the parseFloat shim above means typing digits-only is always fine.
   [
-    ['goal', LIMITS.goal],
-    ['current-balance', LIMITS.balance],
-    ['contrib', LIMITS.contrib],
-    ['rate', LIMITS.rate]
-  ].forEach(([id, lim]) => {
+    ['goal', LIMITS.goal, true],
+    ['current-balance', LIMITS.balance, true],
+    ['contrib', LIMITS.contrib, true],
+    ['rate', LIMITS.rate, false]
+  ].forEach(([id, lim, isMoney]) => {
     const el = document.getElementById(id);
     el.addEventListener('input', () => {
       markValidity(el, parseFloat(el.value), lim.min, lim.max);
@@ -1134,7 +1158,7 @@
     el.addEventListener('blur', () => {
       if (el.disabled) return;
       const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
-      el.value = corrected;
+      el.value = isMoney ? formatMoneyValue(corrected) : corrected;
       el.classList.remove('invalid');
       update();
     });

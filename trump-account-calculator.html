@@ -301,7 +301,7 @@
   }
   .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
 
-  input[type="number"] {
+  input[type="number"], input[type="text"] {
     background: transparent;
     border: none;
     border-bottom: 1px solid var(--seam);
@@ -572,11 +572,11 @@
       </div>
       <div class="field">
         <label>Family $ / year (after-tax)<span class="tip" tabindex="0" aria-label="Help: family contributions"><span class="tip-icon">?</span><span class="tip-box">Money from parents, grandparents, and friends. It's after-tax, so it comes back out tax-free as basis. Family + employer share one combined $5,000/year cap.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="family-contrib" value="2500" min="0" max="5000" step="250" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="family-contrib" value="2,500" min="0" max="5000" step="250" /></div>
       </div>
       <div class="field">
         <label>Employer $ / year (pre-tax)<span class="tip" tabindex="0" aria-label="Help: employer contributions"><span class="tip-icon">?</span><span class="tip-box">Employers can contribute up to $2,500/year, excluded from your wages. It counts against the same $5,000 cap and is taxable when withdrawn. Leave at 0 if no employer plan.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="employer-contrib" value="0" min="0" max="2500" step="250" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="employer-contrib" value="0" min="0" max="2500" step="250" /></div>
       </div>
       <div class="field">
         <label>Annual return %<span class="tip" tabindex="0" aria-label="Help: annual return"><span class="tip-icon">?</span><span class="tip-box">Expected average yearly growth. 7% is a common long-run assumption for U.S. stock index funds (the only allowed investment before 18) — a planning guess, not a prediction.</span></span></label>
@@ -727,6 +727,10 @@
 
 <script>
 (function(){
+  // Shim parseFloat so every existing call site transparently tolerates
+  // comma-grouped input ("100,000") without needing to touch each call site.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
   const AMBER = '#C9A45C';
   const SLATE = '#5B7A9D';
   const COPPER = '#B07A4E';
@@ -751,6 +755,13 @@
   function fmt(n) {
     const sign = n < 0 ? '-' : '';
     return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  // Same as fmt() but without the leading $ — used to redisplay money input
+  // fields themselves with thousands separators after the user leaves them.
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
   }
   function clamp(val, min, max) {
     if (isNaN(val)) return min;
@@ -792,8 +803,8 @@
   }
   function applyState(s) {
     document.getElementById('birth-year').value = clamp(s.by, LIMITS.birthYear.min, LIMITS.birthYear.max);
-    document.getElementById('family-contrib').value = clamp(s.f, LIMITS.family.min, LIMITS.family.max);
-    document.getElementById('employer-contrib').value = clamp(s.e, LIMITS.employer.min, LIMITS.employer.max);
+    document.getElementById('family-contrib').value = formatMoneyValue(clamp(s.f, LIMITS.family.min, LIMITS.family.max));
+    document.getElementById('employer-contrib').value = formatMoneyValue(clamp(s.e, LIMITS.employer.min, LIMITS.employer.max));
     document.getElementById('rate').value = clamp(s.r, LIMITS.rate.min, LIMITS.rate.max);
     document.getElementById('hold-age').value = clamp(s.h, LIMITS.holdAge.min, LIMITS.holdAge.max);
     document.getElementById('tax-rate').value = clamp(s.t, LIMITS.taxRate.min, LIMITS.taxRate.max);
@@ -1019,13 +1030,13 @@
 
   // Wire inputs with the same input/blur clamp pattern as the Phases calculator.
   [
-    ['birth-year', LIMITS.birthYear],
-    ['family-contrib', LIMITS.family],
-    ['employer-contrib', LIMITS.employer],
-    ['rate', LIMITS.rate],
-    ['hold-age', LIMITS.holdAge],
-    ['tax-rate', LIMITS.taxRate]
-  ].forEach(([id, lim]) => {
+    ['birth-year', LIMITS.birthYear, false],
+    ['family-contrib', LIMITS.family, true],
+    ['employer-contrib', LIMITS.employer, true],
+    ['rate', LIMITS.rate, false],
+    ['hold-age', LIMITS.holdAge, false],
+    ['tax-rate', LIMITS.taxRate, false]
+  ].forEach(([id, lim, isMoney]) => {
     const el = document.getElementById(id);
     el.addEventListener('input', () => {
       markValidity(el, parseFloat(el.value), lim.min, lim.max);
@@ -1033,7 +1044,7 @@
     });
     el.addEventListener('blur', () => {
       const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
-      el.value = corrected;
+      el.value = isMoney ? formatMoneyValue(corrected) : corrected;
       el.classList.remove('invalid');
       update();
     });

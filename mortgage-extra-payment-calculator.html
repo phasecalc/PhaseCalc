@@ -310,7 +310,7 @@
   }
   .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
 
-  input[type="number"] {
+  input[type="number"], input[type="text"] {
     background: transparent;
     border: none;
     border-bottom: 1px solid var(--seam);
@@ -577,7 +577,7 @@
     <div class="field-grid">
       <div class="field">
         <label>Original loan amount<span class="tip" tabindex="0" aria-label="Help: original loan amount"><span class="tip-icon">?</span><span class="tip-box">The amount you originally borrowed. Together with the rate and term, this sets your fixed monthly principal-and-interest payment.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="orig" value="400000" min="10000" max="5000000" step="10000" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="orig" value="400,000" min="10000" max="5000000" step="10000" /></div>
       </div>
       <div class="field">
         <label>Interest rate %<span class="tip" tabindex="0" aria-label="Help: interest rate"><span class="tip-icon">?</span><span class="tip-box">Your note rate (not APR). Every dollar of extra principal earns a guaranteed return at exactly this rate for the remaining life of the loan.</span></span></label>
@@ -589,15 +589,15 @@
       </div>
       <div class="field">
         <label>Remaining balance<span class="tip" tabindex="0" aria-label="Help: remaining balance"><span class="tip-icon">?</span><span class="tip-box">What you still owe today — on your latest statement. For a brand-new loan, leave the toggle below off and this matches the original amount.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="remaining" value="400000" min="1000" max="5000000" step="5000" disabled /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="remaining" value="400,000" min="1000" max="5000000" step="5000" disabled /></div>
       </div>
       <div class="field">
         <label>Extra payment $/mo<span class="tip" tabindex="0" aria-label="Help: extra monthly payment"><span class="tip-icon">?</span><span class="tip-box">Additional principal sent every month on top of the required payment. Tell your servicer to apply it to principal — some default to prepaying next month instead.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="extra" value="200" min="0" max="20000" step="50" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="extra" value="200" min="0" max="20000" step="50" /></div>
       </div>
       <div class="field">
         <label>One-time lump payment<span class="tip" tabindex="0" aria-label="Help: lump payment"><span class="tip-icon">?</span><span class="tip-box">A single extra principal payment applied this month — a bonus, tax refund, or windfall. Sooner beats later: today's lump saves more than the same total spread over years.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="lump" value="0" min="0" max="2000000" step="1000" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="lump" value="0" min="0" max="2000000" step="1000" /></div>
       </div>
     </div>
     <div class="toggles">
@@ -728,6 +728,10 @@
 
 <script>
 (function(){
+  // Shim parseFloat so every existing call site transparently tolerates
+  // comma-grouped input ("100,000") without needing to touch each call site.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
   const AMBER = '#C9A45C';
   const SLATE = '#5B7A9D';
   const COPPER = '#B07A4E';
@@ -750,6 +754,13 @@
   function fmt(n) {
     const sign = n < 0 ? '-' : '';
     return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  // Same as fmt() but without the leading $ — used to redisplay money input
+  // fields themselves with thousands separators after the user leaves them.
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
   }
   function fmtShort(n) {
     const a = Math.abs(n);
@@ -814,12 +825,12 @@
     } catch (e) { return null; }
   }
   function applyState(s) {
-    document.getElementById('orig').value = clamp(s.o, LIMITS.orig.min, LIMITS.orig.max);
+    document.getElementById('orig').value = formatMoneyValue(clamp(s.o, LIMITS.orig.min, LIMITS.orig.max));
     document.getElementById('rate').value = clamp(s.r, LIMITS.rate.min, LIMITS.rate.max);
     document.getElementById('term').value = clamp(s.t, LIMITS.term.min, LIMITS.term.max);
-    document.getElementById('remaining').value = clamp(s.b, LIMITS.remaining.min, LIMITS.remaining.max);
-    document.getElementById('extra').value = clamp(s.e, LIMITS.extra.min, LIMITS.extra.max);
-    document.getElementById('lump').value = clamp(s.l, LIMITS.lump.min, LIMITS.lump.max);
+    document.getElementById('remaining').value = formatMoneyValue(clamp(s.b, LIMITS.remaining.min, LIMITS.remaining.max));
+    document.getElementById('extra').value = formatMoneyValue(clamp(s.e, LIMITS.extra.min, LIMITS.extra.max));
+    document.getElementById('lump').value = formatMoneyValue(clamp(s.l, LIMITS.lump.min, LIMITS.lump.max));
     document.getElementById('existing').checked = !!s.x;
   }
   function updateUrlSilently() {
@@ -1044,7 +1055,7 @@
     const i0 = getInputs();
     const remEl = document.getElementById('remaining');
     remEl.disabled = !i0.existing;
-    if (!i0.existing) remEl.value = i0.orig;
+    if (!i0.existing) remEl.value = formatMoneyValue(i0.orig);
 
     const r = computeSeries();
     document.getElementById('pmt').textContent = fmt(r.pmt) + '/mo';
@@ -1066,13 +1077,13 @@
 
   // Wire inputs with the same input/blur clamp pattern as the other Phases calculators.
   [
-    ['orig', LIMITS.orig],
-    ['rate', LIMITS.rate],
-    ['term', LIMITS.term],
-    ['remaining', LIMITS.remaining],
-    ['extra', LIMITS.extra],
-    ['lump', LIMITS.lump]
-  ].forEach(([id, lim]) => {
+    ['orig', LIMITS.orig, true],
+    ['rate', LIMITS.rate, false],
+    ['term', LIMITS.term, false],
+    ['remaining', LIMITS.remaining, true],
+    ['extra', LIMITS.extra, true],
+    ['lump', LIMITS.lump, true]
+  ].forEach(([id, lim, isMoney]) => {
     const el = document.getElementById(id);
     el.addEventListener('input', () => {
       markValidity(el, parseFloat(el.value), lim.min, lim.max);
@@ -1080,7 +1091,7 @@
     });
     el.addEventListener('blur', () => {
       const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
-      el.value = corrected;
+      el.value = isMoney ? formatMoneyValue(corrected) : corrected;
       el.classList.remove('invalid');
       update();
     });

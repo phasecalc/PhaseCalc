@@ -310,7 +310,7 @@
   }
   .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
 
-  input[type="number"] {
+  input[type="number"], input[type="text"] {
     background: transparent;
     border: none;
     border-bottom: 1px solid var(--seam);
@@ -591,11 +591,11 @@
       </div>
       <div class="field">
         <label>Invested balance<span class="tip" tabindex="0" aria-label="Help: invested balance"><span class="tip-icon">?</span><span class="tip-box">Everything invested for retirement: 401(k), IRA, HSA, taxable brokerage. Don't count your emergency fund, home equity, or money you'll spend before retirement.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="balance" value="100000" min="0" max="10000000" step="5000" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="balance" value="100,000" min="0" max="10000000" step="5000" /></div>
       </div>
       <div class="field">
         <label>Contributing $/mo<span class="tip" tabindex="0" aria-label="Help: monthly contribution"><span class="tip-icon">?</span><span class="tip-box">What you're currently saving per month. This only drives the yellow "still contributing" line and your projected coast age — the coast number itself doesn't depend on it.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="contrib" value="1000" min="0" max="20000" step="100" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="contrib" value="1,000" min="0" max="20000" step="100" /></div>
       </div>
       <div class="field">
         <label>Target retirement age<span class="tip" tabindex="0" aria-label="Help: target retirement age"><span class="tip-icon">?</span><span class="tip-box">The age your portfolio needs to be fully grown. Later ages shrink your coast number dramatically — every extra year is another year of compounding.</span></span></label>
@@ -603,11 +603,11 @@
       </div>
       <div class="field">
         <label>Annual spend in retirement<span class="tip" tabindex="0" aria-label="Help: annual spend"><span class="tip-icon">?</span><span class="tip-box">Expected yearly spending in retirement, in today's dollars. Your target number is this × 25 (the 4% rule). Tick the toggle below to set the target directly instead.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="spend" value="60000" min="10000" max="1000000" step="5000" /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="spend" value="60,000" min="10000" max="1000000" step="5000" /></div>
       </div>
       <div class="field">
         <label>Target number<span class="tip" tabindex="0" aria-label="Help: target number"><span class="tip-icon">?</span><span class="tip-box">Your full FIRE number — the portfolio that supports retirement. Auto-computed as spend × 25 unless you tick "set target directly" below.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="number" id="target" value="1500000" min="100000" max="25000000" step="50000" disabled /></div>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="target" value="1,500,000" min="100000" max="25000000" step="50000" disabled /></div>
       </div>
       <div class="field">
         <label>Annual return % (after inflation)<span class="tip" tabindex="0" aria-label="Help: annual return"><span class="tip-icon">?</span><span class="tip-box">Use a real (after-inflation) return so today's-dollar targets stay honest: ~5% is a common assumption (7% stocks − 2% inflation). If you enter a nominal 7%, your target should be in inflated future dollars.</span></span></label>
@@ -760,6 +760,10 @@
 
 <script>
 (function(){
+  // Shim parseFloat so every existing call site transparently tolerates
+  // comma-grouped input ("100,000") without needing to touch each call site.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
   const AMBER = '#C9A45C';
   const SLATE = '#5B7A9D';
   const COPPER = '#B07A4E';
@@ -781,6 +785,13 @@
   function fmt(n) {
     const sign = n < 0 ? '-' : '';
     return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  // Same as fmt() but without the leading $ — used to redisplay money input
+  // fields themselves with thousands separators after the user leaves them.
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
   }
   function clamp(val, min, max) {
     if (isNaN(val)) return min;
@@ -827,11 +838,11 @@
   }
   function applyState(s) {
     document.getElementById('cur-age').value = clamp(s.a, LIMITS.curAge.min, LIMITS.curAge.max);
-    document.getElementById('balance').value = clamp(s.b, LIMITS.balance.min, LIMITS.balance.max);
-    document.getElementById('contrib').value = clamp(s.c, LIMITS.contrib.min, LIMITS.contrib.max);
+    document.getElementById('balance').value = formatMoneyValue(clamp(s.b, LIMITS.balance.min, LIMITS.balance.max));
+    document.getElementById('contrib').value = formatMoneyValue(clamp(s.c, LIMITS.contrib.min, LIMITS.contrib.max));
     document.getElementById('ret-age').value = clamp(s.g, LIMITS.retAge.min, LIMITS.retAge.max);
-    document.getElementById('spend').value = clamp(s.s, LIMITS.spend.min, LIMITS.spend.max);
-    document.getElementById('target').value = clamp(s.n, LIMITS.target.min, LIMITS.target.max);
+    document.getElementById('spend').value = formatMoneyValue(clamp(s.s, LIMITS.spend.min, LIMITS.spend.max));
+    document.getElementById('target').value = formatMoneyValue(clamp(s.n, LIMITS.target.min, LIMITS.target.max));
     document.getElementById('direct-target').checked = !!s.m;
   }
   function updateUrlSilently() {
@@ -1054,7 +1065,7 @@
     const spendEl = document.getElementById('spend');
     targetEl.disabled = !i0.direct;
     spendEl.disabled = i0.direct;
-    if (!i0.direct) targetEl.value = Math.round(i0.spend * 25);
+    if (!i0.direct) targetEl.value = formatMoneyValue(Math.round(i0.spend * 25));
 
     const r = computeSeries();
     document.getElementById('coast-number').textContent = fmt(r.coastNumber);
@@ -1074,15 +1085,16 @@
   }
 
   // Wire inputs with the same input/blur clamp pattern as the other Phases calculators.
+  // Money fields (isMoney=true) redisplay with thousands separators on blur.
   [
-    ['cur-age', LIMITS.curAge],
-    ['balance', LIMITS.balance],
-    ['contrib', LIMITS.contrib],
-    ['ret-age', LIMITS.retAge],
-    ['spend', LIMITS.spend],
-    ['target', LIMITS.target],
-    ['rate', LIMITS.rate]
-  ].forEach(([id, lim]) => {
+    ['cur-age', LIMITS.curAge, false],
+    ['balance', LIMITS.balance, true],
+    ['contrib', LIMITS.contrib, true],
+    ['ret-age', LIMITS.retAge, false],
+    ['spend', LIMITS.spend, true],
+    ['target', LIMITS.target, true],
+    ['rate', LIMITS.rate, false]
+  ].forEach(([id, lim, isMoney]) => {
     const el = document.getElementById(id);
     el.addEventListener('input', () => {
       markValidity(el, parseFloat(el.value), lim.min, lim.max);
@@ -1090,7 +1102,7 @@
     });
     el.addEventListener('blur', () => {
       const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
-      el.value = corrected;
+      el.value = isMoney ? formatMoneyValue(corrected) : corrected;
       el.classList.remove('invalid');
       update();
     });
