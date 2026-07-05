@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>529 Superfunding Calculator — 5-Year Gift Tax Election & Tax-Free Growth</title>
+<meta name="description" content="Free 529 superfunding calculator. Model a lump-sum contribution using the 5-year gift-tax averaging election — see exactly how much of your annual exclusion is used each year, whether any lifetime exemption is touched, and how much of the ending balance is tax-free growth." />
+<link rel="canonical" href="https://phasecalc.com/529-superfunding-calculator" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Phases" />
+<meta property="og:url" content="https://phasecalc.com/529-superfunding-calculator" />
+<meta property="og:title" content="529 Superfunding Calculator — 5-Year Gift Tax Election & Tax-Free Growth" />
+<meta property="og:description" content="Model a lump-sum 529 contribution with the 5-year gift-tax averaging election. See the annual-exclusion usage schedule and how much of the ending balance is tax-free growth." />
+<meta property="og:image" content="https://phasecalc.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="529 Superfunding Calculator — 5-Year Gift Tax Election & Tax-Free Growth" />
+<meta name="twitter:description" content="Model a lump-sum 529 contribution with the 5-year gift-tax averaging election. See the annual-exclusion usage schedule and how much of the ending balance is tax-free growth." />
+<meta name="twitter:image" content="https://phasecalc.com/og-image.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is 529 plan superfunding?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "529 superfunding means contributing up to five years' worth of the annual gift tax exclusion to a 529 plan in a single lump sum, then electing under IRC section 529(c)(2)(B) to treat the gift as if it were made evenly over five calendar years for gift-tax purposes. In 2026, that's up to $95,000 from one person ($19,000 x 5) or $190,000 from a married couple, per beneficiary, without touching your lifetime gift and estate tax exemption."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does the 5-year gift-tax averaging election work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Normally a gift above the annual exclusion counts against your lifetime exemption right away. The 5-year election lets you spread one large 529 contribution across five tax years on paper, so each year's share can fit inside that year's annual exclusion. You make the election by filing IRS Form 709 in the year you contribute, checking the box for the split-gift election and reporting one-fifth of the gift in each of the five years."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the annual gift tax exclusion and how does it apply to 529 contributions?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The annual exclusion is the amount one person can give another person each year without filing a gift tax return or using any lifetime exemption - $19,000 per recipient in 2026, indexed for inflation. 529 contributions count as gifts to the beneficiary, so each contributor's gifts to that child are measured against their own exclusion for the year."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much can I superfund into a 529 plan in 2026?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Up to $95,000 per contributor per beneficiary ($19,000 x 5) using the 5-year election, or $190,000 for a married couple contributing jointly. Grandparents or other individuals contributing to the same beneficiary each have their own separate $95,000 capacity. You can contribute more, but the excess counts against your lifetime exemption instead."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I have to pay gift tax if I superfund a 529 plan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Almost never in practice. Amounts above the annual exclusion don't trigger an actual gift tax bill - they simply reduce your lifetime gift and estate tax exemption ($15 million per person in 2026). You'd only owe gift tax if your cumulative lifetime gifts exceeded that exemption, which is rare outside very large estates."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if I make other gifts to the same beneficiary during the 5-year period?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Any additional gift to that beneficiary during the five-year election window reduces the exclusion available in that specific year, potentially creating an excess that draws on your lifetime exemption. Superfunding works cleanest when it's the only gift you plan to make to that child for five years."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are 529 plan withdrawals really tax-free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, at the federal level, as long as the money is used for qualified education expenses - tuition, fees, room and board, books and supplies, required equipment, up to $10,000 per year of K-12 tuition, registered apprenticeship costs, and up to $10,000 lifetime toward student loans. Growth withdrawn for non-qualified expenses is taxed as ordinary income plus a 10% penalty on the earnings portion only."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if my child doesn't go to college - can I get the money back?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. You can change the beneficiary to another qualifying family member with no tax consequences, leave the funds invested for graduate school or a future beneficiary like a grandchild, or withdraw the money and pay ordinary income tax plus a 10% penalty on just the earnings portion (the penalty is waived for scholarships, death, or disability)."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I roll over unused 529 funds to a Roth IRA?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Since 2024, you can roll over up to $35,000 lifetime, per beneficiary, from a 529 plan into a Roth IRA in the beneficiary's name, subject to that year's annual Roth contribution limit. The 529 account must have been open at least 15 years, and funds contributed (or their earnings) within the last 5 years aren't eligible."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to file a gift tax return (Form 709) if I superfund?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Making the 5-year election requires filing Form 709 in the year of the contribution, even if the full amount fits within the annual exclusion and no tax is owed. It's an informational filing that documents your election with the IRS."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if I die during the 5-year election period?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Any remaining years' worth of the gift that haven't yet been treated as made are pulled back into your taxable estate. For example, if you die in year 3 of a 5-year election, the portions allocated to years 4 and 5 are included in your estate for estate-tax purposes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can grandparents also superfund a 529 plan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Grandparents, other relatives, and even friends can each make their own superfunded contribution to the same beneficiary's 529 plan, each using their own $95,000 (2026) 5-year election capacity, as long as they don't also make other gifts to that beneficiary during the same five-year window."
+      }
+    }
+  ]
+}
+</script>
+<style>
+  :root {
+    --ink: #0F1B2D;
+    --ink-raised: #142539;
+    --parchment: #EDE6D6;
+    --parchment-dim: #B8AF9C;
+    --parchment-faint: #948D79;
+    --amber: #C9A45C;
+    --amber-dim: #4A3C24;
+    --slate: #5B7A9D;
+    --slate-dim: #25333F;
+    --copper: #B07A4E;
+    --seam: #24344A;
+    --warn: #C46552;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--parchment);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .masthead {
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--seam);
+    padding-bottom: 24px;
+  }
+
+  .brandbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--seam);
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .wordmark svg { display: block; }
+  .wordmark span {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    letter-spacing: 0.01em;
+    color: var(--parchment);
+  }
+  .sitenav {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+  }
+  .sitenav a {
+    color: var(--parchment-faint);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+  }
+  .sitenav a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+  .sitenav a.current { color: var(--parchment); border-bottom-color: var(--seam); }
+
+  .masthead h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 32px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .masthead p {
+    color: var(--parchment-dim);
+    font-size: 15px;
+    margin: 0;
+    max-width: 560px;
+  }
+
+  .panel {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--amber);
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 18px;
+  }
+
+  .field label {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin-bottom: 6px;
+  }
+
+  .field .input-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .field .prefix, .field .suffix {
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    color: var(--parchment-dim);
+  }
+
+  /* Floating help bubbles */
+  .tip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: 1px;
+    cursor: help;
+    outline: none;
+  }
+  .tip .tip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid var(--parchment-faint);
+    color: var(--parchment-faint);
+    font-size: 9px;
+    line-height: 1;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .tip:hover .tip-icon, .tip:focus .tip-icon { border-color: var(--amber); color: var(--amber); }
+  .tip .tip-box {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 9px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 230px;
+    max-width: calc(100vw - 56px);
+    background: var(--ink);
+    border: 1px solid var(--seam);
+    border-radius: 3px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--parchment-dim);
+    white-space: normal;
+    z-index: 20;
+  }
+  .tip .tip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--seam);
+  }
+  .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
+
+  input[type="number"] {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--seam);
+    color: var(--parchment);
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    padding: 2px 0;
+    width: 100%;
+    transition: border-color 0.15s ease;
+  }
+  input:focus { outline: none; border-bottom-color: var(--amber); }
+  input.invalid { border-bottom-color: var(--warn); }
+
+  .toggles {
+    display: flex;
+    gap: 24px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--seam);
+    flex-wrap: wrap;
+  }
+  .toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-dim);
+    cursor: pointer;
+    user-select: none;
+  }
+  .toggle input { width: auto; accent-color: #C9A45C; cursor: pointer; }
+  .toggle .hint { color: var(--parchment-faint); }
+
+  /* Results strip */
+  .results-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 2px;
+    margin-bottom: 10px;
+  }
+  .result-cell {
+    background: var(--ink-raised);
+    padding: 16px 16px 14px;
+  }
+  .result-cell .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 6px;
+    line-height: 1.4;
+  }
+  .result-cell .value {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    margin: 0;
+    color: var(--parchment);
+  }
+  .result-cell.hero .value { color: var(--amber); }
+  .result-cell .value.growth { color: var(--amber); }
+  .result-cell .value.warn-val { color: var(--warn); }
+
+  /* Growth bar — the signature element (principal vs. tax-free growth) */
+  .growth-bar {
+    display: flex;
+    height: 34px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .growth-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0 8px;
+    min-width: 0;
+  }
+  .growth-seg.p { background: var(--amber-dim); color: var(--amber); }
+  .growth-seg.g { background: var(--slate-dim); color: var(--slate); border-left: 2px solid var(--ink); }
+  .growth-caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 32px;
+  }
+
+  .warning {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--warn);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .info-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--copper);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  .chart-wrap { position: relative; height: 280px; margin-bottom: 14px; }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-dim);
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .legend .swatch { display: inline-block; width: 9px; height: 9px; margin-right: 6px; vertical-align: -1px; }
+
+  h2.subhead {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 0 0 12px;
+    letter-spacing: -0.01em;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
+  th, td { padding: 9px 6px; text-align: right; border-bottom: 1px solid var(--seam); }
+  th:first-child, td:first-child { text-align: left; }
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    font-weight: 400;
+  }
+  td { font-family: 'Source Serif 4', serif; color: var(--parchment-dim); }
+  td:first-child { font-family: 'Inter', sans-serif; color: var(--parchment); font-size: 13px; }
+  td.hi { color: var(--parchment); font-weight: 500; }
+  td.ok { color: var(--amber); }
+  td.bad { color: var(--warn); }
+  .footnote { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--parchment-faint); margin: 8px 0 0; }
+
+  .share-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 0;
+  }
+  .copy-link-btn {
+    background: none;
+    border: 1px solid var(--seam);
+    color: var(--parchment-dim);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    padding: 7px 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+  .copy-link-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .copy-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--amber);
+  }
+
+  /* Article */
+  .article {
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--seam);
+  }
+  .article h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+  }
+  .article h2:first-child { margin-top: 0; }
+  .article h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 28px 0 8px;
+  }
+  .article p {
+    color: var(--parchment-dim);
+    font-size: 16.5px;
+    line-height: 1.7;
+    margin: 0 0 18px;
+  }
+  .article strong { color: var(--parchment); font-weight: 500; }
+  .article a { color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber-dim); }
+  .article a:hover { border-bottom-color: var(--amber); }
+  .article table td { font-size: 13.5px; }
+  .article table td:first-child { white-space: nowrap; }
+
+  .faq-item { margin-bottom: 24px; }
+  .faq-item h3 { margin-bottom: 6px; }
+  .faq-item p { margin-bottom: 0; }
+
+  .support-footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--seam);
+  }
+  .support-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 8px;
+    line-height: 1.6;
+  }
+  .support-line a {
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 1px solid var(--amber-dim);
+  }
+  .support-line a:hover { border-bottom-color: var(--amber); }
+
+  @media (max-width: 620px) {
+    .field-grid { grid-template-columns: 1fr 1fr; }
+    .results-strip { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brandbar">
+    <a class="wordmark" href="/"><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="7" width="12" height="18" fill="#C9A45C"/><rect x="16.5" y="7" width="8.5" height="18" fill="#8A6E3D"/><rect x="27" y="7" width="3.5" height="18" fill="#5B7A9D"/></svg><span>Phases</span></a>
+    <nav class="sitenav">
+      <a href="/">Compound Interest</a>
+      <a href="/trump-account-calculator">Trump Account</a>
+      <a href="/529-superfunding-calculator" class="current">529 Superfund</a>
+      <a href="/roth-vs-traditional-calculator">Roth vs Trad</a>
+      <a href="/coast-fire-calculator">Coast FIRE</a>
+      <a href="/savings-goal-calculator">Savings Goal</a>
+      <a href="/dca-calculator">DCA</a>
+      <a href="/drip-calculator">DRIP</a>
+      <a href="/margin-loan-calculator">Margin</a>
+      <a href="/capital-gains-tax-calculator">Capital Gains</a>
+      <a href="/inflation-adjusted-return-calculator">Real Return</a>
+      <a href="/heloc-payment-calculator">HELOC</a>
+      <a href="/cash-out-refinance-vs-heloc-calculator">Refi vs HELOC</a>
+      <a href="/mortgage-extra-payment-calculator">Mortgage Payoff</a>
+      <a href="/rental-property-calculator">Rental</a>
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </header>
+
+  <div class="masthead">
+    <h1>529 superfunding calculator</h1>
+    <p>Model a lump-sum 529 contribution using the 5-year gift-tax averaging election — how much of your annual exclusion it uses each year, whether any of it spills into your lifetime exemption, and how much of the ending balance is tax-free growth.</p>
+  </div>
+
+  <div class="panel">
+    <div class="field-grid">
+      <div class="field">
+        <label>Lump-sum contribution<span class="tip" tabindex="0" aria-label="Help: lump-sum contribution"><span class="tip-icon">?</span><span class="tip-box">The total amount deposited today, split evenly among your contributors below. In 2026, five years of exclusion per contributor is $95,000 ($19,000 x 5) — $190,000 for two contributors.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="number" id="lump-sum" value="190000" min="0" max="1000000" step="1000" /></div>
+      </div>
+      <div class="field">
+        <label>Number of contributors<span class="tip" tabindex="0" aria-label="Help: number of contributors"><span class="tip-icon">?</span><span class="tip-box">Each person who gifts to this beneficiary has their own separate annual exclusion. Two parents each gifting is the common case; grandparents can also each use their own.</span></span></label>
+        <input type="number" id="contributors" value="2" min="1" max="6" step="1" />
+      </div>
+      <div class="field">
+        <label>Annual gift tax exclusion<span class="tip" tabindex="0" aria-label="Help: annual gift tax exclusion"><span class="tip-icon">?</span><span class="tip-box">The amount one person can gift another per year, tax-free and exemption-free ($19,000 in 2026). This is indexed for inflation and changes most years — edit it to model a different year.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="number" id="exclusion" value="19000" min="1000" max="50000" step="500" /></div>
+      </div>
+      <div class="field">
+        <label>Expected annual return %<span class="tip" tabindex="0" aria-label="Help: annual return"><span class="tip-icon">?</span><span class="tip-box">Expected average yearly growth of the 529 investment portfolio. 5-7% is a common long-run assumption for an equity-heavy age-based portfolio — a planning guess, not a prediction.</span></span></label>
+        <div class="input-row"><input type="number" id="rate" value="6" min="0" max="15" step="0.1" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Years until funds are needed<span class="tip" tabindex="0" aria-label="Help: years until funds needed"><span class="tip-icon">?</span><span class="tip-box">The investment horizon before the beneficiary starts drawing on the account for qualified education expenses.</span></span></label>
+        <input type="number" id="years" value="10" min="1" max="30" step="1" />
+      </div>
+      <div class="field">
+        <label>&nbsp;</label>
+        <label class="toggle" style="margin-top:2px;">
+          <input type="checkbox" id="five-year-election" checked />
+          <span>Elect 5-year averaging <span class="hint">(Form 709)</span></span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div id="warnings"></div>
+
+  <div class="results-strip">
+    <div class="result-cell hero">
+      <p class="label">Balance in <span id="years-label-1">10</span> years</p>
+      <p class="value" id="bal-end">$0</p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Lump-sum contributed</p>
+      <p class="value" id="principal-val">$0</p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Tax-free growth</p>
+      <p class="value growth" id="growth-val">$0</p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Lifetime exemption used</p>
+      <p class="value" id="exemption-val">$0</p>
+    </div>
+  </div>
+
+  <div class="growth-bar" id="growth-bar"></div>
+  <p class="growth-caption" id="growth-caption"></p>
+
+  <div class="chart-wrap">
+    <canvas id="chart" role="img" aria-label="Line chart of projected 529 balance by year. The amber line is the contributed principal, the blue line is the total balance, and the shaded area between the two lines is tax-free investment growth.">Projected 529 balance by year: amber line is contributed principal, blue line is total balance, shaded gap between them is tax-free investment growth.</canvas>
+  </div>
+  <div class="legend">
+    <span><span class="swatch" style="background:#C9A45C"></span>Principal — amber line (your lump-sum contribution)</span>
+    <span><span class="swatch" style="background:#5B7A9D"></span>Total balance — blue line</span>
+    <span><span class="swatch" style="background:rgba(91,122,157,0.35)"></span>Shaded gap between the lines — tax-free investment growth</span>
+  </div>
+
+  <h2 class="subhead">5-year gift-tax exclusion usage schedule</h2>
+  <div id="schedule-table"></div>
+  <p class="footnote" id="schedule-note"></p>
+
+  <div class="share-row">
+    <button class="copy-link-btn" id="copy-link">copy shareable link</button>
+    <span class="copy-status" id="copy-status"></span>
+  </div>
+
+  <article class="article">
+    <h2>How this 529 superfunding calculator works</h2>
+    <p>"Superfunding" a 529 plan means front-loading up to five years of gifting into one lump-sum contribution, then using a special IRS election to avoid triggering gift tax or eating into your lifetime exemption. This calculator takes your lump sum, splits it evenly across the number of contributors you enter (typically two parents, sometimes grandparents too), and — if you elect 5-year averaging — divides each contributor's share by five to find the amount reported to the IRS each year. It then compares that per-year, per-contributor figure against the annual gift tax exclusion you enter (editable, since it's indexed for inflation and changes most years) to show exactly how much fits inside the exclusion and how much, if any, spills into your lifetime gift and estate tax exemption. Separately, it projects the lump sum forward at your expected return to show how much of the ending balance is tax-free investment growth on top of your original contribution. For background on this site's other account-and-tax-treatment calculators, see the <a href="/trump-account-calculator">Trump Account calculator</a> and the <a href="/">multi-phase compound interest calculator</a>.</p>
+
+    <h2>The 5-year election, explained</h2>
+    <p>Under IRC section 529(c)(2)(B), a contribution to a 529 plan is treated as a gift to the beneficiary in the year it's made. Ordinarily, any gift above the annual exclusion counts immediately against your lifetime gift and estate tax exemption. The 5-year election changes the timing: it lets you treat one lump-sum 529 contribution as if you'd made it in five equal installments over five calendar years, purely for gift-tax accounting. Nothing about the actual 529 account changes — the full amount is invested and growing from day one — only the IRS paperwork spreads it out.</p>
+    <p>To make the election, you (or each contributing individual) file <strong>IRS Form 709</strong> for the year of the contribution, check the box electing to split the gift over five years, and report one-fifth of the gift in that return. You generally don't need to file Form 709 again in years two through five unless you make other reportable gifts to the same person. Because each contributor's exclusion is separate, two parents contributing together effectively double the tax-free superfunding capacity, and grandparents or other relatives can layer their own five-year elections on top — as long as no one makes <em>additional</em> gifts to the same beneficiary during the five-year window, which would eat into that year's remaining exclusion.</p>
+
+    <h2>Gift tax exclusion basics</h2>
+    <p>The <strong>annual gift tax exclusion</strong> is the amount one person can give another person in a calendar year without filing a gift tax return or using any of their lifetime exemption. It's $19,000 per recipient for 2026, indexed for inflation in $1,000 increments, which is why this calculator makes the exclusion an editable field rather than a hard-coded constant — plug in whatever the current year's figure is, or model a future year's expected increase. The exclusion applies per giver, per recipient: a married couple can together give a child $38,000 a year (via gift-splitting) without any reporting at all, and that same child's grandparents have their own separate exclusion again.</p>
+    <p>Superfunding simply multiplies that annual number by five. At the 2026 exclusion of $19,000, one contributor can front-load $95,000; two contributors (say, both parents) can front-load $190,000 — all reportable via Form 709 but requiring zero use of the far larger <strong>lifetime exemption</strong> ($15 million per person in 2026). Contribute more than that five-year cap and the excess isn't taxed outright, but it does count against your lifetime exemption — which is why the schedule table below flags any amount that spills over.</p>
+
+    <h2>Tax-free qualified withdrawal rules</h2>
+    <p>The entire point of a 529 plan is that <strong>investment growth is never taxed at the federal level</strong> — not while it compounds, and not when it comes out — as long as withdrawals pay for qualified education expenses. That covers tuition and mandatory fees, room and board (up to the school's cost-of-attendance figure), books and supplies, required equipment and computers, up to $10,000 per year of K-12 tuition, registered apprenticeship program costs, and up to $10,000 lifetime toward repaying student loans (for the beneficiary or a sibling). Most states offer the same tax-free treatment on withdrawals, and many also give an upfront state income tax deduction or credit for contributions.</p>
+    <p>That's what the amber-vs-blue chart above visualizes: the amber line is your principal (already after-tax money, never taxed again regardless of use), and the shaded gap up to the blue line is investment growth that stays completely untaxed if spent on qualified expenses. Withdraw that growth for something <em>non</em>-qualified instead, and only the earnings portion is taxed as ordinary income plus a 10% penalty — your original contribution always comes out free and clear, and the penalty itself is waived for scholarships, the beneficiary's death or disability, and a few other exceptions.</p>
+
+    <h2>The 529-to-Roth IRA rollover option</h2>
+    <p>If a beneficiary doesn't end up needing all the money — a full scholarship, a shorter degree, or a change of plans — a provision added by SECURE 2.0 allows rolling up to <strong>$35,000 lifetime, per beneficiary</strong>, from a 529 plan directly into a Roth IRA in that beneficiary's name, with no income tax or penalty. The rollover is still capped by that year's ordinary Roth IRA contribution limit, the 529 account must have been open for at least 15 years, and contributions (and their earnings) made within the last five years aren't eligible. It's a narrow but genuinely useful backstop: money that might otherwise face tax and penalty on a non-qualified withdrawal can instead become tax-free retirement savings for the beneficiary.</p>
+
+    <h2>Superfunding rules worth knowing</h2>
+    <table>
+      <tr><th></th><th>Within 5-yr exclusion</th><th>Above 5-yr exclusion</th></tr>
+      <tr><td>Gift tax owed?</td><td class="hi">No</td><td>No, until lifetime exemption exhausted</td></tr>
+      <tr><td>Lifetime exemption used</td><td class="hi">$0</td><td>Yes — the excess amount</td></tr>
+      <tr><td>Form 709 required?</td><td class="hi">Yes (informational)</td><td>Yes (informational + tracks exemption use)</td></tr>
+      <tr><td>Other gifts to same child, years 2-5</td><td>Reduces remaining exclusion that year</td><td>Adds directly to exemption use</td></tr>
+    </table>
+    <p style="margin-top:16px;">A few practical notes: contributions above the 5-year cap aren't a mistake, just a trade-off — the lifetime exemption is large enough ($15 million per person in 2026) that most families never come close to owing actual gift tax, so going over is mainly a paperwork and estate-planning consideration, not a tax bill today. Dying partway through the five-year window pulls the unelapsed years back into your taxable estate. And 529 contribution limits (the total a single account can ever hold, often $400,000-$550,000+ depending on the state) are a separate ceiling from the gift-tax exclusion modeled here — check your plan's aggregate limit before superfunding into an account that's already substantial.</p>
+
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <h3>What is 529 plan superfunding?</h3>
+      <p>Contributing up to five years' worth of the annual gift tax exclusion to a 529 plan in one lump sum, then electing to spread it over five calendar years for gift-tax purposes — up to $95,000 per contributor in 2026, or $190,000 for two.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How does the 5-year gift-tax averaging election work?</h3>
+      <p>You file Form 709 in the contribution year, elect to treat the gift as made in five equal annual installments, and each installment can then fit inside that year's annual exclusion instead of immediately using your lifetime exemption.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is the annual gift tax exclusion, and how does it apply here?</h3>
+      <p>It's the amount ($19,000 in 2026, indexed yearly) one person can gift another without filing a return or touching their lifetime exemption. Each 529 contributor's gifts to the beneficiary are measured against their own exclusion.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How much can I superfund into a 529 plan in 2026?</h3>
+      <p>$95,000 per contributor ($19,000 x 5), or $190,000 for a couple contributing jointly. Grandparents and others each have their own separate $95,000 capacity for the same beneficiary.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Do I have to pay gift tax if I superfund?</h3>
+      <p>Almost never. Amounts above the exclusion reduce your lifetime exemption ($15 million per person in 2026) rather than triggering a tax bill — you'd only owe tax if cumulative lifetime gifts exceeded that exemption.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What if I make other gifts to the same beneficiary during the 5 years?</h3>
+      <p>They reduce the exclusion still available that year, which can push part of the superfunded gift into using your lifetime exemption. Superfunding works cleanest as the only gift to that beneficiary for five years.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Are 529 withdrawals really tax-free?</h3>
+      <p>Yes, federally, for qualified education expenses — tuition, room and board, books, up to $10,000/year of K-12 tuition, and up to $10,000 lifetime of student loan repayment. Non-qualified withdrawals owe ordinary income tax plus a 10% penalty on earnings only.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What if my child doesn't go to college?</h3>
+      <p>Change the beneficiary to another qualifying family member penalty-free, leave it invested for later, or withdraw it and pay tax plus a 10% penalty on just the earnings (waived for scholarships, death, or disability).</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I roll over unused 529 funds to a Roth IRA?</h3>
+      <p>Yes — up to $35,000 lifetime per beneficiary, subject to annual Roth contribution limits, if the account has been open 15+ years and the funds aren't from the last five years of contributions or earnings.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Do I need to file Form 709 if I superfund?</h3>
+      <p>Yes, in the year of the contribution, to make the 5-year election — even if the entire amount fits within the annual exclusion and no tax is owed.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What happens if I die during the 5-year election period?</h3>
+      <p>The portions allocated to the remaining years are pulled back into your taxable estate rather than continuing to be treated as already-made gifts.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can grandparents also superfund a 529 plan?</h3>
+      <p>Yes — each contributing individual has their own separate five-year exclusion capacity for the same beneficiary, as long as no one adds other gifts to that beneficiary during the window.</p>
+    </div>
+
+    <p style="margin-top:32px;"><em>This calculator is for education, not tax or legal advice. Gift tax rules, exclusion amounts, and 529 plan limits vary and change — confirm your specific numbers with a CPA or estate attorney before filing Form 709 or making a large contribution.</em></p>
+  </article>
+
+  <div class="support-footer">
+    <p class="support-line">
+      If this calculator was useful, a tip helps keep it free and ad-free —
+      <a href="https://buymeacoffee.com/ctong" target="_blank" rel="noopener">buy me a coffee</a>.
+    </p>
+    <p class="support-line">
+      I also use <a href="https://monarch.com/referral/rk2olzfae9?r_source=copy" target="_blank" rel="noopener">Monarch</a> to track net worth and spending — that's a referral link, so if you sign up I get a discount on my own subscription. No pressure either way.
+    </p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const AMBER = '#C9A45C';
+  const SLATE = '#5B7A9D';
+  const SEAM = '#24344A';
+  const PARCHMENT_FAINT = '#948D79';
+
+  const LIMITS = {
+    lumpSum: { min: 0, max: 1000000 },
+    contributors: { min: 1, max: 6 },
+    exclusion: { min: 1000, max: 50000 },
+    rate: { min: 0, max: 15 },
+    years: { min: 1, max: 30 }
+  };
+
+  let chart = null;
+  const CURRENT_YEAR = new Date().getFullYear();
+
+  function fmt(n) {
+    const sign = n < 0 ? '-' : '';
+    return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  function clamp(val, min, max) {
+    if (isNaN(val)) return min;
+    return Math.min(max, Math.max(min, val));
+  }
+  function markValidity(el, value, min, max) {
+    const bad = isNaN(value) || value < min || value > max;
+    el.classList.toggle('invalid', bad);
+  }
+  function getInputs() {
+    return {
+      lumpSum: clamp(parseFloat(document.getElementById('lump-sum').value), LIMITS.lumpSum.min, LIMITS.lumpSum.max),
+      contributors: Math.round(clamp(parseFloat(document.getElementById('contributors').value), LIMITS.contributors.min, LIMITS.contributors.max)),
+      exclusion: clamp(parseFloat(document.getElementById('exclusion').value), LIMITS.exclusion.min, LIMITS.exclusion.max),
+      rate: clamp(parseFloat(document.getElementById('rate').value), LIMITS.rate.min, LIMITS.rate.max),
+      years: Math.round(clamp(parseFloat(document.getElementById('years').value), LIMITS.years.min, LIMITS.years.max)),
+      fiveYear: document.getElementById('five-year-election').checked
+    };
+  }
+
+  // --- Shareable link encode/decode (same pattern as the Phases calculator) ---
+  function encodeState() {
+    const i = getInputs();
+    const state = { l: i.lumpSum, c: i.contributors, x: i.exclusion, r: i.rate, y: i.years, f: i.fiveYear ? 1 : 0 };
+    const json = JSON.stringify(state);
+    const b64 = btoa(unescape(encodeURIComponent(json)));
+    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function decodeState(encoded) {
+    try {
+      const b64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+      const json = decodeURIComponent(escape(atob(b64)));
+      const state = JSON.parse(json);
+      if (!state || typeof state.l === 'undefined') return null;
+      return state;
+    } catch (e) { return null; }
+  }
+  function applyState(s) {
+    document.getElementById('lump-sum').value = clamp(s.l, LIMITS.lumpSum.min, LIMITS.lumpSum.max);
+    document.getElementById('contributors').value = clamp(s.c, LIMITS.contributors.min, LIMITS.contributors.max);
+    document.getElementById('exclusion').value = clamp(s.x, LIMITS.exclusion.min, LIMITS.exclusion.max);
+    document.getElementById('rate').value = clamp(s.r, LIMITS.rate.min, LIMITS.rate.max);
+    document.getElementById('years').value = clamp(s.y, LIMITS.years.min, LIMITS.years.max);
+    document.getElementById('five-year-election').checked = !!s.f;
+  }
+  function updateUrlSilently() {
+    const url = new URL(window.location.href);
+    url.searchParams.set('d', encodeState());
+    window.history.replaceState(null, '', url.toString());
+  }
+  let urlUpdateTimer = null;
+  function scheduleUrlUpdate() {
+    clearTimeout(urlUpdateTimer);
+    urlUpdateTimer = setTimeout(updateUrlSilently, 400);
+  }
+
+  function computeResult() {
+    const i = getInputs();
+
+    // Growth series: single lump-sum deposit at year 0, compounding annually.
+    const series = [];
+    let balance = i.lumpSum;
+    series.push({ year: 0, balance });
+    for (let y = 1; y <= i.years; y++) {
+      balance = balance * (1 + i.rate / 100);
+      series.push({ year: y, balance });
+    }
+    const finalBalance = balance;
+    const growth = Math.max(0, finalBalance - i.lumpSum);
+
+    // Exclusion usage schedule.
+    const perContributorGift = i.contributors > 0 ? i.lumpSum / i.contributors : 0;
+    const reportYears = i.fiveYear ? 5 : 1;
+    const perYearGift = perContributorGift / reportYears;
+    const used = Math.min(perYearGift, i.exclusion);
+    const excessPerYear = Math.max(0, perYearGift - i.exclusion);
+
+    const schedule = [];
+    for (let y = 1; y <= reportYears; y++) {
+      schedule.push({
+        year: y,
+        calendarYear: CURRENT_YEAR + y - 1,
+        perContributorGift: perYearGift,
+        exclusion: i.exclusion,
+        used,
+        excess: excessPerYear
+      });
+    }
+
+    const totalExcessAllContributors = excessPerYear * reportYears * i.contributors;
+    const totalUsedAllContributors = used * reportYears * i.contributors;
+    const totalReportedAllContributors = perYearGift * reportYears * i.contributors;
+
+    return {
+      inputs: i, series, finalBalance, growth,
+      perContributorGift, reportYears, perYearGift, used, excessPerYear,
+      schedule, totalExcessAllContributors, totalUsedAllContributors, totalReportedAllContributors
+    };
+  }
+
+  function renderWarnings(r) {
+    const el = document.getElementById('warnings');
+    el.innerHTML = '';
+    if (r.excessPerYear > 0 && r.inputs.fiveYear) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = 'Even spread over 5 years, this gift exceeds the annual exclusion by ' + fmt(r.excessPerYear) + '/contributor/year — ' + fmt(r.totalExcessAllContributors) + ' total will draw on your lifetime gift/estate tax exemption (no tax owed unless that exemption is exhausted, but it still must be reported on Form 709).';
+      el.appendChild(div);
+    } else if (r.excessPerYear > 0 && !r.inputs.fiveYear) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = 'Without the 5-year election, the entire gift is reported in ' + CURRENT_YEAR + ' — ' + fmt(r.totalExcessAllContributors) + ' total will immediately draw on your lifetime exemption. Consider electing 5-year averaging above to spread it out and reduce (or eliminate) that.';
+      el.appendChild(div);
+    } else {
+      const div = document.createElement('div');
+      div.className = 'info-note';
+      div.textContent = 'This contribution fits entirely within the annual exclusion' + (r.inputs.fiveYear ? ' across the 5-year election' : '') + ' — $0 of lifetime exemption used. Form 709 is still required in ' + CURRENT_YEAR + ' to make the election and document it.';
+      el.appendChild(div);
+    }
+  }
+
+  function renderGrowthBar(r) {
+    const bar = document.getElementById('growth-bar');
+    const cap = document.getElementById('growth-caption');
+    bar.innerHTML = '';
+    const total = r.finalBalance || 1;
+    const pPct = Math.max(2, (r.inputs.lumpSum / total) * 100);
+    const gPct = Math.max(2, 100 - pPct);
+
+    const p = document.createElement('div');
+    p.className = 'growth-seg p';
+    p.style.flex = pPct;
+    p.textContent = 'principal ' + fmt(r.inputs.lumpSum);
+    const g = document.createElement('div');
+    g.className = 'growth-seg g';
+    g.style.flex = gPct;
+    g.textContent = 'tax-free growth ' + fmt(r.growth);
+    bar.appendChild(p); bar.appendChild(g);
+
+    const pct = Math.round((r.growth / total) * 100);
+    cap.textContent = 'In ' + r.inputs.years + ' year' + (r.inputs.years === 1 ? '' : 's') + ', ' + pct + '% of the balance (' + fmt(r.growth) + ') is investment growth — tax-free if spent on qualified education expenses.';
+  }
+
+  function renderScheduleTable(r) {
+    const el = document.getElementById('schedule-table');
+    let html = '<table><tr><th>Year</th><th>Reported gift / contributor</th><th>Exclusion / contributor</th><th>Excess into lifetime exemption</th></tr>';
+    r.schedule.forEach(row => {
+      const statusClass = row.excess > 0 ? 'bad' : 'ok';
+      html += '<tr><td>Year ' + row.year + ' (' + row.calendarYear + ')</td>' +
+        '<td class="hi">' + fmt(row.perContributorGift) + '</td>' +
+        '<td>' + fmt(row.exclusion) + '</td>' +
+        '<td class="' + statusClass + '">' + (row.excess > 0 ? fmt(row.excess) : '$0') + '</td></tr>';
+    });
+    html += '</table>';
+    el.innerHTML = html;
+
+    const note = document.getElementById('schedule-note');
+    note.textContent = (r.inputs.fiveYear ? 'With the 5-year election, e' : 'Without the 5-year election, e') +
+      'ach of ' + r.inputs.contributors + ' contributor' + (r.inputs.contributors === 1 ? '' : 's') + ' reports ' + fmt(r.perYearGift) + '/year' +
+      (r.inputs.fiveYear ? ' for 5 years' : ' in ' + CURRENT_YEAR) +
+      ' — ' + fmt(r.totalReportedAllContributors) + ' total reported, ' + fmt(r.totalUsedAllContributors) + ' covered by annual exclusions, and ' +
+      fmt(r.totalExcessAllContributors) + ' drawing on the combined lifetime exemption.';
+  }
+
+  function renderChart(r) {
+    const ctx = document.getElementById('chart');
+    const labels = r.series.map(s => String(s.year));
+    const principalData = r.series.map(() => Math.round(r.inputs.lumpSum));
+    const totalData = r.series.map(s => Math.round(s.balance));
+
+    if (chart) chart.destroy();
+    chart = new Chart(ctx, {
+      type: 'line',
+      data: { labels, datasets: [
+        {
+          label: 'Principal',
+          data: principalData,
+          borderColor: AMBER, backgroundColor: 'rgba(201,164,92,0.18)',
+          fill: true, tension: 0, pointRadius: 0, borderWidth: 2
+        },
+        {
+          label: 'Total balance',
+          data: totalData,
+          borderColor: SLATE, backgroundColor: 'rgba(91,122,157,0.22)',
+          fill: '-1', tension: 0.15, pointRadius: 0, borderWidth: 2
+        }
+      ]},
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              title: items => 'Year ' + items[0].label + ' (' + (CURRENT_YEAR + parseInt(items[0].label, 10)) + ')',
+              label: item => item.dataset.label + ': ' + fmt(item.parsed.y),
+              afterBody: items => {
+                const idx = items[0].dataIndex;
+                return 'Tax-free growth (shaded gap): ' + fmt(Math.max(0, totalData[idx] - principalData[idx]));
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: { display: true, text: 'Years from now', color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            ticks: { maxTicksLimit: 12, color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            grid: { display: false }, border: { color: SEAM }
+          },
+          y: {
+            ticks: { callback: v => '$' + (Math.abs(v) >= 1000000 ? (v/1000000).toFixed(1) + 'M' : Math.abs(v) >= 1000 ? Math.round(v/1000) + 'k' : v), color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            grid: { color: SEAM }, border: { color: SEAM }
+          }
+        }
+      }
+    });
+  }
+
+  function update() {
+    const r = computeResult();
+    document.getElementById('years-label-1').textContent = r.inputs.years;
+    document.getElementById('bal-end').textContent = fmt(r.finalBalance);
+    document.getElementById('principal-val').textContent = fmt(r.inputs.lumpSum);
+    document.getElementById('growth-val').textContent = fmt(r.growth);
+    const exemptionEl = document.getElementById('exemption-val');
+    exemptionEl.textContent = fmt(r.totalExcessAllContributors);
+    exemptionEl.classList.toggle('warn-val', r.totalExcessAllContributors > 0);
+    renderWarnings(r);
+    renderGrowthBar(r);
+    renderChart(r);
+    renderScheduleTable(r);
+    scheduleUrlUpdate();
+  }
+
+  // Wire inputs with the same input/blur clamp pattern as the Phases calculator.
+  [
+    ['lump-sum', LIMITS.lumpSum],
+    ['contributors', LIMITS.contributors],
+    ['exclusion', LIMITS.exclusion],
+    ['rate', LIMITS.rate],
+    ['years', LIMITS.years]
+  ].forEach(([id, lim]) => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => {
+      markValidity(el, parseFloat(el.value), lim.min, lim.max);
+      update();
+    });
+    el.addEventListener('blur', () => {
+      const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
+      el.value = corrected;
+      el.classList.remove('invalid');
+      update();
+    });
+  });
+  document.getElementById('five-year-election').addEventListener('change', update);
+
+  document.getElementById('copy-link').addEventListener('click', () => {
+    updateUrlSilently();
+    const statusEl = document.getElementById('copy-status');
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      statusEl.textContent = 'link copied';
+      setTimeout(() => { statusEl.textContent = ''; }, 2200);
+    }).catch(() => {
+      statusEl.textContent = 'copy failed — select the URL bar';
+      setTimeout(() => { statusEl.textContent = ''; }, 2800);
+    });
+  });
+
+  (function hydrateFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const encoded = params.get('d');
+    if (encoded) {
+      const state = decodeState(encoded);
+      if (state) applyState(state);
+    }
+  })();
+
+  update();
+})();
+</script>
+</body>
+</html>

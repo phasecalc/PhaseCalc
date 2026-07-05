@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Rental Property Calculator — cash flow, cap rate & where the rent goes</title>
+<meta name="description" content="Free rental property calculator. Enter price, financing, rent, and expenses to see monthly cash flow, cap rate, cash-on-cash return, and a 5-year projection — with a waterfall chart showing exactly where every rent dollar goes." />
+<link rel="canonical" href="https://phasecalc.com/rental-property-calculator" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Phases" />
+<meta property="og:url" content="https://phasecalc.com/rental-property-calculator" />
+<meta property="og:title" content="Rental Property Calculator — cash flow, cap rate & where the rent goes" />
+<meta property="og:description" content="Monthly cash flow, cap rate, cash-on-cash return, and a 5-year projection — with a waterfall chart showing where every rent dollar goes." />
+<meta property="og:image" content="https://phasecalc.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Rental Property Calculator — cash flow, cap rate & where the rent goes" />
+<meta name="twitter:description" content="Monthly cash flow, cap rate, cash-on-cash return, and a 5-year projection — with a waterfall chart showing where every rent dollar goes." />
+<meta name="twitter:image" content="https://phasecalc.com/og-image.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a good monthly cash flow for a rental property?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Many investors target $100–$300 per month per unit after all expenses, vacancy, and reserves — but the right answer depends on your cash invested. $200/month on a $60,000 down payment is a 4% cash-on-cash return; the same $200 on $30,000 invested is 8%. Judge cash flow relative to the cash it took to produce it, and make sure the number already includes vacancy, maintenance, and management — a property that only cash-flows when nothing goes wrong doesn't actually cash-flow."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is cap rate and how is it calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Capitalization rate is the property's net operating income (rent minus vacancy and operating expenses, but not the mortgage) divided by the purchase price. A $300,000 property producing $19,700 of NOI has a 6.6% cap rate. Because it ignores financing, cap rate measures the property itself and lets you compare deals regardless of how they're funded. Typical residential cap rates run roughly 4–8% depending on market and property class."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between cap rate and cash-on-cash return?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Cap rate evaluates the property; cash-on-cash evaluates your deal. Cap rate divides net operating income by the purchase price and ignores the mortgage entirely. Cash-on-cash divides your actual annual cash flow (after the mortgage payment) by the cash you put in (down payment and closing costs). Leverage drives them apart: financing can push cash-on-cash above or below the cap rate depending on whether your mortgage rate is below or above it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the 1% rule for rental properties?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The 1% rule is a quick screen: monthly rent should be at least 1% of the purchase price — $3,000/month on a $300,000 property. Properties that clear it usually have a fighting chance at positive cash flow with 20% down; properties far below it rarely do. It's a filter, not a verdict: high-tax or high-HOA properties can fail despite meeting it, and low-expense properties can work slightly under it. Run the full numbers on anything that passes the screen."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the 50% rule in real estate investing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The 50% rule estimates that operating expenses — taxes, insurance, maintenance, vacancy, management, but not the mortgage — will consume about half of gross rent over the long run. If rent is $2,600, budget roughly $1,300 for operations, leaving the rest for the mortgage and cash flow. It's a sanity check against optimistic underwriting: if your line-item estimates total far less than 50% of rent, you've probably forgotten something."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What vacancy rate should I use in a rental calculator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "5–8% of gross rent is the standard planning range — roughly two to four weeks empty per year, covering tenant turnover, cleaning, and re-listing time. Strong markets with waiting lists might justify 3–5%; seasonal or student markets can run 10% or more. Using 0% is the classic first-time landlord mistake: even a perfect tenant eventually moves out, and one month of vacancy is 8.3% of the year's rent."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much should I budget for rental property maintenance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Common rules of thumb: 5–15% of monthly rent, or 1% of the property value per year, adjusted for age and condition. A new-build might sit near 5% of rent while a 1950s house with original plumbing earns 15%. This reserve covers routine repairs — not major capital expenditures like a roof or HVAC, which prudent investors reserve for separately (often another 5–10% of rent). Skipping the maintenance line doesn't lower the cost; it just makes the surprise bigger."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much does property management cost?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Typically 8–10% of collected rent for full-service management of a single-family rental, often plus a leasing fee of half to one month's rent when placing a new tenant. Even if you plan to self-manage, many investors underwrite the fee anyway — it prices your own labor, keeps the deal viable if life circumstances change, and preserves the option to hand it off. A deal that only works with free labor is a job, not an investment."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is negative cash flow on a rental ever acceptable?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Some investors accept modest negative cash flow betting on appreciation, rent growth, or loan paydown — and in strong markets that bet has sometimes paid off. But negative cash flow means feeding the property from your salary every month, with no buffer for surprises, and it compounds if a recession hits rents and your job simultaneously. Most conservative investors treat negative cash flow at purchase, using honest expense estimates, as a signal to renegotiate price or walk."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What costs does this rental property calculator leave out?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Closing costs (typically 2–5% of price, which lowers true cash-on-cash), major capital expenditures like roofs and HVAC beyond the maintenance reserve, utilities and landscaping if landlord-paid, landlord licensing fees, income taxes on rental profit, and tax benefits like depreciation. Selling costs and capital gains tax at exit are also out of scope. Treat the output as a screening estimate, then build a full pro forma before making an offer."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do rent growth and appreciation affect rental returns?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "They're the compounding half of the return. Rent growth widens the gap between income and a fixed mortgage payment each year — a thin $100/month cash flow can triple in five years at 3% rent growth. Appreciation plus loan paydown builds equity silently. But both are assumptions, not guarantees: they arrive unevenly, and a purchase that only works if they show up on schedule is speculation. Underwrite the deal to work on today's numbers; treat growth as the upside."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the mortgage principal count as an expense in cash flow?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "For cash flow purposes, yes — the full mortgage payment (principal and interest) leaves your bank account monthly, so this calculator subtracts it. But the principal portion isn't lost; it converts into equity you'd recover at sale. That's why the 5-year projection tracks equity separately: a property can show modest cash flow while quietly building thousands per year in loan paydown. Total return = cash flow + principal paydown + appreciation."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is net operating income (NOI)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "NOI is effective rental income (gross rent minus vacancy) minus all operating expenses — property tax, insurance, HOA, maintenance, and management — but before any mortgage payment. It's the property's raw earning power independent of financing, and the numerator of the cap rate. Lenders also build on it: the debt service coverage ratio (DSCR) many rental lenders require is NOI divided by the annual mortgage payment, typically needing to exceed 1.2."
+      }
+    }
+  ]
+}
+</script>
+<style>
+  :root {
+    --ink: #0F1B2D;
+    --ink-raised: #142539;
+    --parchment: #EDE6D6;
+    --parchment-dim: #B8AF9C;
+    --parchment-faint: #948D79;
+    --amber: #C9A45C;
+    --amber-dim: #4A3C24;
+    --slate: #5B7A9D;
+    --slate-dim: #25333F;
+    --copper: #B07A4E;
+    --seam: #24344A;
+    --warn: #C46552;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--parchment);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .brandbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--seam);
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .wordmark svg { display: block; }
+  .wordmark span {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    letter-spacing: 0.01em;
+    color: var(--parchment);
+  }
+  .sitenav {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+  }
+  .sitenav a {
+    color: var(--parchment-faint);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+  }
+  .sitenav a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+  .sitenav a.current { color: var(--parchment); border-bottom-color: var(--seam); }
+
+  .masthead {
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--seam);
+    padding-bottom: 24px;
+  }
+  .masthead h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 32px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .masthead p {
+    color: var(--parchment-dim);
+    font-size: 15px;
+    margin: 0;
+    max-width: 540px;
+  }
+
+  .panel {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--amber);
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 18px;
+  }
+
+  .panel-caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--seam);
+  }
+
+  .field label {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin-bottom: 6px;
+  }
+
+  .field .input-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .field .prefix, .field .suffix {
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    color: var(--parchment-dim);
+  }
+
+  /* Floating help bubbles */
+  .tip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: 1px;
+    cursor: help;
+    outline: none;
+  }
+  .tip .tip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid var(--parchment-faint);
+    color: var(--parchment-faint);
+    font-size: 9px;
+    line-height: 1;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .tip:hover .tip-icon, .tip:focus .tip-icon { border-color: var(--amber); color: var(--amber); }
+  .tip .tip-box {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 9px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 230px;
+    max-width: calc(100vw - 56px);
+    background: var(--ink);
+    border: 1px solid var(--seam);
+    border-radius: 3px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--parchment-dim);
+    white-space: normal;
+    z-index: 20;
+  }
+  .tip .tip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--seam);
+  }
+  .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
+
+  input[type="number"], select {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--seam);
+    color: var(--parchment);
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    padding: 2px 0;
+    width: 100%;
+    transition: border-color 0.15s ease;
+  }
+  select { cursor: pointer; appearance: none; -webkit-appearance: none; border-radius: 0; }
+  select option { background: var(--ink); color: var(--parchment); }
+  input:focus, select:focus { outline: none; border-bottom-color: var(--amber); }
+  input.invalid { border-bottom-color: var(--warn); }
+
+  /* Results strip */
+  .results-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 2px;
+    margin-bottom: 10px;
+  }
+  .result-cell {
+    background: var(--ink-raised);
+    padding: 16px 16px 14px;
+  }
+  .result-cell .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 6px;
+    line-height: 1.4;
+  }
+  .result-cell .value {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    margin: 0;
+    color: var(--parchment);
+  }
+  .result-cell.hero .value.positive { color: var(--amber); }
+  .result-cell.hero .value.negative { color: var(--warn); }
+  .result-cell .sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--parchment-faint);
+    margin: 4px 0 0;
+  }
+
+  .warning {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--warn);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .info-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--copper);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  .chart-wrap { position: relative; height: 300px; margin: 18px 0 10px; }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-dim);
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .legend .swatch { display: inline-block; width: 9px; height: 9px; margin-right: 6px; vertical-align: -1px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
+  th, td { padding: 9px 6px; text-align: right; border-bottom: 1px solid var(--seam); }
+  th:first-child, td:first-child { text-align: left; }
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    font-weight: 400;
+  }
+  td { font-family: 'Source Serif 4', serif; color: var(--parchment-dim); }
+  td:first-child { font-family: 'Inter', sans-serif; color: var(--parchment); font-size: 13px; }
+  td.hi { color: var(--parchment); font-weight: 500; }
+  td.neg { color: var(--warn); }
+  .footnote { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--parchment-faint); margin: 8px 0 0; }
+
+  .section-head {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 19px;
+    margin: 36px 0 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .share-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 0;
+  }
+  .copy-link-btn {
+    background: none;
+    border: 1px solid var(--seam);
+    color: var(--parchment-dim);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    padding: 7px 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+  .copy-link-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .copy-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--amber);
+  }
+
+  /* Article */
+  .article {
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--seam);
+  }
+  .article h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+  }
+  .article h2:first-child { margin-top: 0; }
+  .article h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 28px 0 8px;
+  }
+  .article p {
+    color: var(--parchment-dim);
+    font-size: 16.5px;
+    line-height: 1.7;
+    margin: 0 0 18px;
+  }
+  .article strong { color: var(--parchment); font-weight: 500; }
+  .article a { color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber-dim); }
+  .article a:hover { border-bottom-color: var(--amber); }
+  .article table td { font-size: 13.5px; }
+  .article table td:first-child { white-space: nowrap; }
+  .article .formula {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13.5px;
+    color: var(--parchment);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--amber);
+    padding: 12px 16px;
+    margin: 0 0 18px;
+    overflow-x: auto;
+  }
+
+  .faq-item { margin-bottom: 24px; }
+  .faq-item h3 { margin-bottom: 6px; }
+  .faq-item p { margin-bottom: 0; }
+
+  .support-footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--seam);
+  }
+  .support-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 8px;
+    line-height: 1.6;
+  }
+  .support-line a {
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 1px solid var(--amber-dim);
+  }
+  .support-line a:hover { border-bottom-color: var(--amber); }
+
+  @media (max-width: 620px) {
+    .field-grid { grid-template-columns: 1fr 1fr; }
+    .results-strip { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brandbar">
+    <a class="wordmark" href="/"><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="7" width="12" height="18" fill="#C9A45C"/><rect x="16.5" y="7" width="8.5" height="18" fill="#8A6E3D"/><rect x="27" y="7" width="3.5" height="18" fill="#5B7A9D"/></svg><span>Phases</span></a>
+    <nav class="sitenav">
+      <a href="/">Compound Interest</a>
+      <a href="/trump-account-calculator">Trump Account</a>
+      <a href="/529-superfunding-calculator">529 Superfund</a>
+      <a href="/roth-vs-traditional-calculator">Roth vs Trad</a>
+      <a href="/coast-fire-calculator">Coast FIRE</a>
+      <a href="/savings-goal-calculator">Savings Goal</a>
+      <a href="/dca-calculator">DCA</a>
+      <a href="/drip-calculator">DRIP</a>
+      <a href="/margin-loan-calculator">Margin</a>
+      <a href="/capital-gains-tax-calculator">Capital Gains</a>
+      <a href="/inflation-adjusted-return-calculator">Real Return</a>
+      <a href="/heloc-payment-calculator">HELOC</a>
+      <a href="/cash-out-refinance-vs-heloc-calculator">Refi vs HELOC</a>
+      <a href="/mortgage-extra-payment-calculator">Mortgage Payoff</a>
+      <a href="/rental-property-calculator" class="current">Rental</a>
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </header>
+
+  <div class="masthead">
+    <h1>Rental property calculator</h1>
+    <p>Enter the purchase, the financing, and the real operating costs — including the vacancy and maintenance most first-time landlords forget — and see monthly cash flow, cap rate, cash-on-cash return, and where every rent dollar actually goes.</p>
+  </div>
+
+  <div class="panel">
+    <p class="panel-caption">Purchase &amp; financing</p>
+    <div class="field-grid">
+      <div class="field">
+        <label>Purchase price<span class="tip" tabindex="0" aria-label="Help: purchase price"><span class="tip-icon">?</span><span class="tip-box">The agreed price of the property. Closing costs (typically 2–5% extra) aren't modeled here — see the notes below the results.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="number" id="price" value="300000" min="10000" max="20000000" step="5000" /></div>
+      </div>
+      <div class="field">
+        <label>Down payment<span class="tip" tabindex="0" aria-label="Help: down payment"><span class="tip-icon">?</span><span class="tip-box">Investment properties usually require 20–25% down. This is the cash the cash-on-cash return is measured against.</span></span></label>
+        <div class="input-row"><input type="number" id="down-pct" value="20" min="0" max="100" step="1" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Mortgage rate<span class="tip" tabindex="0" aria-label="Help: mortgage rate"><span class="tip-icon">?</span><span class="tip-box">Investment property rates typically run 0.5–1% above owner-occupied rates. Enter the annual rate.</span></span></label>
+        <div class="input-row"><input type="number" id="rate" value="6.5" min="0" max="15" step="0.125" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Loan term<span class="tip" tabindex="0" aria-label="Help: loan term"><span class="tip-icon">?</span><span class="tip-box">30 years maximizes cash flow; 15 years builds equity faster at the cost of a higher payment.</span></span></label>
+        <div class="input-row"><input type="number" id="term" value="30" min="5" max="40" step="5" /><span class="suffix">yrs</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-caption">Income &amp; operating costs</p>
+    <div class="field-grid">
+      <div class="field">
+        <label>Monthly rent<span class="tip" tabindex="0" aria-label="Help: monthly rent"><span class="tip-icon">?</span><span class="tip-box">Market rent for the unit. Check actual comparable listings, not the seller's pro forma.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="number" id="rent" value="2600" min="0" max="100000" step="50" /></div>
+      </div>
+      <div class="field">
+        <label>Property tax $/yr<span class="tip" tabindex="0" aria-label="Help: property tax"><span class="tip-icon">?</span><span class="tip-box">Annual property tax. Check the county assessor — and note taxes often reassess upward after a sale.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="number" id="tax" value="3600" min="0" max="200000" step="100" /></div>
+      </div>
+      <div class="field">
+        <label>Insurance $/yr<span class="tip" tabindex="0" aria-label="Help: insurance"><span class="tip-icon">?</span><span class="tip-box">Landlord (dwelling fire) policy — usually 15–25% more than a homeowner's policy on the same house.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="number" id="insurance" value="1500" min="0" max="100000" step="100" /></div>
+      </div>
+      <div class="field">
+        <label>HOA $/mo<span class="tip" tabindex="0" aria-label="Help: HOA"><span class="tip-icon">?</span><span class="tip-box">Monthly HOA or condo fee, if any. Condo fees often include some insurance and exterior maintenance — avoid double counting.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="number" id="hoa" value="0" min="0" max="5000" step="25" /></div>
+      </div>
+      <div class="field">
+        <label>Maintenance reserve<span class="tip" tabindex="0" aria-label="Help: maintenance"><span class="tip-icon">?</span><span class="tip-box">% of rent set aside for repairs. 5–15% is typical depending on property age. This is the line first-time landlords most often skip.</span></span></label>
+        <div class="input-row"><input type="number" id="maint-pct" value="8" min="0" max="50" step="1" /><span class="suffix">% rent</span></div>
+      </div>
+      <div class="field">
+        <label>Vacancy rate<span class="tip" tabindex="0" aria-label="Help: vacancy"><span class="tip-icon">?</span><span class="tip-box">% of the year the unit sits empty. 5–8% (about 2–4 weeks) is standard. One month between tenants = 8.3%.</span></span></label>
+        <div class="input-row"><input type="number" id="vacancy-pct" value="5" min="0" max="50" step="1" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Management fee<span class="tip" tabindex="0" aria-label="Help: management fee"><span class="tip-icon">?</span><span class="tip-box">% of collected rent. Full-service management runs 8–10%. Worth underwriting even if you self-manage — your time isn't free.</span></span></label>
+        <div class="input-row"><input type="number" id="mgmt-pct" value="8" min="0" max="30" step="1" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Rent growth /yr<span class="tip" tabindex="0" aria-label="Help: rent growth"><span class="tip-icon">?</span><span class="tip-box">Annual rent increase assumption for the 5-year projection. 2–4% is a common long-run range. Operating costs are grown at the same rate.</span></span></label>
+        <div class="input-row"><input type="number" id="rent-growth" value="3" min="0" max="10" step="0.5" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Appreciation /yr<span class="tip" tabindex="0" aria-label="Help: appreciation"><span class="tip-icon">?</span><span class="tip-box">Annual property value growth for the projection. Long-run US average is roughly 3–4% nominal — local markets vary widely.</span></span></label>
+        <div class="input-row"><input type="number" id="appreciation" value="3" min="0" max="10" step="0.5" /><span class="suffix">%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="warnings"></div>
+
+  <div class="results-strip">
+    <div class="result-cell hero">
+      <p class="label">Monthly cash flow</p>
+      <p class="value" id="cash-flow">$0</p>
+      <p class="sub" id="cash-flow-yr"></p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Cap rate</p>
+      <p class="value" id="cap-rate">0%</p>
+      <p class="sub" id="noi-note"></p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Cash-on-cash return</p>
+      <p class="value" id="coc">0%</p>
+      <p class="sub" id="cash-invested"></p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Rent-to-price</p>
+      <p class="value" id="rent-ratio">0%</p>
+      <p class="sub" id="one-pct-note"></p>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <canvas id="chart" role="img" aria-label="Waterfall chart of one month of rental cash flow. The first bar is rent coming in; each following bar steps down for vacancy, management, maintenance, property tax, insurance, HOA, and the mortgage payment; the final bar is net monthly cash flow.">Waterfall of one month: rent in, each expense stepping the total down, ending at net cash flow.</canvas>
+  </div>
+  <div class="legend">
+    <span><span class="swatch" style="background:#C9A45C"></span>Rent in</span>
+    <span><span class="swatch" style="background:#C46552"></span>Operating costs out</span>
+    <span><span class="swatch" style="background:#B07A4E"></span>Mortgage (P&amp;I)</span>
+    <span><span class="swatch" style="background:#5B7A9D"></span>Net cash flow</span>
+  </div>
+
+  <h2 class="section-head">5-year projection</h2>
+  <div id="projection-table"></div>
+  <p class="footnote" id="assumptions-note"></p>
+
+  <div class="share-row">
+    <button class="copy-link-btn" id="copy-link">copy shareable link</button>
+    <span class="copy-status" id="copy-status"></span>
+  </div>
+
+  <article class="article">
+    <h2>How this rental property calculator works</h2>
+    <p>Enter the purchase price and financing, the market rent, and the operating costs — including the three percentages that separate honest underwriting from wishful thinking: <strong>vacancy</strong>, <strong>maintenance reserve</strong>, and <strong>management</strong>. The calculator amortizes the mortgage, subtracts every cost from the rent, and reports <strong>monthly cash flow</strong>, <strong>cap rate</strong>, and <strong>cash-on-cash return</strong>, plus a five-year projection that layers in rent growth, appreciation, and the equity you build through loan paydown.</p>
+    <p>The waterfall chart is the heart of the page. It starts with the full rent check on the left and steps down through each cost — vacancy, management, maintenance, taxes, insurance, HOA, and finally the mortgage — until what's left is your net cash flow on the right. Most first-time landlords have never seen their deal drawn this way, and it's clarifying: rent is not profit; rent is a gross number that seven hands touch before yours.</p>
+
+    <h2>Cap rate vs. cash-on-cash: two questions, two numbers</h2>
+    <p>The two headline metrics answer different questions, and confusing them is the most common rookie analysis error. <strong>Cap rate</strong> asks: <em>is this a good property?</em> It divides net operating income — rent minus vacancy and operating costs, but <em>not</em> the mortgage — by the purchase price:</p>
+    <p class="formula">Cap rate = NOI ÷ purchase price<br>Cash-on-cash = annual cash flow ÷ cash invested</p>
+    <p>Because cap rate ignores financing entirely, it lets you compare a property bought with cash against one bought with 20% down, or your deal against the market. <strong>Cash-on-cash</strong> asks the more personal question: <em>is this a good use of my money?</em> It divides the actual cash hitting your account after the mortgage by the cash you put in. Leverage is the wedge between the two: borrow at a rate below the cap rate and cash-on-cash rises above it (positive leverage); borrow above the cap rate and financing is actively costing you (negative leverage). Watching which side of the line a deal falls on tells you whether the mortgage is working for you or against you.</p>
+
+    <h2>The 1% rule — a screen, not a verdict</h2>
+    <p>The <strong>1% rule</strong> says monthly rent should be at least 1% of the purchase price: $3,000 of rent on a $300,000 house. Properties that clear the bar have a fighting chance at positive cash flow with conventional financing; properties far below it almost never get there, because taxes, insurance, and the mortgage consume everything. The calculator shows your rent-to-price ratio in the results strip so you can see instantly where a deal stands. Treat it as a first filter — a high-tax county or steep HOA can sink a property that passes, and a low-cost market can work slightly under it. In expensive coastal metros, almost nothing passes; that's not a calculator error, it's the market telling you those prices are bets on appreciation rather than income.</p>
+
+    <h2>Vacancy and maintenance: the lines first-timers skip</h2>
+    <p>Seller pro formas and first-time landlord spreadsheets share a signature omission: rent arrives twelve months a year and nothing ever breaks. Reality disagrees. Every tenancy ends eventually, and the gap between tenants — cleaning, repairs, listing, showings, screening — typically costs two to four weeks of rent, which is why underwriting uses a <strong>vacancy rate</strong> of 5–8%. One month empty is 8.3% of the year's income; budgeting 0% means one turnover wipes out an entire year of thin cash flow.</p>
+    <p><strong>Maintenance</strong> is the same story with a lag. Water heaters, garbage disposals, roof leaks, and appliance deaths don't appear monthly — they appear suddenly, in expensive clusters. A reserve of 5–15% of rent (more for older properties) converts those surprises into a planned line item. And note what the reserve <em>doesn't</em> cover: major capital expenditures like a roof, HVAC system, or repipe. Prudent investors hold a separate capex reserve on top. A deal that only cash-flows when you delete these lines isn't cash-flowing — it's borrowing from your future self at an unknown interest rate.</p>
+
+    <h2>What the five-year projection shows — and what's not modeled</h2>
+    <p>The projection grows rent and operating costs at your rent-growth rate, holds the mortgage payment fixed, and appreciates the property at your chosen rate. Two things emerge. First, <strong>fixed-rate leverage plus rent growth widens cash flow every year</strong> — a thin first-year margin can triple by year five because the biggest cost never rises. Second, the equity column usually dwarfs the cash flow column: between appreciation and principal paydown, most of a leveraged rental's early return arrives silently on the balance sheet, not in the bank account.</p>
+    <p>What's deliberately out of scope: closing costs (2–5% of price, which lower true cash-on-cash), capital expenditures beyond the maintenance reserve, landlord-paid utilities, income taxes on the rental profit, and the substantial tax benefits of depreciation. If you're planning to tap home equity for the down payment, the <a href="/heloc-payment-calculator">HELOC payment calculator</a> prices that borrowing — its payment belongs in this page's expense column if you go that route. And to see what the down payment would do left alone in the market instead, the <a href="/">multi-phase compound interest calculator</a> is the honest benchmark every rental has to beat.</p>
+
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <h3>What's a good monthly cash flow?</h3>
+      <p>Many investors target $100–$300/month per unit after all expenses and reserves — but judge it against cash invested. $200/month on $30,000 down (8% cash-on-cash) beats $250/month on $100,000 down.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is cap rate?</h3>
+      <p>Net operating income (rent minus vacancy and operating costs, before the mortgage) divided by purchase price. It measures the property independent of financing; residential cap rates typically run 4–8%.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Cap rate vs. cash-on-cash — what's the difference?</h3>
+      <p>Cap rate evaluates the property (ignores the mortgage); cash-on-cash evaluates your deal (annual cash flow after the mortgage ÷ cash you put in). Leverage pushes them apart in either direction.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is the 1% rule?</h3>
+      <p>A screen: monthly rent ≥ 1% of purchase price. Deals that clear it have a shot at positive cash flow with 20% down; deals far below it rarely do. It's a filter to decide what's worth a full analysis — not the analysis.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is the 50% rule?</h3>
+      <p>Expect operating expenses (everything except the mortgage) to eat about half of gross rent over the long run. If your line items total far less than 50%, you've probably forgotten something.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What vacancy rate should I use?</h3>
+      <p>5–8% of gross rent — two to four weeks a year for turnover, cleaning, and re-listing. Using 0% is the classic first-timer mistake: one empty month is 8.3% of annual rent.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How much should I reserve for maintenance?</h3>
+      <p>5–15% of rent depending on age and condition, or roughly 1% of property value per year. This covers routine repairs — big-ticket capex (roof, HVAC) deserves its own reserve on top.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What does property management cost?</h3>
+      <p>Usually 8–10% of collected rent plus a leasing fee of half to one month's rent per new tenant. Underwrite it even if you self-manage — a deal that needs free labor to work is a job, not an investment.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is negative cash flow ever OK?</h3>
+      <p>Some investors accept it betting on appreciation and rent growth, but it means feeding the property from your salary with no buffer. Conservative underwriting treats it as a signal to renegotiate or walk.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What does this calculator leave out?</h3>
+      <p>Closing costs, major capex, landlord-paid utilities, licensing fees, income taxes, and depreciation benefits. It's a screening tool — build a full pro forma before making an offer.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How much do rent growth and appreciation matter?</h3>
+      <p>Enormously, over time — they're the compounding half of the return. But they're assumptions. Underwrite the deal to work on today's numbers and treat growth as upside, not as the thing that rescues the deal.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does mortgage principal count as an expense?</h3>
+      <p>For cash flow, yes — the full payment leaves your account monthly. But principal converts to equity you recover at sale, which is why the projection tracks equity separately from cash flow.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is NOI?</h3>
+      <p>Effective rent (after vacancy) minus operating expenses, before the mortgage. It's the cap-rate numerator, and lenders divide it by your annual mortgage payment to compute DSCR — typically requiring 1.2+.</p>
+    </div>
+
+    <p style="margin-top:32px;"><em>This calculator is an estimate for education, not investment, lending, or tax advice. It excludes closing costs, capital expenditures, income taxes, and depreciation, and every projection rests on assumptions that real markets will ignore. Verify all numbers — especially taxes, insurance quotes, and market rent — before making an offer.</em></p>
+  </article>
+
+  <div class="support-footer">
+    <p class="support-line">
+      If this calculator was useful, a tip helps keep it free and ad-free —
+      <a href="https://buymeacoffee.com/ctong" target="_blank" rel="noopener">buy me a coffee</a>.
+    </p>
+    <p class="support-line">
+      I also use <a href="https://monarch.com/referral/rk2olzfae9?r_source=copy" target="_blank" rel="noopener">Monarch</a> to track net worth and spending — that's a referral link, so if you sign up I get a discount on my own subscription. No pressure either way.
+    </p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const AMBER = '#C9A45C';
+  const SLATE = '#5B7A9D';
+  const COPPER = '#B07A4E';
+  const SEAM = '#24344A';
+  const WARN = '#C46552';
+  const PARCHMENT_FAINT = '#948D79';
+  const PARCHMENT_DIM = '#B8AF9C';
+
+  const LIMITS = {
+    price: { min: 10000, max: 20000000 },
+    downPct: { min: 0, max: 100 },
+    rate: { min: 0, max: 15 },
+    term: { min: 5, max: 40 },
+    rent: { min: 0, max: 100000 },
+    tax: { min: 0, max: 200000 },
+    insurance: { min: 0, max: 100000 },
+    hoa: { min: 0, max: 5000 },
+    maintPct: { min: 0, max: 50 },
+    vacancyPct: { min: 0, max: 50 },
+    mgmtPct: { min: 0, max: 30 },
+    rentGrowth: { min: 0, max: 10 },
+    appreciation: { min: 0, max: 10 }
+  };
+
+  let chart = null;
+
+  function fmt(n) {
+    const sign = n < 0 ? '-' : '';
+    return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  function pct1(v) {
+    return (Math.abs(v - Math.round(v)) < 0.05 ? Math.round(v) : v.toFixed(1)) + '%';
+  }
+  function clamp(val, min, max) {
+    if (isNaN(val)) return min;
+    return Math.min(max, Math.max(min, val));
+  }
+  function markValidity(el, value, min, max) {
+    const bad = isNaN(value) || value < min || value > max;
+    el.classList.toggle('invalid', bad);
+  }
+
+  function getInputs() {
+    const g = id => parseFloat(document.getElementById(id).value);
+    return {
+      price: clamp(g('price'), LIMITS.price.min, LIMITS.price.max),
+      downPct: clamp(g('down-pct'), LIMITS.downPct.min, LIMITS.downPct.max),
+      rate: clamp(g('rate'), LIMITS.rate.min, LIMITS.rate.max),
+      term: Math.round(clamp(g('term'), LIMITS.term.min, LIMITS.term.max)),
+      rent: clamp(g('rent'), LIMITS.rent.min, LIMITS.rent.max),
+      tax: clamp(g('tax'), LIMITS.tax.min, LIMITS.tax.max),
+      insurance: clamp(g('insurance'), LIMITS.insurance.min, LIMITS.insurance.max),
+      hoa: clamp(g('hoa'), LIMITS.hoa.min, LIMITS.hoa.max),
+      maintPct: clamp(g('maint-pct'), LIMITS.maintPct.min, LIMITS.maintPct.max),
+      vacancyPct: clamp(g('vacancy-pct'), LIMITS.vacancyPct.min, LIMITS.vacancyPct.max),
+      mgmtPct: clamp(g('mgmt-pct'), LIMITS.mgmtPct.min, LIMITS.mgmtPct.max),
+      rentGrowth: clamp(g('rent-growth'), LIMITS.rentGrowth.min, LIMITS.rentGrowth.max),
+      appreciation: clamp(g('appreciation'), LIMITS.appreciation.min, LIMITS.appreciation.max)
+    };
+  }
+
+  // --- Shareable link encode/decode (same pattern as the other Phases calculators) ---
+  function encodeState() {
+    const i = getInputs();
+    const state = { p: i.price, d: i.downPct, r: i.rate, t: i.term, m: i.rent, x: i.tax, n: i.insurance, h: i.hoa, a: i.maintPct, v: i.vacancyPct, g: i.mgmtPct, w: i.rentGrowth, q: i.appreciation };
+    const json = JSON.stringify(state);
+    const b64 = btoa(unescape(encodeURIComponent(json)));
+    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function decodeState(encoded) {
+    try {
+      const b64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+      const json = decodeURIComponent(escape(atob(b64)));
+      const state = JSON.parse(json);
+      if (!state || typeof state.p === 'undefined') return null;
+      return state;
+    } catch (e) { return null; }
+  }
+  function applyState(s) {
+    const set = (id, val, lim) => { document.getElementById(id).value = clamp(val, lim.min, lim.max); };
+    set('price', s.p, LIMITS.price); set('down-pct', s.d, LIMITS.downPct);
+    set('rate', s.r, LIMITS.rate); set('term', s.t, LIMITS.term);
+    set('rent', s.m, LIMITS.rent); set('tax', s.x, LIMITS.tax);
+    set('insurance', s.n, LIMITS.insurance); set('hoa', s.h, LIMITS.hoa);
+    set('maint-pct', s.a, LIMITS.maintPct); set('vacancy-pct', s.v, LIMITS.vacancyPct);
+    set('mgmt-pct', s.g, LIMITS.mgmtPct); set('rent-growth', s.w, LIMITS.rentGrowth);
+    set('appreciation', s.q, LIMITS.appreciation);
+  }
+  function updateUrlSilently() {
+    const url = new URL(window.location.href);
+    url.searchParams.set('d', encodeState());
+    window.history.replaceState(null, '', url.toString());
+  }
+  let urlUpdateTimer = null;
+  function scheduleUrlUpdate() {
+    clearTimeout(urlUpdateTimer);
+    urlUpdateTimer = setTimeout(updateUrlSilently, 400);
+  }
+
+  // Standard amortization payment.
+  function monthlyPayment(loan, annualRate, years) {
+    if (loan <= 0) return 0;
+    const n = years * 12;
+    const mr = annualRate / 100 / 12;
+    if (mr === 0) return loan / n;
+    const f = Math.pow(1 + mr, n);
+    return loan * mr * f / (f - 1);
+  }
+  // Remaining balance after k payments.
+  function balanceAfter(loan, annualRate, years, k) {
+    if (loan <= 0) return 0;
+    const n = years * 12;
+    if (k >= n) return 0;
+    const mr = annualRate / 100 / 12;
+    if (mr === 0) return loan * (1 - k / n);
+    const f = Math.pow(1 + mr, n);
+    return loan * (f - Math.pow(1 + mr, k)) / (f - 1);
+  }
+
+  function compute() {
+    const i = getInputs();
+    const down = i.price * i.downPct / 100;
+    const loan = i.price - down;
+    const pi = monthlyPayment(loan, i.rate, i.term);
+
+    // Monthly cost lines. Conventions (documented in the footnote):
+    // vacancy & maintenance as % of gross scheduled rent; management as %
+    // of collected (post-vacancy) rent.
+    const vacancy = i.rent * i.vacancyPct / 100;
+    const collected = i.rent - vacancy;
+    const mgmt = collected * i.mgmtPct / 100;
+    const maint = i.rent * i.maintPct / 100;
+    const taxMo = i.tax / 12;
+    const insMo = i.insurance / 12;
+    const hoa = i.hoa;
+
+    const opexMo = mgmt + maint + taxMo + insMo + hoa;       // operating costs (excl. vacancy, excl. debt)
+    const noiMo = collected - opexMo;
+    const noi = noiMo * 12;
+    const cashFlowMo = noiMo - pi;
+    const capRate = i.price > 0 ? noi / i.price * 100 : 0;
+    const coc = down > 0 ? (cashFlowMo * 12) / down * 100 : null;
+    const rentRatio = i.price > 0 ? i.rent / i.price * 100 : 0;
+    const dscr = pi > 0 ? noi / (pi * 12) : null;
+
+    // 5-year projection: rent and operating costs grow at rentGrowth;
+    // P&I fixed; value grows at appreciation.
+    const years = [];
+    const gw = i.rentGrowth / 100, ap = i.appreciation / 100;
+    for (let y = 1; y <= 5; y++) {
+      const f = Math.pow(1 + gw, y - 1);
+      const cfYr = (noiMo * f - pi) * 12;
+      const value = i.price * Math.pow(1 + ap, y);
+      const bal = balanceAfter(loan, i.rate, i.term, y * 12);
+      years.push({
+        y,
+        rentMo: i.rent * f,
+        cfYr,
+        value,
+        balance: bal,
+        equity: value - bal
+      });
+    }
+
+    return {
+      inputs: i, down, loan, pi,
+      vacancy, collected, mgmt, maint, taxMo, insMo, hoa,
+      opexMo, noiMo, noi, cashFlowMo, capRate, coc, rentRatio, dscr, years
+    };
+  }
+
+  function renderWarnings(r) {
+    const el = document.getElementById('warnings');
+    el.innerHTML = '';
+    function add(cls, text) {
+      const div = document.createElement('div');
+      div.className = cls;
+      div.textContent = text;
+      el.appendChild(div);
+    }
+    if (r.inputs.rent <= 0) {
+      add('warning', 'Enter a monthly rent above $0 to analyze the deal.');
+      return;
+    }
+    if (r.cashFlowMo < 0) {
+      add('warning', 'Negative cash flow: this property costs ' + fmt(-r.cashFlowMo) + '/mo to hold at these numbers — ' +
+        fmt(-r.cashFlowMo * 12) + '/yr out of pocket before any surprise expenses.');
+    }
+    if (r.inputs.vacancyPct === 0 || r.inputs.maintPct === 0) {
+      add('info-note', 'Vacancy or maintenance is set to 0% — the two lines first-time landlords most often skip. Even great properties have turnover and repairs; 5–8% vacancy and 5–15% maintenance are typical.');
+    }
+    if (r.dscr !== null && r.dscr < 1.2 && r.dscr > 0) {
+      add('info-note', 'DSCR is ' + r.dscr.toFixed(2) + ' (NOI ÷ annual mortgage payment). Many rental lenders require 1.20+ to approve the loan.');
+    }
+  }
+
+  function renderResults(r) {
+    const cfEl = document.getElementById('cash-flow');
+    cfEl.textContent = fmt(r.cashFlowMo);
+    cfEl.className = 'value ' + (r.cashFlowMo >= 0 ? 'positive' : 'negative');
+    document.getElementById('cash-flow-yr').textContent = fmt(r.cashFlowMo * 12) + '/yr';
+
+    document.getElementById('cap-rate').textContent = pct1(r.capRate);
+    document.getElementById('noi-note').textContent = 'NOI ' + fmt(r.noi) + '/yr';
+
+    document.getElementById('coc').textContent = r.coc === null ? '—' : pct1(r.coc);
+    document.getElementById('cash-invested').textContent = fmt(r.down) + ' down';
+
+    document.getElementById('rent-ratio').textContent = r.rentRatio.toFixed(2) + '%';
+    document.getElementById('one-pct-note').textContent = r.rentRatio >= 1 ? 'passes the 1% rule' : 'below the 1% rule';
+  }
+
+  function renderChart(r) {
+    const ctx = document.getElementById('chart');
+    if (chart) { chart.destroy(); chart = null; }
+    if (r.inputs.rent <= 0) { ctx.parentElement.style.display = 'none'; return; }
+    ctx.parentElement.style.display = 'block';
+
+    // Waterfall: rent in, then each cost stepping down, ending at net.
+    const steps = [
+      { label: 'Rent', amt: r.inputs.rent, color: AMBER, kind: 'in' },
+      { label: 'Vacancy', amt: r.vacancy, color: '#8A4A3C', kind: 'out' },
+      { label: 'Mgmt', amt: r.mgmt, color: '#9C523F', kind: 'out' },
+      { label: 'Maint.', amt: r.maint, color: '#AE5A48', kind: 'out' },
+      { label: 'Prop. tax', amt: r.taxMo, color: '#C46552', kind: 'out' },
+      { label: 'Insurance', amt: r.insMo, color: '#D4765F', kind: 'out' },
+      { label: 'HOA', amt: r.hoa, color: '#E0876D', kind: 'out' },
+      { label: 'Mortgage', amt: r.pi, color: COPPER, kind: 'out' }
+    ].filter(s => s.kind === 'in' || s.amt > 0.005);
+
+    const labels = [], data = [], colors = [], metas = [];
+    let running = 0;
+    steps.forEach(s => {
+      if (s.kind === 'in') {
+        labels.push(s.label); data.push([0, s.amt]); running = s.amt;
+      } else {
+        labels.push(s.label); data.push([running - s.amt, running]); running -= s.amt;
+      }
+      colors.push(s.color); metas.push(s);
+    });
+    labels.push('Net');
+    data.push(running >= 0 ? [0, running] : [running, 0]);
+    colors.push(running >= 0 ? SLATE : WARN);
+    metas.push({ label: 'Net cash flow', amt: running, kind: 'net' });
+
+    chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          data,
+          backgroundColor: colors,
+          borderWidth: 0,
+          barPercentage: 0.82,
+          categoryPercentage: 0.9
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              title: items => items.length ? metas[items[0].dataIndex].label : '',
+              label: item => {
+                const m = metas[item.dataIndex];
+                if (m.kind === 'in') return 'Rent in: ' + fmt(m.amt);
+                if (m.kind === 'net') return 'Net cash flow: ' + fmt(m.amt) + '/mo';
+                return '-' + fmt(m.amt).replace('-', '') + ' (' + (m.amt / r.inputs.rent * 100).toFixed(1) + '% of rent)';
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: PARCHMENT_DIM, font: { family: 'IBM Plex Mono', size: 10 }, maxRotation: 45, minRotation: 0 },
+            grid: { display: false }, border: { color: SEAM }
+          },
+          y: {
+            title: { display: true, text: '$/month', color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            ticks: { callback: v => '$' + (Math.abs(v) >= 1000 ? (v/1000).toFixed(1).replace(/\.0$/,'') + 'k' : v), color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            grid: { color: SEAM }, border: { color: SEAM }
+          }
+        }
+      },
+      plugins: [{
+        id: 'zeroLine',
+        afterDraw(c) {
+          const { ctx: g, chartArea, scales } = c;
+          const y0 = scales.y.getPixelForValue(0);
+          if (y0 < chartArea.top || y0 > chartArea.bottom) return;
+          g.save();
+          g.strokeStyle = PARCHMENT_FAINT;
+          g.lineWidth = 1;
+          g.setLineDash([3, 3]);
+          g.beginPath(); g.moveTo(chartArea.left, y0); g.lineTo(chartArea.right, y0); g.stroke();
+          g.restore();
+        }
+      }]
+    });
+  }
+
+  function renderProjection(r) {
+    const el = document.getElementById('projection-table');
+    if (r.inputs.rent <= 0) { el.innerHTML = ''; document.getElementById('assumptions-note').textContent = ''; return; }
+
+    let html = '<table><tr><th>Year</th><th>Rent /mo</th><th>Cash flow /yr</th><th>Property value</th><th>Loan balance</th><th>Equity</th></tr>';
+    r.years.forEach(y => {
+      html += '<tr><td>' + y.y + '</td>' +
+        '<td>' + fmt(y.rentMo) + '</td>' +
+        '<td class="' + (y.cfYr >= 0 ? 'hi' : 'neg') + '">' + fmt(y.cfYr) + '</td>' +
+        '<td>' + fmt(y.value) + '</td>' +
+        '<td>' + fmt(y.balance) + '</td>' +
+        '<td class="hi">' + fmt(y.equity) + '</td></tr>';
+    });
+    html += '</table>';
+    el.innerHTML = html;
+
+    const i = r.inputs;
+    document.getElementById('assumptions-note').textContent =
+      'Assumes ' + fmt(r.pi) + '/mo P&I on a ' + fmt(r.loan) + ' loan (' + i.rate + '%, ' + i.term + ' yrs), vacancy and maintenance as % of scheduled rent, ' +
+      'management as % of collected rent, rent and operating costs growing ' + i.rentGrowth + '%/yr, value appreciating ' + i.appreciation + '%/yr. ' +
+      'Excludes closing costs, capex beyond the maintenance reserve, income taxes, and depreciation. Estimate only.';
+  }
+
+  function update() {
+    const r = compute();
+    renderWarnings(r);
+    renderResults(r);
+    renderChart(r);
+    renderProjection(r);
+    scheduleUrlUpdate();
+  }
+
+  // Wire inputs with the same input/blur clamp pattern as the other Phases calculators.
+  [
+    ['price', LIMITS.price], ['down-pct', LIMITS.downPct], ['rate', LIMITS.rate], ['term', LIMITS.term],
+    ['rent', LIMITS.rent], ['tax', LIMITS.tax], ['insurance', LIMITS.insurance], ['hoa', LIMITS.hoa],
+    ['maint-pct', LIMITS.maintPct], ['vacancy-pct', LIMITS.vacancyPct], ['mgmt-pct', LIMITS.mgmtPct],
+    ['rent-growth', LIMITS.rentGrowth], ['appreciation', LIMITS.appreciation]
+  ].forEach(([id, lim]) => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => {
+      markValidity(el, parseFloat(el.value), lim.min, lim.max);
+      update();
+    });
+    el.addEventListener('blur', () => {
+      const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
+      el.value = corrected;
+      el.classList.remove('invalid');
+      update();
+    });
+  });
+
+  document.getElementById('copy-link').addEventListener('click', () => {
+    updateUrlSilently();
+    const statusEl = document.getElementById('copy-status');
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      statusEl.textContent = 'link copied';
+      setTimeout(() => { statusEl.textContent = ''; }, 2200);
+    }).catch(() => {
+      statusEl.textContent = 'copy failed — select the URL bar';
+      setTimeout(() => { statusEl.textContent = ''; }, 2800);
+    });
+  });
+
+  (function hydrateFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const encoded = params.get('d');
+    if (encoded) {
+      const state = decodeState(encoded);
+      if (state) applyState(state);
+    }
+  })();
+
+  update();
+})();
+</script>
+</body>
+</html>

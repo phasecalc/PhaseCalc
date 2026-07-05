@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Margin Interest Calculator — what a margin loan really costs</title>
+<meta name="description" content="Free margin interest calculator. See the total interest cost of a margin loan, the break-even return your leverage must clear, and a chart shading exactly when borrowing to invest helps vs. hurts — with real tiered-rate context." />
+<link rel="canonical" href="https://phasecalc.com/margin-loan-calculator" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Phases" />
+<meta property="og:url" content="https://phasecalc.com/margin-loan-calculator" />
+<meta property="og:title" content="Margin Interest Calculator — what a margin loan really costs" />
+<meta property="og:description" content="Total interest cost, the break-even return leverage must clear, and a chart of when margin helps vs. hurts." />
+<meta property="og:image" content="https://phasecalc.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Margin Interest Calculator — what a margin loan really costs" />
+<meta name="twitter:description" content="Total interest cost, the break-even return leverage must clear, and a chart of when margin helps vs. hurts." />
+<meta name="twitter:image" content="https://phasecalc.com/og-image.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is margin interest calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Brokers quote an annual margin rate, accrue interest daily on your outstanding loan balance (daily rate ≈ annual rate ÷ 360, at most brokers), and post the charge to your account monthly. If you don't pay it, the interest is added to your loan and starts accruing interest itself. This calculator models that by compounding the quoted rate monthly, so the total cost is slightly higher than the flat rate × balance × years shortcut."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a typical margin rate?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It varies enormously by broker and balance. Discount brokers with tiered pricing (Interactive Brokers is the canonical example) charge a benchmark rate plus a spread that shrinks as you borrow more — roughly benchmark +1.5% under $100k, +1% from $100k to $1M, and +0.75% above that on IBKR Pro. Full-service brokers like Schwab and Fidelity post base rates several points higher — often 4–7 points over the benchmark for small balances — though large accounts can sometimes negotiate. Always check your broker's current schedule; margin rates float with central-bank rates."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why are margin rates tiered by balance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Bigger loans cost the broker roughly the same to administer as small ones, and large borrowers can credibly threaten to move their account, so brokers compete hardest for them. Tiered schedules are usually blended: with a $1.5M loan at IBKR-style pricing, the first $100k accrues at the tier-one rate, the next $900k at tier two, and the remainder at tier three — your effective rate is the weighted average, not the headline rate of your top tier."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What return do I need to break even on a margin loan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Your portfolio must return the effective annual cost of the loan — the quoted margin rate compounded at the broker's posting frequency. A 6% rate compounded monthly is about 6.17% effective, so the borrowed dollars must earn 6.17% a year just to tread water. Notably, the break-even doesn't depend on how much you borrow or for how long: leverage scales both the gain and the cost together. Above the break-even, more time and more balance help; below it, they compound the damage."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does margin interest compound?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, if you don't pay it out of pocket. Interest posts to your account monthly and increases your loan balance, so next month's interest is charged on a bigger number. Over multi-year holds this quietly steepens the cost curve — and because a growing loan also shrinks your equity cushion, unpaid interest simultaneously walks you closer to a margin call."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a margin call?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A demand from your broker to restore your equity cushion after your portfolio falls. FINRA requires your equity (portfolio value minus loan) to stay above 25% of the portfolio's market value; most brokers set stricter house requirements of 30–40%. If you fall below, you must deposit cash or securities, or sell positions. Example: put up $50k, borrow $50k to hold $100k of stock — at a 25% maintenance requirement, a drop of about 33% in the portfolio triggers the call."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can my broker sell my stocks without asking me?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The margin agreement you signed lets the broker liquidate any position in your account, at any time, without notice, to bring it back into compliance — and they choose what to sell and at what price. In fast markets brokers routinely liquidate before or instead of issuing a call. Forced sales lock in losses at the worst possible prices and can create surprise tax bills, which is why maintenance-margin math matters more than the interest rate for survival."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much can I borrow on margin?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Under the Federal Reserve's Regulation T, you can borrow up to 50% of a marginable stock purchase initially — $50k of buying power per $50k of your own money. After purchase, FINRA's 25% maintenance minimum (and your broker's stricter house requirement) governs how much cushion you must keep. Some assets are non-marginable or carry higher requirements, and brokers can raise requirements on volatile or concentrated positions with no notice."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is margin interest tax-deductible?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "In the U.S., margin interest used to buy taxable investments can qualify as investment interest expense — deductible if you itemize, and only up to your net investment income for the year. Interest used to buy tax-exempt bonds doesn't qualify, and qualified dividends only count toward the limit if you elect to have them taxed at ordinary rates. The rules have real teeth; treat this as a question for a tax professional, not a reason to borrow."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why can margin cost outweigh my gains even when my expected return beats the rate?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Because the interest is certain and continuous while the return is volatile and lumpy. A '9% average' market delivers that average through +25% years and −20% years, and leverage amplifies the bad ones exactly when your equity cushion is thinnest. Volatility drag means a leveraged portfolio compounds at less than the leveraged average return, and a single forced liquidation near a bottom can permanently convert a temporary drawdown into a realized loss the recovery never repairs. A flat-return comparison — the one this calculator's chart shows — is therefore the *optimistic* case for leverage."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is a margin loan cheaper than a HELOC or personal loan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Often, yes — at a tiered discount broker, margin rates can undercut HELOCs and almost always undercut personal loans, with no application, closing costs, or fixed repayment schedule. The trade-off is the collateral: a HELOC lender can't force-sell your house within hours of a price drop, but a margin lender can and will liquidate your portfolio intraday. Cheaper interest, far harsher failure mode."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do margin rates change while I hold the loan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Nearly all margin rates float: they're built on a benchmark tied to central-bank policy rates, so when the Fed moves, your rate moves within days — no notice, no lock. A loan that cleared its break-even at 5% may quietly stop clearing it at 7%. This calculator assumes a fixed rate for the period, so re-run it with a couple of points added to see your sensitivity."
+      }
+    }
+  ]
+}
+</script>
+<style>
+  :root {
+    --ink: #0F1B2D;
+    --ink-raised: #142539;
+    --parchment: #EDE6D6;
+    --parchment-dim: #B8AF9C;
+    --parchment-faint: #948D79;
+    --amber: #C9A45C;
+    --amber-dim: #4A3C24;
+    --slate: #5B7A9D;
+    --slate-dim: #25333F;
+    --copper: #B07A4E;
+    --seam: #24344A;
+    --warn: #C46552;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--parchment);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .brandbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--seam);
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .wordmark svg { display: block; }
+  .wordmark span {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    letter-spacing: 0.01em;
+    color: var(--parchment);
+  }
+  .sitenav {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+  }
+  .sitenav a {
+    color: var(--parchment-faint);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+  }
+  .sitenav a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+  .sitenav a.current { color: var(--parchment); border-bottom-color: var(--seam); }
+
+  .masthead {
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--seam);
+    padding-bottom: 24px;
+  }
+  .masthead h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 32px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .masthead p {
+    color: var(--parchment-dim);
+    font-size: 15px;
+    margin: 0;
+    max-width: 540px;
+  }
+
+  .panel {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--amber);
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 18px;
+  }
+
+  .field label {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin-bottom: 6px;
+  }
+
+  .field .input-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .field .prefix, .field .suffix {
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    color: var(--parchment-dim);
+  }
+
+  /* Floating help bubbles */
+  .tip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: 1px;
+    cursor: help;
+    outline: none;
+  }
+  .tip .tip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid var(--parchment-faint);
+    color: var(--parchment-faint);
+    font-size: 9px;
+    line-height: 1;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .tip:hover .tip-icon, .tip:focus .tip-icon { border-color: var(--amber); color: var(--amber); }
+  .tip .tip-box {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 9px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 230px;
+    max-width: calc(100vw - 56px);
+    background: var(--ink);
+    border: 1px solid var(--seam);
+    border-radius: 3px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--parchment-dim);
+    white-space: normal;
+    z-index: 20;
+  }
+  .tip .tip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--seam);
+  }
+  .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
+
+  input[type="number"], select {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--seam);
+    color: var(--parchment);
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    padding: 2px 0;
+    width: 100%;
+    transition: border-color 0.15s ease;
+    border-radius: 0;
+  }
+  select { cursor: pointer; appearance: none; -webkit-appearance: none; }
+  select option { background: var(--ink); color: var(--parchment); }
+  input:focus, select:focus { outline: none; border-bottom-color: var(--amber); }
+  input.invalid { border-bottom-color: var(--warn); }
+  input:disabled { color: var(--parchment-dim); }
+
+  .toggles {
+    display: flex;
+    gap: 24px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--seam);
+    flex-wrap: wrap;
+  }
+  .toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-dim);
+    cursor: pointer;
+    user-select: none;
+  }
+  .toggle input { width: auto; accent-color: #C9A45C; cursor: pointer; }
+  .toggle .hint { color: var(--parchment-faint); }
+
+  /* Results strip */
+  .results-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 2px;
+    margin-bottom: 10px;
+  }
+  .result-cell {
+    background: var(--ink-raised);
+    padding: 16px 16px 14px;
+  }
+  .result-cell .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 6px;
+    line-height: 1.4;
+  }
+  .result-cell .value {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    margin: 0;
+    color: var(--parchment);
+  }
+  .result-cell.hero .value { color: var(--amber); }
+  .result-cell .value.net-pos { color: var(--amber); }
+  .result-cell .value.net-neg { color: var(--warn); }
+  .result-cell .value.be { color: var(--slate); }
+
+  /* Gain vs cost duel bar */
+  .duel-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 74px;
+    margin-bottom: 6px;
+  }
+  .duel-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    border-radius: 3px 3px 0 0;
+  }
+  .duel-seg.gain { background: var(--amber-dim); color: var(--amber); }
+  .duel-seg.cost { background: #402A24; color: var(--warn); }
+  .duel-caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 32px;
+  }
+  .duel-caption .win { color: var(--copper); }
+
+  .warning {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--warn);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .info-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--copper);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  .chart-wrap { position: relative; height: 300px; margin-bottom: 14px; }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-dim);
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .legend .swatch { display: inline-block; width: 9px; height: 9px; margin-right: 6px; vertical-align: -1px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
+  th, td { padding: 9px 6px; text-align: right; border-bottom: 1px solid var(--seam); }
+  th:first-child, td:first-child { text-align: left; }
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    font-weight: 400;
+  }
+  td { font-family: 'Source Serif 4', serif; color: var(--parchment-dim); }
+  td:first-child { font-family: 'Inter', sans-serif; color: var(--parchment); font-size: 13px; }
+  td.hi { color: var(--parchment); font-weight: 500; }
+  .footnote { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--parchment-faint); margin: 8px 0 0; }
+
+  .share-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 0;
+  }
+  .copy-link-btn {
+    background: none;
+    border: 1px solid var(--seam);
+    color: var(--parchment-dim);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    padding: 7px 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+  .copy-link-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .copy-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--amber);
+  }
+
+  /* Article */
+  .article {
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--seam);
+  }
+  .article h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+  }
+  .article h2:first-child { margin-top: 0; }
+  .article h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 28px 0 8px;
+  }
+  .article p {
+    color: var(--parchment-dim);
+    font-size: 16.5px;
+    line-height: 1.7;
+    margin: 0 0 18px;
+  }
+  .article strong { color: var(--parchment); font-weight: 500; }
+  .article a { color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber-dim); }
+  .article a:hover { border-bottom-color: var(--amber); }
+  .article table td { font-size: 13.5px; }
+  .article table td:first-child { white-space: nowrap; }
+
+  .faq-item { margin-bottom: 24px; }
+  .faq-item h3 { margin-bottom: 6px; }
+  .faq-item p { margin-bottom: 0; }
+
+  .support-footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--seam);
+  }
+  .support-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 8px;
+    line-height: 1.6;
+  }
+  .support-line a {
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 1px solid var(--amber-dim);
+  }
+  .support-line a:hover { border-bottom-color: var(--amber); }
+
+  @media (max-width: 620px) {
+    .field-grid { grid-template-columns: 1fr 1fr; }
+    .results-strip { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brandbar">
+    <a class="wordmark" href="/"><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="7" width="12" height="18" fill="#C9A45C"/><rect x="16.5" y="7" width="8.5" height="18" fill="#8A6E3D"/><rect x="27" y="7" width="3.5" height="18" fill="#5B7A9D"/></svg><span>Phases</span></a>
+    <nav class="sitenav">
+      <a href="/">Compound Interest</a>
+      <a href="/trump-account-calculator">Trump Account</a>
+      <a href="/529-superfunding-calculator">529 Superfund</a>
+      <a href="/roth-vs-traditional-calculator">Roth vs Trad</a>
+      <a href="/coast-fire-calculator">Coast FIRE</a>
+      <a href="/savings-goal-calculator">Savings Goal</a>
+      <a href="/dca-calculator">DCA</a>
+      <a href="/drip-calculator">DRIP</a>
+      <a href="/margin-loan-calculator" class="current">Margin</a>
+      <a href="/capital-gains-tax-calculator">Capital Gains</a>
+      <a href="/inflation-adjusted-return-calculator">Real Return</a>
+      <a href="/heloc-payment-calculator">HELOC</a>
+      <a href="/cash-out-refinance-vs-heloc-calculator">Refi vs HELOC</a>
+      <a href="/mortgage-extra-payment-calculator">Mortgage Payoff</a>
+      <a href="/rental-property-calculator">Rental</a>
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </header>
+
+  <div class="masthead">
+    <h1>Margin interest calculator</h1>
+    <p>See what a margin loan actually costs over your holding period, the return your portfolio must clear to break even, and — on one chart — exactly where leverage helps and where it hurts.</p>
+  </div>
+
+  <div class="panel">
+    <div class="field-grid">
+      <div class="field">
+        <label>Margin loan balance<span class="tip" tabindex="0" aria-label="Help: loan balance"><span class="tip-icon">?</span><span class="tip-box">How much you're borrowing against your portfolio. Reg T caps the initial loan at 50% of a marginable stock purchase.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="number" id="balance" value="50000" min="1000" max="10000000" step="1000" /></div>
+      </div>
+      <div class="field">
+        <label>Margin rate (annual)<span class="tip" tabindex="0" aria-label="Help: margin rate"><span class="tip-icon">?</span><span class="tip-box">Your broker's quoted annual rate. Tiered brokers (IBKR-style) charge roughly benchmark +1.5% under $100k, +1% to $1M, +0.75% above — about 5.1% / 4.6% / 4.4% as of mid-2026. Full-service brokers often post 4–7 points over the benchmark for small balances.</span></span></label>
+        <div class="input-row"><input type="number" id="rate" value="6" min="0.1" max="25" step="0.1" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Loan duration (years)<span class="tip" tabindex="0" aria-label="Help: duration"><span class="tip-icon">?</span><span class="tip-box">How long you expect to carry the loan. Interest accrues to the balance monthly, so longer holds compound the cost.</span></span></label>
+        <input type="number" id="years" value="3" min="0.25" max="30" step="0.25" />
+      </div>
+      <div class="field">
+        <label>Expected annual return %<span class="tip" tabindex="0" aria-label="Help: expected return"><span class="tip-icon">?</span><span class="tip-box">Optional — what you think the borrowed dollars will earn per year. Used to mark your spot on the chart and score the trade. 7% is a common (optimistic, flat) assumption for U.S. stocks.</span></span></label>
+        <div class="input-row"><input type="number" id="expret" value="7" min="-20" max="25" step="0.1" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Effective annual cost<span class="tip" tabindex="0" aria-label="Help: effective annual cost"><span class="tip-icon">?</span><span class="tip-box">Your quoted rate compounded monthly (APY). This — not the quoted rate — is the return leverage must beat. Computed for you.</span></span></label>
+        <div class="input-row"><input type="number" id="apy-display" value="0" disabled /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Interest, first month<span class="tip" tabindex="0" aria-label="Help: first month interest"><span class="tip-icon">?</span><span class="tip-box">Balance × rate ÷ 12 — the concrete monthly bill your positions must out-earn. Computed for you.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="number" id="monthly-display" value="0" disabled /></div>
+      </div>
+    </div>
+    <div class="toggles">
+      <label class="toggle">
+        <input type="checkbox" id="compare-ret" checked />
+        <span>Score the trade against my expected return <span class="hint">(marker on the chart + net outcome)</span></span>
+      </label>
+    </div>
+  </div>
+
+  <div id="warnings"></div>
+
+  <div class="results-strip">
+    <div class="result-cell hero">
+      <p class="label">Total interest cost</p>
+      <p class="value" id="total-interest">$0</p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Owed at end (loan + interest)</p>
+      <p class="value" id="total-owed">$0</p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Break-even annual return</p>
+      <p class="value be" id="break-even">—</p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Net at your expected return</p>
+      <p class="value" id="net-outcome">—</p>
+    </div>
+  </div>
+
+  <div class="duel-bar" id="duel-bar"></div>
+  <p class="duel-caption" id="duel-caption"></p>
+
+  <div class="chart-wrap">
+    <canvas id="chart" role="img" aria-label="Line chart across a range of possible annual portfolio returns. A yellow curve shows what the borrowed dollars would earn over the period, a dashed copper horizontal line shows the fixed margin interest cost, and the region between them is shaded — amber where returns beat the cost of borrowing and leverage helps, red where interest exceeds gains and leverage hurts. A blue point marks the break-even return and, optionally, a marker shows the user's expected return.">Across possible annual returns, the yellow gain curve crosses the flat copper interest-cost line at the break-even return; the amber-shaded region to the right is where leverage helps and the red-shaded region to the left is where it hurts.</canvas>
+  </div>
+  <div class="legend">
+    <span><span class="swatch" style="background:#C9A45C"></span>What the borrowed dollars earn — yellow curve</span>
+    <span><span class="swatch" style="background:#B07A4E"></span>Margin interest cost — dashed line</span>
+    <span><span class="swatch" style="background:rgba(201,164,92,0.20)"></span>Leverage helps</span>
+    <span><span class="swatch" style="background:rgba(196,101,82,0.20)"></span>Leverage hurts</span>
+    <span><span class="swatch" style="background:#5B7A9D"></span>Break-even</span>
+  </div>
+
+  <div id="summary-table"></div>
+  <p class="footnote" id="assumptions-note"></p>
+
+  <div class="share-row">
+    <button class="copy-link-btn" id="copy-link">copy shareable link</button>
+    <span class="copy-status" id="copy-status"></span>
+  </div>
+
+  <article class="article">
+    <h2>How this margin interest calculator works</h2>
+    <p>Enter your <strong>loan balance</strong>, your broker's <strong>annual margin rate</strong>, and how long you expect to carry the loan. The calculator accrues interest the way brokers actually do — posted monthly and, if unpaid, added to the balance so it compounds — and reports the <strong>total interest cost</strong> over the period, the full amount owed at the end, and the number that matters most: the <strong>break-even annual return</strong> your investments must clear for the leverage to be worth anything at all.</p>
+    <p>The chart is the honest part. Instead of assuming one rosy return, it sweeps across a <em>range</em> of possible annual portfolio returns and plots what the borrowed dollars would earn against the fixed, certain interest bill. Where the yellow gain curve rises above the dashed cost line, the region is shaded amber — leverage helped. Where it sits below, the shading turns red — you paid real interest for the privilege of losing more money. The two curves cross at exactly one point: your break-even, which is the quoted rate compounded monthly (the APY), not the headline rate. A useful and slightly uncomfortable fact falls out of the math: <strong>the break-even doesn't depend on how much you borrow or for how long</strong>. Size and duration only decide how big the win or the loss gets.</p>
+
+    <h2>How margin rates are tiered</h2>
+    <p>Margin pricing is one of the widest spreads in retail finance. Nearly every broker builds its rate the same way — a floating <strong>benchmark</strong> tied to the central-bank policy rate, plus a <strong>spread</strong> — but the spread varies from under one point to over seven depending on the broker and how much you borrow. Tiered brokers, with Interactive Brokers as the canonical example, shrink the spread as the balance grows: as of mid-2026, IBKR Pro charges roughly <strong>benchmark +1.5% on the first $100k</strong> (about 5.1%), <strong>+1% from $100k to $1M</strong> (about 4.6%), and <strong>+0.75% above $1M</strong> (about 4.4%). The tiers are blended — borrow $250k and the first $100k accrues at tier one while the next $150k accrues at tier two, so your effective rate is a weighted average. Full-service brokers like Schwab and Fidelity post base rates several points higher — frequently 4–7 points over the benchmark for smaller balances — though large accounts can sometimes negotiate, and flat-rate offerings like Robinhood Gold sit in between. Two consequences follow. First, always enter <em>your</em> broker's actual rate above, because the difference between 5% and 12% is the difference between a plausible trade and a near-guaranteed loss. Second, every one of these rates <strong>floats</strong>: when policy rates move, your margin rate moves within days, with no notice and no lock.</p>
+
+    <h2>Margin calls and forced liquidation</h2>
+    <p>Interest is the visible cost of margin. The invisible cost is that you've given your broker the right to sell your portfolio out from under you. FINRA requires your equity — portfolio value minus the loan — to stay above <strong>25% of the portfolio's market value</strong>, and most brokers impose stricter house requirements of 30–40% that they can raise at any time, on any position, without warning. Put up $50k, borrow $50k, and hold $100k of stock: at a 25% maintenance requirement, a portfolio drop of about a third puts you in violation. What happens next is not a polite phone call. Your margin agreement permits the broker to <strong>liquidate positions immediately, without notice, choosing what to sell and when</strong> — and in fast markets they exercise that right before you've seen the alert. Forced sales crystallize losses at the worst prices of the cycle, can trigger surprise capital-gains bills on positions you never meant to sell, and remove the one thing an unleveraged investor always has: the option to wait out a drawdown. Notice the interaction with interest, too — unpaid interest grows the loan, which shrinks your equity cushion, which moves the liquidation trigger closer even in a flat market.</p>
+
+    <h2>Why margin cost quietly outweighs the gains</h2>
+    <p>On paper, borrowing at 6% to earn "the market's 9% average" looks like free money, and the chart above — which uses exactly that kind of flat-return assumption — will happily shade the region amber. Treat that as the <em>optimistic</em> case. The margin bill is <strong>certain, continuous, and compounding</strong>; the return is an average that arrives as +25% years shuffled with −20% years. Leverage amplifies the volatility, and volatility itself taxes compound growth — a portfolio that swings harder compounds at less than its average return, a gap called volatility drag that widens with leverage. Sequence matters as much as magnitude: a bad year <em>early</em> means you pay interest on the full loan while the assets that were supposed to out-earn it have shrunk, and a deep-enough drawdown hands the decision to your broker's liquidation desk, converting a temporary loss into a permanent one that no recovery repairs. That's why the honest comparison isn't "average return vs. margin rate" but "compounded, guaranteed cost vs. volatile, path-dependent gain" — and why the break-even line on this page should be treated as a floor, not a target. If you want to feel the difference between flat assumptions and real paths, run the same numbers through the <a href="/dca-calculator">DCA calculator</a>, which simulates hundreds of volatile markets instead of one smooth line, and then let the <a href="/">multi-phase compound interest calculator</a> show you what those unborrowed dollars do over the decades that follow. If you're weighing margin against borrowing on your house instead, the <a href="/heloc-payment-calculator">HELOC payment calculator</a> prices the alternative.</p>
+
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <h3>How is margin interest calculated?</h3>
+      <p>Brokers accrue interest daily on the outstanding balance and post it monthly; unpaid interest joins the loan and compounds. This calculator compounds the quoted rate monthly, so the true cost runs slightly above the flat rate × balance × years shortcut.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What's a typical margin rate?</h3>
+      <p>Tiered discount brokers charge roughly benchmark +1.5% under $100k, +1% to $1M, +0.75% above (IBKR-style — about 5.1% / 4.6% / 4.4% in mid-2026). Full-service brokers often post 4–7 points over the benchmark for small balances. Check your broker's schedule; rates float.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why are margin rates tiered by balance?</h3>
+      <p>Large borrowers are cheap to serve and expensive to lose, so brokers compete for them. Tiers are blended: each slice of the loan accrues at its own tier's rate, and your effective rate is the weighted average.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What return do I need to break even?</h3>
+      <p>The quoted rate compounded monthly — the APY. A 6% rate needs about 6.17% a year from the borrowed dollars. The break-even is independent of loan size and duration; those only scale the win or the loss.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does margin interest compound?</h3>
+      <p>Yes, whenever you don't pay it out of pocket — it's added to the loan monthly, so future interest is charged on a bigger balance, and your equity cushion shrinks at the same time.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is a margin call?</h3>
+      <p>A demand to restore your equity cushion after a drop. FINRA's floor is equity ≥ 25% of portfolio value; house requirements run 30–40%. At 2:1 initial leverage and a 25% requirement, roughly a 33% portfolio drop triggers one.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can my broker sell my stocks without asking?</h3>
+      <p>Yes — the margin agreement allows liquidation at any time, without notice, with the broker choosing what to sell. In fast markets they often liquidate first and notify after.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How much can I borrow on margin?</h3>
+      <p>Reg T allows up to 50% of a marginable purchase initially; maintenance requirements govern after that. Volatile or concentrated positions can carry higher requirements, changeable without notice.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is margin interest tax-deductible?</h3>
+      <p>Sometimes — as investment interest expense, if you itemize, capped at your net investment income, with exclusions (tax-exempt bonds; qualified dividends unless you elect ordinary treatment). Ask a tax professional.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why can margin cost outweigh gains even when my expected return beats the rate?</h3>
+      <p>The cost is certain and compounding; the return is volatile and path-dependent. Volatility drag, bad sequences, and forced liquidation near bottoms mean a flat-return comparison — like this chart — is the optimistic case.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is margin cheaper than a HELOC or personal loan?</h3>
+      <p>At tiered brokers, often yes — no fees, no schedule. But a HELOC lender can't force-sell your collateral within hours of a price drop; a margin lender can. Cheaper rate, harsher failure mode.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Do margin rates change while I hold the loan?</h3>
+      <p>Yes — nearly all float with policy rates and reprice within days, no notice. Re-run this calculator with a couple of points added to see your sensitivity.</p>
+    </div>
+
+    <p style="margin-top:32px;"><em>This calculator is for education, not investment advice. It assumes a fixed rate and a flat return — real rates float, real returns swing, and margin calls don't wait for averages. Confirm decisions with a qualified advisor.</em></p>
+  </article>
+
+  <div class="support-footer">
+    <p class="support-line">
+      If this calculator was useful, a tip helps keep it free and ad-free —
+      <a href="https://buymeacoffee.com/ctong" target="_blank" rel="noopener">buy me a coffee</a>.
+    </p>
+    <p class="support-line">
+      I also use <a href="https://monarch.com/referral/rk2olzfae9?r_source=copy" target="_blank" rel="noopener">Monarch</a> to track net worth and spending — that's a referral link, so if you sign up I get a discount on my own subscription. No pressure either way.
+    </p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const AMBER = '#C9A45C';
+  const SLATE = '#5B7A9D';
+  const COPPER = '#B07A4E';
+  const SEAM = '#24344A';
+  const PARCHMENT_FAINT = '#948D79';
+  const WARN = '#C46552';
+
+  const LIMITS = {
+    balance: { min: 1000, max: 10000000 },
+    rate: { min: 0.1, max: 25 },
+    years: { min: 0.25, max: 30 },
+    expret: { min: -20, max: 25 }
+  };
+
+  let chart = null;
+
+  function fmt(n) {
+    const sign = n < 0 ? '-' : '';
+    return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  function fmtShort(n) {
+    const a = Math.abs(n);
+    const sign = n < 0 ? '-' : '';
+    if (a >= 1000000) return sign + '$' + (a / 1000000).toFixed(2) + 'M';
+    if (a >= 1000) return sign + '$' + Math.round(a / 1000) + 'k';
+    return sign + '$' + Math.round(a);
+  }
+  function clamp(val, min, max) {
+    if (isNaN(val)) return min;
+    return Math.min(max, Math.max(min, val));
+  }
+  function markValidity(el, value, min, max) {
+    const bad = isNaN(value) || value < min || value > max;
+    el.classList.toggle('invalid', bad);
+  }
+  function getInputs() {
+    return {
+      balance: clamp(parseFloat(document.getElementById('balance').value), LIMITS.balance.min, LIMITS.balance.max),
+      rate: clamp(parseFloat(document.getElementById('rate').value), LIMITS.rate.min, LIMITS.rate.max),
+      years: clamp(parseFloat(document.getElementById('years').value), LIMITS.years.min, LIMITS.years.max),
+      expret: clamp(parseFloat(document.getElementById('expret').value), LIMITS.expret.min, LIMITS.expret.max),
+      compareRet: document.getElementById('compare-ret').checked
+    };
+  }
+
+  // --- Shareable link encode/decode (same pattern as the other Phases calculators) ---
+  function encodeState() {
+    const i = getInputs();
+    const state = { b: i.balance, r: i.rate, y: i.years, e: i.expret, c: i.compareRet ? 1 : 0 };
+    const json = JSON.stringify(state);
+    const b64 = btoa(unescape(encodeURIComponent(json)));
+    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function decodeState(encoded) {
+    try {
+      const b64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+      const json = decodeURIComponent(escape(atob(b64)));
+      const state = JSON.parse(json);
+      if (!state || typeof state.b === 'undefined') return null;
+      return state;
+    } catch (e) { return null; }
+  }
+  function applyState(s) {
+    document.getElementById('balance').value = clamp(s.b, LIMITS.balance.min, LIMITS.balance.max);
+    document.getElementById('rate').value = clamp(s.r, LIMITS.rate.min, LIMITS.rate.max);
+    document.getElementById('years').value = clamp(s.y, LIMITS.years.min, LIMITS.years.max);
+    document.getElementById('expret').value = clamp(s.e, LIMITS.expret.min, LIMITS.expret.max);
+    document.getElementById('compare-ret').checked = !!s.c;
+  }
+  function updateUrlSilently() {
+    const url = new URL(window.location.href);
+    url.searchParams.set('d', encodeState());
+    window.history.replaceState(null, '', url.toString());
+  }
+  let urlUpdateTimer = null;
+  function scheduleUrlUpdate() {
+    clearTimeout(urlUpdateTimer);
+    urlUpdateTimer = setTimeout(updateUrlSilently, 400);
+  }
+
+  // --- Core math ---
+  // Interest accrues to the loan and compounds monthly (the broker posts it to
+  // your account; unpaid, it grows the balance).
+  function compute() {
+    const i = getInputs();
+    const months = Math.round(i.years * 12);
+    const yrs = months / 12; // use the rounded horizon consistently
+    const mRate = i.rate / 100 / 12;
+
+    const growthFactor = Math.pow(1 + mRate, months);
+    const totalOwed = i.balance * growthFactor;
+    const totalInterest = totalOwed - i.balance;
+
+    // Break-even annual return = the loan's effective annual rate (APY).
+    // (1 + be)^y = (1 + r/12)^(12y)  =>  be = (1 + r/12)^12 - 1, for any y.
+    const breakEven = Math.pow(1 + mRate, 12) - 1;
+
+    // Gain on the borrowed dollars at the user's expected flat return.
+    const gainAtExp = i.balance * (Math.pow(1 + i.expret / 100, yrs) - 1);
+    const net = gainAtExp - totalInterest;
+
+    return { inputs: i, months, yrs, totalOwed, totalInterest, breakEven, gainAtExp, net };
+  }
+
+  function gainAt(balance, retPct, yrs) {
+    return balance * (Math.pow(1 + retPct / 100, yrs) - 1);
+  }
+
+  function renderWarnings(r) {
+    const el = document.getElementById('warnings');
+    el.innerHTML = '';
+    const i = r.inputs;
+
+    if (i.rate >= 9) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = i.rate.toFixed(1) + '% is full-service-broker territory. Tiered brokers charge roughly benchmark +1.5% under $100k (~5.1% as of mid-2026). At this rate your break-even is ' + (r.breakEven * 100).toFixed(1) + '%/yr — above the long-run average return of most diversified portfolios.';
+      el.appendChild(div);
+    }
+    if (i.compareRet && i.expret / 100 <= r.breakEven) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = 'Your expected return (' + i.expret + '%) does not clear the ' + (r.breakEven * 100).toFixed(2) + '% break-even. Even if markets behave exactly as you expect, this leverage loses ' + fmt(-r.net) + ' over the period.';
+      el.appendChild(div);
+    }
+    if (i.compareRet && i.expret >= 12) {
+      const div = document.createElement('div');
+      div.className = 'info-note';
+      div.textContent = i.expret + '%/yr is an aggressive assumption — long-run diversified-equity averages sit near 7–10% before inflation, and leverage amplifies the years that miss. Consider re-running at 7%.';
+      el.appendChild(div);
+    }
+    if (r.yrs >= 5) {
+      const div = document.createElement('div');
+      div.className = 'info-note';
+      div.textContent = 'Over ' + r.yrs.toFixed(r.yrs % 1 ? 2 : 0) + ' years, accrued interest grows the loan ' + ((r.totalOwed / r.inputs.balance - 1) * 100).toFixed(0) + '% — and a growing loan shrinks your equity cushion, moving the margin-call trigger closer even in a flat market. Rates also float; a long hold is a bet on rates too.';
+      el.appendChild(div);
+    }
+  }
+
+  function renderDuelBar(r) {
+    const bar = document.getElementById('duel-bar');
+    const cap = document.getElementById('duel-caption');
+    bar.innerHTML = '';
+
+    if (!r.inputs.compareRet) {
+      bar.style.display = 'none';
+      cap.textContent = '';
+      return;
+    }
+    bar.style.display = 'flex';
+
+    const gain = Math.max(0, r.gainAtExp);
+    const maxV = Math.max(gain, r.totalInterest, 1);
+    const g = document.createElement('div');
+    g.className = 'duel-seg gain';
+    g.style.height = Math.max(28, (gain / maxV) * 74) + 'px';
+    g.textContent = 'borrowed $ earn ' + fmtShort(r.gainAtExp);
+    const c = document.createElement('div');
+    c.className = 'duel-seg cost';
+    c.style.height = Math.max(28, (r.totalInterest / maxV) * 74) + 'px';
+    c.textContent = 'interest costs ' + fmtShort(r.totalInterest);
+    bar.appendChild(g); bar.appendChild(c);
+
+    const verdict = r.net >= 0
+      ? 'leverage nets +' + fmt(r.net).replace('$', '$')
+      : 'leverage loses ' + fmt(r.net);
+    cap.innerHTML = 'At a flat ' + r.inputs.expret + '%/yr on ' + fmt(r.inputs.balance) + ' borrowed for ' + r.yrs.toFixed(r.yrs % 1 ? 2 : 0) + ' years: <span class="win">' + verdict + '</span> — and a flat return is the optimistic case; real paths add volatility drag and margin-call risk.';
+  }
+
+  function renderSummaryTable(r) {
+    const el = document.getElementById('summary-table');
+    const i = r.inputs;
+    const fracs = [0.25, 0.5, 0.75, 1];
+    const seen = new Set();
+    let html = '<table><tr><th>Time</th><th>Loan + accrued interest</th><th>Interest so far</th><th>Break-even growth needed</th>' + (i.compareRet ? '<th>Net at ' + i.expret + '%/yr</th>' : '') + '</tr>';
+    fracs.forEach(f => {
+      const m = Math.max(1, Math.round(r.months * f));
+      if (seen.has(m)) return;
+      seen.add(m);
+      const y = m / 12;
+      const owed = i.balance * Math.pow(1 + i.rate / 100 / 12, m);
+      const interest = owed - i.balance;
+      const label = y >= 1 ? (Number.isInteger(y) ? y + ' yr' : y.toFixed(2) + ' yr') : m + ' mo';
+      const net = gainAt(i.balance, i.expret, y) - interest;
+      html += '<tr><td>' + label + (m === r.months ? ' — end' : '') + '</td>' +
+        '<td class="hi">' + fmt(owed) + '</td>' +
+        '<td>' + fmt(interest) + '</td>' +
+        '<td>' + fmt(interest + i.balance) + ' (' + ((Math.pow(owed / i.balance, 1 / Math.max(y, 1e-9)) - 1) * 100).toFixed(2) + '%/yr)</td>' +
+        (i.compareRet ? '<td>' + fmt(net) + '</td>' : '') + '</tr>';
+    });
+    html += '</table>';
+    el.innerHTML = html;
+
+    document.getElementById('assumptions-note').textContent =
+      'Assumes ' + fmt(i.balance) + ' borrowed at a fixed ' + i.rate + '% annual rate, accrued and compounded monthly with no paydowns, over ' + r.yrs.toFixed(r.yrs % 1 ? 2 : 0) + ' years. Break-even = the rate\'s APY: ' + (r.breakEven * 100).toFixed(2) + '%/yr, independent of balance and duration. Real margin rates float with policy rates. No taxes, fees, dividends, or margin-call effects modeled.';
+  }
+
+  function renderChart(r) {
+    const ctx = document.getElementById('chart');
+    const i = r.inputs;
+    const bePct = r.breakEven * 100;
+
+    const xMin = -15;
+    const xMax = Math.max(20, Math.ceil(bePct) + 5, i.compareRet ? Math.ceil(i.expret) + 3 : 0);
+    const N = 90;
+    const step = (xMax - xMin) / N;
+
+    const gainData = [], costData = [];
+    for (let k = 0; k <= N; k++) {
+      const x = xMin + k * step;
+      gainData.push({ x: x, y: gainAt(i.balance, x, r.yrs) });
+      costData.push({ x: x, y: r.totalInterest });
+    }
+
+    const datasets = [
+      {
+        label: 'What the borrowed dollars earn',
+        data: gainData,
+        borderColor: AMBER,
+        backgroundColor: 'transparent',
+        fill: { target: 1, above: 'rgba(201,164,92,0.16)', below: 'rgba(196,101,82,0.16)' },
+        tension: 0, pointRadius: 0, borderWidth: 2, order: 2
+      },
+      {
+        label: 'Margin interest cost',
+        data: costData,
+        borderColor: COPPER,
+        backgroundColor: 'transparent',
+        fill: false, tension: 0, pointRadius: 0, borderWidth: 1.5, borderDash: [5, 4], order: 3
+      },
+      {
+        label: 'Break-even (' + bePct.toFixed(2) + '%/yr)',
+        data: [{ x: bePct, y: r.totalInterest }],
+        type: 'scatter',
+        pointRadius: 4.5, pointHoverRadius: 6,
+        pointBackgroundColor: SLATE, pointBorderColor: SLATE,
+        order: 1
+      }
+    ];
+    if (i.compareRet) {
+      datasets.push({
+        label: 'Your expected return (' + i.expret + '%/yr)',
+        data: [{ x: i.expret, y: gainAt(i.balance, i.expret, r.yrs) }],
+        type: 'scatter',
+        pointRadius: 4.5, pointHoverRadius: 6, pointStyle: 'rectRot',
+        pointBackgroundColor: r.net >= 0 ? AMBER : WARN,
+        pointBorderColor: r.net >= 0 ? AMBER : WARN,
+        order: 0
+      });
+    }
+
+    if (chart) chart.destroy();
+    chart = new Chart(ctx, {
+      type: 'line',
+      data: { datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'nearest', axis: 'x', intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              title: items => 'If the portfolio returns ' + items[0].parsed.x.toFixed(1) + '%/yr',
+              label: item => {
+                if (item.dataset.type === 'scatter') return item.dataset.label;
+                return item.dataset.label + ': ' + fmt(item.parsed.y);
+              },
+              afterBody: items => {
+                const x = items[0].parsed.x;
+                const net = gainAt(i.balance, x, r.yrs) - r.totalInterest;
+                return 'Net from leverage: ' + (net >= 0 ? '+' : '') + fmt(net);
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            type: 'linear', min: xMin, max: xMax,
+            title: { display: true, text: 'Assumed annual portfolio return (%)', color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            ticks: { maxTicksLimit: 12, color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 }, callback: v => v + '%' },
+            grid: { display: false }, border: { color: SEAM }
+          },
+          y: {
+            title: { display: true, text: 'Dollars over the period', color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            ticks: { callback: v => (Math.abs(v) >= 1000000 ? (v < 0 ? '-' : '') + '$' + Math.abs(v / 1000000).toFixed(1) + 'M' : Math.abs(v) >= 1000 ? (v < 0 ? '-' : '') + '$' + Math.round(Math.abs(v) / 1000) + 'k' : '$' + v), color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            grid: { color: SEAM }, border: { color: SEAM }
+          }
+        }
+      }
+    });
+  }
+
+  function update() {
+    const r = compute();
+    document.getElementById('apy-display').value = (r.breakEven * 100).toFixed(2);
+    document.getElementById('monthly-display').value = Math.round(r.inputs.balance * r.inputs.rate / 100 / 12);
+    document.getElementById('total-interest').textContent = fmt(r.totalInterest);
+    document.getElementById('total-owed').textContent = fmt(r.totalOwed);
+    document.getElementById('break-even').textContent = (r.breakEven * 100).toFixed(2) + '%/yr';
+
+    const netEl = document.getElementById('net-outcome');
+    if (r.inputs.compareRet) {
+      netEl.textContent = (r.net >= 0 ? '+' : '') + fmt(r.net);
+      netEl.className = 'value ' + (r.net >= 0 ? 'net-pos' : 'net-neg');
+    } else {
+      netEl.textContent = '—';
+      netEl.className = 'value';
+    }
+
+    renderWarnings(r);
+    renderDuelBar(r);
+    renderChart(r);
+    renderSummaryTable(r);
+    scheduleUrlUpdate();
+  }
+
+  // Wire inputs with the same input/blur clamp pattern as the other Phases calculators.
+  [
+    ['balance', LIMITS.balance],
+    ['rate', LIMITS.rate],
+    ['years', LIMITS.years],
+    ['expret', LIMITS.expret]
+  ].forEach(([id, lim]) => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => {
+      markValidity(el, parseFloat(el.value), lim.min, lim.max);
+      update();
+    });
+    el.addEventListener('blur', () => {
+      const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
+      el.value = corrected;
+      el.classList.remove('invalid');
+      update();
+    });
+  });
+  document.getElementById('compare-ret').addEventListener('change', update);
+
+  document.getElementById('copy-link').addEventListener('click', () => {
+    updateUrlSilently();
+    const statusEl = document.getElementById('copy-status');
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      statusEl.textContent = 'link copied';
+      setTimeout(() => { statusEl.textContent = ''; }, 2200);
+    }).catch(() => {
+      statusEl.textContent = 'copy failed — select the URL bar';
+      setTimeout(() => { statusEl.textContent = ''; }, 2800);
+    });
+  });
+
+  (function hydrateFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const encoded = params.get('d');
+    if (encoded) {
+      const state = decodeState(encoded);
+      if (state) applyState(state);
+    }
+  })();
+
+  update();
+})();
+</script>
+</body>
+</html>

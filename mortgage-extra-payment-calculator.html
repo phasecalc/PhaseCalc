@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Extra Mortgage Payment Calculator — payoff date, interest saved, and the recast question</title>
+<meta name="description" content="Free extra mortgage payment calculator. See your new payoff date, total interest saved, and the full amortization comparison — plus when prepaying beats investing the difference, and how recasting differs." />
+<link rel="canonical" href="https://phasecalc.com/mortgage-extra-payment-calculator" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Phases" />
+<meta property="og:url" content="https://phasecalc.com/mortgage-extra-payment-calculator" />
+<meta property="og:title" content="Extra Mortgage Payment Calculator — payoff date and interest saved" />
+<meta property="og:description" content="See exactly how much interest an extra monthly or lump-sum payment saves, and how many years it cuts off your mortgage." />
+<meta property="og:image" content="https://phasecalc.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Extra Mortgage Payment Calculator — payoff date and interest saved" />
+<meta name="twitter:description" content="See exactly how much interest an extra monthly or lump-sum payment saves, and how many years it cuts off your mortgage." />
+<meta name="twitter:image" content="https://phasecalc.com/og-image.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much does one extra mortgage payment a year save?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "One extra monthly payment per year (the classic '13 payments' approach) typically cuts a 30-year mortgage by 4-6 years and saves six figures at today's rates. On a $400,000 loan at 6.5%, roughly $211 extra per month — one extra payment spread across the year — saves over $115,000 in interest and nearly 6 years of payments. Run your own numbers; the savings scale with your rate and how early you start."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do extra mortgage payments lower my monthly payment?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No — and this surprises many borrowers. Extra principal payments shorten the loan and reduce total interest, but your required monthly payment stays exactly the same until the loan is gone. The only ways to lower the required payment are recasting (the lender re-amortizes the reduced balance over the remaining term, usually for a small fee) or refinancing into a new loan."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the difference between recasting and prepaying a mortgage?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Prepaying means sending extra principal while keeping the same required payment — the loan ends sooner and total interest drops. Recasting means making a lump-sum principal payment and having the lender recalculate your required payment over the original remaining term — your payment drops, but the payoff date stays the same. Prepaying maximizes interest savings; recasting maximizes monthly cash-flow relief. Recasts typically cost $150-500 and aren't available on all loans."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is it better to pay extra on the mortgage or invest the money?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Paying extra principal earns a guaranteed, risk-free return equal to your mortgage rate. Investing offers a higher expected return (historically ~7% nominal for stocks) but with real risk. The honest comparison: a 6.5%+ mortgage rate is a strong guaranteed return that's hard to beat after taxes and risk; at 3% it's usually better to invest. In between, it depends on your tax situation, risk tolerance, and whether you'd actually invest the money or spend it."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why do early extra payments save more than later ones?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Every dollar of principal you eliminate stops accruing interest at your mortgage rate for the entire remaining life of the loan. A dollar prepaid in year 2 of a 30-year loan avoids ~28 years of compounding interest; the same dollar in year 25 avoids only ~5 years. Early in the loan, most of your scheduled payment is interest anyway, so extra principal also shifts the amortization balance fastest there."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I make one big lump payment or add a monthly extra?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Dollar for dollar, sooner beats later: a lump sum today saves more interest than the same total spread over future months, because the principal reduction starts avoiding interest immediately. But most people don't have the lump sum — and a sustainable monthly extra you actually stick to beats a theoretical lump sum you never make. The calculator models both at once so you can compare."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to tell my lender the extra money is for principal?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. By default, some servicers apply extra money to next month's payment (prepaying interest and escrow) or hold it in suspense rather than reducing principal. Mark the payment 'apply to principal' — most online portals have an explicit principal-only option. Check your next statement to confirm the balance dropped by the full extra amount."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do mortgages have prepayment penalties?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most U.S. conforming loans originated after 2014 do not — the CFPB's Qualified Mortgage rules sharply restrict them. Some non-QM, jumbo, and investment-property loans still carry penalties, typically only in the first 3-5 years. Check your note or ask your servicer before making large extra payments; even where penalties exist, small monthly extras are usually exempt."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does the biweekly payment trick work?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, but not for the reason marketed. Paying half your payment every two weeks produces 26 half-payments — 13 full payments per year instead of 12. The savings come entirely from that one extra annual payment, not from the biweekly timing. You can get the identical result free by adding 1/12 of your payment to each month, rather than paying a servicer's biweekly-program enrollment fee."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I pay extra on my mortgage before building an emergency fund?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Extra principal payments are illiquid — you can't easily get them back without refinancing, a home equity line, or selling the house. Standard ordering: emergency fund first, high-interest debt second, employer retirement match third, then the mortgage-vs-invest decision with genuinely surplus money. A paid-down mortgage with no cash buffer is a fragile position."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does paying extra affect my mortgage interest tax deduction?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It reduces the interest you pay, and therefore any deduction — but this is a feature, not a bug. A deduction returns at most your marginal tax rate on each interest dollar; the rest is still gone. And roughly nine in ten households take the standard deduction, getting no marginal benefit from mortgage interest at all. Don't let the tax tail wag the interest dog."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When does the extra payment math stop being worth it?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Late in the loan, when most of each payment is already principal, extra payments still shorten the term but the interest saved per dollar shrinks — there's less time and less interest left to avoid. It's also weaker when your rate is far below what safe alternatives yield: prepaying a 3% mortgage while high-yield savings pays more is locking in a worse return. The chart's shrinking gap between the curves shows this fade visually."
+      }
+    }
+  ]
+}
+</script>
+<style>
+  :root {
+    --ink: #0F1B2D;
+    --ink-raised: #142539;
+    --parchment: #EDE6D6;
+    --parchment-dim: #B8AF9C;
+    --parchment-faint: #948D79;
+    --amber: #C9A45C;
+    --amber-dim: #4A3C24;
+    --slate: #5B7A9D;
+    --slate-dim: #25333F;
+    --copper: #B07A4E;
+    --seam: #24344A;
+    --warn: #C46552;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--parchment);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .brandbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--seam);
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .wordmark svg { display: block; }
+  .wordmark span {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    letter-spacing: 0.01em;
+    color: var(--parchment);
+  }
+  .sitenav {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+  }
+  .sitenav a {
+    color: var(--parchment-faint);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+  }
+  .sitenav a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+  .sitenav a.current { color: var(--parchment); border-bottom-color: var(--seam); }
+
+  .masthead {
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--seam);
+    padding-bottom: 24px;
+  }
+  .masthead h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 32px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .masthead p {
+    color: var(--parchment-dim);
+    font-size: 15px;
+    margin: 0;
+    max-width: 540px;
+  }
+
+  .panel {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--amber);
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 18px;
+  }
+
+  .field label {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin-bottom: 6px;
+  }
+
+  .field .input-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .field .prefix, .field .suffix {
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    color: var(--parchment-dim);
+  }
+
+  /* Floating help bubbles */
+  .tip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: 1px;
+    cursor: help;
+    outline: none;
+  }
+  .tip .tip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid var(--parchment-faint);
+    color: var(--parchment-faint);
+    font-size: 9px;
+    line-height: 1;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .tip:hover .tip-icon, .tip:focus .tip-icon { border-color: var(--amber); color: var(--amber); }
+  .tip .tip-box {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 9px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 230px;
+    max-width: calc(100vw - 56px);
+    background: var(--ink);
+    border: 1px solid var(--seam);
+    border-radius: 3px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--parchment-dim);
+    white-space: normal;
+    z-index: 20;
+  }
+  .tip .tip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--seam);
+  }
+  .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
+
+  input[type="number"] {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--seam);
+    color: var(--parchment);
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    padding: 2px 0;
+    width: 100%;
+    transition: border-color 0.15s ease;
+  }
+  input:focus { outline: none; border-bottom-color: var(--amber); }
+  input.invalid { border-bottom-color: var(--warn); }
+  input:disabled { opacity: 0.45; cursor: not-allowed; }
+
+  .toggles {
+    display: flex;
+    gap: 24px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--seam);
+    flex-wrap: wrap;
+  }
+  .toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-dim);
+    cursor: pointer;
+    user-select: none;
+  }
+  .toggle input { width: auto; accent-color: #C9A45C; cursor: pointer; }
+  .toggle .hint { color: var(--parchment-faint); }
+
+  /* Results strip */
+  .results-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 2px;
+    margin-bottom: 10px;
+  }
+  .result-cell {
+    background: var(--ink-raised);
+    padding: 16px 16px 14px;
+  }
+  .result-cell .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 6px;
+    line-height: 1.4;
+  }
+  .result-cell .value {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    margin: 0;
+    color: var(--parchment);
+  }
+  .result-cell.hero .value { color: var(--amber); }
+  .result-cell .value.time { color: var(--copper); }
+  .result-cell .value.date { color: var(--slate); }
+
+  /* Interest split bar — the signature element */
+  .save-bar {
+    display: flex;
+    height: 34px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .save-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0 8px;
+    min-width: 0;
+  }
+  .save-seg.paid { background: var(--slate-dim); color: var(--slate); }
+  .save-seg.saved { background: var(--amber-dim); color: var(--amber); border-left: 2px solid var(--ink); }
+  .save-caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 32px;
+  }
+
+  .warning {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--warn);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .info-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--copper);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  .chart-wrap { position: relative; height: 280px; margin-bottom: 14px; }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-dim);
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .legend .swatch { display: inline-block; width: 9px; height: 9px; margin-right: 6px; vertical-align: -1px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
+  th, td { padding: 9px 6px; text-align: right; border-bottom: 1px solid var(--seam); }
+  th:first-child, td:first-child { text-align: left; }
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    font-weight: 400;
+  }
+  td { font-family: 'Source Serif 4', serif; color: var(--parchment-dim); }
+  td:first-child { font-family: 'Inter', sans-serif; color: var(--parchment); font-size: 13px; }
+  td.hi { color: var(--parchment); font-weight: 500; }
+  .footnote { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--parchment-faint); margin: 8px 0 0; }
+
+  .share-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 0;
+  }
+  .copy-link-btn {
+    background: none;
+    border: 1px solid var(--seam);
+    color: var(--parchment-dim);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    padding: 7px 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+  .copy-link-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .copy-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--amber);
+  }
+
+  /* Article */
+  .article {
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--seam);
+  }
+  .article h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+  }
+  .article h2:first-child { margin-top: 0; }
+  .article h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 28px 0 8px;
+  }
+  .article p {
+    color: var(--parchment-dim);
+    font-size: 16.5px;
+    line-height: 1.7;
+    margin: 0 0 18px;
+  }
+  .article strong { color: var(--parchment); font-weight: 500; }
+  .article a { color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber-dim); }
+  .article a:hover { border-bottom-color: var(--amber); }
+  .article table td { font-size: 13.5px; }
+  .article table td:first-child { white-space: nowrap; }
+
+  .faq-item { margin-bottom: 24px; }
+  .faq-item h3 { margin-bottom: 6px; }
+  .faq-item p { margin-bottom: 0; }
+
+  .support-footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--seam);
+  }
+  .support-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 8px;
+    line-height: 1.6;
+  }
+  .support-line a {
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 1px solid var(--amber-dim);
+  }
+  .support-line a:hover { border-bottom-color: var(--amber); }
+
+  @media (max-width: 620px) {
+    .field-grid { grid-template-columns: 1fr 1fr; }
+    .results-strip { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brandbar">
+    <a class="wordmark" href="/"><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="7" width="12" height="18" fill="#C9A45C"/><rect x="16.5" y="7" width="8.5" height="18" fill="#8A6E3D"/><rect x="27" y="7" width="3.5" height="18" fill="#5B7A9D"/></svg><span>Phases</span></a>
+    <nav class="sitenav">
+      <a href="/">Compound Interest</a>
+      <a href="/trump-account-calculator">Trump Account</a>
+      <a href="/529-superfunding-calculator">529 Superfund</a>
+      <a href="/roth-vs-traditional-calculator">Roth vs Trad</a>
+      <a href="/coast-fire-calculator">Coast FIRE</a>
+      <a href="/savings-goal-calculator">Savings Goal</a>
+      <a href="/dca-calculator">DCA</a>
+      <a href="/drip-calculator">DRIP</a>
+      <a href="/margin-loan-calculator">Margin</a>
+      <a href="/capital-gains-tax-calculator">Capital Gains</a>
+      <a href="/inflation-adjusted-return-calculator">Real Return</a>
+      <a href="/heloc-payment-calculator">HELOC</a>
+      <a href="/cash-out-refinance-vs-heloc-calculator">Refi vs HELOC</a>
+      <a href="/mortgage-extra-payment-calculator" class="current">Mortgage Payoff</a>
+      <a href="/rental-property-calculator">Rental</a>
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </header>
+
+  <div class="masthead">
+    <h1>Extra mortgage payment calculator</h1>
+    <p>See exactly what an extra principal payment buys: the new payoff date, the interest you never pay, and the two amortization curves side by side — with the savings shaded between them.</p>
+  </div>
+
+  <div class="panel">
+    <div class="field-grid">
+      <div class="field">
+        <label>Original loan amount<span class="tip" tabindex="0" aria-label="Help: original loan amount"><span class="tip-icon">?</span><span class="tip-box">The amount you originally borrowed. Together with the rate and term, this sets your fixed monthly principal-and-interest payment.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="number" id="orig" value="400000" min="10000" max="5000000" step="10000" /></div>
+      </div>
+      <div class="field">
+        <label>Interest rate %<span class="tip" tabindex="0" aria-label="Help: interest rate"><span class="tip-icon">?</span><span class="tip-box">Your note rate (not APR). Every dollar of extra principal earns a guaranteed return at exactly this rate for the remaining life of the loan.</span></span></label>
+        <div class="input-row"><input type="number" id="rate" value="6.5" min="0.5" max="15" step="0.125" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Loan term (years)<span class="tip" tabindex="0" aria-label="Help: loan term"><span class="tip-icon">?</span><span class="tip-box">The original term — 30 and 15 years are the common ones. Used to compute your required monthly payment.</span></span></label>
+        <input type="number" id="term" value="30" min="5" max="40" step="1" />
+      </div>
+      <div class="field">
+        <label>Remaining balance<span class="tip" tabindex="0" aria-label="Help: remaining balance"><span class="tip-icon">?</span><span class="tip-box">What you still owe today — on your latest statement. For a brand-new loan, leave the toggle below off and this matches the original amount.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="number" id="remaining" value="400000" min="1000" max="5000000" step="5000" disabled /></div>
+      </div>
+      <div class="field">
+        <label>Extra payment $/mo<span class="tip" tabindex="0" aria-label="Help: extra monthly payment"><span class="tip-icon">?</span><span class="tip-box">Additional principal sent every month on top of the required payment. Tell your servicer to apply it to principal — some default to prepaying next month instead.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="number" id="extra" value="200" min="0" max="20000" step="50" /></div>
+      </div>
+      <div class="field">
+        <label>One-time lump payment<span class="tip" tabindex="0" aria-label="Help: lump payment"><span class="tip-icon">?</span><span class="tip-box">A single extra principal payment applied this month — a bonus, tax refund, or windfall. Sooner beats later: today's lump saves more than the same total spread over years.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="number" id="lump" value="0" min="0" max="2000000" step="1000" /></div>
+      </div>
+    </div>
+    <div class="toggles">
+      <label class="toggle">
+        <input type="checkbox" id="existing" />
+        <span>Existing mortgage <span class="hint">(enter today's remaining balance above)</span></span>
+      </label>
+    </div>
+  </div>
+
+  <div id="warnings"></div>
+
+  <div class="results-strip">
+    <div class="result-cell">
+      <p class="label">Monthly P&amp;I payment</p>
+      <p class="value" id="pmt">$0</p>
+    </div>
+    <div class="result-cell hero">
+      <p class="label">Interest saved</p>
+      <p class="value" id="saved">$0</p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Time cut off the loan</p>
+      <p class="value time" id="time-saved">—</p>
+    </div>
+    <div class="result-cell">
+      <p class="label">New payoff date</p>
+      <p class="value date" id="payoff-date">—</p>
+    </div>
+  </div>
+
+  <div class="save-bar" id="save-bar"></div>
+  <p class="save-caption" id="save-caption"></p>
+
+  <div class="chart-wrap">
+    <canvas id="chart" role="img" aria-label="Line chart of mortgage balance over time. The blue line is the standard payoff schedule, the yellow line is the accelerated schedule with extra payments, and the shaded area between them is the principal eliminated early — the source of the interest savings.">Two amortization curves: the blue standard schedule and the yellow accelerated schedule, with the shaded gap between them showing principal eliminated early.</canvas>
+  </div>
+  <div class="legend">
+    <span><span class="swatch" style="background:#5B7A9D"></span>Standard schedule — blue line</span>
+    <span><span class="swatch" style="background:#C9A45C"></span>With extra payments — yellow line</span>
+    <span><span class="swatch" style="background:rgba(201,164,92,0.20)"></span>Shaded gap — principal eliminated early (where the savings come from)</span>
+  </div>
+
+  <div id="summary-table"></div>
+  <p class="footnote" id="assumptions-note"></p>
+
+  <div class="share-row">
+    <button class="copy-link-btn" id="copy-link">copy shareable link</button>
+    <span class="copy-status" id="copy-status"></span>
+  </div>
+
+  <article class="article">
+    <h2>How this extra mortgage payment calculator works</h2>
+    <p>Enter your original loan terms — amount, rate, and term — and the calculator derives your fixed monthly principal-and-interest payment. For an existing mortgage, flip the toggle and enter today's remaining balance from your statement; the required payment doesn't change (that's how fixed mortgages work), but the simulation starts from where you actually are. Then add an extra monthly amount, a one-time lump payment this month, or both. The calculator runs both amortization schedules month by month and reports the <strong>new payoff date</strong>, the <strong>time cut off the loan</strong>, and the headline number: <strong>total interest saved</strong>.</p>
+    <p>The chart is the argument in picture form. The blue line is your balance on the standard schedule; the yellow line is the balance with extra payments; the shaded gap between them is principal you've eliminated ahead of schedule. That shaded region is where the savings come from — every dollar inside it is a dollar that would otherwise have been accruing interest at your note rate, month after month, for years.</p>
+
+    <h2>Why small extra payments save absurd amounts</h2>
+    <p>A mortgage is compound interest running against you, which means prepayment is compound interest running for you. When you send an extra $200 to principal in year one of a 30-year loan, you don't just save $200 — you save the interest that $200 would have generated every month for the next 29 years. At 6.5%, a single early $200 payment quietly cancels roughly $1,200 of future interest. Stack that monthly and the numbers get dramatic: $200/month extra on a $400,000 loan at 6.5% saves about $112,000 in interest and ends the mortgage five and a half years early — the calculator's default scenario, so you can see it above.</p>
+    <p>The flip side: the same dollar prepaid late in the loan saves far less, because there's less time and less interest left to avoid. By year 25, most of each scheduled payment is principal anyway. This is why the shaded gap on the chart is widest when extra payments start early, and why the standard advice — if you're going to prepay, start now — is mathematically sound rather than motivational fluff.</p>
+
+    <h2>Prepaying vs. recasting: same money, different lever</h2>
+    <p>Extra principal payments <strong>do not lower your required monthly payment</strong> — they shorten the loan. If what you actually want is breathing room in the monthly budget, the tool for that is a <strong>recast</strong>: you make a lump-sum principal payment (servicers typically require $5,000–$10,000 minimum), pay a small fee ($150–$500), and the lender re-amortizes the smaller balance over your <em>original</em> remaining term. Payment drops; payoff date stays put. Prepaying maximizes interest saved; recasting maximizes cash flow. They can be combined — recast for safety, then keep voluntarily paying the old amount, which recreates the prepayment math while keeping the lower required payment as an emergency fallback. Not all loans are recastable (FHA/VA generally aren't), so ask your servicer.</p>
+
+    <h2>Pay down the mortgage, or invest the difference?</h2>
+    <p>Extra principal earns a <strong>guaranteed, risk-free return equal to your mortgage rate</strong>. That single sentence settles most of the debate once you take it seriously. At today's 6.5%+ rates, prepaying beats bonds outright and competes credibly with stocks' historical ~7% — except the mortgage's return is certain and the market's isn't. At a pandemic-era 3% rate, the math reverses: high-yield savings alone may outyield the mortgage, and long-run equity returns likely will. In between, three honest tiebreakers: whether you itemize (a deducted 6.5% costs you less than 6.5%), whether you'd genuinely invest the money rather than spend it, and how much you value the psychological finish line of a paid-off house — which is real, even if a spreadsheet can't hold it. To see what the alternative path compounds into, run the same monthly amount through the <a href="/">multi-phase compound interest calculator</a> or the <a href="/dca-calculator">dollar-cost averaging calculator</a> and compare totals honestly — including the volatility band, not just the average.</p>
+    <p>One ordering rule outranks all of this: extra mortgage payments are <strong>illiquid</strong>. Once sent, that money is drywall — retrievable only by selling, <a href="/cash-out-refinance-vs-heloc-calculator">refinancing</a>, or borrowing it back with a <a href="/heloc-payment-calculator">HELOC</a>, at whatever rates prevail then. Emergency fund first, high-interest debt second, employer match third. Prepay with money you won't need back.</p>
+
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <h3>How much does one extra payment a year save?</h3>
+      <p>Typically 4–6 years and tens of thousands of dollars on a 30-year loan. Spread it monthly (payment ÷ 12 added each month) for the same effect without needing a lump sum.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Do extra payments lower my monthly payment?</h3>
+      <p>No — the required payment is fixed. Extras shorten the loan and cut total interest. To lower the payment itself, you'd recast or refinance.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Recasting vs. prepaying — what's the difference?</h3>
+      <p>Prepaying keeps your payment and shortens the loan. Recasting re-amortizes a lump-sum-reduced balance over the original term: lower payment, same payoff date, small fee. Interest savings favor prepaying; cash flow favors recasting.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Pay extra or invest instead?</h3>
+      <p>Prepaying earns your mortgage rate, guaranteed. Above ~6%, that's hard to beat risk-adjusted; below ~4%, investing usually wins on expectation. In between: taxes, temperament, and whether you'd actually invest it.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why do early payments save more?</h3>
+      <p>Each prepaid dollar stops accruing interest for the loan's remaining life — 28 years of avoided interest in year 2, only 5 in year 25. Start early or accept smaller savings.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Lump sum or monthly extra?</h3>
+      <p>Dollar for dollar, sooner wins — a lump today beats the same total dripped out later. But the sustainable monthly habit you keep beats the lump you never send. Model both above.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Do I have to tell my servicer it's for principal?</h3>
+      <p>Yes. Some servicers apply extras to next month's payment or hold them in suspense. Use the principal-only option and verify the balance drop on your next statement.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Are there prepayment penalties?</h3>
+      <p>Rare on post-2014 conforming U.S. loans. Some jumbo, non-QM, and investment-property notes carry them for the first 3–5 years — check your note before sending large lumps.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does the biweekly trick work?</h3>
+      <p>Yes — 26 half-payments equal 13 monthly payments, one extra per year. The savings come from the extra payment, not the timing. Do it yourself free; skip paid biweekly programs.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Should I prepay before having an emergency fund?</h3>
+      <p>No. Prepaid principal is illiquid — you can't un-send it without refinancing, borrowing, or selling. Emergency fund, high-interest debt, and employer match all come first.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Will prepaying hurt my tax deduction?</h3>
+      <p>It shrinks the interest you pay, so any deduction shrinks too — but a deduction only refunds your marginal rate on each dollar. Most households take the standard deduction anyway.</p>
+    </div>
+
+    <p style="margin-top:32px;"><em>This calculator is for education, not financial advice. It models principal and interest only — taxes, insurance, and escrow are excluded — and assumes your rate is fixed. Confirm prepayment handling and any penalties with your servicer.</em></p>
+  </article>
+
+  <div class="support-footer">
+    <p class="support-line">
+      If this calculator was useful, a tip helps keep it free and ad-free —
+      <a href="https://buymeacoffee.com/ctong" target="_blank" rel="noopener">buy me a coffee</a>.
+    </p>
+    <p class="support-line">
+      I also use <a href="https://monarch.com/referral/rk2olzfae9?r_source=copy" target="_blank" rel="noopener">Monarch</a> to track net worth and spending — that's a referral link, so if you sign up I get a discount on my own subscription. No pressure either way.
+    </p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const AMBER = '#C9A45C';
+  const SLATE = '#5B7A9D';
+  const COPPER = '#B07A4E';
+  const SEAM = '#24344A';
+  const PARCHMENT_FAINT = '#948D79';
+
+  const MAX_MONTHS = 1200;
+
+  const LIMITS = {
+    orig: { min: 10000, max: 5000000 },
+    rate: { min: 0.5, max: 15 },
+    term: { min: 5, max: 40 },
+    remaining: { min: 1000, max: 5000000 },
+    extra: { min: 0, max: 20000 },
+    lump: { min: 0, max: 2000000 }
+  };
+
+  let chart = null;
+
+  function fmt(n) {
+    const sign = n < 0 ? '-' : '';
+    return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  function fmtShort(n) {
+    const a = Math.abs(n);
+    if (a >= 1000000) return '$' + (n / 1000000).toFixed(2) + 'M';
+    if (a >= 1000) return '$' + Math.round(n / 1000) + 'k';
+    return '$' + Math.round(n);
+  }
+  function fmtMonths(m) {
+    const y = Math.floor(m / 12), mo = m % 12;
+    if (y === 0) return mo + ' mo';
+    if (mo === 0) return y + ' yr' + (y > 1 ? 's' : '');
+    return y + ' yr ' + mo + ' mo';
+  }
+  function monthName(idx) {
+    return ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][idx];
+  }
+  function payoffDate(monthsFromNow) {
+    const d = new Date();
+    d.setMonth(d.getMonth() + monthsFromNow);
+    return monthName(d.getMonth()) + ' ' + d.getFullYear();
+  }
+  function clamp(val, min, max) {
+    if (isNaN(val)) return min;
+    return Math.min(max, Math.max(min, val));
+  }
+  function markValidity(el, value, min, max) {
+    const bad = isNaN(value) || value < min || value > max;
+    el.classList.toggle('invalid', bad);
+  }
+  function getInputs() {
+    const existing = document.getElementById('existing').checked;
+    const orig = clamp(parseFloat(document.getElementById('orig').value), LIMITS.orig.min, LIMITS.orig.max);
+    let remaining = existing
+      ? clamp(parseFloat(document.getElementById('remaining').value), LIMITS.remaining.min, LIMITS.remaining.max)
+      : orig;
+    let remainingClipped = false;
+    if (remaining > orig) { remaining = orig; remainingClipped = true; }
+    return {
+      existing, orig, remaining, remainingClipped,
+      rate: clamp(parseFloat(document.getElementById('rate').value), LIMITS.rate.min, LIMITS.rate.max),
+      term: Math.round(clamp(parseFloat(document.getElementById('term').value), LIMITS.term.min, LIMITS.term.max)),
+      extra: clamp(parseFloat(document.getElementById('extra').value), LIMITS.extra.min, LIMITS.extra.max),
+      lump: clamp(parseFloat(document.getElementById('lump').value), LIMITS.lump.min, LIMITS.lump.max)
+    };
+  }
+
+  // --- Shareable link encode/decode (same pattern as the other Phases calculators) ---
+  function encodeState() {
+    const i = getInputs();
+    const state = { o: i.orig, r: i.rate, t: i.term, b: i.remaining, e: i.extra, l: i.lump, x: i.existing ? 1 : 0 };
+    const json = JSON.stringify(state);
+    const b64 = btoa(unescape(encodeURIComponent(json)));
+    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function decodeState(encoded) {
+    try {
+      const b64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+      const json = decodeURIComponent(escape(atob(b64)));
+      const state = JSON.parse(json);
+      if (!state || typeof state.o === 'undefined') return null;
+      return state;
+    } catch (e) { return null; }
+  }
+  function applyState(s) {
+    document.getElementById('orig').value = clamp(s.o, LIMITS.orig.min, LIMITS.orig.max);
+    document.getElementById('rate').value = clamp(s.r, LIMITS.rate.min, LIMITS.rate.max);
+    document.getElementById('term').value = clamp(s.t, LIMITS.term.min, LIMITS.term.max);
+    document.getElementById('remaining').value = clamp(s.b, LIMITS.remaining.min, LIMITS.remaining.max);
+    document.getElementById('extra').value = clamp(s.e, LIMITS.extra.min, LIMITS.extra.max);
+    document.getElementById('lump').value = clamp(s.l, LIMITS.lump.min, LIMITS.lump.max);
+    document.getElementById('existing').checked = !!s.x;
+  }
+  function updateUrlSilently() {
+    const url = new URL(window.location.href);
+    url.searchParams.set('d', encodeState());
+    window.history.replaceState(null, '', url.toString());
+  }
+  let urlUpdateTimer = null;
+  function scheduleUrlUpdate() {
+    clearTimeout(urlUpdateTimer);
+    urlUpdateTimer = setTimeout(updateUrlSilently, 400);
+  }
+
+  // Amortize from a starting balance at a fixed required payment.
+  // extraMonthly is added to principal each month; lump is applied to
+  // principal in month 1 before interest accrues that month.
+  function amortize(startBal, mr, pmt, extraMonthly, lump) {
+    let bal = startBal;
+    let cumInterest = 0;
+    const balances = [bal];       // balances[m] = balance after month m
+    const cumInts = [0];
+    let months = 0;
+    for (let m = 1; m <= MAX_MONTHS; m++) {
+      if (m === 1 && lump > 0) bal = Math.max(0, bal - lump);
+      if (bal <= 0) { balances.push(0); cumInts.push(cumInterest); continue; }
+      const interest = bal * mr;
+      let principal = pmt - interest + extraMonthly;
+      if (principal <= 0) return null;      // payment doesn't cover interest
+      if (principal > bal) principal = bal; // final partial payment
+      cumInterest += interest;
+      bal -= principal;
+      balances.push(bal);
+      cumInts.push(cumInterest);
+      if (bal <= 0.005) { months = m; break; }
+      if (m === MAX_MONTHS) return null;
+    }
+    return { months, totalInterest: cumInterest, balances, cumInts };
+  }
+
+  function computeSeries() {
+    const i = getInputs();
+    const mr = (i.rate / 100) / 12;
+    const nOrig = i.term * 12;
+    const pmt = i.orig * mr / (1 - Math.pow(1 + mr, -nOrig));
+
+    const std = amortize(i.remaining, mr, pmt, 0, 0);
+    const acc = amortize(i.remaining, mr, pmt, i.extra, i.lump);
+    if (!std || !acc) return { inputs: i, pmt, broken: true };
+
+    const interestSaved = std.totalInterest - acc.totalInterest;
+    const monthsSaved = std.months - acc.months;
+    const totalExtra = i.extra * acc.months + Math.min(i.lump, i.remaining);
+
+    // Sample both curves on a shared monthly axis out to the standard payoff.
+    const horizon = std.months;
+    const sampleEvery = Math.max(1, Math.ceil(horizon / 110));
+    const series = [];
+    for (let m = 0; m <= horizon; m += sampleEvery) {
+      series.push({
+        m,
+        std: std.balances[Math.min(m, std.balances.length - 1)] || 0,
+        acc: acc.balances[Math.min(m, acc.balances.length - 1)] || 0,
+        stdInt: std.cumInts[Math.min(m, std.cumInts.length - 1)],
+        accInt: acc.cumInts[Math.min(m, acc.cumInts.length - 1)]
+      });
+    }
+    if (series[series.length - 1].m !== horizon) {
+      series.push({ m: horizon, std: 0, acc: 0, stdInt: std.totalInterest, accInt: acc.totalInterest });
+    }
+
+    return {
+      inputs: i, pmt, broken: false,
+      stdMonths: std.months, accMonths: acc.months,
+      stdInterest: std.totalInterest, accInterest: acc.totalInterest,
+      interestSaved, monthsSaved, totalExtra, series
+    };
+  }
+
+  function renderWarnings(r) {
+    const el = document.getElementById('warnings');
+    el.innerHTML = '';
+    if (r.broken) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = 'The monthly payment (' + fmt(r.pmt) + ') doesn’t cover the interest on this balance at this rate — the loan never pays off. Check the original amount, rate, and term against your statement.';
+      el.appendChild(div);
+      return;
+    }
+    if (r.inputs.remainingClipped) {
+      const div = document.createElement('div');
+      div.className = 'info-note';
+      div.textContent = 'Remaining balance can’t exceed the original loan amount — using ' + fmt(r.inputs.remaining) + '.';
+      el.appendChild(div);
+    }
+    if (r.inputs.extra === 0 && r.inputs.lump === 0) {
+      const div = document.createElement('div');
+      div.className = 'info-note';
+      div.textContent = 'No extra payments entered yet — the two curves are identical. Add a monthly extra or a lump sum to see the savings.';
+      el.appendChild(div);
+    }
+    if (r.inputs.lump >= r.inputs.remaining && r.inputs.remaining > 0) {
+      const div = document.createElement('div');
+      div.className = 'info-note';
+      div.textContent = 'The lump payment covers the entire remaining balance — congratulations, that’s a payoff, not a prepayment.';
+      el.appendChild(div);
+    }
+  }
+
+  function renderSaveBar(r) {
+    const bar = document.getElementById('save-bar');
+    const cap = document.getElementById('save-caption');
+    bar.innerHTML = '';
+    if (r.broken) { cap.textContent = ''; return; }
+
+    const total = r.stdInterest || 1;
+    const paidPct = Math.max(2, (r.accInterest / total) * 100);
+    const savedPct = Math.max(2, 100 - paidPct);
+
+    const p = document.createElement('div');
+    p.className = 'save-seg paid';
+    p.style.flex = paidPct;
+    p.textContent = 'interest still paid ' + fmt(r.accInterest);
+    bar.appendChild(p);
+
+    if (r.interestSaved > 0.5) {
+      const s = document.createElement('div');
+      s.className = 'save-seg saved';
+      s.style.flex = savedPct;
+      s.textContent = 'saved ' + fmt(r.interestSaved);
+      bar.appendChild(s);
+      const perDollar = r.totalExtra > 0 ? (r.interestSaved / r.totalExtra) : 0;
+      cap.textContent = 'Of the ' + fmt(r.stdInterest) + ' interest on the standard schedule, extra payments erase ' + Math.round((r.interestSaved / total) * 100) + '%' +
+        (perDollar > 0 ? ' — every $1 of extra principal cancels about $' + perDollar.toFixed(2) + ' of interest.' : '.');
+    } else {
+      cap.textContent = 'Total interest on the standard schedule: ' + fmt(r.stdInterest) + '. Add extra payments to carve a piece out of it.';
+    }
+  }
+
+  function renderSummaryTable(r) {
+    const el = document.getElementById('summary-table');
+    if (r.broken) { el.innerHTML = ''; document.getElementById('assumptions-note').textContent = ''; return; }
+
+    const marks = [];
+    for (let y = 5; y * 12 < r.stdMonths; y += 5) marks.push(y * 12);
+    marks.push(r.stdMonths);
+
+    let html = '<table><tr><th>Milestone</th><th>Standard balance</th><th>With extras</th><th>Interest saved so far</th></tr>';
+    marks.forEach(m => {
+      let pt = r.series[0];
+      for (const s of r.series) { if (s.m <= m) pt = s; else break; }
+      const label = m === r.stdMonths ? 'Standard payoff (' + payoffDate(r.stdMonths) + ')' : 'Year ' + Math.round(m / 12);
+      html += '<tr><td>' + label + '</td><td>' + fmt(pt.std) + '</td><td class="hi">' + fmt(pt.acc) + '</td><td>' + fmt(pt.stdInt - pt.accInt) + '</td></tr>';
+    });
+    html += '</table>';
+    el.innerHTML = html;
+
+    document.getElementById('assumptions-note').textContent =
+      'Assumes a fixed ' + r.inputs.rate + '% rate, the required P&I payment of ' + fmt(r.pmt) + ' from the original ' + r.inputs.term +
+      '-year terms, extra payments applied straight to principal' + (r.inputs.lump > 0 ? ' (lump applied this month)' : '') +
+      ', and no taxes, insurance, escrow, or prepayment penalties. Dates count from this month.';
+  }
+
+  function renderChart(r) {
+    const ctx = document.getElementById('chart');
+    if (r.broken) { if (chart) { chart.destroy(); chart = null; } return; }
+
+    const labels = r.series.map(s => (s.m / 12).toFixed(1));
+    const stdData = r.series.map(s => Math.round(s.std));
+    const accData = r.series.map(s => Math.round(s.acc));
+    const savedData = r.series.map(s => Math.round(s.stdInt - s.accInt));
+
+    if (chart) chart.destroy();
+    chart = new Chart(ctx, {
+      type: 'line',
+      data: { labels, datasets: [
+        {
+          label: 'Standard schedule',
+          data: stdData,
+          borderColor: SLATE, backgroundColor: 'transparent',
+          fill: false, tension: 0.15, pointRadius: 0, borderWidth: 2
+        },
+        {
+          label: 'With extra payments',
+          data: accData,
+          borderColor: AMBER, backgroundColor: 'rgba(201,164,92,0.20)',
+          fill: '-1', tension: 0.15, pointRadius: 0, borderWidth: 2
+        }
+      ]},
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              title: items => 'Year ' + items[0].label + ' (' + payoffDate(Math.round(parseFloat(items[0].label) * 12)) + ')',
+              label: item => item.dataset.label + ': ' + fmt(item.parsed.y),
+              afterBody: items => {
+                const idx = items[0].dataIndex;
+                return 'Interest saved so far: ' + fmt(savedData[idx]);
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: { display: true, text: 'Years from now', color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            ticks: { maxTicksLimit: 11, color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 },
+              callback: function(v) { const n = parseFloat(this.getLabelForValue(v)); return Number.isInteger(n) ? n : n.toFixed(1); } },
+            grid: { display: false }, border: { color: SEAM }
+          },
+          y: {
+            ticks: { callback: v => '$' + (Math.abs(v) >= 1000000 ? (v/1000000).toFixed(1) + 'M' : Math.abs(v) >= 1000 ? Math.round(v/1000) + 'k' : v), color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            grid: { color: SEAM }, border: { color: SEAM }
+          }
+        }
+      }
+    });
+  }
+
+  function update() {
+    const i0 = getInputs();
+    const remEl = document.getElementById('remaining');
+    remEl.disabled = !i0.existing;
+    if (!i0.existing) remEl.value = i0.orig;
+
+    const r = computeSeries();
+    document.getElementById('pmt').textContent = fmt(r.pmt) + '/mo';
+    if (r.broken) {
+      document.getElementById('saved').textContent = '—';
+      document.getElementById('time-saved').textContent = '—';
+      document.getElementById('payoff-date').textContent = '—';
+    } else {
+      document.getElementById('saved').textContent = fmt(r.interestSaved);
+      document.getElementById('time-saved').textContent = r.monthsSaved > 0 ? fmtMonths(r.monthsSaved) : 'none yet';
+      document.getElementById('payoff-date').textContent = payoffDate(r.accMonths);
+    }
+    renderWarnings(r);
+    renderSaveBar(r);
+    renderChart(r);
+    renderSummaryTable(r);
+    scheduleUrlUpdate();
+  }
+
+  // Wire inputs with the same input/blur clamp pattern as the other Phases calculators.
+  [
+    ['orig', LIMITS.orig],
+    ['rate', LIMITS.rate],
+    ['term', LIMITS.term],
+    ['remaining', LIMITS.remaining],
+    ['extra', LIMITS.extra],
+    ['lump', LIMITS.lump]
+  ].forEach(([id, lim]) => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => {
+      markValidity(el, parseFloat(el.value), lim.min, lim.max);
+      update();
+    });
+    el.addEventListener('blur', () => {
+      const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
+      el.value = corrected;
+      el.classList.remove('invalid');
+      update();
+    });
+  });
+  document.getElementById('existing').addEventListener('change', update);
+
+  document.getElementById('copy-link').addEventListener('click', () => {
+    updateUrlSilently();
+    const statusEl = document.getElementById('copy-status');
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      statusEl.textContent = 'link copied';
+      setTimeout(() => { statusEl.textContent = ''; }, 2200);
+    }).catch(() => {
+      statusEl.textContent = 'copy failed — select the URL bar';
+      setTimeout(() => { statusEl.textContent = ''; }, 2800);
+    });
+  });
+
+  (function hydrateFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const encoded = params.get('d');
+    if (encoded) {
+      const state = decodeState(encoded);
+      if (state) applyState(state);
+    }
+  })();
+
+  update();
+})();
+</script>
+</body>
+</html>
