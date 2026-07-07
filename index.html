@@ -353,6 +353,53 @@
   }
   .horizon-note.over { color: var(--warn); }
 
+  /* Homepage feature callout - promotes the retirement backtest calculator */
+  .feature-callout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    background: var(--slate-dim);
+    border-left: 3px solid var(--slate);
+    border-radius: 2px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+  }
+  .feature-callout .callout-text { flex: 1; min-width: 260px; }
+  .feature-callout .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin: 0 0 8px;
+  }
+  .feature-callout .headline {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16.5px;
+    line-height: 1.55;
+    color: var(--parchment);
+    margin: 0;
+  }
+  .feature-callout .feature-cta {
+    display: inline-block;
+    white-space: nowrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    color: var(--ink);
+    background: var(--amber);
+    padding: 11px 20px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+  .feature-callout .feature-cta:hover { opacity: 0.85; }
+  @media (max-width: 540px) {
+    .feature-callout { flex-direction: column; align-items: flex-start; }
+  }
+
   /* Timeline - the signature element */
   .timeline {
     display: flex;
@@ -648,6 +695,7 @@
     <a class="wordmark" href="/"><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="7" width="12" height="18" fill="#C9A45C"/><rect x="16.5" y="7" width="8.5" height="18" fill="#8A6E3D"/><rect x="27" y="7" width="3.5" height="18" fill="#5B7A9D"/></svg><span>Phases</span></a>
     <nav class="sitenav">
       <a href="/" class="current">Compound Interest</a>
+      <a href="/retirement-backtest-calculator">Retirement Backtest</a>
       <a href="/trump-account-calculator">Trump Account</a>
       <a href="/529-superfunding-calculator">529 Superfund</a>
       <a href="/roth-vs-traditional-calculator">Roth vs Trad</a>
@@ -670,6 +718,14 @@
   <div class="masthead">
     <h1>A multi-phase compound interest calculator</h1>
     <p>Most calculators assume one flat rate for your whole life. Build a sequence of phases instead — each with its own contribution, rate, and duration — to model how money actually moves through decades.</p>
+  </div>
+
+  <div class="feature-callout">
+    <div class="callout-text">
+      <p class="tag">New — historical cycle backtesting</p>
+      <p class="headline">Planning retirement specifically? Don't just project one average return — stress-test your drawdown against every real U.S. market cycle since 1928.</p>
+    </div>
+    <a class="feature-cta" href="/retirement-backtest-calculator">Run the retirement backtest &rarr;</a>
   </div>
 
   <div class="controls-row">
