@@ -81,7 +81,7 @@
       "name": "How are withdrawals adjusted for inflation?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Your entered withdrawal amount is the year-one amount in today's dollars. For each subsequent year within a given historical cycle, the withdrawal is increased by that specific cycle's actual historical inflation rate for the prior year - not a flat assumed rate. This means a cycle starting in a high-inflation year like 1973 will show withdrawals rising faster than a cycle starting in a low-inflation year like 1955, exactly as would have happened in reality."
+        "text": "Your entered withdrawal amount is in today's (plan-start) dollars. Because upstream growth is nominal, that today's-dollar amount is first grown at your assumed upstream inflation rate across the upstream years to express it in dollars at retirement start - that inflated figure is the year-one withdrawal. From then on, for each subsequent year within a given historical cycle, the withdrawal is increased by that specific cycle's actual historical inflation rate for the prior year - not a flat assumed rate. This means a cycle starting in a high-inflation year like 1973 will show withdrawals rising faster than a cycle starting in a low-inflation year like 1955, exactly as would have happened in reality."
       }
     },
     {
@@ -733,7 +733,13 @@
       <label>Starting balance</label>
       <div class="input-row">
         <span class="prefix">$</span>
-        <input type="text" inputmode="decimal" id="starting-balance" value="20,000" />
+        <input type="text" inputmode="decimal" id="starting-balance" value="0" />
+      </div>
+    </div>
+    <div class="field">
+      <label>Assumed inflation % / yr (upstream)<span class="tip" tabindex="0" aria-label="Help: assumed upstream inflation"><span class="tip-icon">?</span><span class="tip-box">Used only to convert your today's-dollar retirement withdrawal into dollars at retirement start. Once retirement begins, each historical cycle uses its own actual CPI instead.</span></span></label>
+      <div class="input-row">
+        <input type="number" id="upstream-inflation" value="2.5" step="0.1" />
       </div>
     </div>
     <div class="result-block">
@@ -759,18 +765,24 @@
     <button class="add-phase-btn lump" id="add-lump">+ add lump-sum event</button>
   </div>
 
+  <p class="section-label">Accumulation — deterministic projection to retirement</p>
+  <div class="projection-block">
+    <p class="label">Projection — entering retirement</p>
+    <p class="value" id="projection-detail">—</p>
+    <p class="sub" id="projection-sub"></p>
+  </div>
+  <div class="chart-wrap">
+    <canvas id="chart-accum" role="img" aria-label="Line chart of the deterministic straight-line accumulation projection through the upstream phases, with vertical markers for one-time lump-sum events, ending at the balance entering retirement.">Balance grows deterministically through the upstream accumulation phases to the balance entering retirement.</canvas>
+  </div>
+  <div class="legend" id="legend-accum"></div>
+
   <p class="section-label">Terminal phase — historically backtested</p>
   <div id="terminal-card"></div>
 
   <div style="margin-top:36px;"></div>
   <div id="terminal-warnings"></div>
 
-  <div class="projection-block">
-    <p class="label">Projection — entering retirement</p>
-    <p class="value" id="projection-detail">—</p>
-    <p class="sub" id="projection-sub"></p>
-  </div>
-
+  <p class="section-label">Retirement backtest — every historical cycle</p>
   <div class="headline-block">
     <p class="label">Historical success rate — terminal phase only</p>
     <p class="value" id="success-rate">—</p>
@@ -791,17 +803,18 @@
       <p class="value" id="p90-value">—</p>
     </div>
   </div>
+  <p class="footnote">Ending balances are nominal dollars in each cycle's own end year — not adjusted back to today's purchasing power.</p>
 
   <div class="chart-wrap">
-    <canvas id="chart" role="img" aria-label="Line chart of a deterministic projection through the upstream phases, fanning out into historical spaghetti lines and percentile bands once the terminal retirement drawdown phase begins.">Balance grows deterministically through upstream phases, then fans out into every historical retirement cycle's actual path once the drawdown phase begins.</canvas>
+    <canvas id="chart-retire" role="img" aria-label="Line chart starting from the balance entering retirement, fanning out into one line per historical cycle plus 10th, 50th and 90th percentile bands across the drawdown.">From the balance entering retirement, each historical cycle's actual path fans out, with 10th, 50th and 90th percentile bands.</canvas>
   </div>
-  <div class="legend" id="legend"></div>
+  <div class="legend" id="legend-retire"></div>
 
   <p class="section-label">Every historical cycle tested</p>
   <div class="cycle-table-wrap">
     <table id="cycle-table"></table>
   </div>
-  <p class="footnote">Each row replays one historical starting year's actual sequential stock/bond returns and inflation, starting from the projected balance entering retirement.</p>
+  <p class="footnote">Each row replays one historical starting year's actual sequential stock/bond returns and inflation, starting from the projected balance entering retirement. Adjacent windows share almost all of their years, so N cycles are far fewer than N independent samples.</p>
 
   <article class="article">
     <h2>How this backtest works</h2>
@@ -812,7 +825,7 @@
     <p>Sequence-of-returns risk is sharpest exactly when you're withdrawing money and exposed to markets at the same time — which is what retirement drawdown is. During accumulation, you're adding money each year, so a bad early year is far less damaging and tends to average out over decades; a deterministic projection is a reasonable simplification there. Backtesting a non-terminal drawdown — say, an early retirement followed by a return to work — would require threading one continuous historical path across phases with different contribution and withdrawal rules at each step, a meaningfully more complex problem than testing one locked terminal phase. That's a possible future extension, not needed for the common case this calculator targets: any number of upstream phases followed by one final, permanent retirement.</p>
 
     <h3>The data behind the replay</h3>
-    <p>Annual U.S. stock returns (S&P 500 including dividends) and 10-year Treasury bond returns come from Aswath Damodaran's historical returns dataset at NYU Stern, spanning 1928 to the most recently completed year. Annual inflation is the Bureau of Labor Statistics' CPI-U annual average. Withdrawals are inflation-adjusted using each cycle's own actual historical inflation path, not a flat assumed rate — so a cycle starting in 1973 sees withdrawals grow the way they actually would have during that decade's inflation.</p>
+    <p>Annual U.S. stock returns (S&P 500 including dividends) and 10-year Treasury bond returns come from Aswath Damodaran's historical returns dataset at NYU Stern, spanning 1928 to the most recently completed year. Annual inflation is the Bureau of Labor Statistics' CPI-U annual average. Your withdrawal is entered in today's dollars; since upstream growth is nominal, it is first grown at your assumed upstream inflation rate to express it in dollars at retirement start, then within each cycle it is inflation-adjusted using that cycle's own actual historical inflation path, not a flat assumed rate — so a cycle starting in 1973 sees withdrawals grow the way they actually would have during that decade's inflation.</p>
 
     <h3>Reading the chart and the percentiles</h3>
     <p>The single amber line is the deterministic upstream projection. Once the terminal phase begins, thin lines fan out — one per historical starting year, each tracing that cycle's actual balance path. The bold overlay lines mark the 10th, 50th (median), and 90th percentile ending balances across all cycles. A wide gap between the 10th and 90th percentile is the visual signature of sequence-of-returns risk: the same withdrawal plan can end in wildly different places purely because of which years the retirement happened to start in.</p>
@@ -844,7 +857,7 @@
     </div>
     <div class="faq-item">
       <h3>How are withdrawals inflation-adjusted?</h3>
-      <p>Your entered withdrawal is the year-one amount in today's dollars. Each later year within a cycle increases it by that specific cycle's actual historical inflation, not a flat assumed rate.</p>
+      <p>Your entered withdrawal is in today's dollars. Because upstream growth is nominal, it is first grown at your assumed upstream inflation rate to dollars at retirement start (that becomes the year-one withdrawal), then each later year within a cycle increases it by that specific cycle's actual historical inflation, not a flat assumed rate.</p>
     </div>
     <div class="faq-item">
       <h3>What are stock allocation and fee drag?</h3>
@@ -909,6 +922,7 @@
 
   const LIMITS = {
     startingBalance: { min: 0, max: 1000000000 },
+    upstreamInflation: { min: 0, max: 10 },
     growthYears: { min: 1, max: 60 },
     growthRate: { min: -20, max: 20 },
     contribution: { min: -1000000, max: 1000000 },
@@ -922,12 +936,18 @@
   };
 
   let phases = [
-    { id: 1, type: 'growth', label: 'Career accumulation', years: 20, growthRate: 7, contributions: 12000 },
-    { id: 2, type: 'lumpSum', label: 'Home down payment', year: 8, amount: -40000 }
+    { id: 1, type: 'growth', label: 'Early career', years: 8, growthRate: 7, contributions: 14000 },
+    { id: 2, type: 'lumpSum', label: 'Home down payment', year: 8, amount: -100000 },
+    { id: 3, type: 'growth', label: 'Mid career', years: 10, growthRate: 7, contributions: 24000 },
+    { id: 4, type: 'growth', label: 'Peak career', years: 19, growthRate: 7, contributions: 40000 }
   ];
-  let terminal = { label: 'Retirement drawdown', years: 30, withdrawalAmount: 20000, stockAllocation: 60, feeDrag: 0.2 };
-  let nextId = 3;
-  let chart = null;
+  let terminal = { label: 'Retirement', years: 35, withdrawalAmount: 50000, stockAllocation: 60, feeDrag: 0.2 };
+  let nextId = 5;
+  let accumChart = null;
+  let retireChart = null;
+  // Year 0 of the plan is the current calendar year, so the x-axes read as real
+  // years (e.g. 2026, 2027, ...). Computed once at load.
+  const BASE_YEAR = new Date().getFullYear();
 
   function fmt(n) {
     const sign = n < 0 ? '-' : '';
@@ -994,6 +1014,9 @@
     const timeline = [{ year: 0, balance: balance }];
     const lumpEvents = [];
     const clippedLumps = [];
+    const droppedLumps = [];
+    const ruinedPhases = [];
+    const ruinedLabels = {};
     for (let y = 0; y < totalYears; y++) {
       lumpSums.filter(function (l) { return l.year === y; }).forEach(function (l) {
         let applied = l.amount;
@@ -1006,22 +1029,26 @@
         lumpEvents.push({ year: y, amount: applied, label: l.label });
       });
       const step = growthSteps[y];
+      // A negative annual contribution larger than the running balance drives the
+      // balance negative and is clamped to $0 (silent upstream ruin). Record it
+      // once per phase so it can be surfaced to the user.
+      if ((balance + step.contribution) < 0 && !ruinedLabels[step.label]) {
+        ruinedLabels[step.label] = true;
+        ruinedPhases.push({ label: step.label || 'Phase', year: y + 1 });
+      }
       balance = (balance + step.contribution) * (1 + step.rate);
       if (balance < 0) balance = 0;
       timeline.push({ year: y + 1, balance: balance });
     }
+    // Lumps scheduled at or beyond the end of the upstream horizon fall in the
+    // retirement/drawdown window. They must NOT be applied to the retirement
+    // entry balance (that would credit mid-retirement money to year zero of the
+    // drawdown). Exclude them and report them so the user can move them earlier.
     lumpSums.filter(function (l) { return l.year >= totalYears; }).forEach(function (l) {
-      let applied = l.amount;
-      if (l.amount < 0 && Math.abs(l.amount) > balance) {
-        applied = -balance;
-        clippedLumps.push({ label: l.label, requested: l.amount, applied: applied, availableBalance: balance });
-      }
-      balance += applied;
-      if (balance < 0) balance = 0;
-      lumpEvents.push({ year: totalYears, amount: applied, label: l.label });
+      droppedLumps.push({ label: l.label, year: l.year, amount: l.amount });
     });
     if (timeline.length) timeline[timeline.length - 1] = { year: totalYears, balance: balance };
-    return { finalBalance: balance, timeline: timeline, totalYears: totalYears, lumpEvents: lumpEvents, clippedLumps: clippedLumps };
+    return { finalBalance: balance, timeline: timeline, totalYears: totalYears, lumpEvents: lumpEvents, clippedLumps: clippedLumps, droppedLumps: droppedLumps, ruinedPhases: ruinedPhases };
   }
 
   function percentile(sortedArr, p) {
@@ -1040,9 +1067,15 @@
   // actual sequential stock/bond returns (blended by stockAllocation, net
   // of feeDrag), withdrawing at the start of each year and inflating the
   // withdrawal by that specific cycle's own historical CPI.
-  function runTerminalBacktest(terminalPhase, startingBalance) {
+  function runTerminalBacktest(terminalPhase, startingBalance, upstreamYears, upstreamInflation) {
     const years = Math.max(1, Math.round(terminalPhase.years || 1));
     const withdrawalAmount = terminalPhase.withdrawalAmount || 0;
+    // The withdrawal is entered in today's (plan-start) dollars. Upstream growth
+    // is nominal, so inflate the today's-dollar withdrawal to retirement-start
+    // dollars using the assumed upstream inflation rate. After year one, each
+    // cycle uses its own actual historical CPI (unchanged).
+    const upstreamMultiplier = Math.pow(1 + (upstreamInflation || 0) / 100, Math.max(0, Math.round(upstreamYears || 0)));
+    const withdrawalYearOne = withdrawalAmount * upstreamMultiplier;
     const stockAllocation = clamp(terminalPhase.stockAllocation != null ? terminalPhase.stockAllocation : 60, 0, 100);
     const feeDrag = terminalPhase.feeDrag || 0;
     const stockPct = stockAllocation / 100;
@@ -1055,15 +1088,18 @@
       let balance = startingBalance;
       let depleted = false;
       let depletionYear = null;
-      let withdrawal = withdrawalAmount;
+      let withdrawal = withdrawalYearOne;
       const path = [{ year: 0, balance: balance }];
       for (let y = 0; y < years; y++) {
         if (y > 0) withdrawal *= (1 + HIST[i + y - 1].i / 100);
-        balance -= withdrawal;
-        if (balance <= 0) {
-          balance = 0;
-          if (!depleted) { depleted = true; depletionYear = startYear + y; }
+        // Determine shortfall BEFORE subtracting: a cycle is depleted only if the
+        // withdrawal cannot be fully funded (epsilon for float safety). Landing on
+        // exactly $0 with every withdrawal fully funded counts as survival.
+        if (!depleted && withdrawal > balance + 1e-9) {
+          depleted = true; depletionYear = startYear + y;
         }
+        balance -= withdrawal;
+        if (balance < 0) balance = 0;
         const yd = HIST[i + y];
         const blended = (stockPct * yd.s + bondPct * yd.b) / 100;
         const net = blended - (feeDrag / 100);
@@ -1100,8 +1136,10 @@
   // --- Shareable link encode/decode ---
   function encodeState() {
     const sb = clamp(parseFloat(document.getElementById('starting-balance').value), LIMITS.startingBalance.min, LIMITS.startingBalance.max);
+    const ui = clamp(parseFloat(document.getElementById('upstream-inflation').value), LIMITS.upstreamInflation.min, LIMITS.upstreamInflation.max);
     const state = {
       sb: sb,
+      ui: ui,
       p: phases.map(function (ph) {
         if (ph.type === 'lumpSum') return { t: 'l', l: ph.label, y: ph.year, a: ph.amount };
         return { t: 'g', l: ph.label, y: ph.years, r: ph.growthRate, c: ph.contributions || 0 };
@@ -1127,6 +1165,8 @@
 
   function applyState(state) {
     document.getElementById('starting-balance').value = formatMoneyValue(clamp(state.sb, LIMITS.startingBalance.min, LIMITS.startingBalance.max));
+    // Legacy links without the inflation field decode to the 2.5 default.
+    document.getElementById('upstream-inflation').value = clamp(state.ui != null ? state.ui : 2.5, LIMITS.upstreamInflation.min, LIMITS.upstreamInflation.max);
     let loaded = state.p.map(function (ph) {
       if (ph.t === 'l') {
         return { id: nextId++, type: 'lumpSum', label: String(ph.l || 'Lump sum'), year: clamp(ph.y, LIMITS.lumpYear.min, LIMITS.lumpYear.max), amount: clamp(ph.a, LIMITS.lumpAmount.min, LIMITS.lumpAmount.max) };
@@ -1251,7 +1291,7 @@
           '<div class="field-grid">' +
             '<div class="field"><label>Years (1–' + maxYearsHere + ')</label>' +
               '<input type="number" data-field="years" data-min="' + LIMITS.growthYears.min + '" data-max="' + maxYearsHere + '" value="' + p.years + '" step="1" /></div>' +
-            '<div class="field"><label>Growth rate % (' + LIMITS.growthRate.min + ' to ' + LIMITS.growthRate.max + ')</label>' +
+            '<div class="field"><label>Nominal growth rate % (' + LIMITS.growthRate.min + ' to ' + LIMITS.growthRate.max + ')<span class="tip" tabindex="0" aria-label="Help: nominal growth rate"><span class="tip-icon">?</span><span class="tip-box">A before-inflation (nominal) return. Upstream growth is nominal, so use a nominal rate here; the assumed inflation field converts your withdrawal to retirement-start dollars separately.</span></span></label>' +
               '<input type="number" data-field="growthRate" data-min="' + LIMITS.growthRate.min + '" data-max="' + LIMITS.growthRate.max + '" value="' + p.growthRate + '" step="0.1" /></div>' +
             '<div class="field"><label>Annual contribution $<span class="tip" tabindex="0" aria-label="Help: contribution"><span class="tip-icon">?</span><span class="tip-box">Added at the start of each year, then the whole balance compounds at the growth rate. Use 0 for a career break with no saving.</span></span></label>' +
               '<input type="text" inputmode="decimal" data-field="contributions" data-money="1" data-min="' + LIMITS.contribution.min + '" data-max="' + LIMITS.contribution.max + '" value="' + formatMoneyValue(p.contributions || 0) + '" step="500" /></div>' +
@@ -1267,8 +1307,11 @@
         inp.addEventListener('input', function () {
           const raw = parseFloat(inp.value);
           let effectiveMax = max;
+          if (field === 'years') effectiveMax = maxYearsFor(p);
+          // Show .invalid against the raw typed value, but only ever let a
+          // clamped value reach the engine (never run on out-of-range state).
           markValidity(inp, raw, min, effectiveMax);
-          if (!isNaN(raw)) { p[field] = raw; update(false); }
+          if (!isNaN(raw)) { p[field] = clamp(raw, min, effectiveMax); update(false); }
         });
         inp.addEventListener('blur', function () {
           let raw = parseFloat(inp.value);
@@ -1305,7 +1348,7 @@
         '<div class="field-grid cols-4">' +
           '<div class="field"><label>Years (' + LIMITS.terminalYears.min + '–' + LIMITS.terminalYears.max + ')</label>' +
             '<input type="number" data-field="years" data-min="' + LIMITS.terminalYears.min + '" data-max="' + LIMITS.terminalYears.max + '" value="' + terminal.years + '" step="1" /></div>' +
-          '<div class="field"><label>Annual withdrawal $ (yr 1)<span class="tip" tabindex="0" aria-label="Help: withdrawal"><span class="tip-icon">?</span><span class="tip-box">Today’s-dollar amount withdrawn at the start of year one. In every later year of a given historical cycle, it grows by that cycle’s own actual historical inflation.</span></span></label>' +
+          '<div class="field"><label>Annual withdrawal $ (yr 1)<span class="tip" tabindex="0" aria-label="Help: withdrawal"><span class="tip-icon">?</span><span class="tip-box">Entered in today’s dollars. It is grown at your assumed upstream inflation rate until retirement starts, then in every later year of a given historical cycle it rises by that cycle’s own actual historical inflation (CPI).</span></span></label>' +
             '<input type="text" inputmode="decimal" data-field="withdrawalAmount" data-money="1" data-min="' + LIMITS.withdrawal.min + '" data-max="' + LIMITS.withdrawal.max + '" value="' + formatMoneyValue(terminal.withdrawalAmount) + '" step="1000" /></div>' +
           '<div class="field"><label>Stock allocation % (' + LIMITS.stockAllocation.min + '–' + LIMITS.stockAllocation.max + ')<span class="tip" tabindex="0" aria-label="Help: allocation"><span class="tip-icon">?</span><span class="tip-box">Percent of the retirement portfolio in stocks; the remainder is bonds. Each historical year’s return is blended by this split.</span></span></label>' +
             '<input type="number" data-field="stockAllocation" data-min="' + LIMITS.stockAllocation.min + '" data-max="' + LIMITS.stockAllocation.max + '" value="' + terminal.stockAllocation + '" step="5" /></div>' +
@@ -1322,8 +1365,10 @@
       const max = parseFloat(inp.dataset.max);
       inp.addEventListener('input', function () {
         const raw = parseFloat(inp.value);
+        // Show .invalid against the raw typed value, but only ever let a
+        // clamped value reach the engine (never run on out-of-range state).
         markValidity(inp, raw, min, max);
-        if (!isNaN(raw)) { terminal[field] = raw; update(false); }
+        if (!isNaN(raw)) { terminal[field] = clamp(raw, min, max); update(false); }
       });
       inp.addEventListener('blur', function () {
         const raw = parseFloat(inp.value);
@@ -1353,6 +1398,18 @@
       const div = document.createElement('div');
       div.className = 'warning';
       div.textContent = '"' + c.label + '" lump sum of ' + fmt(c.requested) + ' exceeds the ' + fmt(c.availableBalance) + ' available — only ' + fmt(c.applied) + ' was applied.';
+      el.appendChild(div);
+    });
+    (upstream.droppedLumps || []).forEach(function (d) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = '"' + d.label + '" is scheduled at year ' + d.year + ', after the upstream phases end (year ' + upstream.totalYears + ') — it was excluded. Move it earlier or extend a phase.';
+      el.appendChild(div);
+    });
+    (upstream.ruinedPhases || []).forEach(function (r) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = '"' + r.label + '" drained the balance to $0 in year ' + r.year + ' — its negative annual contribution exceeded the balance, so growth after that point started from empty.';
       el.appendChild(div);
     });
   }
@@ -1409,86 +1466,107 @@
     el.innerHTML = html;
   }
 
-  function renderLegend(hasLumpEvents) {
-    let html =
-      '<span><span class="swatch" style="background:' + AMBER + '"></span>Projection (upstream)</span>' +
-      '<span><span class="swatch" style="background:' + SLATE + '; opacity:0.35;"></span>Historical cycles</span>' +
-      '<span><span class="swatch" style="background:' + WARN + '"></span>10th percentile</span>' +
-      '<span><span class="swatch" style="background:' + COPPER + '"></span>Median (50th)</span>' +
-      '<span><span class="swatch" style="background:' + SLATE + '"></span>90th percentile</span>';
-    if (hasLumpEvents) html += '<span><span class="swatch dot" style="background:' + COPPER + '"></span>One-time lump sum</span>';
-    document.getElementById('legend').innerHTML = html;
+  const yTickCallback = function (v) { return '$' + (Math.abs(v) >= 1000 ? Math.round(v / 1000) + 'k' : v); };
+  const yFont = { family: 'IBM Plex Mono', size: 10 };
+
+  function renderLegends(hasLumpEvents, hasCycles) {
+    let accum =
+      '<span><span class="swatch" style="background:' + AMBER + '"></span>Projection (accumulation)</span>';
+    if (hasLumpEvents) accum += '<span><span class="swatch" style="display:inline-block;width:2px;height:12px;background:' + COPPER + ';vertical-align:-2px;margin-right:6px;"></span>One-time lump sum</span>';
+    document.getElementById('legend-accum').innerHTML = accum;
+
+    let retire = '';
+    if (hasCycles) {
+      retire =
+        '<span><span class="swatch" style="background:' + SLATE + '; opacity:0.35;"></span>Historical cycles</span>' +
+        '<span><span class="swatch" style="background:' + WARN + '"></span>10th percentile</span>' +
+        '<span><span class="swatch" style="background:' + COPPER + '"></span>Median (50th)</span>' +
+        '<span><span class="swatch" style="background:' + SLATE + '"></span>90th percentile</span>';
+    }
+    document.getElementById('legend-retire').innerHTML = retire;
   }
 
-  function renderChart(upstream, terminalResult) {
-    const ctx = document.getElementById('chart');
+  // Accumulation chart: the deterministic straight-line projection through the
+  // upstream phases, on its own linear scale so the accumulation is legible.
+  // Lump-sum events are drawn as vertical copper lines.
+  function renderAccumChart(upstream) {
+    const ctx = document.getElementById('chart-accum');
     const upstreamYears = upstream.totalYears;
-    const termYears = terminal.years;
-    const grandTotal = upstreamYears + termYears;
     const labels = [];
-    for (let i = 0; i <= grandTotal; i++) labels.push('yr ' + i);
+    for (let i = 0; i <= upstreamYears; i++) labels.push(String(BASE_YEAR + i));
 
-    const datasets = [];
-
-    // Upstream deterministic line (also holds the entry point into retirement)
-    const upstreamData = new Array(grandTotal + 1).fill(null);
+    const upstreamData = new Array(upstreamYears + 1).fill(null);
     upstream.timeline.forEach(function (pt) { upstreamData[pt.year] = Math.round(pt.balance); });
-    if (terminalResult.cyclesRun > 0) upstreamData[upstreamYears] = Math.round(upstream.finalBalance);
-    datasets.push({ data: upstreamData, borderColor: AMBER, backgroundColor: 'rgba(201,164,92,0.08)', fill: false, tension: 0.1, pointRadius: 0, borderWidth: 2.5, order: 1 });
+    const datasets = [{ data: upstreamData, borderColor: AMBER, backgroundColor: 'rgba(201,164,92,0.08)', fill: false, tension: 0.1, pointRadius: upstreamYears === 0 ? 3 : 0, pointBackgroundColor: AMBER, borderWidth: 2.5 }];
 
-    if (terminalResult.cyclesRun > 0) {
-      // Spaghetti: one faint line per historical cycle
-      terminalResult.results.forEach(function (r) {
-        const arr = new Array(grandTotal + 1).fill(null);
-        arr[upstreamYears] = Math.round(upstream.finalBalance);
-        r.path.forEach(function (pt) { arr[upstreamYears + pt.year] = Math.round(pt.balance); });
-        datasets.push({ data: arr, borderColor: 'rgba(91,122,157,0.18)', borderWidth: 1, fill: false, tension: 0, pointRadius: 0, order: 3 });
-      });
-
-      // Percentile bands
-      function bandDataset(key, color) {
-        const arr = new Array(grandTotal + 1).fill(null);
-        arr[upstreamYears] = Math.round(upstream.finalBalance);
-        terminalResult.yearlyBands.forEach(function (b) { arr[upstreamYears + b.year] = Math.round(b[key]); });
-        return { data: arr, borderColor: color, borderWidth: 2, borderDash: [5, 3], fill: false, tension: 0.1, pointRadius: 0, order: 2 };
-      }
-      datasets.push(bandDataset('p10', WARN));
-      datasets.push(bandDataset('p50', COPPER));
-      datasets.push(bandDataset('p90', SLATE));
-    }
-
-    if (chart) chart.destroy();
-    chart = new Chart(ctx, {
+    if (accumChart) accumChart.destroy();
+    accumChart = new Chart(ctx, {
       type: 'line',
       data: { labels: labels, datasets: datasets },
       options: {
         responsive: true, maintainAspectRatio: false, animation: false,
         plugins: { legend: { display: false }, tooltip: { enabled: true } },
         scales: {
-          x: { ticks: { maxTicksLimit: 10, color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } }, grid: { display: false }, border: { color: SEAM } },
-          y: { ticks: { callback: function (v) { return '$' + (Math.abs(v) >= 1000 ? Math.round(v / 1000) + 'k' : v); }, color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } }, grid: { color: SEAM }, border: { color: SEAM } }
+          x: { ticks: { maxTicksLimit: 10, color: PARCHMENT_FAINT, font: yFont }, grid: { display: false }, border: { color: SEAM } },
+          y: { beginAtZero: true, ticks: { callback: yTickCallback, color: PARCHMENT_FAINT, font: yFont }, grid: { color: SEAM }, border: { color: SEAM } }
         }
       },
       plugins: [{
-        id: 'terminalBoundary',
+        id: 'lumpLines',
         afterDraw: function (c) {
-          if (terminalResult.cyclesRun === 0) return;
           const chartArea = c.chartArea, scales = c.scales;
-          const x = scales.x.getPixelForValue(upstreamYears);
           c.ctx.save();
-          c.ctx.strokeStyle = SEAM;
-          c.ctx.setLineDash([3, 3]);
-          c.ctx.beginPath(); c.ctx.moveTo(x, chartArea.top); c.ctx.lineTo(x, chartArea.bottom); c.ctx.stroke();
-          c.ctx.restore();
-          c.ctx.save();
-          c.ctx.fillStyle = COPPER;
+          c.ctx.strokeStyle = COPPER;
+          c.ctx.lineWidth = 2;
           upstream.lumpEvents.forEach(function (ev) {
             const lx = scales.x.getPixelForValue(ev.year);
-            c.ctx.beginPath(); c.ctx.arc(lx, chartArea.top + 6, 3, 0, Math.PI * 2); c.ctx.fill();
+            c.ctx.beginPath(); c.ctx.moveTo(lx, chartArea.top); c.ctx.lineTo(lx, chartArea.bottom); c.ctx.stroke();
           });
           c.ctx.restore();
         }
       }]
+    });
+  }
+
+  // Retirement chart: starts from the balance entering retirement and fans out
+  // into one line per historical cycle, plus 10th/50th/90th percentile bands,
+  // on its own linear scale.
+  function renderRetireChart(upstream, terminalResult) {
+    const ctx = document.getElementById('chart-retire');
+    if (retireChart) { retireChart.destroy(); retireChart = null; }
+    if (terminalResult.cyclesRun === 0) { return; }
+
+    const upstreamYears = upstream.totalYears;
+    const termYears = terminal.years;
+    const labels = [];
+    for (let k = 0; k <= termYears; k++) labels.push(String(BASE_YEAR + upstreamYears + k));
+
+    const datasets = [];
+    terminalResult.results.forEach(function (r) {
+      const arr = new Array(termYears + 1).fill(null);
+      r.path.forEach(function (pt) { arr[pt.year] = Math.round(pt.balance); });
+      datasets.push({ data: arr, borderColor: 'rgba(91,122,157,0.18)', borderWidth: 1, fill: false, tension: 0, pointRadius: 0, order: 3 });
+    });
+    function bandDataset(key, color) {
+      const arr = new Array(termYears + 1).fill(null);
+      terminalResult.yearlyBands.forEach(function (b) { arr[b.year] = Math.round(b[key]); });
+      return { data: arr, borderColor: color, borderWidth: 2, borderDash: [5, 3], fill: false, tension: 0.1, pointRadius: 0, order: 2 };
+    }
+    datasets.push(bandDataset('p10', WARN));
+    datasets.push(bandDataset('p50', COPPER));
+    datasets.push(bandDataset('p90', SLATE));
+
+    retireChart = new Chart(ctx, {
+      type: 'line',
+      data: { labels: labels, datasets: datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        plugins: { legend: { display: false }, tooltip: { enabled: true } },
+        scales: {
+          x: { ticks: { maxTicksLimit: 10, color: PARCHMENT_FAINT, font: yFont }, grid: { display: false }, border: { color: SEAM } },
+          y: { beginAtZero: true, ticks: { callback: yTickCallback, color: PARCHMENT_FAINT, font: yFont }, grid: { color: SEAM }, border: { color: SEAM } }
+        }
+      }
     });
   }
 
@@ -1498,14 +1576,16 @@
     if (rebuildList) { renderPhaseList(); renderTerminalCard(); }
 
     const startingBalance = clamp(parseFloat(document.getElementById('starting-balance').value), LIMITS.startingBalance.min, LIMITS.startingBalance.max);
+    const upstreamInflation = clamp(parseFloat(document.getElementById('upstream-inflation').value), LIMITS.upstreamInflation.min, LIMITS.upstreamInflation.max);
     const upstream = runUpstreamPhases(phases, startingBalance);
-    const terminalResult = runTerminalBacktest(terminal, upstream.finalBalance);
+    const terminalResult = runTerminalBacktest(terminal, upstream.finalBalance, upstream.totalYears, upstreamInflation);
 
     renderUpstreamWarnings(upstream);
     renderTerminalWarnings(terminalResult);
     renderResultsHeader(upstream, terminalResult);
-    renderChart(upstream, terminalResult);
-    renderLegend(upstream.lumpEvents.length > 0);
+    renderAccumChart(upstream);
+    renderRetireChart(upstream, terminalResult);
+    renderLegends(upstream.lumpEvents.length > 0, terminalResult.cyclesRun > 0);
     renderCycleTable(terminalResult);
     scheduleUrlUpdate();
   }
@@ -1519,6 +1599,20 @@
     const corrected = clamp(parseFloat(startingBalanceInput.value), LIMITS.startingBalance.min, LIMITS.startingBalance.max);
     startingBalanceInput.value = formatMoneyValue(corrected);
     startingBalanceInput.classList.remove('invalid');
+    update(false);
+  });
+
+  const upstreamInflationInput = document.getElementById('upstream-inflation');
+  upstreamInflationInput.addEventListener('input', function () {
+    // Show .invalid against the raw typed value; update() reads and clamps the
+    // field before it reaches the engine, so out-of-range state never runs.
+    markValidity(upstreamInflationInput, parseFloat(upstreamInflationInput.value), LIMITS.upstreamInflation.min, LIMITS.upstreamInflation.max);
+    update(false);
+  });
+  upstreamInflationInput.addEventListener('blur', function () {
+    const corrected = clamp(parseFloat(upstreamInflationInput.value), LIMITS.upstreamInflation.min, LIMITS.upstreamInflation.max);
+    upstreamInflationInput.value = corrected;
+    upstreamInflationInput.classList.remove('invalid');
     update(false);
   });
 
