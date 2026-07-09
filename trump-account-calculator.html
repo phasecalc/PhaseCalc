@@ -346,6 +346,134 @@
   .toggle input { width: auto; accent-color: #C9A45C; cursor: pointer; }
   .toggle .hint { color: var(--parchment-faint); }
 
+  /* Phase cards */
+  .phase-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  .phase-card {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--amber);
+    padding: 20px;
+    position: relative;
+  }
+  .phase-card.access { border-left-color: var(--copper); }
+  .phase-card.post { border-left-color: var(--slate); }
+  .phase-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .phase-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    border: 1px solid var(--seam);
+    padding: 3px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+  .phase-top h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 17px;
+    margin: 0;
+    flex: 1;
+    min-width: 160px;
+  }
+  .phase-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--parchment-dim);
+    margin: 0 0 16px;
+    line-height: 1.5;
+  }
+  .phase-output {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--amber);
+    margin: 14px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--seam);
+  }
+  .phase-hero { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--seam); }
+  .phase-hero .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 6px;
+  }
+  .phase-hero .value {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 30px;
+    color: var(--amber);
+    margin: 0;
+  }
+  .remove-btn {
+    background: none;
+    border: none;
+    color: var(--parchment-faint);
+    cursor: pointer;
+    padding: 4px;
+    font-size: 13px;
+    font-family: 'IBM Plex Mono', monospace;
+    transition: color 0.15s ease;
+  }
+  .remove-btn:hover { color: var(--warn); }
+  .add-phase-btn {
+    width: 100%;
+    background: none;
+    border: 1px dashed var(--seam);
+    color: var(--parchment-dim);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    padding: 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+  .add-phase-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .lump-toggle {
+    background: none;
+    border: 1px dashed var(--seam);
+    color: var(--parchment-faint);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 6px 12px;
+    cursor: pointer;
+    margin-top: 4px;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+  .lump-toggle:hover { color: var(--copper); border-color: var(--copper); }
+  .lump-fields {
+    margin-top: 14px;
+    padding: 14px;
+    background: var(--ink);
+    border-radius: 2px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 14px;
+    align-items: end;
+  }
+  .lump-fields input { font-size: 15px; }
+  .lump-remove {
+    background: none;
+    border: none;
+    color: var(--parchment-faint);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    cursor: pointer;
+    text-align: left;
+    padding: 6px 0;
+  }
+  .lump-remove:hover { color: var(--warn); }
+
   /* Results strip */
   .results-strip {
     display: grid;
@@ -536,9 +664,72 @@
   }
   .support-line a:hover { border-bottom-color: var(--amber); }
 
+  /* Compact seed band (Phase 1) */
+  .seed-band { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 18px 32px; }
+  .seed-band .field { max-width: 150px; margin-bottom: 2px; }
+  .seed-band .toggles { margin-top: 0; padding-top: 0; border-top: none; flex-direction: column; gap: 11px; }
+  .seed-out { margin-left: auto; text-align: right; }
+  .seed-out .label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--parchment-faint); margin: 0 0 4px;
+  }
+  .seed-out .val { font-family: 'Source Serif 4', serif; font-weight: 500; font-size: 22px; color: var(--amber); margin: 0; }
+
+  /* Contribution segments (Phase 2) */
+  .seg { border: 1px solid var(--seam); border-radius: 3px; padding: 14px 14px 12px; margin-bottom: 10px; position: relative; }
+  .seg-grid { display: grid; grid-template-columns: 0.7fr 1fr 1fr; gap: 14px; }
+  .seg-grid .field input { font-size: 15px; }
+  .seg-meta { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--parchment-faint); margin: 11px 0 0; }
+  .seg-remove { position: absolute; top: 9px; right: 10px; }
+  .seg-add {
+    background: none; border: 1px dashed var(--seam); color: var(--parchment-dim);
+    font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; padding: 9px 14px;
+    cursor: pointer; border-radius: 2px; transition: all 0.15s ease; margin-top: 2px;
+  }
+  .seg-add:hover { border-color: var(--amber); color: var(--amber); }
+  .seg-add[disabled] { opacity: 0.4; cursor: default; }
+
+  /* Outcome band (Phase 3) */
+  .outcome-band { display: flex; flex-wrap: wrap; gap: 18px 40px; }
+  .oc { }
+  .oc .label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--parchment-faint); margin: 0 0 6px;
+  }
+  .oc .value { font-family: 'Source Serif 4', serif; font-weight: 500; font-size: 27px; margin: 0; }
+
+  /* Mode tabs (Phase 4) */
+  .mode-tabs { display: inline-flex; gap: 6px; margin-bottom: 18px; flex-wrap: wrap; }
+  .mode-tab {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.03em;
+    padding: 8px 14px; border: 1px solid var(--seam); border-radius: 2px;
+    color: var(--parchment-dim); background: none; cursor: pointer; transition: all 0.15s ease;
+  }
+  .mode-tab.active { border-color: var(--slate); color: var(--parchment); background: var(--slate-dim); }
+  .mode-tab:hover { color: var(--parchment); }
+
+  /* Conversion comparison box */
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; margin-bottom: 10px; }
+  .compare .col { background: var(--ink-raised); padding: 15px 16px; }
+  .compare .col .label {
+    font-family: 'IBM Plex Mono', monospace; font-size: 10px; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--parchment-faint); margin: 0 0 6px; line-height: 1.4;
+  }
+  .compare .col .v { font-family: 'Source Serif 4', serif; font-weight: 500; font-size: 23px; margin: 0; color: var(--parchment); }
+  .compare .col.win { border-top: 2px solid var(--amber); }
+  .compare .col.win .v { color: var(--amber); }
+  .compare .verdict {
+    grid-column: 1 / -1; font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+    color: var(--parchment-dim); background: var(--ink-raised); border-left: 2px solid var(--amber);
+    padding: 11px 14px; line-height: 1.5;
+  }
+
   @media (max-width: 620px) {
     .field-grid { grid-template-columns: 1fr 1fr; }
+    .lump-fields { grid-template-columns: 1fr 1fr; }
     .results-strip { grid-template-columns: 1fr 1fr; }
+    .seg-grid { grid-template-columns: 1fr 1fr; }
+    .seed-out { margin-left: 0; text-align: left; }
   }
 </style>
 </head>
@@ -575,65 +766,169 @@
     <p>Project your child's Trump Account (§530A) to age 18 and beyond — including the $1,000 federal seed, employer contributions, and the part every other calculator skips: how much of the ending balance is actually tax-free.</p>
   </div>
 
-  <div class="panel">
-    <div class="field-grid">
-      <div class="field">
-        <label>Child's birth year<span class="tip" tabindex="0" aria-label="Help: child's birth year"><span class="tip-icon">?</span><span class="tip-box">Any child under 18 can have a Trump Account, but only U.S. citizen children born 2025–2028 get the $1,000 federal seed. A 2025 baby gets 17 contribution years (the program opened in 2026); 2026 and later get 18.</span></span></label>
-        <input type="number" id="birth-year" value="2025" min="2009" max="2028" step="1" />
+  <div class="phase-list">
+
+    <div class="phase-card seed">
+      <div class="phase-top">
+        <span class="phase-badge">Phase 1</span>
+        <h3>Seed &amp; account opening</h3>
       </div>
-      <div class="field">
-        <label>Family $ / year (after-tax)<span class="tip" tabindex="0" aria-label="Help: family contributions"><span class="tip-icon">?</span><span class="tip-box">Money from parents, grandparents, and friends. It's after-tax, so it comes back out tax-free as basis. Family + employer share one combined $5,000/year cap.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="family-contrib" value="2,500" min="0" max="5000" step="250" /></div>
+      <div class="seed-band">
+        <div class="field">
+          <label>Child's birth year<span class="tip" tabindex="0" aria-label="Help: child's birth year"><span class="tip-icon">?</span><span class="tip-box">Any child under 18 can have a Trump Account, but only U.S. citizen children born 2025–2028 get the $1,000 federal seed. A 2025 baby gets 17 contribution years (the program opened in 2026); 2026 and later get 18.</span></span></label>
+          <input type="number" id="birth-year" value="2025" min="2009" max="2028" step="1" />
+        </div>
+        <div class="toggles">
+          <label class="toggle">
+            <input type="checkbox" id="fed-seed" checked />
+            <span>$1,000 federal seed <span class="hint">(born 2025–2028)</span></span>
+          </label>
+          <label class="toggle">
+            <input type="checkbox" id="dell-grant" />
+            <span>$250 Dell Foundation grant <span class="hint">(if eligible)</span></span>
+          </label>
+        </div>
+        <div class="seed-out">
+          <p class="label">Lump sum at opening</p>
+          <p class="val" id="seed-output">$0</p>
+        </div>
       </div>
-      <div class="field">
-        <label>Employer $ / year (pre-tax)<span class="tip" tabindex="0" aria-label="Help: employer contributions"><span class="tip-icon">?</span><span class="tip-box">Employers can contribute up to $2,500/year, excluded from your wages. It counts against the same $5,000 cap and is taxable when withdrawn. Leave at 0 if no employer plan.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="employer-contrib" value="0" min="0" max="2500" step="250" /></div>
+    </div>
+
+    <div class="phase-card">
+      <div class="phase-top">
+        <span class="phase-badge">Phase 2</span>
+        <h3>Contribution phase</h3>
       </div>
-      <div class="field">
+      <p class="phase-desc" id="contrib-desc">Contributions run from account opening until the year the child turns 17. Add periods to front-load early or taper later — each shares the combined $5,000/yr cap.</p>
+      <div id="seg-list"></div>
+      <button type="button" class="seg-add" id="add-seg">+ add a contribution period</button>
+      <div class="field" style="max-width:170px; margin-top:18px;">
         <label>Annual return %<span class="tip" tabindex="0" aria-label="Help: annual return"><span class="tip-icon">?</span><span class="tip-box">Expected average yearly growth. 7% is a common long-run assumption for U.S. stock index funds (the only allowed investment before 18) — a planning guess, not a prediction.</span></span></label>
         <div class="input-row"><input type="number" id="rate" value="7" min="0" max="15" step="0.1" /><span class="suffix">%</span></div>
       </div>
-      <div class="field">
-        <label>Hold untouched to age<span class="tip" tabindex="0" aria-label="Help: hold age"><span class="tip-icon">?</span><span class="tip-box">The account unlocks the year your child turns 18, but nothing forces a withdrawal. This models leaving it fully invested until the age you pick.</span></span></label>
-        <input type="number" id="hold-age" value="30" min="18" max="70" step="1" />
+    </div>
+
+    <div class="phase-card access">
+      <div class="phase-top">
+        <span class="phase-badge">Phase 3</span>
+        <h3>Age 18 — account unlocks</h3>
       </div>
-      <div class="field">
-        <label>Tax rate at withdrawal %<span class="tip" tabindex="0" aria-label="Help: tax rate at withdrawal"><span class="tip-icon">?</span><span class="tip-box">Your child's future ordinary income tax bracket when they eventually withdraw the taxable portion (earnings + seed + employer money). Nobody knows this decades out — 22% is a middle-income guess. Basis is never taxed again.</span></span></label>
-        <div class="input-row"><input type="number" id="tax-rate" value="22" min="0" max="50" step="1" /><span class="suffix">%</span></div>
+      <p class="phase-desc">Not a phase with inputs of its own — this is the handoff. On January 1 of the year your child turns 18 the account becomes a traditional IRA. Here's what's waiting, and how it splits, before you decide what to do next.</p>
+      <div class="outcome-band">
+        <div class="oc">
+          <p class="label">Balance at 18</p>
+          <p class="value" id="bal-18-hero" style="color:var(--amber)">$0</p>
+        </div>
+        <div class="oc">
+          <p class="label">Tax-free basis</p>
+          <p class="value" id="basis18-hero">$0</p>
+        </div>
+        <div class="oc">
+          <p class="label">Taxable pool</p>
+          <p class="value" id="taxable18-hero" style="color:var(--slate)">$0</p>
+        </div>
       </div>
     </div>
-    <div class="toggles">
-      <label class="toggle">
-        <input type="checkbox" id="fed-seed" checked />
-        <span>$1,000 federal seed <span class="hint">(U.S. citizens born 2025–2028)</span></span>
-      </label>
-      <label class="toggle">
-        <input type="checkbox" id="dell-grant" />
-        <span>$250 Dell Foundation grant <span class="hint">(if eligible)</span></span>
-      </label>
+
+    <div class="phase-card post" id="post-access-card">
+      <div class="phase-top">
+        <span class="phase-badge">Phase 4</span>
+        <h3>Post-access strategy</h3>
+      </div>
+      <p class="phase-desc">From 18 on it's a normal traditional IRA. The signature move: convert the taxable pool to a Roth in slices during low-income years — staying under a low bracket — then let it grow tax-free to retirement. Or just leave it invested and model a later withdrawal.</p>
+
+      <div class="mode-tabs">
+        <button type="button" class="mode-tab active" data-mode="roth" id="tab-roth">Roth conversion ladder</button>
+        <button type="button" class="mode-tab" data-mode="hold" id="tab-hold">Leave invested / draw down</button>
+      </div>
+
+      <div class="field-grid" style="margin-bottom:14px;">
+        <div class="field">
+          <label>Return % post-18<span class="tip" tabindex="0" aria-label="Help: post-access return"><span class="tip-icon">?</span><span class="tip-box">From 18 on, the account is a standard traditional IRA and investment options broaden. Set this independently from the pre-18 index-fund-only rate if you expect a different allocation.</span></span></label>
+          <div class="input-row"><input type="number" id="post-rate" value="7" min="0" max="15" step="0.1" /><span class="suffix">%</span></div>
+        </div>
+        <div class="field">
+          <label>Tax rate at withdrawal %<span class="tip" tabindex="0" aria-label="Help: tax rate at withdrawal"><span class="tip-icon">?</span><span class="tip-box">The ordinary-income bracket you'd pay if you did NOT convert and instead withdrew the taxable portion later in life (earnings + seed + employer money). Used for the do-nothing comparison. 22% is a middle-income guess. Basis is never taxed again.</span></span></label>
+          <div class="input-row"><input type="number" id="tax-rate" value="22" min="0" max="50" step="1" /><span class="suffix">%</span></div>
+        </div>
+      </div>
+
+      <div id="roth-fields">
+        <div class="field-grid">
+          <div class="field">
+            <label>Convert starting at age<span class="tip" tabindex="0" aria-label="Help: conversion start age"><span class="tip-icon">?</span><span class="tip-box">The kiddie tax can tax a dependent student's unearned income (which includes conversions) at the parents' rate through age 23. Starting at 24 — or once earned income covers half of support — usually sidesteps it. Early career, before a big salary, is the sweet spot.</span></span></label>
+            <input type="number" id="conv-start" value="24" min="18" max="45" step="1" />
+          </div>
+          <div class="field">
+            <label>Taxable converted / yr<span class="tip" tabindex="0" aria-label="Help: taxable converted per year"><span class="tip-icon">?</span><span class="tip-box">How much taxable income to realize each year — sized to stay inside a low bracket. Basis rides along tax-free on top of this. The calculator keeps converting yearly until the taxable pool is gone.</span></span></label>
+            <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="conv-income" value="12,000" /></div>
+          </div>
+          <div class="field">
+            <label>Conversion tax rate %<span class="tip" tabindex="0" aria-label="Help: conversion tax rate"><span class="tip-icon">?</span><span class="tip-box">The low bracket you expect to convert inside of during college / early-career years — often 10% or 12%. The whole point is paying this instead of a higher rate at retirement.</span></span></label>
+            <div class="input-row"><input type="number" id="conv-rate" value="12" min="0" max="40" step="1" /><span class="suffix">%</span></div>
+          </div>
+          <div class="field">
+            <label>Grow tax-free to age<span class="tip" tabindex="0" aria-label="Help: retirement age"><span class="tip-icon">?</span><span class="tip-box">Once inside the Roth, growth is tax-free forever. This is the age you tally up the tax-free value — typically retirement, 59½ or later.</span></span></label>
+            <input type="number" id="ret-age" value="60" min="19" max="75" step="1" />
+          </div>
+        </div>
+        <div class="toggles" style="margin-top:16px;">
+          <label class="toggle">
+            <input type="checkbox" id="pay-inside" />
+            <span>Pay conversion tax from the account <span class="hint">(vs. out of pocket — and adds a 10% penalty before 59½)</span></span>
+          </label>
+        </div>
+      </div>
+
+      <div id="hold-fields" style="display:none;">
+        <div class="field-grid">
+          <div class="field">
+            <label>Hold untouched to age<span class="tip" tabindex="0" aria-label="Help: hold age"><span class="tip-icon">?</span><span class="tip-box">The account unlocks the year your child turns 18, but nothing forces a withdrawal. This models leaving it invested until the age you pick.</span></span></label>
+            <input type="number" id="hold-age" value="30" min="18" max="70" step="1" />
+          </div>
+          <div class="field">
+            <label>Annual amount $ (+/-)<span class="tip" tabindex="0" aria-label="Help: post-access annual amount"><span class="tip-icon">?</span><span class="tip-box">Positive = still adding each year after 18 (a plain IRA caps at $7,500 in 2026; larger figures assume a 401(k) roll-in or mega-backdoor Roth). Negative (e.g. -5000) = withdrawing each year to model a slow drawdown.</span></span></label>
+            <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="post-annual" value="0" step="500" /></div>
+          </div>
+        </div>
+        <div data-section="lump">
+          <button type="button" class="lump-toggle" id="toggle-lump">+ add one-time lump sum / withdrawal</button>
+          <div class="lump-fields" id="lump-fields" style="display:none;">
+            <div class="field"><label>Lump sum $ (+/-)<span class="tip" tabindex="0" aria-label="Help: lump sum"><span class="tip-icon">?</span><span class="tip-box">A one-time event after access: a first-home withdrawal (−), or an added inheritance (+).</span></span></label>
+              <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="lump-sum" value="0" step="1000" /></div></div>
+            <div class="field"><label>Years after access</label>
+              <input type="number" id="lump-at-age" value="0" min="0" step="1" /></div>
+            <button type="button" class="lump-remove" id="remove-lump">&times; remove lump sum</button>
+          </div>
+        </div>
+      </div>
     </div>
+
   </div>
 
   <div id="warnings"></div>
 
   <div class="results-strip">
     <div class="result-cell hero">
-      <p class="label">Balance at 18</p>
-      <p class="value" id="bal-18">$0</p>
+      <p class="label" id="cell1-label">Balance at 18</p>
+      <p class="value" id="cell1-val">$0</p>
     </div>
     <div class="result-cell">
-      <p class="label">Balance at hold age</p>
-      <p class="value" id="bal-hold">$0</p>
+      <p class="label" id="cell2-label">Value at retirement</p>
+      <p class="value" id="cell2-val">$0</p>
     </div>
     <div class="result-cell">
-      <p class="label">Tax-free basis</p>
-      <p class="value basis" id="basis-val">$0</p>
+      <p class="label" id="cell3-label">Total conversion tax</p>
+      <p class="value" id="cell3-val">$0</p>
     </div>
     <div class="result-cell">
-      <p class="label">Est. after-tax value</p>
-      <p class="value" id="after-tax-val">$0</p>
+      <p class="label" id="cell4-label">Net vs. do-nothing</p>
+      <p class="value" id="cell4-val">$0</p>
     </div>
   </div>
+
+  <div id="compare-box"></div>
 
   <div class="basis-bar" id="basis-bar"></div>
   <p class="basis-caption" id="basis-caption"></p>
@@ -642,9 +937,9 @@
     <canvas id="chart" role="img" aria-label="Line chart of projected Trump Account balance by age. The yellow line is the tax-free basis, the blue line is the total balance, and the shaded area between the two lines is the portion taxed as ordinary income at withdrawal.">Projected balance by age: yellow line is tax-free basis, blue line is total balance, shaded gap between them is the taxable portion.</canvas>
   </div>
   <div class="legend">
-    <span><span class="swatch" style="background:#C9A45C"></span>Tax-free basis — yellow line (family contributions)</span>
+    <span><span class="swatch" style="background:#C9A45C"></span><span id="legend-taxfree">Tax-free — yellow line (basis, plus Roth once converted)</span></span>
     <span><span class="swatch" style="background:#5B7A9D"></span>Total balance — blue line</span>
-    <span><span class="swatch" style="background:rgba(91,122,157,0.35)"></span>Shaded gap between the lines — taxable at withdrawal (earnings + seed + employer)</span>
+    <span><span class="swatch" style="background:rgba(91,122,157,0.35)"></span><span id="legend-gap">Shaded gap — still taxable at withdrawal (earnings + seed + employer)</span></span>
     <span><span class="swatch" style="background:#B07A4E"></span>Age 18 — account becomes a traditional IRA</span>
   </div>
 
@@ -689,7 +984,7 @@
       <tr><td>Annual limit</td><td>$5,000 combined</td><td>Gift-tax limits (high)</td><td>IRA limit, ≤ earned income</td></tr>
       <tr><td>Locked until</td><td>Age 18</td><td>Education use (flexible)</td><td>59½ (contributions exit anytime)</td></tr>
     </table>
-    <p style="margin-top:16px;">The honest ranking for most families: free money first, tax-free growth second. If your child qualifies for the federal seed or your employer contributes, open the Trump Account and capture those dollars — they're a guaranteed, instant return. Beyond the free money, a 529 (for education goals) or a custodial Roth (if your child has legitimate earned income) offers strictly better tax treatment on earnings, because tax-free beats tax-deferred-then-ordinary-income over almost any horizon. Model the phases of a longer plan with the <a href="/">multi-phase compound interest calculator</a>.</p>
+    <p style="margin-top:16px;">The honest ranking for most families: free money first, tax-free growth second. If your child qualifies for the federal seed or your employer contributes, open the Trump Account and capture those dollars — they're a guaranteed, instant return. Beyond the free money, a 529 (for education goals) or a custodial Roth (if your child has legitimate earned income) offers strictly better tax treatment on earnings, because tax-free beats tax-deferred-then-ordinary-income over almost any horizon. And once the account holder turns 18 and has earned income, new retirement savings belong in their own IRA rather than the Trump Account (contributions here stop at 18) — weigh the two tax treatments with the <a href="/roth-vs-traditional-calculator">Roth vs. Traditional IRA calculator</a>. Model the phases of a longer plan with the <a href="/">multi-phase compound interest calculator</a>.</p>
 
     <h2>Frequently asked questions</h2>
     <div class="faq-item">
@@ -738,8 +1033,8 @@
 
 <script>
 (function(){
-  // Shim parseFloat so every existing call site transparently tolerates
-  // comma-grouped input ("100,000") without needing to touch each call site.
+  // Shim parseFloat so every call site transparently tolerates comma-grouped
+  // input ("12,000") without touching each call site.
   function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
 
   const AMBER = '#C9A45C';
@@ -750,77 +1045,237 @@
 
   const PROGRAM_START = 2026;      // first year contributions are allowed
   const SEED_MIN = 2025, SEED_MAX = 2028;
+  const COMBINED = 5000;           // shared family+employer annual cap
+  const MAX_SEGMENTS = 3;
+  const IRA_LIMIT = 7500;          // 2026 traditional/Roth IRA annual limit (under 50)
 
   const LIMITS = {
     birthYear: { min: 2009, max: 2028 },
     family: { min: 0, max: 5000 },
     employer: { min: 0, max: 2500 },
-    combined: 5000,
     rate: { min: 0, max: 15 },
+    postRate: { min: 0, max: 15 },
+    taxRate: { min: 0, max: 50 },
     holdAge: { min: 18, max: 70 },
-    taxRate: { min: 0, max: 50 }
+    postAnnual: { min: -1000000, max: 1000000 },
+    lumpSum: { min: -10000000, max: 10000000 },
+    convStart: { min: 18, max: 45 },
+    convIncome: { min: 0, max: 500000 },
+    convRate: { min: 0, max: 40 },
+    retAge: { min: 19, max: 75 }
   };
 
+  let mode = 'roth';          // 'roth' | 'hold'
+  let segments = null;        // [{years, family, employer}] — initialised on load
   let chart = null;
 
   function fmt(n) {
     const sign = n < 0 ? '-' : '';
     return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
   }
-  // Same as fmt() but without the leading $ — used to redisplay money input
-  // fields themselves with thousands separators after the user leaves them.
+  function fmtSigned(n) { return (n >= 0 ? '+' : '-') + '$' + Math.round(Math.abs(n)).toLocaleString(); }
   function formatMoneyValue(n) {
     if (isNaN(n)) return '';
     const sign = n < 0 ? '-' : '';
     return sign + Math.round(Math.abs(n)).toLocaleString();
   }
-  function clamp(val, min, max) {
-    if (isNaN(val)) return min;
-    return Math.min(max, Math.max(min, val));
+  function clamp(val, min, max) { if (isNaN(val)) return min; return Math.min(max, Math.max(min, val)); }
+  function markValidity(el, value, min, max) { el.classList.toggle('invalid', isNaN(value) || value < min || value > max); }
+  function num(id) { return parseFloat(document.getElementById(id).value); }
+  function contribWindow(birthYear) {
+    const first = Math.max(PROGRAM_START, birthYear);
+    return (birthYear + 17) - first + 1;   // # of eligible contribution years
   }
-  function markValidity(el, value, min, max) {
-    const bad = isNaN(value) || value < min || value > max;
-    el.classList.toggle('invalid', bad);
+  function maxLumpAge() {
+    const holdAge = Math.round(clamp(num('hold-age'), LIMITS.holdAge.min, LIMITS.holdAge.max));
+    return Math.max(0, holdAge - 18);
   }
+
+  // ---------- inputs ----------
   function getInputs() {
+    const birthYear = clamp(num('birth-year'), LIMITS.birthYear.min, LIMITS.birthYear.max);
     return {
-      birthYear: clamp(parseFloat(document.getElementById('birth-year').value), LIMITS.birthYear.min, LIMITS.birthYear.max),
-      family: clamp(parseFloat(document.getElementById('family-contrib').value), LIMITS.family.min, LIMITS.family.max),
-      employer: clamp(parseFloat(document.getElementById('employer-contrib').value), LIMITS.employer.min, LIMITS.employer.max),
-      rate: clamp(parseFloat(document.getElementById('rate').value), LIMITS.rate.min, LIMITS.rate.max),
-      holdAge: Math.round(clamp(parseFloat(document.getElementById('hold-age').value), LIMITS.holdAge.min, LIMITS.holdAge.max)),
-      taxRate: clamp(parseFloat(document.getElementById('tax-rate').value), LIMITS.taxRate.min, LIMITS.taxRate.max),
+      birthYear,
       fedSeed: document.getElementById('fed-seed').checked,
-      dell: document.getElementById('dell-grant').checked
+      dell: document.getElementById('dell-grant').checked,
+      segments: segments.map(s => ({
+        years: Math.max(0, Math.round(isNaN(s.years) ? 0 : s.years)),
+        family: clamp(s.family, LIMITS.family.min, LIMITS.family.max),
+        employer: clamp(s.employer, LIMITS.employer.min, LIMITS.employer.max)
+      })),
+      rate: clamp(num('rate'), LIMITS.rate.min, LIMITS.rate.max),
+      mode,
+      postRate: clamp(num('post-rate'), LIMITS.postRate.min, LIMITS.postRate.max),
+      taxRate: clamp(num('tax-rate'), LIMITS.taxRate.min, LIMITS.taxRate.max),
+      // roth
+      convStart: Math.round(clamp(num('conv-start'), LIMITS.convStart.min, LIMITS.convStart.max)),
+      convIncome: clamp(num('conv-income'), LIMITS.convIncome.min, LIMITS.convIncome.max),
+      convRate: clamp(num('conv-rate'), LIMITS.convRate.min, LIMITS.convRate.max),
+      retAge: Math.round(clamp(num('ret-age'), LIMITS.retAge.min, LIMITS.retAge.max)),
+      payInside: document.getElementById('pay-inside').checked,
+      // hold
+      holdAge: Math.round(clamp(num('hold-age'), LIMITS.holdAge.min, LIMITS.holdAge.max)),
+      postAnnual: clamp(num('post-annual'), LIMITS.postAnnual.min, LIMITS.postAnnual.max),
+      lumpSum: clamp(num('lump-sum'), LIMITS.lumpSum.min, LIMITS.lumpSum.max),
+      lumpAtAge: clamp(num('lump-at-age'), 0, maxLumpAge())
     };
   }
 
-  // --- Shareable link encode/decode (same pattern as the Phases calculator) ---
+  // ---------- engine ----------
+  function accumulate(i) {
+    const seedEligible = i.fedSeed && i.birthYear >= SEED_MIN && i.birthYear <= SEED_MAX;
+    const firstContribYear = Math.max(PROGRAM_START, i.birthYear);
+    const lastContribYear = i.birthYear + 17;
+    const startAge = Math.max(0, firstContribYear - i.birthYear);
+    const window = lastContribYear - firstContribYear + 1;
+
+    // Expand segments to a per-year schedule, clipped to the window and the cap.
+    const sched = [];
+    let scheduledYears = 0;
+    for (const s of i.segments) {
+      let fam = s.family, emp = s.employer;
+      if (fam + emp > COMBINED) fam = COMBINED - emp;   // clip family to shared cap
+      scheduledYears += s.years;
+      for (let y = 0; y < s.years && sched.length < window; y++) sched.push({ fam, emp });
+    }
+    let underfilled = window - sched.length;
+    while (sched.length < window) sched.push({ fam: 0, emp: 0 });
+
+    let balance = 0, basis = 0, seedApplied = false, dellApplied = false;
+    let bal18 = 0, basis18 = 0, totalFree = 0, totalFamily = 0, totalEmployer = 0;
+    const series = [{ age: startAge, balance: 0, taxFree: 0, roth: 0 }];
+    for (let idx = 0; idx < window; idx++) {
+      const year = firstContribYear + idx, age = year - i.birthYear;
+      if (seedEligible && !seedApplied) { balance += 1000; totalFree += 1000; seedApplied = true; }
+      if (i.dell && !dellApplied)       { balance += 250;  totalFree += 250;  dellApplied = true; }
+      const c = sched[idx];
+      balance += c.fam + c.emp; basis += c.fam; totalFamily += c.fam; totalEmployer += c.emp;
+      balance *= (1 + i.rate / 100);
+      series.push({ age: age + 1, balance, taxFree: basis, roth: 0 });
+      if (age + 1 === 18) { bal18 = balance; basis18 = basis; }
+    }
+    if (!series.some(s => s.age === 18)) { bal18 = balance; basis18 = basis; }
+    return { seedEligible, firstContribYear, lastContribYear, startAge, window,
+      series, bal18, basis18, totalFree, totalFamily, totalEmployer, scheduledYears, underfilled };
+  }
+
+  function project(i) {
+    const a = accumulate(i);
+    const series = a.series;
+    let { bal18, basis18 } = a;
+    const g = i.postRate / 100;
+
+    if (i.mode === 'hold') {
+      let bal = bal18, basis = basis18, holdAge = i.holdAge;
+      let depletedAtAge = null, clippedLump = null, lumpApplied = false;
+      const maxAge = Math.max(0, holdAge - 18), la = Math.min(Math.max(i.lumpAtAge, 0), maxAge);
+      for (let age = 19; age <= holdAge; age++) {
+        const y = age - 18;
+        if (i.lumpSum !== 0 && !lumpApplied && y >= la) {
+          let l = i.lumpSum;
+          if (l < 0 && Math.abs(l) > bal) { l = -bal; clippedLump = { requested: i.lumpSum, applied: l, avail: bal }; }
+          bal += l; if (bal < 0) bal = 0; lumpApplied = true;
+        }
+        bal += i.postAnnual; if (bal < 0) { bal = 0; if (depletedAtAge === null) depletedAtAge = age; }
+        bal *= (1 + g);
+        series.push({ age, balance: bal, taxFree: Math.min(bal, basis), roth: 0 });
+      }
+      if (i.lumpSum !== 0 && !lumpApplied) {
+        let l = i.lumpSum;
+        if (l < 0 && Math.abs(l) > bal) { l = -bal; clippedLump = { requested: i.lumpSum, applied: l, avail: bal }; }
+        bal += l; if (bal < 0) bal = 0;
+      }
+      const taxable = Math.max(0, bal - basis);
+      const taxFree = Math.min(bal, basis);
+      const afterTax = taxFree + taxable * (1 - i.taxRate / 100);   // never exceeds balance
+      return Object.assign({}, a, { mode: 'hold', endAge: holdAge, finalBalance: bal,
+        basis, taxable, taxFree, afterTax, depletedAtAge, clippedLump });
+    }
+
+    // ---- Roth conversion ladder ----
+    let VT = bal18, BT = basis18, VR = 0;
+    let externalTax = 0, penaltyPaid = 0, convTaxTotal = 0, fullyConvertedAge = null;
+    const retAge = i.retAge, convStart = i.convStart;
+    for (let age = 19; age <= retAge; age++) {
+      VT *= (1 + g); VR *= (1 + g);
+      let TT = Math.max(0, VT - BT);
+      if (age >= convStart && TT > 0.5) {
+        let A = TT > 0 ? Math.min(VT, i.convIncome * VT / TT) : VT;   // pro-rata: basis rides along
+        if (A > VT) A = VT;
+        const taxableRealized = A * (TT / VT);
+        const basisMoved = A - taxableRealized;
+        const tax = taxableRealized * i.convRate / 100;
+        convTaxTotal += tax;
+        VT -= A; BT = Math.max(0, BT - basisMoved);
+        if (!i.payInside) { VR += A; externalTax += tax; }
+        else {
+          let leak = tax;
+          if (age < 60) { const pen = tax * 0.10; penaltyPaid += pen; leak += pen; }
+          VR += Math.max(0, A - leak);
+        }
+        if (Math.max(0, VT - BT) <= 0.5 && fullyConvertedAge === null) fullyConvertedAge = age;
+      }
+      series.push({ age, balance: VT + VR, taxFree: VR + Math.min(VT, BT), roth: VR });
+    }
+    const TTend = Math.max(0, VT - BT);
+    const tradRemainderAfterTax = Math.min(VT, BT) + TTend * (1 - i.taxRate / 100);
+    const convertNet = VR + tradRemainderAfterTax - externalTax;
+    const VN = bal18 * Math.pow(1 + g, retAge - 18);          // do-nothing: all traditional
+    const doNothingNet = Math.min(VN, basis18) + Math.max(0, VN - basis18) * (1 - i.taxRate / 100);
+    return Object.assign({}, a, { mode: 'roth', endAge: retAge, finalBalance: VT + VR,
+      roth: VR, tradRemaining: VT, basis: BT, taxable: TTend, taxFree: VR + Math.min(VT, BT),
+      convTaxTotal, externalTax, penaltyPaid, fullyConvertedAge,
+      convertNet, doNothingNet, delta: convertNet - doNothingNet, VN });
+  }
+
+  // ---------- shareable link ----------
   function encodeState() {
     const i = getInputs();
-    const state = { by: i.birthYear, f: i.family, e: i.employer, r: i.rate, h: i.holdAge, t: i.taxRate, s: i.fedSeed ? 1 : 0, d: i.dell ? 1 : 0 };
-    const json = JSON.stringify(state);
-    const b64 = btoa(unescape(encodeURIComponent(json)));
+    const state = {
+      by: i.birthYear, s: i.fedSeed ? 1 : 0, d: i.dell ? 1 : 0, r: i.rate,
+      sg: i.segments.map(x => [x.years, x.family, x.employer]),
+      m: i.mode === 'hold' ? 'h' : 'r', pr: i.postRate, t: i.taxRate,
+      cs: i.convStart, ci: i.convIncome, cr: i.convRate, ra: i.retAge, pf: i.payInside ? 1 : 0,
+      ha: i.holdAge, pn: i.postAnnual, ls: i.lumpSum, la: i.lumpAtAge
+    };
+    const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
     return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   }
   function decodeState(encoded) {
     try {
       const b64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
-      const json = decodeURIComponent(escape(atob(b64)));
-      const state = JSON.parse(json);
+      const state = JSON.parse(decodeURIComponent(escape(atob(b64))));
       if (!state || typeof state.by === 'undefined') return null;
       return state;
     } catch (e) { return null; }
   }
   function applyState(s) {
     document.getElementById('birth-year').value = clamp(s.by, LIMITS.birthYear.min, LIMITS.birthYear.max);
-    document.getElementById('family-contrib').value = formatMoneyValue(clamp(s.f, LIMITS.family.min, LIMITS.family.max));
-    document.getElementById('employer-contrib').value = formatMoneyValue(clamp(s.e, LIMITS.employer.min, LIMITS.employer.max));
-    document.getElementById('rate').value = clamp(s.r, LIMITS.rate.min, LIMITS.rate.max);
-    document.getElementById('hold-age').value = clamp(s.h, LIMITS.holdAge.min, LIMITS.holdAge.max);
-    document.getElementById('tax-rate').value = clamp(s.t, LIMITS.taxRate.min, LIMITS.taxRate.max);
     document.getElementById('fed-seed').checked = !!s.s;
     document.getElementById('dell-grant').checked = !!s.d;
+    document.getElementById('rate').value = clamp(typeof s.r === 'undefined' ? 7 : s.r, LIMITS.rate.min, LIMITS.rate.max);
+    if (Array.isArray(s.sg) && s.sg.length) {
+      segments = s.sg.slice(0, MAX_SEGMENTS).map(a => ({
+        years: Math.max(0, Math.round(a[0] || 0)),
+        family: clamp(a[1] || 0, LIMITS.family.min, LIMITS.family.max),
+        employer: clamp(a[2] || 0, LIMITS.employer.min, LIMITS.employer.max)
+      }));
+    }
+    mode = s.m === 'h' ? 'hold' : 'roth';
+    document.getElementById('post-rate').value = clamp(typeof s.pr === 'undefined' ? 7 : s.pr, LIMITS.postRate.min, LIMITS.postRate.max);
+    document.getElementById('tax-rate').value = clamp(typeof s.t === 'undefined' ? 22 : s.t, LIMITS.taxRate.min, LIMITS.taxRate.max);
+    document.getElementById('conv-start').value = clamp(typeof s.cs === 'undefined' ? 24 : s.cs, LIMITS.convStart.min, LIMITS.convStart.max);
+    document.getElementById('conv-income').value = formatMoneyValue(clamp(typeof s.ci === 'undefined' ? 12000 : s.ci, LIMITS.convIncome.min, LIMITS.convIncome.max));
+    document.getElementById('conv-rate').value = clamp(typeof s.cr === 'undefined' ? 12 : s.cr, LIMITS.convRate.min, LIMITS.convRate.max);
+    document.getElementById('ret-age').value = clamp(typeof s.ra === 'undefined' ? 60 : s.ra, LIMITS.retAge.min, LIMITS.retAge.max);
+    document.getElementById('pay-inside').checked = !!s.pf;
+    document.getElementById('hold-age').value = clamp(typeof s.ha === 'undefined' ? 30 : s.ha, LIMITS.holdAge.min, LIMITS.holdAge.max);
+    document.getElementById('post-annual').value = formatMoneyValue(clamp(s.pn || 0, LIMITS.postAnnual.min, LIMITS.postAnnual.max));
+    const lumpSum = clamp(s.ls || 0, LIMITS.lumpSum.min, LIMITS.lumpSum.max);
+    document.getElementById('lump-sum').value = formatMoneyValue(lumpSum);
+    document.getElementById('lump-at-age').value = clamp(s.la || 0, 0, maxLumpAge());
+    setLumpVisible(!!lumpSum);
+    setMode(mode, true);
   }
   function updateUrlSilently() {
     const url = new URL(window.location.href);
@@ -828,88 +1283,147 @@
     window.history.replaceState(null, '', url.toString());
   }
   let urlUpdateTimer = null;
-  function scheduleUrlUpdate() {
-    clearTimeout(urlUpdateTimer);
-    urlUpdateTimer = setTimeout(updateUrlSilently, 400);
+  function scheduleUrlUpdate() { clearTimeout(urlUpdateTimer); urlUpdateTimer = setTimeout(updateUrlSilently, 400); }
+
+  // ---------- segment UI ----------
+  function renderSegments() {
+    const i0 = getInputs();
+    const birthYear = clamp(num('birth-year'), LIMITS.birthYear.min, LIMITS.birthYear.max);
+    const firstYear = Math.max(PROGRAM_START, birthYear);
+    const list = document.getElementById('seg-list');
+    list.innerHTML = '';
+    let cumYears = 0;
+    segments.forEach((seg, idx) => {
+      const div = document.createElement('div');
+      div.className = 'seg';
+      div.dataset.idx = idx;
+      const showRemove = segments.length > 1;
+      const startY = firstYear + cumYears;
+      const endY = firstYear + cumYears + Math.max(0, seg.years) - 1;
+      cumYears += Math.max(0, seg.years);
+      const ageStart = startY - birthYear, ageEnd = endY - birthYear;
+      const meta = seg.years > 0
+        ? 'Applies ' + startY + '–' + endY + ' (ages ' + ageStart + '–' + ageEnd + ').'
+        : 'No years — this period is inactive.';
+      div.innerHTML =
+        (showRemove ? '<button type="button" class="remove-btn seg-remove" data-idx="' + idx + '">remove</button>' : '') +
+        '<div class="seg-grid">' +
+          '<div class="field"><label>Years</label>' +
+            '<input type="number" class="seg-years" data-idx="' + idx + '" value="' + seg.years + '" min="0" max="18" step="1" /></div>' +
+          '<div class="field"><label>Family $ / yr</label>' +
+            '<div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" class="seg-family" data-idx="' + idx + '" value="' + formatMoneyValue(seg.family) + '" /></div></div>' +
+          '<div class="field"><label>Employer $ / yr</label>' +
+            '<div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" class="seg-emp" data-idx="' + idx + '" value="' + formatMoneyValue(seg.employer) + '" /></div></div>' +
+        '</div>' +
+        '<p class="seg-meta">' + meta + '</p>';
+      list.appendChild(div);
+    });
+
+    list.querySelectorAll('.seg-years').forEach(el => {
+      el.addEventListener('input', () => { segments[el.dataset.idx].years = parseFloat(el.value); update(); });
+      el.addEventListener('blur', () => {
+        const win = contribWindow(clamp(num('birth-year'), LIMITS.birthYear.min, LIMITS.birthYear.max));
+        const idx = +el.dataset.idx;
+        const others = segments.reduce((a, s, j) => a + (j === idx ? 0 : Math.max(0, s.years)), 0);
+        segments[idx].years = Math.max(0, Math.min(win - others, Math.round(parseFloat(el.value)) || 0));
+        renderSegments(); update();
+      });
+    });
+    list.querySelectorAll('.seg-family').forEach(el => {
+      el.addEventListener('input', () => { segments[el.dataset.idx].family = parseFloat(el.value); markValidity(el, parseFloat(el.value), 0, 5000); update(); });
+      el.addEventListener('blur', () => { const v = clamp(parseFloat(el.value), 0, 5000); segments[el.dataset.idx].family = v; el.value = formatMoneyValue(v); el.classList.remove('invalid'); update(); });
+    });
+    list.querySelectorAll('.seg-emp').forEach(el => {
+      el.addEventListener('input', () => { segments[el.dataset.idx].employer = parseFloat(el.value); markValidity(el, parseFloat(el.value), 0, 2500); update(); });
+      el.addEventListener('blur', () => { const v = clamp(parseFloat(el.value), 0, 2500); segments[el.dataset.idx].employer = v; el.value = formatMoneyValue(v); el.classList.remove('invalid'); update(); });
+    });
+    list.querySelectorAll('.seg-remove').forEach(el => {
+      el.addEventListener('click', () => { segments.splice(+el.dataset.idx, 1); renderSegments(); update(); });
+    });
+    document.getElementById('add-seg').disabled = segments.length >= MAX_SEGMENTS;
   }
 
-  function computeSeries() {
-    const i = getInputs();
-    const seedEligible = i.fedSeed && i.birthYear >= SEED_MIN && i.birthYear <= SEED_MAX;
-
-    // Enforce the shared $5,000 cap: employer keeps its slice, family is clipped.
-    let family = i.family;
-    let clippedFamily = false;
-    if (family + i.employer > LIMITS.combined) {
-      family = LIMITS.combined - i.employer;
-      clippedFamily = true;
+  function setLumpVisible(visible) {
+    document.getElementById('lump-fields').style.display = visible ? '' : 'none';
+    document.getElementById('toggle-lump').style.display = visible ? 'none' : '';
+  }
+  function setMode(m, skipUpdate) {
+    mode = m;
+    document.getElementById('tab-roth').classList.toggle('active', m === 'roth');
+    document.getElementById('tab-hold').classList.toggle('active', m === 'hold');
+    document.getElementById('roth-fields').style.display = m === 'roth' ? '' : 'none';
+    document.getElementById('hold-fields').style.display = m === 'hold' ? '' : 'none';
+    document.getElementById('compare-box').style.display = m === 'roth' ? '' : 'none';
+    const tf = document.getElementById('legend-taxfree');
+    const gap = document.getElementById('legend-gap');
+    if (m === 'roth') {
+      tf.textContent = 'Tax-free — yellow line (basis, plus Roth once converted)';
+      gap.textContent = 'Shaded gap — still taxable / unconverted';
+    } else {
+      tf.textContent = 'Tax-free basis — yellow line (family contributions)';
+      gap.textContent = 'Shaded gap — taxable at withdrawal (earnings + seed + employer)';
     }
-
-    const firstContribYear = Math.max(PROGRAM_START, i.birthYear);
-    const lastContribYear = i.birthYear + 17;              // through Dec 31 of the year the child turns 17
-    // The series labels the end-of-year balance as age (year - birthYear + 1),
-    // i.e. "balance at 18" = the balance when the account unlocks on Jan 1 of the
-    // year the child turns 18. The last compounding year is therefore
-    // birthYear + holdAge - 1 — looping to birthYear + holdAge would add an
-    // extra year of growth beyond the chosen hold age.
-    const endYear = i.birthYear + i.holdAge - 1;
-    const startAge = Math.max(0, firstContribYear - i.birthYear);
-
-    let balance = 0, basis = 0;
-    let totalFamily = 0, totalEmployer = 0, totalFree = 0;
-    const series = [];
-    let bal18 = 0, basis18 = 0;
-    let seedApplied = false, dellApplied = false;
-
-    // Record the starting point (just before the first contribution year).
-    series.push({ age: startAge, balance: 0, basis: 0 });
-
-    for (let year = firstContribYear; year <= endYear; year++) {
-      const age = year - i.birthYear;
-      // Contributions land at the start of the year, then the whole balance compounds for that year.
-      if (year >= firstContribYear && year <= lastContribYear && year >= PROGRAM_START) {
-        if (seedEligible && !seedApplied) { balance += 1000; totalFree += 1000; seedApplied = true; }
-        if (i.dell && !dellApplied)       { balance += 250;  totalFree += 250;  dellApplied = true; }
-        balance += family + i.employer;
-        basis += family;
-        totalFamily += family;
-        totalEmployer += i.employer;
-      }
-      balance = balance * (1 + i.rate / 100);
-      series.push({ age: age + 1, balance, basis });
-      if (age + 1 === 18) { bal18 = balance; basis18 = basis; }
-    }
-    if (i.holdAge === 18) { bal18 = balance; basis18 = basis; }
-
-    const taxable = Math.max(0, balance - basis);
-    const afterTax = basis + taxable * (1 - i.taxRate / 100);
-
-    return {
-      series, inputs: i, family, clippedFamily, seedEligible,
-      bal18, basis18, finalBalance: balance, basis, taxable, afterTax,
-      totalFamily, totalEmployer, totalFree,
-      firstContribYear, lastContribYear
-    };
+    if (!skipUpdate) update();
   }
 
+  // ---------- render ----------
   function renderWarnings(r) {
-    const el = document.getElementById('warnings');
-    el.innerHTML = '';
-    if (r.clippedFamily) {
-      const div = document.createElement('div');
-      div.className = 'warning';
-      div.textContent = 'Family + employer contributions exceed the shared $5,000 annual cap \u2014 family contributions were reduced to ' + fmt(r.family) + '/yr. Excess contributions draw a 6% annual penalty until removed.';
-      el.appendChild(div);
+    const el = document.getElementById('warnings'); el.innerHTML = '';
+    const add = (cls, text) => { const d = document.createElement('div'); d.className = cls; d.textContent = text; el.appendChild(d); };
+    const capHit = r.inputs.segments.some(s => s.family + s.employer > COMBINED);
+    if (capHit) add('warning', 'One or more contribution periods exceed the shared $5,000 annual cap — family dollars were reduced so family + employer stays at $5,000. Excess contributions draw a 6% annual penalty until removed.');
+    if (r.inputs.fedSeed && !r.seedEligible) add('info-note', 'The $1,000 federal seed only applies to children born 2025–2028, so it was not included for a ' + r.inputs.birthYear + ' birth year.');
+    if (r.scheduledYears > r.window) add('info-note', 'Your contribution periods add up to ' + r.scheduledYears + ' years, but only ' + r.window + ' eligible years exist before age 18 — the extra years were trimmed.');
+    else if (r.underfilled > 0) add('info-note', 'Contributions stop ' + r.underfilled + ' year' + (r.underfilled > 1 ? 's' : '') + ' before age 18; those remaining years just compound with no new money added.');
+    if (r.mode === 'roth') {
+      if (r.inputs.convStart < 24) add('warning', 'Converting before age 24 can trigger the kiddie tax on a full-time student: conversion income above ~$2,700 may be taxed at the parents’ marginal rate, not the low rate you entered. Confirm the child’s support/earned-income situation first.');
+      if (r.inputs.payInside && r.inputs.convStart < 60) add('info-note', 'Paying the conversion tax from the account before 59½ adds a 10% penalty on the withdrawn tax money (' + fmt(r.penaltyPaid) + ' total here). Paying from outside funds is almost always better.');
+      if (r.fullyConvertedAge === null) add('info-note', 'The taxable pool is not fully converted by age ' + r.endAge + ' at this pace — raise the yearly conversion amount or start earlier to finish the ladder.');
     }
-    if (r.inputs.fedSeed && !r.seedEligible) {
-      const div = document.createElement('div');
-      div.className = 'info-note';
-      div.textContent = 'The $1,000 federal seed only applies to children born 2025\u20132028, so it was not included for a ' + r.inputs.birthYear + ' birth year.';
-      el.appendChild(div);
+    if (r.mode === 'hold' && r.inputs.postAnnual > IRA_LIMIT) add('info-note', 'Adding ' + fmt(r.inputs.postAnnual) + '/yr after 18 is above the ' + fmt(IRA_LIMIT) + ' IRA contribution limit (2026). That only works through a 401(k) roll-in, employer plan, or mega-backdoor Roth — not a plain IRA — and requires earned income.');
+    if (r.mode === 'hold' && r.clippedLump) add('warning', 'Post-access lump sum of ' + fmt(r.clippedLump.requested) + ' exceeds the ' + fmt(r.clippedLump.avail) + ' available — only ' + fmt(r.clippedLump.applied) + ' was applied.');
+    if (r.mode === 'hold' && r.depletedAtAge !== null) add('warning', 'The post-access withdrawal empties the account around age ' + r.depletedAtAge + '. Later years stay at $0.');
+  }
+
+  function renderResults(r) {
+    const set = (id, t) => { document.getElementById(id).textContent = t; };
+    // Phase 3 outcome band
+    set('bal-18-hero', fmt(r.bal18));
+    set('basis18-hero', fmt(r.basis18));
+    set('taxable18-hero', fmt(Math.max(0, r.bal18 - r.basis18)));
+    document.getElementById('seed-output').textContent = fmt((r.seedEligible ? 1000 : 0) + (r.inputs.dell ? 250 : 0));
+
+    const c4 = document.getElementById('cell4-val');
+    c4.style.color = '';
+    if (r.mode === 'roth') {
+      set('cell1-label', 'Balance at 18');           set('cell1-val', fmt(r.bal18));
+      set('cell2-label', 'Roth value at ' + r.endAge); set('cell2-val', fmt(r.roth));
+      set('cell3-label', 'Total conversion tax');     set('cell3-val', fmt(r.convTaxTotal + r.penaltyPaid));
+      set('cell4-label', 'Net vs. do-nothing');       set('cell4-val', fmtSigned(r.delta));
+      c4.style.color = r.delta >= 0 ? AMBER : '#C46552';
+    } else {
+      set('cell1-label', 'Balance at 18');            set('cell1-val', fmt(r.bal18));
+      set('cell2-label', 'Balance at ' + r.endAge);   set('cell2-val', fmt(r.finalBalance));
+      set('cell3-label', 'Tax-free basis');           set('cell3-val', fmt(r.taxFree));
+      set('cell4-label', 'Est. after-tax value');     set('cell4-val', fmt(r.afterTax));
     }
-    if (r.firstContribYear > Math.max(PROGRAM_START, r.inputs.birthYear)) {
-      // no-op, kept for clarity
-    }
+  }
+
+  function renderCompare(r) {
+    const box = document.getElementById('compare-box');
+    if (r.mode !== 'roth') { box.innerHTML = ''; return; }
+    const convWins = r.delta >= 0;
+    box.innerHTML =
+      '<div class="compare">' +
+        '<div class="col' + (convWins ? ' win' : '') + '"><p class="label">Convert early, grow tax-free — net at ' + r.endAge + '</p><p class="v">' + fmt(r.convertNet) + '</p></div>' +
+        '<div class="col' + (!convWins ? ' win' : '') + '"><p class="label">Do nothing, withdraw at ' + r.inputs.taxRate + '% — net at ' + r.endAge + '</p><p class="v">' + fmt(r.doNothingNet) + '</p></div>' +
+        '<div class="verdict">' +
+          (convWins
+            ? 'Converting the taxable pool at ' + r.inputs.convRate + '% from age ' + r.inputs.convStart + ' comes out ' + fmt(Math.abs(r.delta)) + ' ahead of leaving it to grow and paying ' + r.inputs.taxRate + '% ordinary income at ' + r.endAge + '.'
+            : 'At these inputs, converting at ' + r.inputs.convRate + '% is ' + fmt(Math.abs(r.delta)) + ' behind doing nothing — the conversion rate is close to or above the withdrawal rate, so the early tax hit isn’t worth it.') +
+          (r.fullyConvertedAge ? ' Pool fully converted by age ' + r.fullyConvertedAge + '.' : '') +
+        '</div>' +
+      '</div>';
   }
 
   function renderBasisBar(r) {
@@ -917,151 +1431,171 @@
     const cap = document.getElementById('basis-caption');
     bar.innerHTML = '';
     const total = r.finalBalance || 1;
-    const bPct = Math.max(2, (r.basis / total) * 100);
+    const taxable = Math.max(0, total - r.taxFree);
+    const bPct = Math.max(2, (r.taxFree / total) * 100);
     const tPct = Math.max(2, 100 - bPct);
-
-    const b = document.createElement('div');
-    b.className = 'basis-seg b';
-    b.style.flex = bPct;
-    b.textContent = 'tax-free ' + fmt(r.basis);
-    const t = document.createElement('div');
-    t.className = 'basis-seg t';
-    t.style.flex = tPct;
-    t.textContent = 'taxable ' + fmt(r.taxable);
+    const b = document.createElement('div'); b.className = 'basis-seg b'; b.style.flex = bPct;
+    b.textContent = (r.mode === 'roth' ? 'tax-free ' : 'tax-free ') + fmt(r.taxFree);
+    const t = document.createElement('div'); t.className = 'basis-seg t'; t.style.flex = tPct;
+    t.textContent = (r.mode === 'roth' ? 'still taxable ' : 'taxable ') + fmt(taxable);
     bar.appendChild(b); bar.appendChild(t);
-
-    const pct = Math.round((r.taxable / total) * 100);
-    cap.textContent = 'At age ' + r.inputs.holdAge + ', ' + pct + '% of the balance is taxable as ordinary income when withdrawn \u2014 the account is a traditional IRA, not a Roth.';
+    const pct = Math.round((taxable / total) * 100);
+    if (r.mode === 'roth') {
+      cap.textContent = 'At age ' + r.endAge + ', ' + pct + '% of the balance is still in the taxable traditional pool; the rest is Roth or basis — tax-free.';
+    } else {
+      cap.textContent = 'At age ' + r.endAge + ', ' + pct + '% of the balance is taxable as ordinary income when withdrawn — the account is a traditional IRA, not a Roth.';
+    }
   }
 
   function renderSummaryTable(r) {
     const el = document.getElementById('summary-table');
-    const milestones = [18, 25, 30, 40, 50, 59, 65].filter(a => a <= r.inputs.holdAge && a > (r.firstContribYear - r.inputs.birthYear));
-    if (!milestones.includes(r.inputs.holdAge)) milestones.push(r.inputs.holdAge);
-    milestones.sort((a, b) => a - b);
-
-    let html = '<table><tr><th>Age</th><th>Year</th><th>Balance</th><th>Tax-free basis</th><th>Taxable portion</th></tr>';
+    const floorAge = r.startAge;
+    let milestones = [18, 25, 30, 40, 50, 59, 65].filter(a => a <= r.endAge && a > floorAge);
+    if (!milestones.includes(r.endAge)) milestones.push(r.endAge);
+    if (r.mode === 'roth' && r.inputs.convStart <= r.endAge && !milestones.includes(r.inputs.convStart)) milestones.push(r.inputs.convStart);
+    milestones = Array.from(new Set(milestones)).sort((a, b) => a - b);
+    let html = '<table><tr><th>Age</th><th>Year</th><th>Balance</th><th>Tax-free</th><th>' + (r.mode === 'roth' ? 'Still taxable' : 'Taxable portion') + '</th></tr>';
     milestones.forEach(a => {
       const pt = r.series.find(s => s.age === a);
       if (!pt) return;
-      html += '<tr><td>' + a + (a === 18 ? ' \u2014 becomes IRA' : '') + '</td><td>' + (r.inputs.birthYear + a) + '</td>' +
-        '<td class="hi">' + fmt(pt.balance) + '</td><td>' + fmt(pt.basis) + '</td><td>' + fmt(Math.max(0, pt.balance - pt.basis)) + '</td></tr>';
+      const note = a === 18 ? ' — becomes IRA' : (r.mode === 'roth' && a === r.inputs.convStart ? ' — convert' : '');
+      html += '<tr><td>' + a + note + '</td><td>' + (r.inputs.birthYear + a) + '</td>' +
+        '<td class="hi">' + fmt(pt.balance) + '</td><td>' + fmt(pt.taxFree) + '</td><td>' + fmt(Math.max(0, pt.balance - pt.taxFree)) + '</td></tr>';
     });
     html += '</table>';
     el.innerHTML = html;
 
     const note = document.getElementById('assumptions-note');
-    note.textContent = 'Assumes contributions of ' + fmt(r.family + r.inputs.employer) + '/yr from ' + r.firstContribYear + ' through ' + r.lastContribYear +
-      ' (' + fmt(r.totalFamily) + ' family + ' + fmt(r.totalEmployer) + ' employer' + (r.totalFree ? ' + ' + fmt(r.totalFree) + ' seed/grants' : '') +
-      '), applied at the start of each year, compounding annually at ' + r.inputs.rate + '%. The $5,000 cap is held constant (it indexes to inflation after 2027), and returns ignore fees and sequence risk.';
+    const segTxt = r.inputs.segments.map(s => fmt(s.family + s.employer) + '/yr × ' + s.years + 'y').join(', ');
+    let text = 'Phase 2 contributions (' + segTxt + ') run from ' + r.firstContribYear + ', applied at the start of each year and compounding annually at ' + r.inputs.rate + '% (' + fmt(r.totalFamily) + ' family + ' + fmt(r.totalEmployer) + ' employer' + (r.totalFree ? ' + ' + fmt(r.totalFree) + ' seed/grants' : '') + ' in total).';
+    if (r.mode === 'roth') {
+      text += ' Phase 4 converts ' + fmt(r.inputs.convIncome) + ' of taxable income per year from age ' + r.inputs.convStart + ' at ' + r.inputs.convRate + '% (tax paid ' + (r.inputs.payInside ? 'from the account' : 'from outside funds') + '), then grows tax-free at ' + r.inputs.postRate + '% to age ' + r.endAge + '. The do-nothing comparison grows the whole balance at ' + r.inputs.postRate + '% and withdraws at ' + r.inputs.taxRate + '%.';
+    } else {
+      text += ' Phase 4 holds from 18 to age ' + r.endAge + ' at ' + r.inputs.postRate + '%' +
+        (r.inputs.postAnnual ? (r.inputs.postAnnual > 0 ? ' adding ' + fmt(r.inputs.postAnnual) + '/yr' : ' withdrawing ' + fmt(Math.abs(r.inputs.postAnnual)) + '/yr') : ' with no further deposits or withdrawals') +
+        (r.inputs.lumpSum ? ', plus a one-time ' + fmt(r.inputs.lumpSum) + ' ' + r.inputs.lumpAtAge + ' years after access' : '') + ', taxed at ' + r.inputs.taxRate + '% on the taxable portion.';
+    }
+    text += ' The $5,000 cap is held constant (it indexes to inflation after 2027); returns ignore fees and sequence risk. Educational estimate, not tax advice.';
+    note.textContent = text;
   }
 
   function renderChart(r) {
     const ctx = document.getElementById('chart');
     const labels = r.series.map(s => String(s.age));
-    const basisData = r.series.map(s => Math.round(s.basis));
+    const taxFreeData = r.series.map(s => Math.round(s.taxFree));
     const totalData = r.series.map(s => Math.round(s.balance));
-
     if (chart) chart.destroy();
     chart = new Chart(ctx, {
       type: 'line',
       data: { labels, datasets: [
-        {
-          label: 'Tax-free basis',
-          data: basisData,
-          borderColor: AMBER, backgroundColor: 'rgba(201,164,92,0.18)',
-          fill: true, tension: 0.15, pointRadius: 0, borderWidth: 2
-        },
-        {
-          label: 'Total balance',
-          data: totalData,
-          borderColor: SLATE, backgroundColor: 'rgba(91,122,157,0.22)',
-          fill: '-1', tension: 0.15, pointRadius: 0, borderWidth: 2
-        }
+        { label: 'Tax-free', data: taxFreeData, borderColor: AMBER, backgroundColor: 'rgba(201,164,92,0.18)', fill: true, tension: 0.15, pointRadius: 0, borderWidth: 2 },
+        { label: 'Total balance', data: totalData, borderColor: SLATE, backgroundColor: 'rgba(91,122,157,0.22)', fill: '-1', tension: 0.15, pointRadius: 0, borderWidth: 2 }
       ]},
       options: {
         responsive: true, maintainAspectRatio: false,
         interaction: { mode: 'index', intersect: false },
         plugins: {
           legend: { display: false },
-          tooltip: {
-            callbacks: {
-              title: items => 'Age ' + items[0].label + ' (' + (r.inputs.birthYear + parseInt(items[0].label, 10)) + ')',
-              label: item => item.dataset.label + ': ' + fmt(item.parsed.y),
-              afterBody: items => {
-                const idx = items[0].dataIndex;
-                return 'Taxable portion (shaded gap): ' + fmt(Math.max(0, totalData[idx] - basisData[idx]));
-              }
-            }
-          }
+          tooltip: { callbacks: {
+            title: items => 'Age ' + items[0].label + ' (' + (r.inputs.birthYear + parseInt(items[0].label, 10)) + ')',
+            label: item => item.dataset.label + ': ' + fmt(item.parsed.y),
+            afterBody: items => { const idx = items[0].dataIndex; return (r.mode === 'roth' ? 'Still taxable: ' : 'Taxable portion: ') + fmt(Math.max(0, totalData[idx] - taxFreeData[idx])); }
+          } }
         },
         scales: {
-          x: {
-            title: { display: true, text: 'Age', color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
-            ticks: { maxTicksLimit: 12, color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
-            grid: { display: false }, border: { color: SEAM }
-          },
-          y: {
-            ticks: { callback: v => '$' + (Math.abs(v) >= 1000000 ? (v/1000000).toFixed(1) + 'M' : Math.abs(v) >= 1000 ? Math.round(v/1000) + 'k' : v), color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
-            grid: { color: SEAM }, border: { color: SEAM }
-          }
+          x: { title: { display: true, text: 'Age', color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } }, ticks: { maxTicksLimit: 12, color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } }, grid: { display: false }, border: { color: SEAM } },
+          y: { ticks: { callback: v => '$' + (Math.abs(v) >= 1000000 ? (v/1000000).toFixed(1) + 'M' : Math.abs(v) >= 1000 ? Math.round(v/1000) + 'k' : v), color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } }, grid: { color: SEAM }, border: { color: SEAM } }
         }
       },
       plugins: [{
-        id: 'age18Line',
+        id: 'markers',
         afterDraw(c) {
           const { ctx, chartArea, scales } = c;
-          const idx = labels.indexOf('18');
-          if (idx === -1) return;
-          const x = scales.x.getPixelForValue(idx);
-          ctx.save();
-          ctx.strokeStyle = COPPER;
-          ctx.lineWidth = 2;
-          ctx.beginPath(); ctx.moveTo(x, chartArea.top); ctx.lineTo(x, chartArea.bottom); ctx.stroke();
-          ctx.fillStyle = COPPER;
-          ctx.beginPath(); ctx.arc(x, chartArea.top + 6, 3, 0, Math.PI * 2); ctx.fill();
-          ctx.restore();
+          const drawLine = (label, color) => {
+            const idx = labels.indexOf(String(label));
+            if (idx === -1) return;
+            const x = scales.x.getPixelForValue(idx);
+            ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(x, chartArea.top); ctx.lineTo(x, chartArea.bottom); ctx.stroke();
+            ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, chartArea.top + 6, 3, 0, Math.PI * 2); ctx.fill();
+            ctx.restore();
+          };
+          drawLine(18, COPPER);
+          if (r.mode === 'roth') drawLine(r.inputs.convStart, AMBER);
         }
       }]
     });
   }
 
   function update() {
-    const r = computeSeries();
-    document.getElementById('bal-18').textContent = fmt(r.bal18);
-    document.getElementById('bal-hold').textContent = fmt(r.finalBalance);
-    document.getElementById('basis-val').textContent = fmt(r.basis);
-    document.getElementById('after-tax-val').textContent = fmt(r.afterTax);
+    const r = project(getInputs());
+    r.inputs = getInputs();
+    renderResults(r);
+    renderCompare(r);
     renderWarnings(r);
     renderBasisBar(r);
     renderChart(r);
     renderSummaryTable(r);
+    // Phase 2 description reflects the eligible window
+    const win = contribWindow(r.inputs.birthYear);
+    document.getElementById('contrib-desc').textContent = 'Contributions run from ' + r.firstContribYear + ' through ' + r.lastContribYear + ' (' + win + ' eligible years, until age 18). Add periods to front-load early or taper later — each shares the combined $5,000/yr cap.';
     scheduleUrlUpdate();
   }
 
-  // Wire inputs with the same input/blur clamp pattern as the Phases calculator.
+  // ---------- wiring ----------
   [
     ['birth-year', LIMITS.birthYear, false],
-    ['family-contrib', LIMITS.family, true],
-    ['employer-contrib', LIMITS.employer, true],
     ['rate', LIMITS.rate, false],
+    ['post-rate', LIMITS.postRate, false],
+    ['tax-rate', LIMITS.taxRate, false],
+    ['conv-start', LIMITS.convStart, false],
+    ['conv-income', LIMITS.convIncome, true],
+    ['conv-rate', LIMITS.convRate, false],
+    ['ret-age', LIMITS.retAge, false],
     ['hold-age', LIMITS.holdAge, false],
-    ['tax-rate', LIMITS.taxRate, false]
+    ['post-annual', LIMITS.postAnnual, true],
+    ['lump-sum', LIMITS.lumpSum, true]
   ].forEach(([id, lim, isMoney]) => {
     const el = document.getElementById(id);
-    el.addEventListener('input', () => {
-      markValidity(el, parseFloat(el.value), lim.min, lim.max);
-      update();
-    });
+    el.addEventListener('input', () => { markValidity(el, parseFloat(el.value), lim.min, lim.max); update(); });
     el.addEventListener('blur', () => {
       const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
       el.value = isMoney ? formatMoneyValue(corrected) : corrected;
       el.classList.remove('invalid');
+      if (id === 'birth-year' && segments.length === 1) segments[0].years = contribWindow(corrected);
+      if (id === 'birth-year') renderSegments();
       update();
     });
   });
-  ['fed-seed', 'dell-grant'].forEach(id => {
-    document.getElementById(id).addEventListener('change', update);
+  ['fed-seed', 'dell-grant', 'pay-inside'].forEach(id => document.getElementById(id).addEventListener('change', update));
+
+  const lumpAtAgeEl = document.getElementById('lump-at-age');
+  lumpAtAgeEl.addEventListener('input', () => { markValidity(lumpAtAgeEl, parseFloat(lumpAtAgeEl.value), 0, maxLumpAge()); update(); });
+  lumpAtAgeEl.addEventListener('blur', () => { lumpAtAgeEl.value = clamp(parseFloat(lumpAtAgeEl.value), 0, maxLumpAge()); lumpAtAgeEl.classList.remove('invalid'); update(); });
+
+  document.getElementById('add-seg').addEventListener('click', () => {
+    if (segments.length >= MAX_SEGMENTS) return;
+    const win = contribWindow(clamp(num('birth-year'), LIMITS.birthYear.min, LIMITS.birthYear.max));
+    const total = segments.reduce((a, s) => a + Math.max(0, s.years), 0);
+    let available = win - total;
+    if (available < 1) {
+      // No room left before 18 — split years out of the last period rather than
+      // extending contributions past the access age (those belong in a separate IRA).
+      const last = segments[segments.length - 1];
+      const take = Math.max(1, Math.floor(last.years / 2));
+      last.years = Math.max(1, last.years - take);
+      available = take;
+    }
+    segments.push({ years: available, family: 1000, employer: 0 });
+    renderSegments(); update();
+  });
+  document.getElementById('tab-roth').addEventListener('click', () => setMode('roth'));
+  document.getElementById('tab-hold').addEventListener('click', () => setMode('hold'));
+  document.getElementById('toggle-lump').addEventListener('click', () => { setLumpVisible(true); update(); });
+  document.getElementById('remove-lump').addEventListener('click', () => {
+    document.getElementById('lump-sum').value = '0';
+    document.getElementById('lump-at-age').value = '0';
+    setLumpVisible(false); update();
   });
 
   document.getElementById('copy-link').addEventListener('click', () => {
@@ -1071,20 +1605,21 @@
       statusEl.textContent = 'link copied';
       setTimeout(() => { statusEl.textContent = ''; }, 2200);
     }).catch(() => {
-      statusEl.textContent = 'copy failed \u2014 select the URL bar';
+      statusEl.textContent = 'copy failed — select the URL bar';
       setTimeout(() => { statusEl.textContent = ''; }, 2800);
     });
   });
 
+  // ---------- init ----------
+  segments = [{ years: contribWindow(2025), family: 2500, employer: 0 }];
   (function hydrateFromUrl() {
     const params = new URLSearchParams(window.location.search);
     const encoded = params.get('d');
-    if (encoded) {
-      const state = decodeState(encoded);
-      if (state) applyState(state);
-    }
+    if (encoded) { const state = decodeState(encoded); if (state) applyState(state); }
   })();
-
+  renderSegments();
+  setMode(mode, true);
+  setLumpVisible(parseFloat(document.getElementById('lump-sum').value) !== 0);
   update();
 })();
 </script>

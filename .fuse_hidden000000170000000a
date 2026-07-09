@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MH7FWJX2M3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MH7FWJX2M3');
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Phases — a multi-phase compound interest calculator</title>
+<meta name="description" content="A free multi-phase compound interest calculator. Model contributions, rates, and withdrawals across life stages — early career, peak earning, retirement drawdown — instead of one flat rate." />
+<link rel="canonical" href="https://phasecalc.com/" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Phases" />
+<meta property="og:url" content="https://phasecalc.com/" />
+<meta property="og:title" content="Phases — a multi-phase compound interest calculator" />
+<meta property="og:description" content="Model contributions, rates, and withdrawals across life stages — not one flat rate for your whole life. Free, no signup." />
+<meta property="og:image" content="https://phasecalc.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Phases — a multi-phase compound interest calculator" />
+<meta name="twitter:description" content="Model contributions, rates, and withdrawals across life stages — not one flat rate for your whole life. Free, no signup." />
+<meta name="twitter:image" content="https://phasecalc.com/og-image.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What rate of return should I use in a compound interest calculator?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It depends on what the money is invested in and the phase of life you're modeling. A common long-run assumption for a diversified U.S. stock portfolio is 7% (roughly the historical inflation-adjusted average), while bond-heavy retirement portfolios are often modeled at 4-5%. Multi-phase modeling lets you use different rates for different periods - for example, 7% during accumulation and 4% during a more conservative retirement drawdown."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How does this calculator compound interest?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Monthly. Each month, the balance grows by one-twelfth of the annual rate, then the monthly contribution (or withdrawal) is added. Monthly compounding with monthly contributions closely matches how most people actually invest - regular contributions from each paycheck - and produces slightly higher results than annual compounding at the same stated rate."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a drawdown phase?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A drawdown phase is a period where you withdraw money instead of contributing - typically retirement. In this calculator, enter a negative monthly amount (like -2500) to model withdrawals. The balance keeps compounding at your chosen rate while withdrawals reduce it, which shows whether your savings outlast your retirement or deplete early."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does this calculator adjust for inflation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not automatically - all figures are nominal. The simplest way to think in today's dollars is to use a real (inflation-adjusted) return: if you expect 10% nominal growth and 3% inflation, enter roughly 7%. Then every result reads in today's purchasing power."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my balance hit zero before the end?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Your withdrawal rate is outrunning growth. When monthly withdrawals exceed what the balance earns, the principal shrinks, which shrinks next month's growth, which accelerates the decline - compounding in reverse. The calculator flags the year this happens so you can adjust the withdrawal amount, the rate, or the length of earlier accumulation phases."
+      }
+    }
+  ]
+}
+</script>
+
+
+<style>
+  :root {
+    --ink: #0F1B2D;
+    --ink-raised: #142539;
+    --parchment: #EDE6D6;
+    --parchment-dim: #B8AF9C;
+    --parchment-faint: #948D79;
+    --amber: #C9A45C;
+    --amber-dim: #4A3C24;
+    --slate: #5B7A9D;
+    --slate-dim: #25333F;
+    --copper: #B07A4E;
+    --seam: #24344A;
+    --warn: #C46552;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--parchment);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .wordmark svg { display: block; }
+  .wordmark span {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    letter-spacing: 0.02em;
+    color: var(--parchment);
+  }
+  .brandbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--seam);
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .wordmark svg { display: block; }
+  .wordmark span {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    letter-spacing: 0.01em;
+    color: var(--parchment);
+  }
+  .sitenav {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+  }
+  .sitenav a {
+    color: var(--parchment-faint);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+  }
+  .sitenav a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+  .sitenav a.current { color: var(--parchment); border-bottom-color: var(--seam); }
+
+  .masthead {
+    margin-bottom: 48px;
+    border-bottom: 1px solid var(--seam);
+    padding-bottom: 24px;
+  }
+
+  .masthead .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 10px;
+  }
+
+  .masthead h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 34px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .masthead p {
+    color: var(--parchment-dim);
+    font-size: 15px;
+    margin: 0;
+    max-width: 480px;
+  }
+
+  .controls-row {
+    display: flex;
+    gap: 28px;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .field-group {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .field label {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin-bottom: 6px;
+  }
+
+  .field .input-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .field .prefix {
+    font-family: 'Source Serif 4', serif;
+    font-size: 20px;
+    color: var(--parchment-dim);
+  }
+
+  /* Floating help bubbles */
+  .tip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: 1px;
+    cursor: help;
+    outline: none;
+  }
+  .tip .tip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid var(--parchment-faint);
+    color: var(--parchment-faint);
+    font-size: 9px;
+    line-height: 1;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .tip:hover .tip-icon, .tip:focus .tip-icon { border-color: var(--amber); color: var(--amber); }
+  .tip .tip-box {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 9px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 230px;
+    max-width: calc(100vw - 56px);
+    background: var(--ink);
+    border: 1px solid var(--seam);
+    border-radius: 3px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--parchment-dim);
+    white-space: normal;
+    z-index: 20;
+  }
+  .tip .tip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--seam);
+  }
+  .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
+
+  input[type="number"], input[type="text"] {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--seam);
+    color: var(--parchment);
+    font-family: 'Source Serif 4', serif;
+    font-size: 20px;
+    padding: 2px 0;
+    width: 120px;
+    transition: border-color 0.15s ease;
+  }
+
+  input[type="text"] {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    width: 100%;
+  }
+
+  input:focus { outline: none; border-bottom-color: var(--amber); }
+  input.invalid { border-bottom-color: var(--warn); }
+
+  .result-block { text-align: right; }
+  .result-block .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 6px;
+  }
+  .result-block .value {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 28px;
+    margin: 0 0 10px;
+    color: var(--amber);
+  }
+
+  .copy-link-btn {
+    background: none;
+    border: 1px solid var(--seam);
+    color: var(--parchment-dim);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    padding: 7px 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+  .copy-link-btn:hover { border-color: var(--amber); color: var(--amber); }
+
+  .copy-status {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--amber);
+    margin-top: 6px;
+    height: 14px;
+  }
+
+  .horizon-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-faint);
+    margin-bottom: 14px;
+  }
+  .horizon-note.over { color: var(--warn); }
+
+  /* Homepage feature callout - promotes the retirement backtest calculator */
+  .feature-callout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    background: var(--slate-dim);
+    border-left: 3px solid var(--slate);
+    border-radius: 2px;
+    padding: 20px 24px;
+    margin-bottom: 40px;
+  }
+  .feature-callout .callout-text { flex: 1; min-width: 260px; }
+  .feature-callout .tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--slate);
+    margin: 0 0 8px;
+  }
+  .feature-callout .headline {
+    font-family: 'Source Serif 4', serif;
+    font-size: 16.5px;
+    line-height: 1.55;
+    color: var(--parchment);
+    margin: 0;
+  }
+  .feature-callout .feature-cta {
+    display: inline-block;
+    white-space: nowrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.03em;
+    color: var(--ink);
+    background: var(--amber);
+    padding: 11px 20px;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: opacity 0.15s ease;
+  }
+  .feature-callout .feature-cta:hover { opacity: 0.85; }
+  @media (max-width: 540px) {
+    .feature-callout { flex-direction: column; align-items: flex-start; }
+  }
+
+  /* Timeline - the signature element */
+  .timeline {
+    display: flex;
+    height: 64px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 6px;
+    position: relative;
+  }
+  .timeline-seg {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.02em;
+    padding: 0 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: default;
+  }
+  .timeline-seg.accum { background: var(--amber-dim); color: var(--amber); }
+  .timeline-seg.draw { background: var(--slate-dim); color: var(--slate); }
+  .timeline-seg + .timeline-seg {
+    border-left: 2px solid var(--ink);
+  }
+  .timeline-seg::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, currentColor 0, currentColor 3px, transparent 3px, transparent 7px);
+    opacity: 0.25;
+  }
+  .lump-mark {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: var(--copper);
+  }
+  .timeline-axis {
+    display: flex;
+    margin-bottom: 40px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--parchment-faint);
+  }
+
+  /* Warnings */
+  .warning {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--warn);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  /* Phase cards */
+  .phase-list { display: flex; flex-direction: column; gap: 2px; margin-bottom: 28px; }
+
+  .phase-card {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--amber);
+    padding: 18px 20px;
+    position: relative;
+  }
+  .phase-card.draw { border-left-color: var(--slate); }
+  .phase-card + .phase-card { margin-top: 10px; }
+
+  .phase-card .phase-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .remove-btn {
+    background: none;
+    border: none;
+    color: var(--parchment-faint);
+    cursor: pointer;
+    padding: 4px;
+    font-size: 13px;
+    font-family: 'IBM Plex Mono', monospace;
+    transition: color 0.15s ease;
+  }
+  .remove-btn:hover { color: var(--warn); }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 16px;
+  }
+  .field-grid .field label { font-size: 10px; }
+  .field-grid input { width: 100%; font-size: 16px; }
+
+  .lump-toggle {
+    background: none;
+    border: 1px dashed var(--seam);
+    color: var(--parchment-faint);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    padding: 6px 12px;
+    cursor: pointer;
+    margin-top: 14px;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+  .lump-toggle:hover { color: var(--copper); border-color: var(--copper); }
+
+  .lump-fields {
+    margin-top: 14px;
+    padding: 14px;
+    background: var(--ink);
+    border-radius: 2px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 14px;
+    align-items: end;
+  }
+  .lump-fields input { font-size: 15px; }
+  .lump-remove {
+    background: none;
+    border: none;
+    color: var(--parchment-faint);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    cursor: pointer;
+    text-align: left;
+    padding: 6px 0;
+  }
+  .lump-remove:hover { color: var(--warn); }
+
+  .add-phase-btn {
+    width: 100%;
+    background: none;
+    border: 1px dashed var(--seam);
+    color: var(--parchment-dim);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    padding: 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    margin-bottom: 44px;
+    transition: all 0.15s ease;
+  }
+  .add-phase-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .add-phase-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .chart-wrap { position: relative; height: 280px; margin-bottom: 14px; }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-dim);
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .legend .swatch { display: inline-block; width: 9px; height: 9px; margin-right: 6px; vertical-align: -1px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { padding: 9px 6px; text-align: right; border-bottom: 1px solid var(--seam); }
+  th:first-child, td:first-child { text-align: left; }
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    font-weight: 400;
+  }
+  td { font-family: 'Source Serif 4', serif; color: var(--parchment-dim); }
+  td:first-child { font-family: 'Inter', sans-serif; color: var(--parchment); font-size: 13px; }
+  td.end-balance { color: var(--parchment); font-weight: 500; }
+  td.clipped { color: var(--warn); }
+  .footnote { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--parchment-faint); margin-top: 8px; }
+
+  /* Article */
+  .article {
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--seam);
+  }
+  .article h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+  }
+  .article h2:first-child { margin-top: 0; }
+  .article h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 28px 0 8px;
+  }
+  .article p {
+    color: var(--parchment-dim);
+    font-size: 16.5px;
+    line-height: 1.7;
+    margin: 0 0 18px;
+  }
+  .article strong { color: var(--parchment); font-weight: 500; }
+  .article a { color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber-dim); }
+  .article a:hover { border-bottom-color: var(--amber); }
+  .article .formula {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 15px;
+    color: var(--parchment);
+    background: var(--ink-raised);
+    padding: 14px 18px;
+    border-left: 2px solid var(--amber);
+    margin: 0 0 18px;
+  }
+  .faq-item { margin-bottom: 24px; }
+  .faq-item h3 { margin-bottom: 6px; }
+  .faq-item p { margin-bottom: 0; }
+
+
+  /* Article */
+  .article {
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--seam);
+  }
+  .article h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+  }
+  .article h2:first-child { margin-top: 0; }
+  .article h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 28px 0 8px;
+  }
+  .article p {
+    color: var(--parchment-dim);
+    font-size: 16.5px;
+    line-height: 1.7;
+    margin: 0 0 18px;
+  }
+  .article strong { color: var(--parchment); font-weight: 500; }
+  .article a { color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber-dim); }
+  .article a:hover { border-bottom-color: var(--amber); }
+  .faq-item { margin-bottom: 24px; }
+  .faq-item h3 { margin-bottom: 6px; }
+  .faq-item p { margin-bottom: 0; }
+
+  .support-footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--seam);
+  }
+  .support-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 8px;
+    line-height: 1.6;
+  }
+  .support-line a {
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 1px solid var(--amber-dim);
+  }
+  .support-line a:hover { border-bottom-color: var(--amber); }
+
+  @media (max-width: 540px) {
+    .field-grid { grid-template-columns: 1fr 1fr; }
+    .lump-fields { grid-template-columns: 1fr 1fr; }
+    .controls-row { flex-direction: column; align-items: flex-start; }
+    .result-block { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+
+  <header class="brandbar">
+    <a class="wordmark" href="/"><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="7" width="12" height="18" fill="#C9A45C"/><rect x="16.5" y="7" width="8.5" height="18" fill="#8A6E3D"/><rect x="27" y="7" width="3.5" height="18" fill="#5B7A9D"/></svg><span>Phases</span></a>
+    <nav class="sitenav">
+      <a href="/" class="current">Compound Interest</a>
+      <a href="/retirement-backtest-calculator">Retirement Backtest</a>
+      <a href="/trump-account-calculator">Trump Account</a>
+      <a href="/529-superfunding-calculator">529 Superfund</a>
+      <a href="/roth-vs-traditional-calculator">Roth vs Trad</a>
+      <a href="/coast-fire-calculator">Coast FIRE</a>
+      <a href="/savings-goal-calculator">Savings Goal</a>
+      <a href="/dca-calculator">DCA</a>
+      <a href="/drip-calculator">DRIP</a>
+      <a href="/margin-loan-calculator">Margin</a>
+      <a href="/capital-gains-tax-calculator">Capital Gains</a>
+      <a href="/inflation-adjusted-return-calculator">Real Return</a>
+      <a href="/heloc-payment-calculator">HELOC</a>
+      <a href="/cash-out-refinance-vs-heloc-calculator">Refi vs HELOC</a>
+      <a href="/mortgage-extra-payment-calculator">Mortgage Payoff</a>
+      <a href="/rental-property-calculator">Rental</a>
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </header>
+
+  <div class="masthead">
+    <h1>A multi-phase compound interest calculator</h1>
+    <p>Most calculators assume one flat rate for your whole life. Build a sequence of phases instead — each with its own contribution, rate, and duration — to model how money actually moves through decades.</p>
+  </div>
+
+  <div class="feature-callout">
+    <div class="callout-text">
+      <p class="tag">New — historical cycle backtesting</p>
+      <p class="headline">Planning retirement specifically? Don't just project one average return — stress-test your drawdown against every real U.S. market cycle since 1928.</p>
+    </div>
+    <a class="feature-cta" href="/retirement-backtest-calculator">Run the retirement backtest &rarr;</a>
+  </div>
+
+  <div class="controls-row">
+    <div class="field-group">
+      <div class="field">
+        <label>Starting balance</label>
+        <div class="input-row">
+          <span class="prefix">$</span>
+          <input type="text" inputmode="decimal" id="starting-balance" value="10,000" min="0" step="1000" />
+        </div>
+      </div>
+      <div class="field">
+        <label>Starting year</label>
+        <input type="number" id="starting-year" value="2026" min="1950" max="2200" step="1" />
+      </div>
+    </div>
+    <div class="result-block">
+      <p class="label">Ending balance</p>
+      <p class="value" id="ending-balance">$0</p>
+      <button class="copy-link-btn" id="copy-link">copy shareable link</button>
+      <span class="copy-status" id="copy-status"></span>
+    </div>
+  </div>
+
+  <p class="horizon-note" id="horizon-note"></p>
+
+  <div class="timeline" id="timeline"></div>
+  <div class="timeline-axis" id="timeline-axis"></div>
+
+  <div id="warnings"></div>
+
+  <div class="phase-list" id="phase-list"></div>
+
+  <button class="add-phase-btn" id="add-phase">+ add phase</button>
+
+  <div class="chart-wrap">
+    <canvas id="chart" role="img" aria-label="Line chart of projected balance over calendar years across all phases, with phase boundaries and one-time lump sum events marked.">Balance grows or shrinks across each defined phase based on its contribution, rate, and any one-time lump sum events.</canvas>
+  </div>
+  <div class="legend" id="legend"></div>
+
+  <div id="summary-table"></div>
+
+  <article class="article">
+    <h2>How this compound interest calculator works</h2>
+    <p>Most compound interest calculators ask for one rate, one contribution, and one time horizon — as if your financial life were a single flat line. Real money doesn't work that way. You contribute $300 a month in your twenties and $1,500 in your forties. You earn equity-like returns while accumulating and shift conservative near retirement. You inherit money once, buy a house once, and eventually stop contributing entirely and start withdrawing.</p>
+    <p>This calculator models that reality as <strong>phases</strong>: a sequence of periods, each with its own duration, monthly contribution (or withdrawal), and expected annual return. Within each phase, the balance compounds monthly — each month the balance grows by one-twelfth of the annual rate, then the month's contribution is added. One-time lump sums (an inheritance, a bonus, a home down payment leaving the portfolio) can be dropped anywhere on the timeline. The chart stitches the phases together so you can see the whole arc, from first paycheck to final withdrawal.</p>
+
+    <h2>The formula, and why contributions change everything</h2>
+    <p>The textbook compound interest formula covers a lump sum left alone:</p>
+    <p class="formula">A = P(1 + r/n)<sup>nt</sup></p>
+    <p>where P is the starting principal, r the annual rate, n the number of compounding periods per year, and t the years. $10,000 at 7% compounded monthly for 30 years becomes about $81,200 — an eightfold increase without adding a cent.</p>
+    <p>But almost nobody invests as a single lump sum. The moment you add regular contributions, each deposit becomes its own little principal compounding from its own start date, and the math (a future-value-of-annuity series) stops being something you want to do by hand. That's the real job of this calculator: it runs the month-by-month arithmetic across every phase, contribution, and lump sum, so the only thing you need to bring is honest assumptions.</p>
+
+    <h2>What the phases teach that one flat rate can't</h2>
+    <p><strong>Early money dominates.</strong> Run a scenario with $300/month for the first ten years and nothing after, against nothing for ten years and $600/month for the next ten. The early saver usually wins despite contributing half as much per month — those first dollars compound for decades. Seeing that on your own numbers is more convincing than any lecture about starting early.</p>
+    <p><strong>Drawdown is a phase, not an afterthought.</strong> Model retirement as a phase with a negative monthly contribution — say −$2,500/month at a 4% return. The calculator shows whether the balance outlives the plan or hits zero, and warns you when it depletes. One honest limitation: this is a deterministic model, meaning it assumes the same return every single year. Real markets deliver returns unevenly, and a bad stretch early in retirement (sequence-of-returns risk) can sink a plan that looks fine on average. If your drawdown phase barely survives, treat that as a plan that needs more margin, not one that works.</p>
+    <p><strong>Rate changes compound too.</strong> Dropping from 7% to 4% at retirement sounds small; over a 20-year drawdown it's often the difference between ending with a surplus and running dry. Phases make that visible.</p>
+
+    <h2>Choosing honest assumptions</h2>
+    <p>For long-run U.S. stock returns, roughly 10% annually before inflation and about 7% after inflation are the commonly cited historical averages — useful defaults for accumulation phases, with the reminder that history is not a guarantee. Bonds and cash run lower, so blended portfolios and retirement phases are often modeled at 4–5%. Results here are in nominal, pre-tax dollars: to think in today's purchasing power, subtract expected inflation from your rate; to think after taxes, remember that a 401(k) or IRA compounds untaxed while a brokerage account loses a slice to taxes each year. For newer account types with their own rules, see the <a href="/heloc-payment-calculator">HELOC payment calculator</a> for borrowing-side math or the <a href="/trump-account-calculator">Trump Account calculator</a> for the new children's accounts.</p>
+
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <h3>What interest rate should I use?</h3>
+      <p>Match it to the investment. Long-run U.S. stocks: ~7% real / ~10% nominal historically. Blended or conservative portfolios: 4–6%. Model accumulation and drawdown phases at different rates — that's what the phases are for.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How is compound interest different from simple interest?</h3>
+      <p>Simple interest pays only on the original principal; compound interest pays on principal plus all previously earned interest, so growth accelerates. At 7%, $10,000 earns $700 in year one either way — but by year ten, the compounded version earns over $1,300 a year.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does monthly vs. annual compounding matter?</h3>
+      <p>Modestly. $10,000 at 7% for 30 years: about $76,100 compounded annually vs. $81,200 monthly. This calculator compounds monthly, which also matches how people actually contribute.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does it account for inflation or taxes?</h3>
+      <p>No — results are nominal and pre-tax. Subtract expected inflation from your rate for real-dollar results, and remember tax treatment depends on the account (401(k)/IRA vs. taxable brokerage).</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can it model running out of money?</h3>
+      <p>Yes — give a phase a negative monthly contribution and the calculator flags the year the balance hits zero. Because it assumes steady returns, treat a barely-surviving plan as one that needs more cushion.</p>
+    </div>
+  </article>
+
+  <div class="support-footer">
+    <p class="support-line">
+      If this calculator was useful, a tip helps keep it free and ad-free —
+      <a href="https://buymeacoffee.com/ctong" target="_blank" rel="noopener">buy me a coffee</a>.
+    </p>
+    <p class="support-line">
+      I also use <a href="https://monarch.com/referral/rk2olzfae9?r_source=copy" target="_blank" rel="noopener">Monarch</a> to track net worth and spending — that's a referral link, so if you sign up I get a discount on my own subscription. No pressure either way.
+    </p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  // Shim parseFloat so every existing call site transparently tolerates
+  // comma-grouped input ("100,000") without needing to touch each call site.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
+  const AMBER = '#C9A45C';
+  const SLATE = '#5B7A9D';
+  const COPPER = '#B07A4E';
+  const WARN = '#C46552';
+  const SEAM = '#24344A';
+  const PARCHMENT_DIM = '#B8AF9C';
+  const PARCHMENT_FAINT = '#948D79';
+
+  const LIMITS = {
+    startingBalance: { min: 0, max: 1000000000 },
+    startingYear: { min: 1950, max: 2200 },
+    years: { min: 1, max: 100 },
+    totalYears: 100,
+    rate: { min: -50, max: 50 },
+    monthly: { min: -1000000, max: 1000000 },
+    lumpSum: { min: -10000000, max: 10000000 }
+  };
+
+  let phases = [
+    { id: 1, label: 'Early career', years: 10, monthly: 300, rate: 7, lumpSum: 0, lumpAt: 0 },
+    { id: 2, label: 'Peak earning', years: 15, monthly: 1200, rate: 7, lumpSum: 0, lumpAt: 0 },
+    { id: 3, label: 'Retirement drawdown', years: 20, monthly: -2500, rate: 4, lumpSum: 0, lumpAt: 0 }
+  ];
+  let nextId = 4;
+  let chart = null;
+
+  function fmt(n) {
+    const sign = n < 0 ? '-' : '';
+    return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  // Same as fmt() but without the leading $ — used to redisplay money input
+  // fields themselves with thousands separators after the user leaves them.
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
+  }
+  function clamp(val, min, max) {
+    if (isNaN(val)) return min;
+    return Math.min(max, Math.max(min, val));
+  }
+  function totalYears() { return phases.reduce((s, p) => s + p.years, 0); }
+  function maxYearsFor(phase) {
+    const othersTotal = phases.filter(p => p.id !== phase.id).reduce((s, p) => s + p.years, 0);
+    return Math.max(LIMITS.years.min, LIMITS.totalYears - othersTotal);
+  }
+  function markValidity(el, value, min, max) {
+    const bad = isNaN(value) || value < min || value > max;
+    el.classList.toggle('invalid', bad);
+  }
+  function yearLabel(startYear, offsetYears) { return Math.round(startYear + offsetYears); }
+
+  // --- Shareable link encode/decode ---
+  // Short keys keep the URL lean: sb=starting balance, sy=starting year,
+  // p=phases array, with l/y/m/r/ls/la mapping to label/years/monthly/rate/lumpSum/lumpAt.
+  function encodeState() {
+    const sb = clamp(parseFloat(document.getElementById('starting-balance').value), LIMITS.startingBalance.min, LIMITS.startingBalance.max);
+    const sy = clamp(parseFloat(document.getElementById('starting-year').value), LIMITS.startingYear.min, LIMITS.startingYear.max);
+    const state = {
+      sb, sy,
+      p: phases.map(ph => ({ l: ph.label, y: ph.years, m: ph.monthly, r: ph.rate, ls: ph.lumpSum || 0, la: ph.lumpAt || 0 }))
+    };
+    const json = JSON.stringify(state);
+    const b64 = btoa(unescape(encodeURIComponent(json)));
+    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+
+  function decodeState(encoded) {
+    try {
+      const b64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+      const json = decodeURIComponent(escape(atob(b64)));
+      const state = JSON.parse(json);
+      if (!state || !Array.isArray(state.p) || state.p.length === 0) return null;
+      return state;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function applyState(state) {
+    document.getElementById('starting-balance').value = formatMoneyValue(clamp(state.sb, LIMITS.startingBalance.min, LIMITS.startingBalance.max));
+    document.getElementById('starting-year').value = clamp(state.sy, LIMITS.startingYear.min, LIMITS.startingYear.max);
+    let loadedPhases = state.p.map(ph => ({
+      id: nextId++,
+      label: String(ph.l || 'Phase'),
+      years: clamp(ph.y, LIMITS.years.min, LIMITS.years.max),
+      monthly: clamp(ph.m, LIMITS.monthly.min, LIMITS.monthly.max),
+      rate: clamp(ph.r, LIMITS.rate.min, LIMITS.rate.max),
+      lumpSum: clamp(ph.ls || 0, LIMITS.lumpSum.min, LIMITS.lumpSum.max),
+      lumpAt: 0
+    }));
+    // Enforce the total-years cap across the whole set, not just per phase -
+    // a hand-edited or corrupted link could otherwise smuggle in a total over LIMITS.totalYears.
+    const sum = loadedPhases.reduce((s, p) => s + p.years, 0);
+    if (sum > LIMITS.totalYears) {
+      const scale = LIMITS.totalYears / sum;
+      loadedPhases.forEach(p => {
+        p.years = Math.max(LIMITS.years.min, Math.round(p.years * scale));
+      });
+      // Rounding can leave the sum slightly off the cap - trim or pad the last phase to land exactly on it.
+      const newSum = loadedPhases.reduce((s, p) => s + p.years, 0);
+      const diff = LIMITS.totalYears - newSum;
+      if (diff !== 0 && loadedPhases.length > 0) {
+        const last = loadedPhases[loadedPhases.length - 1];
+        last.years = clamp(last.years + diff, LIMITS.years.min, LIMITS.years.max);
+      }
+    }
+    // lumpAt depends on each phase's final years, so set it after scaling
+    loadedPhases.forEach((p, i) => {
+      p.lumpAt = clamp(state.p[i].la || 0, 0, p.years);
+    });
+    phases = loadedPhases;
+  }
+
+  function updateUrlSilently() {
+    const encoded = encodeState();
+    const url = new URL(window.location.href);
+    url.searchParams.set('d', encoded);
+    window.history.replaceState(null, '', url.toString());
+  }
+
+  let urlUpdateTimer = null;
+  function scheduleUrlUpdate() {
+    clearTimeout(urlUpdateTimer);
+    urlUpdateTimer = setTimeout(updateUrlSilently, 400);
+  }
+
+  function computeSeries() {
+    const startYear = clamp(parseFloat(document.getElementById('starting-year').value), LIMITS.startingYear.min, LIMITS.startingYear.max);
+    let balance = clamp(parseFloat(document.getElementById('starting-balance').value), LIMITS.startingBalance.min, LIMITS.startingBalance.max);
+    const series = [{ year: 0, balance }];
+    const phaseBoundaries = [];
+    const events = [];
+    const clippedLumps = [];
+    let yearCounter = 0;
+    const rows = [];
+    let depletedAt = null;
+
+    phases.forEach(p => {
+      const startBalance = balance;
+      const phaseStartYear = yearCounter;
+      const rate = clamp(p.rate, LIMITS.rate.min, LIMITS.rate.max);
+      const monthly = clamp(p.monthly, LIMITS.monthly.min, LIMITS.monthly.max);
+      const yearsHere = clamp(p.years, LIMITS.years.min, LIMITS.years.max);
+      const requestedLump = clamp(p.lumpSum || 0, LIMITS.lumpSum.min, LIMITS.lumpSum.max);
+      const lumpAtYear = clamp(p.lumpAt || 0, 0, yearsHere);
+      const lumpAtMonth = Math.round(lumpAtYear * 12);
+      const monthlyRate = (rate / 100) / 12;
+      const months = Math.round(yearsHere * 12);
+      let hitZeroThisPhase = false;
+      let lumpApplied = false;
+      let monthsElapsedInPhase = 0;
+      let actualLump = requestedLump;
+
+      const applyLump = (atYearOffset) => {
+        let lumpToApply = requestedLump;
+        if (requestedLump < 0 && Math.abs(requestedLump) > balance) {
+          lumpToApply = -balance;
+          clippedLumps.push({ label: p.label, requested: requestedLump, applied: lumpToApply, availableBalance: balance });
+        }
+        actualLump = lumpToApply;
+        balance += lumpToApply;
+        if (balance < 0) balance = 0;
+        events.push({ year: phaseStartYear + atYearOffset, amount: lumpToApply, label: p.label });
+      };
+
+      for (let m = 1; m <= months; m++) {
+        if (requestedLump !== 0 && !lumpApplied && (m - 1) >= lumpAtMonth) {
+          applyLump((m - 1) / 12);
+          lumpApplied = true;
+        }
+        balance = balance * (1 + monthlyRate) + monthly;
+        monthsElapsedInPhase = m;
+        if (balance <= 0) {
+          balance = 0;
+          if (!hitZeroThisPhase && depletedAt === null) {
+            depletedAt = phaseStartYear + (m / 12);
+            hitZeroThisPhase = true;
+          }
+        }
+        if (m % 12 === 0) {
+          yearCounter += 1;
+          series.push({ year: yearCounter, balance });
+        }
+      }
+      if (requestedLump !== 0 && !lumpApplied) {
+        applyLump(monthsElapsedInPhase / 12);
+      }
+      yearCounter = series[series.length - 1].year;
+      phaseBoundaries.push(yearCounter);
+      const contributed = monthly * months;
+      rows.push({
+        label: p.label, years: yearsHere, rate,
+        startBalance, endBalance: balance,
+        netContribution: contributed,
+        lumpSum: actualLump,
+        lumpClipped: actualLump !== requestedLump,
+        growth: balance - startBalance - contributed - actualLump
+      });
+    });
+
+    return { series, phaseBoundaries, rows, finalBalance: balance, depletedAt, events, clippedLumps, startYear };
+  }
+
+  function renderHorizonNote() {
+    const t = totalYears();
+    const el = document.getElementById('horizon-note');
+    el.textContent = 'Total horizon — ' + t + ' of ' + LIMITS.totalYears + ' years';
+    el.classList.toggle('over', t > LIMITS.totalYears);
+  }
+
+  function renderTimeline(startYear) {
+    const t = Math.max(totalYears(), 1);
+    const tl = document.getElementById('timeline');
+    const ax = document.getElementById('timeline-axis');
+    tl.innerHTML = '';
+    ax.innerHTML = '';
+    let cursor = 0;
+    phases.forEach((p, i) => {
+      const isDraw = p.monthly < 0;
+      const yearsHere = Math.max(p.years, 0.1);
+      const seg = document.createElement('div');
+      seg.className = 'timeline-seg ' + (isDraw ? 'draw' : 'accum');
+      seg.style.flex = (yearsHere / t);
+      seg.textContent = p.label || ('Phase ' + (i + 1));
+
+      if (p.lumpSum) {
+        const marker = document.createElement('div');
+        marker.className = 'lump-mark';
+        const offsetPct = p.years > 0 ? clamp((p.lumpAt || 0) / p.years, 0, 1) * 100 : 0;
+        marker.style.left = offsetPct + '%';
+        marker.title = (p.lumpSum > 0 ? '+' : '') + fmt(p.lumpSum);
+        seg.appendChild(marker);
+      }
+      tl.appendChild(seg);
+
+      const lbl = document.createElement('div');
+      lbl.style.flex = (yearsHere / t);
+      lbl.style.textAlign = i === 0 ? 'left' : (i === phases.length - 1 ? 'right' : 'center');
+      cursor += p.years;
+      lbl.textContent = yearLabel(startYear, cursor);
+      ax.appendChild(lbl);
+    });
+  }
+
+  function renderPhaseList() {
+    const list = document.getElementById('phase-list');
+    list.innerHTML = '';
+    phases.forEach((p) => {
+      const isDraw = p.monthly < 0;
+      const maxYearsHere = maxYearsFor(p);
+      const hasLump = !!p.lumpSum;
+      const card = document.createElement('div');
+      card.className = 'phase-card' + (isDraw ? ' draw' : '');
+
+      card.innerHTML = `
+        <div class="phase-top">
+          <input type="text" data-field="label" value="${p.label.replace(/"/g, '&quot;')}" placeholder="Phase name" />
+          <button class="remove-btn" data-action="remove" aria-label="Remove phase">remove</button>
+        </div>
+        <div class="field-grid">
+          <div class="field"><label>Years (1\u2013${maxYearsHere})</label>
+            <input type="number" data-field="years" data-min="${LIMITS.years.min}" data-max="${maxYearsHere}" value="${p.years}" step="1" /></div>
+          <div class="field"><label>Monthly $ (+/-)<span class="tip" tabindex="0" aria-label="Help: monthly amount"><span class="tip-icon">?</span><span class="tip-box">Positive = money you add each month. Negative (e.g. -2500) = money you withdraw each month — use this to model retirement drawdown.</span></span></label>
+            <input type="text" inputmode="decimal" data-field="monthly" data-money="1" data-min="${LIMITS.monthly.min}" data-max="${LIMITS.monthly.max}" value="${formatMoneyValue(p.monthly)}" step="50" /></div>
+          <div class="field"><label>Annual rate % (${LIMITS.rate.min} to ${LIMITS.rate.max})<span class="tip" tabindex="0" aria-label="Help: annual rate"><span class="tip-icon">?</span><span class="tip-box">Expected average yearly return for this phase. 7% is a common long-run assumption for U.S. stocks; use lower for bonds or cash, and consider a conservative rate near retirement.</span></span></label>
+            <input type="number" data-field="rate" data-min="${LIMITS.rate.min}" data-max="${LIMITS.rate.max}" value="${p.rate}" step="0.1" /></div>
+        </div>
+        <div data-section="lump">
+          <button type="button" class="lump-toggle" data-action="toggle-lump" style="${hasLump ? 'display:none;' : ''}">+ add one-time lump sum</button>
+          <div class="lump-fields" data-el="lump-fields" style="${hasLump ? '' : 'display:none;'}">
+            <div class="field"><label>Lump sum $ (+/-)<span class="tip" tabindex="0" aria-label="Help: lump sum"><span class="tip-icon">?</span><span class="tip-box">A one-time event: an inheritance or bonus arriving (+), or a house down payment leaving the portfolio (−).</span></span></label>
+              <input type="text" inputmode="decimal" data-field="lumpSum" data-money="1" data-min="${LIMITS.lumpSum.min}" data-max="${LIMITS.lumpSum.max}" value="${formatMoneyValue(p.lumpSum || 0)}" step="1000" /></div>
+            <div class="field"><label>Years into phase</label>
+              <input type="number" data-field="lumpAt" data-min="0" data-max="${p.years}" value="${p.lumpAt || 0}" step="1" /></div>
+            <button type="button" class="lump-remove" data-action="remove-lump">\u00d7 remove lump sum</button>
+          </div>
+        </div>
+      `;
+
+      card.querySelector('[data-action="toggle-lump"]').addEventListener('click', () => {
+        p.lumpSum = p.lumpSum || 1000;
+        p.lumpAt = p.lumpAt || 0;
+        update(true);
+      });
+      card.querySelector('[data-action="remove-lump"]').addEventListener('click', () => {
+        p.lumpSum = 0; p.lumpAt = 0;
+        update(true);
+      });
+
+      card.querySelectorAll('input[data-field]').forEach(inp => {
+        const field = inp.dataset.field;
+        const isMoney = inp.dataset.money === '1';
+        const min = parseFloat(inp.dataset.min);
+        const max = parseFloat(inp.dataset.max);
+        if (field === 'label') return; // handled separately below — not a numeric field
+        inp.addEventListener('input', () => {
+          const raw = parseFloat(inp.value);
+          let effectiveMax = max;
+          if (field === 'lumpAt') effectiveMax = p.years;
+          markValidity(inp, raw, min, effectiveMax);
+          if (!isNaN(raw)) { p[field] = raw; update(false); }
+        });
+        inp.addEventListener('blur', () => {
+          let raw = parseFloat(inp.value);
+          let effectiveMax = max;
+          if (field === 'years') effectiveMax = maxYearsFor(p);
+          if (field === 'lumpAt') effectiveMax = p.years;
+          const corrected = clamp(raw, min, effectiveMax);
+          p[field] = corrected;
+          inp.value = isMoney ? formatMoneyValue(corrected) : corrected;
+          inp.classList.remove('invalid');
+          update(field === 'years');
+        });
+      });
+
+      card.querySelector('input[data-field="label"]').addEventListener('input', (e) => {
+        p.label = e.target.value;
+        update(false);
+      });
+      card.querySelector('[data-action="remove"]').addEventListener('click', () => {
+        if (phases.length <= 1) return;
+        phases = phases.filter(ph => ph.id !== p.id);
+        update(true);
+      });
+
+      list.appendChild(card);
+    });
+  }
+
+  function renderWarnings(depletedAt, clippedLumps, startYear) {
+    const el = document.getElementById('warnings');
+    el.innerHTML = '';
+    if (depletedAt !== null) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = 'Balance reaches $0 around ' + yearLabel(startYear, depletedAt) + '. Later phases continue to compute but the balance stays at $0 once depleted.';
+      el.appendChild(div);
+    }
+    clippedLumps.forEach(c => {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = '"' + c.label + '" lump sum of ' + fmt(c.requested) + ' exceeds the ' + fmt(c.availableBalance) + ' available \u2014 only ' + fmt(c.applied) + ' was applied.';
+      el.appendChild(div);
+    });
+  }
+
+  function renderSummaryTable(rows) {
+    const el = document.getElementById('summary-table');
+    let html = '<table><tr><th>Phase</th><th>Start</th><th>Net contrib.</th><th>Lump sum</th><th>Growth</th><th>End</th></tr>';
+    rows.forEach(r => {
+      html += '<tr><td>' + r.label + '</td><td>' + fmt(r.startBalance) + '</td><td>' + fmt(r.netContribution) + '</td>' +
+        '<td class="' + (r.lumpClipped ? 'clipped' : '') + '">' + (r.lumpSum ? fmt(r.lumpSum) + (r.lumpClipped ? ' *' : '') : '\u2014') + '</td>' +
+        '<td>' + fmt(r.growth) + '</td><td class="end-balance">' + fmt(r.endBalance) + '</td></tr>';
+    });
+    html += '</table>';
+    if (rows.some(r => r.lumpClipped)) {
+      html += '<p class="footnote">* reduced to avoid taking the balance below $0</p>';
+    }
+    el.innerHTML = html;
+  }
+
+  function renderLegend(hasLumpEvents) {
+    let html = '<span><span class="swatch" style="background:' + AMBER + '"></span>Accumulation phase</span>' +
+      '<span><span class="swatch" style="background:' + SLATE + '"></span>Drawdown phase</span>';
+    if (hasLumpEvents) html += '<span><span class="swatch" style="background:' + COPPER + '"></span>One-time lump sum</span>';
+    document.getElementById('legend').innerHTML = html;
+  }
+
+  function renderChart(series, boundaries, events, startYear) {
+    const ctx = document.getElementById('chart');
+    const labels = series.map(s => String(yearLabel(startYear, s.year)));
+    const data = series.map(s => Math.round(s.balance));
+    const boundarySet = new Set(boundaries.slice(0, -1));
+
+    if (chart) chart.destroy();
+    chart = new Chart(ctx, {
+      type: 'line',
+      data: { labels, datasets: [{
+        data, borderColor: AMBER, backgroundColor: 'rgba(201,164,92,0.08)',
+        fill: true, tension: 0.15, pointRadius: 0, borderWidth: 2
+      }]},
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { maxTicksLimit: 10, color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } }, grid: { display: false }, border: { color: SEAM } },
+          y: { ticks: { callback: v => '$' + (Math.abs(v) >= 1000 ? Math.round(v/1000) + 'k' : v), color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } }, grid: { color: SEAM }, border: { color: SEAM } }
+        }
+      },
+      plugins: [{
+        id: 'phaseBoundaries',
+        afterDraw(c) {
+          const { ctx, chartArea, scales } = c;
+          ctx.save();
+          ctx.strokeStyle = SEAM;
+          ctx.setLineDash([3,3]);
+          boundarySet.forEach(yr => {
+            const idx = labels.indexOf(String(yearLabel(startYear, yr)));
+            if (idx === -1) return;
+            const x = scales.x.getPixelForValue(idx);
+            ctx.beginPath(); ctx.moveTo(x, chartArea.top); ctx.lineTo(x, chartArea.bottom); ctx.stroke();
+          });
+          ctx.restore();
+          ctx.save();
+          ctx.strokeStyle = COPPER;
+          ctx.lineWidth = 2;
+          events.forEach(ev => {
+            const idx = labels.indexOf(String(yearLabel(startYear, Math.round(ev.year))));
+            if (idx === -1) return;
+            const x = scales.x.getPixelForValue(idx);
+            ctx.beginPath(); ctx.moveTo(x, chartArea.top); ctx.lineTo(x, chartArea.bottom); ctx.stroke();
+            ctx.fillStyle = COPPER;
+            ctx.beginPath(); ctx.arc(x, chartArea.top + 6, 3, 0, Math.PI * 2); ctx.fill();
+          });
+          ctx.restore();
+        }
+      }]
+    });
+  }
+
+  function update(rebuildList) {
+    renderHorizonNote();
+    const startYearPreview = clamp(parseFloat(document.getElementById('starting-year').value), LIMITS.startingYear.min, LIMITS.startingYear.max);
+    renderTimeline(startYearPreview);
+    if (rebuildList) renderPhaseList();
+    const { series, phaseBoundaries, rows, finalBalance, depletedAt, events, clippedLumps, startYear } = computeSeries();
+    document.getElementById('ending-balance').textContent = fmt(finalBalance);
+    renderChart(series, phaseBoundaries, events, startYear);
+    renderLegend(events.length > 0);
+    renderSummaryTable(rows);
+    renderWarnings(depletedAt, clippedLumps, startYear);
+    scheduleUrlUpdate();
+  }
+
+  const startingBalanceInput = document.getElementById('starting-balance');
+  startingBalanceInput.addEventListener('input', () => {
+    markValidity(startingBalanceInput, parseFloat(startingBalanceInput.value), LIMITS.startingBalance.min, LIMITS.startingBalance.max);
+    update(false);
+  });
+  startingBalanceInput.addEventListener('blur', () => {
+    const corrected = clamp(parseFloat(startingBalanceInput.value), LIMITS.startingBalance.min, LIMITS.startingBalance.max);
+    startingBalanceInput.value = formatMoneyValue(corrected);
+    startingBalanceInput.classList.remove('invalid');
+    update(false);
+  });
+
+  const startingYearInput = document.getElementById('starting-year');
+  startingYearInput.addEventListener('input', () => {
+    markValidity(startingYearInput, parseFloat(startingYearInput.value), LIMITS.startingYear.min, LIMITS.startingYear.max);
+    update(false);
+  });
+  startingYearInput.addEventListener('blur', () => {
+    const corrected = clamp(parseFloat(startingYearInput.value), LIMITS.startingYear.min, LIMITS.startingYear.max);
+    startingYearInput.value = corrected;
+    startingYearInput.classList.remove('invalid');
+    update(false);
+  });
+
+  document.getElementById('add-phase').addEventListener('click', () => {
+    const used = totalYears();
+    if (used >= LIMITS.totalYears) return;
+    const room = Math.min(5, LIMITS.totalYears - used);
+    phases.push({ id: nextId++, label: 'New phase', years: room, monthly: 200, rate: 6, lumpSum: 0, lumpAt: 0 });
+    update(true);
+  });
+
+  document.getElementById('copy-link').addEventListener('click', () => {
+    updateUrlSilently();
+    const statusEl = document.getElementById('copy-status');
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      statusEl.textContent = 'link copied';
+      setTimeout(() => { statusEl.textContent = ''; }, 2200);
+    }).catch(() => {
+      statusEl.textContent = 'copy failed \u2014 select the URL bar';
+      setTimeout(() => { statusEl.textContent = ''; }, 2800);
+    });
+  });
+
+  // On load: if the URL carries an encoded scenario, hydrate from it instead of the defaults.
+  (function hydrateFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const encoded = params.get('d');
+    if (encoded) {
+      const state = decodeState(encoded);
+      if (state) {
+        applyState(state);
+      }
+    }
+  })();
+
+  renderPhaseList();
+  update(false);
+})();
+</script>
+</body>
+</html>

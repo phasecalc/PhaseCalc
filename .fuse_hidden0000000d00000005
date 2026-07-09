@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MH7FWJX2M3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MH7FWJX2M3');
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cash-Out Refinance vs HELOC Calculator — which way to tap equity costs less</title>
+<meta name="description" content="Free cash-out refinance vs HELOC calculator. Compare the new blended payment and total interest of refinancing your whole mortgage against keeping it and adding a HELOC — side by side, with the payment shock visible." />
+<link rel="canonical" href="https://phasecalc.com/cash-out-refinance-vs-heloc-calculator" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Phases" />
+<meta property="og:url" content="https://phasecalc.com/cash-out-refinance-vs-heloc-calculator" />
+<meta property="og:title" content="Cash-Out Refinance vs HELOC Calculator — which costs less?" />
+<meta property="og:description" content="Refinancing reprices your whole mortgage; a HELOC prices only the new cash. See both paths' payments and total interest side by side." />
+<meta property="og:image" content="https://phasecalc.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Cash-Out Refinance vs HELOC Calculator — which costs less?" />
+<meta name="twitter:description" content="Refinancing reprices your whole mortgage; a HELOC prices only the new cash. See both paths' payments and total interest side by side." />
+<meta name="twitter:image" content="https://phasecalc.com/og-image.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Which is better, a cash-out refinance or a HELOC?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It usually comes down to one comparison: your current mortgage rate versus today's refinance rates. A cash-out refinance replaces your entire mortgage at today's rate — if you're holding a low fixed rate from years past, that reprices hundreds of thousands of dollars upward just to extract some cash. A HELOC leaves the first mortgage untouched and prices only the new borrowing, at a higher but smaller-balance rate. Compare the refi rate against the blended rate of keeping your mortgage plus the HELOC; the lower blend usually wins on cost."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a cash-out refinance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A cash-out refinance replaces your existing mortgage with a new, larger loan and pays you the difference in cash at closing. If you owe $300,000 and take $60,000 of cash, your new mortgage is roughly $360,000 (plus any rolled-in closing costs) at today's rates and a fresh term. You get one fixed payment — but every existing dollar of your mortgage gets repriced, and the amortization clock restarts."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is the blended rate comparison?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The quickest way to sanity-check the decision. Weight your current mortgage rate by its balance and the HELOC rate by the cash amount: keeping a $300,000 mortgage at 3.5% and adding a $60,000 HELOC at 8% blends to about 4.25%. If a cash-out refi would cost 6.5% on the whole $360,000, the HELOC path borrows the same total money at a far lower average rate. When the blend exceeds the refi rate, the refi deserves a serious look."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How do closing costs compare between a cash-out refi and a HELOC?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Very differently, and it's often the tiebreaker. Cash-out refinance closing costs typically run 2–5% of the entire new loan — $7,000 to $18,000 on a $360,000 refinance — because you're re-originating the whole mortgage. HELOCs commonly cost a few hundred dollars to nothing upfront (many lenders waive fees), though watch for annual fees and early-closure charges. This calculator's totals exclude closing costs; add them mentally to the refi side in particular."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are HELOC rates fixed or variable?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Almost all HELOCs are variable-rate, tied to the prime rate plus a margin — your payment rises and falls as the Fed moves. This calculator holds the HELOC rate constant, which is a simplification: over a 30-year horizon the rate will not sit still. Stress-test by re-running the comparison with the HELOC rate 2 points higher. A cash-out refi, by contrast, locks a fixed rate for the full term — that certainty is worth something, especially for tight budgets."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does a cash-out refinance reset my mortgage clock?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — a new 30-year refi restarts amortization from month one, where payments are mostly interest. If you're 5 years into a 30-year loan, you've already paid the steepest interest years; refinancing puts you back at the start on a bigger balance. That's part of why the refi path's total interest can look so much larger: it's a bigger loan, at a higher rate, running for a freshly restarted term. Choosing a shorter refi term (20 or 25 years) softens this."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How much equity can I borrow with each option?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Conventional cash-out refinances generally cap the new loan at 80% of home value. HELOC lenders typically allow combined loan-to-value (first mortgage plus the line) of 80–90%, varying by lender and credit. On a $550,000 home with a $300,000 mortgage: a cash-out refi could lend up to $440,000 total (about $140,000 of cash), while a HELOC at 85% CLTV could provide up to about $167,500 of line. This calculator warns when your numbers push past typical limits."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What about a home equity loan instead of a HELOC?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A home equity loan is the fixed-rate cousin of the HELOC: a lump sum, a fixed rate, and level principal-and-interest payments from day one — no draw period, no variable-rate exposure, no payment shock. It also leaves your first mortgage untouched. If you need one known amount and hate rate risk, it often beats both alternatives. Model it here by setting the HELOC draw period to 1 year and using a home equity loan rate quote."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is the interest tax-deductible on either option?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only to the extent the borrowed money buys, builds, or substantially improves the home securing the loan — the use-of-funds test applies to both cash-out refi proceeds and HELOC draws. Combined qualifying debt is capped at $750,000, and you must itemize deductions, which most households don't. Cash used for debt consolidation, cars, or tuition generates non-deductible interest under either structure."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When does a cash-out refinance clearly win?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "When today's rates are at or below your current mortgage rate — then repricing the whole balance costs nothing or even saves money, and you get fixed-rate certainty on everything plus one payment. It can also win when you need a very large amount (HELOC limits bind), when you want to eliminate variable-rate risk entirely, or when your current mortgage has few years left and little interest remaining to protect. If you bought or last refinanced when rates were high, check the refi path first."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is payment shock on the HELOC path?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Most HELOCs require only interest payments during the draw period (typically 10 years). When the draw ends, the balance converts to full principal-and-interest payments — an automatic jump of 25% or more on the HELOC portion, on top of your unchanged first mortgage payment. This calculator shows the combined household payment in each phase so the jump is visible before you sign, not a decade after."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does this calculator leave out?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Closing costs on both paths (material on the refi side at 2–5% of the new loan), HELOC rate changes over time, annual fees, PMI if the refi pushes past 80% LTV, points, prepayment behavior, and taxes. Total-interest figures also cover each path's own natural life, which can differ in length — a 30-year refi versus a mortgage with 25 years left plus a 30-year HELOC schedule. Treat the output as a structural comparison, then get itemized loan estimates from lenders."
+      }
+    }
+  ]
+}
+</script>
+<style>
+  :root {
+    --ink: #0F1B2D;
+    --ink-raised: #142539;
+    --parchment: #EDE6D6;
+    --parchment-dim: #B8AF9C;
+    --parchment-faint: #948D79;
+    --amber: #C9A45C;
+    --amber-dim: #4A3C24;
+    --slate: #5B7A9D;
+    --slate-dim: #25333F;
+    --copper: #B07A4E;
+    --copper-dim: #3D2E1F;
+    --seam: #24344A;
+    --warn: #C46552;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--parchment);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .brandbar { margin-bottom: 16px; }
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .wordmark svg { display: block; }
+  .wordmark span {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    letter-spacing: 0.02em;
+    color: var(--parchment);
+  }
+
+  .sitenav {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+  }
+  .sitenav a {
+    color: var(--parchment-faint);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+  }
+  .sitenav a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+  .sitenav a.current { color: var(--parchment); border-bottom-color: var(--seam); }
+
+  .masthead {
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--seam);
+    padding-bottom: 24px;
+  }
+  .masthead h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 32px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .masthead p {
+    color: var(--parchment-dim);
+    font-size: 15px;
+    margin: 0;
+    max-width: 540px;
+  }
+
+  .panel {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--amber);
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 18px;
+  }
+
+  .panel-caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--seam);
+  }
+
+  .field label {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin-bottom: 6px;
+  }
+
+  .field .input-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .field .prefix, .field .suffix {
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    color: var(--parchment-dim);
+  }
+
+  /* Floating help bubbles */
+  .tip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: 1px;
+    cursor: help;
+    outline: none;
+  }
+  .tip .tip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid var(--parchment-faint);
+    color: var(--parchment-faint);
+    font-size: 9px;
+    line-height: 1;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .tip:hover .tip-icon, .tip:focus .tip-icon { border-color: var(--amber); color: var(--amber); }
+  .tip .tip-box {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 9px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 230px;
+    max-width: calc(100vw - 56px);
+    background: var(--ink);
+    border: 1px solid var(--seam);
+    border-radius: 3px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--parchment-dim);
+    white-space: normal;
+    z-index: 20;
+  }
+  .tip .tip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--seam);
+  }
+  .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
+
+  input[type="number"], input[type="text"] {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--seam);
+    color: var(--parchment);
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    padding: 2px 0;
+    width: 100%;
+    transition: border-color 0.15s ease;
+  }
+  input:focus { outline: none; border-bottom-color: var(--amber); }
+  input.invalid { border-bottom-color: var(--warn); }
+
+  /* Results strip */
+  .results-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 2px;
+    margin-bottom: 10px;
+  }
+  .result-cell {
+    background: var(--ink-raised);
+    padding: 16px 16px 14px;
+  }
+  .result-cell .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 6px;
+    line-height: 1.4;
+  }
+  .result-cell .value {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    margin: 0;
+    color: var(--parchment);
+  }
+  .result-cell .value.refi { color: var(--copper); }
+  .result-cell .value.heloc { color: var(--amber); }
+  .result-cell .sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--parchment-faint);
+    margin: 4px 0 0;
+  }
+  .result-cell .sub .jump { color: var(--warn); }
+
+  /* Side-by-side payment-shock bars — the signature element, matched to the HELOC calculator */
+  .paths-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin: 18px 0 6px;
+  }
+  .path-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 8px;
+  }
+  .path-title .tag { color: var(--copper); }
+  .path-title .tag.heloc { color: var(--amber); }
+  .shock-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 74px;
+    margin-bottom: 6px;
+  }
+  .shock-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    border-radius: 3px 3px 0 0;
+    min-width: 0;
+  }
+  .shock-seg.draw { background: var(--amber-dim); color: var(--amber); }
+  .shock-seg.repay { background: var(--slate-dim); color: var(--slate); }
+  .shock-seg.tail { background: var(--slate-dim); color: var(--slate); opacity: 0.75; }
+  .shock-seg.refi { background: var(--copper-dim); color: var(--copper); }
+  .shock-caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 12px;
+  }
+  .shock-caption .jump { color: var(--warn); }
+
+  .warning {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--warn);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .info-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--copper);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .verdict-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--amber);
+    padding: 10px 14px;
+    margin: 18px 0 10px;
+    line-height: 1.5;
+  }
+  .verdict-note strong { color: var(--amber); font-weight: 500; }
+
+  .chart-wrap { position: relative; height: 280px; margin-bottom: 14px; }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-dim);
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .legend .swatch { display: inline-block; width: 9px; height: 9px; margin-right: 6px; vertical-align: -1px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-bottom: 8px; }
+  th, td { padding: 9px 6px; text-align: right; border-bottom: 1px solid var(--seam); }
+  th:first-child, td:first-child { text-align: left; }
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    font-weight: 400;
+  }
+  td { font-family: 'Source Serif 4', serif; color: var(--parchment-dim); }
+  td:first-child { font-family: 'Inter', sans-serif; color: var(--parchment); font-size: 13px; }
+  td.hi { color: var(--parchment); font-weight: 500; }
+  .footnote { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--parchment-faint); margin: 8px 0 0; }
+
+  .share-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 0;
+  }
+  .copy-link-btn {
+    background: none;
+    border: 1px solid var(--seam);
+    color: var(--parchment-dim);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    padding: 7px 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+  .copy-link-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .copy-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--amber);
+  }
+
+  /* Article */
+  .article {
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--seam);
+  }
+  .article h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+  }
+  .article h2:first-child { margin-top: 0; }
+  .article h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 28px 0 8px;
+  }
+  .article p {
+    color: var(--parchment-dim);
+    font-size: 16.5px;
+    line-height: 1.7;
+    margin: 0 0 18px;
+  }
+  .article strong { color: var(--parchment); font-weight: 500; }
+  .article a { color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber-dim); }
+  .article a:hover { border-bottom-color: var(--amber); }
+  .article table td { font-size: 14px; }
+  .article table td:first-child { white-space: nowrap; }
+  .article .formula {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13.5px;
+    color: var(--parchment);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--amber);
+    padding: 12px 16px;
+    margin: 0 0 18px;
+    overflow-x: auto;
+  }
+
+  .faq-item { margin-bottom: 24px; }
+  .faq-item h3 { margin-bottom: 6px; }
+  .faq-item p { margin-bottom: 0; }
+
+  .support-footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--seam);
+  }
+  .support-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 8px;
+    line-height: 1.6;
+  }
+  .support-line a {
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 1px solid var(--amber-dim);
+  }
+  .support-line a:hover { border-bottom-color: var(--amber); }
+
+  @media (max-width: 620px) {
+    .field-grid { grid-template-columns: 1fr 1fr; }
+    .results-strip { grid-template-columns: 1fr 1fr; }
+    .paths-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brandbar">
+    <a class="wordmark" href="/" aria-label="Phases home">
+      <svg viewBox="0 0 32 32" width="22" height="22" aria-hidden="true"><rect width="32" height="32" rx="4" fill="#0F1B2D" stroke="#24344A" stroke-width="1.5"/><rect x="5" y="9" width="9" height="14" fill="#C9A45C"/><rect x="15.5" y="9" width="6.5" height="14" fill="#8A6E3D"/><rect x="23.5" y="9" width="3.5" height="14" fill="#5B7A9D"/></svg>
+      <span>Phases</span>
+    </a>
+    <nav class="sitenav">
+      <a href="/">Compound Interest</a>
+      <a href="/retirement-backtest-calculator">Retirement Backtest</a>
+      <a href="/trump-account-calculator">Trump Account</a>
+      <a href="/529-superfunding-calculator">529 Superfund</a>
+      <a href="/roth-vs-traditional-calculator">Roth vs Trad</a>
+      <a href="/coast-fire-calculator">Coast FIRE</a>
+      <a href="/savings-goal-calculator">Savings Goal</a>
+      <a href="/dca-calculator">DCA</a>
+      <a href="/drip-calculator">DRIP</a>
+      <a href="/margin-loan-calculator">Margin</a>
+      <a href="/capital-gains-tax-calculator">Capital Gains</a>
+      <a href="/inflation-adjusted-return-calculator">Real Return</a>
+      <a href="/heloc-payment-calculator">HELOC</a>
+      <a href="/cash-out-refinance-vs-heloc-calculator" class="current">Refi vs HELOC</a>
+      <a href="/mortgage-extra-payment-calculator">Mortgage Payoff</a>
+      <a href="/rental-property-calculator">Rental</a>
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </header>
+
+  <div class="masthead">
+    <h1>Cash-out refinance vs. HELOC calculator</h1>
+    <p>Two ways to turn home equity into cash: replace your whole mortgage at today's rates, or leave it alone and add a line of credit on top. See both paths' monthly payments over time and total interest, side by side.</p>
+  </div>
+
+  <div class="panel">
+    <p class="panel-caption">Your current situation</p>
+    <div class="field-grid">
+      <div class="field">
+        <label>Mortgage balance<span class="tip" tabindex="0" aria-label="Help: mortgage balance"><span class="tip-icon">?</span><span class="tip-box">What you still owe on your first mortgage today. This is the balance a cash-out refi would reprice — and a HELOC would leave untouched.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="balance" value="300,000" min="10000" max="5000000" step="10000" /></div>
+      </div>
+      <div class="field">
+        <label>Current rate<span class="tip" tabindex="0" aria-label="Help: current rate"><span class="tip-icon">?</span><span class="tip-box">Your existing mortgage rate. The bigger the gap between this and today's refi rates, the more a cash-out refi costs you.</span></span></label>
+        <div class="input-row"><input type="number" id="cur-rate" value="3.5" min="0.1" max="15" step="0.125" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Years left<span class="tip" tabindex="0" aria-label="Help: years left"><span class="tip-icon">?</span><span class="tip-box">Remaining years on your current mortgage. Check your statement — this sets the payment and remaining interest on the keep-it path.</span></span></label>
+        <div class="input-row"><input type="number" id="years-left" value="25" min="1" max="40" step="1" /><span class="suffix">yrs</span></div>
+      </div>
+      <div class="field">
+        <label>Home value<span class="tip" tabindex="0" aria-label="Help: home value"><span class="tip-icon">?</span><span class="tip-box">Today's market value. Used for loan-to-value checks: cash-out refis typically cap at 80% LTV, HELOCs at 80–90% combined LTV.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="home-value" value="550,000" min="50000" max="20000000" step="10000" /></div>
+      </div>
+      <div class="field">
+        <label>Cash needed<span class="tip" tabindex="0" aria-label="Help: cash needed"><span class="tip-icon">?</span><span class="tip-box">The equity you want to extract. The refi adds it to your new loan; the HELOC path borrows it on the line.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="cash" value="60,000" min="5000" max="2000000" step="5000" /></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-caption">The two paths</p>
+    <div class="field-grid">
+      <div class="field">
+        <label>Cash-out refi rate<span class="tip" tabindex="0" aria-label="Help: refi rate"><span class="tip-icon">?</span><span class="tip-box">Today's cash-out refinance rate — usually 0.125–0.5% above standard refi rates. This rate applies to your entire new loan, not just the cash.</span></span></label>
+        <div class="input-row"><input type="number" id="refi-rate" value="6.5" min="0.1" max="15" step="0.125" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Refi term<span class="tip" tabindex="0" aria-label="Help: refi term"><span class="tip-icon">?</span><span class="tip-box">The new loan's term. 30 years lowers the payment but restarts the clock; matching your remaining years avoids stretching the debt.</span></span></label>
+        <div class="input-row"><input type="number" id="refi-term" value="30" min="5" max="40" step="5" /><span class="suffix">yrs</span></div>
+      </div>
+      <div class="field">
+        <label>HELOC rate<span class="tip" tabindex="0" aria-label="Help: HELOC rate"><span class="tip-icon">?</span><span class="tip-box">HELOCs are variable — prime plus a margin. This calculator holds the rate constant; stress-test by re-running 1–2 points higher.</span></span></label>
+        <div class="input-row"><input type="number" id="heloc-rate" value="8" min="0.1" max="20" step="0.05" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>HELOC draw period<span class="tip" tabindex="0" aria-label="Help: draw period"><span class="tip-icon">?</span><span class="tip-box">Years of interest-only payments on the line, typically 10. The balance doesn't shrink during this phase unless you pay extra.</span></span></label>
+        <div class="input-row"><input type="number" id="draw-years" value="10" min="1" max="15" step="1" /><span class="suffix">yrs</span></div>
+      </div>
+      <div class="field">
+        <label>HELOC repayment period<span class="tip" tabindex="0" aria-label="Help: repayment period"><span class="tip-icon">?</span><span class="tip-box">After the draw ends, the balance amortizes over this many years — typically 20. The payment steps up when this phase begins.</span></span></label>
+        <div class="input-row"><input type="number" id="repay-years" value="20" min="5" max="30" step="1" /><span class="suffix">yrs</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="warnings"></div>
+
+  <div class="results-strip">
+    <div class="result-cell">
+      <p class="label">Refi path payment</p>
+      <p class="value refi" id="refi-pmt">$0</p>
+      <p class="sub" id="refi-pmt-sub"></p>
+    </div>
+    <div class="result-cell">
+      <p class="label">HELOC path payment</p>
+      <p class="value heloc" id="heloc-pmt">$0</p>
+      <p class="sub" id="heloc-pmt-sub"></p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Refi total interest</p>
+      <p class="value refi" id="refi-interest">$0</p>
+      <p class="sub" id="refi-interest-sub"></p>
+    </div>
+    <div class="result-cell">
+      <p class="label">HELOC path total interest</p>
+      <p class="value heloc" id="heloc-interest">$0</p>
+      <p class="sub" id="heloc-interest-sub"></p>
+    </div>
+  </div>
+
+  <div class="verdict-note" id="verdict-note"></div>
+
+  <div class="paths-grid">
+    <div>
+      <p class="path-title"><span class="tag">Path A</span> — cash-out refinance</p>
+      <div class="shock-bar" id="refi-bar"></div>
+      <p class="shock-caption" id="refi-caption"></p>
+    </div>
+    <div>
+      <p class="path-title"><span class="tag heloc">Path B</span> — keep mortgage + HELOC</p>
+      <div class="shock-bar" id="heloc-bar"></div>
+      <p class="shock-caption" id="heloc-caption"></p>
+    </div>
+  </div>
+
+  <div class="chart-wrap">
+    <canvas id="chart" role="img" aria-label="Stepped line chart of total monthly payment over time for both paths. The cash-out refinance line is flat for the full new term; the HELOC path line starts lower, steps up when the interest-only draw period ends, and steps down when the original mortgage is paid off. A vertical marker shows where the HELOC draw period converts to repayment.">Monthly payment over time: flat line for the refi path; the HELOC path steps up at the end of the draw period and down when the first mortgage pays off.</canvas>
+  </div>
+  <div class="legend">
+    <span><span class="swatch" style="background:#B07A4E"></span>Cash-out refi payment</span>
+    <span><span class="swatch" style="background:#C9A45C"></span>HELOC path payment (mortgage + line)</span>
+    <span><span class="swatch" style="background:#5B7A9D"></span>Draw period ends</span>
+  </div>
+
+  <div id="summary-table"></div>
+  <p class="footnote" id="assumptions-note"></p>
+
+  <div class="share-row">
+    <button class="copy-link-btn" id="copy-link">copy shareable link</button>
+    <span class="copy-status" id="copy-status"></span>
+  </div>
+
+  <article class="article">
+    <h2>How this cash-out refinance vs HELOC calculator works</h2>
+    <p>Both paths hand you the same cash; they just charge for it very differently. <strong>Path A</strong> — the cash-out refinance — pays off your current mortgage and replaces it with one new, larger loan (your balance plus the cash) at today's rate and a fresh term. <strong>Path B</strong> keeps your existing mortgage exactly as it is and adds a HELOC for the cash: interest-only payments during the draw period, then full principal-and-interest over the repayment period, on top of your unchanged mortgage payment. The calculator amortizes all three loans month by month and shows each path's total monthly payment over time and lifetime interest.</p>
+    <p>The two bars above the chart are deliberately drawn in the same visual language as our <a href="/heloc-payment-calculator">HELOC payment calculator</a>: segment width is how long a phase lasts, height is how much you pay per month. The refi bar is one flat block — that's its pitch, one fixed payment forever. The HELOC path is a staircase: lower now, a step up when the draw ends, a step down when your original mortgage retires. Neither shape is automatically better; the question is what the whole staircase costs versus the whole block.</p>
+
+    <h2>The mechanic that decides it: repricing everything vs. pricing the new money</h2>
+    <p>A cash-out refinance doesn't just borrow your $60,000 of cash at today's rate — it <strong>reprices your entire existing balance</strong> at today's rate too. If you're holding a 3.5% mortgage from years past and today's refi rate is 6.5%, the refi quietly adds three points to $300,000 of debt that was already fine, as the price of admission for the cash. The HELOC path leaves the cheap mortgage untouched and pays a higher rate — but only on the new $60,000.</p>
+    <p>The fastest sanity check is the <strong>blended rate</strong>:</p>
+    <p class="formula">Blended rate = (balance × current rate + cash × HELOC rate) ÷ (balance + cash)</p>
+    <p>At the defaults that's (300,000 × 3.5% + 60,000 × 8%) ÷ 360,000 ≈ <strong>4.25%</strong> — against a 6.5% refi on the same total debt. When the blend is well below the refi rate, the HELOC path wins on cost even though its sticker rate is the highest number on the page. When today's refi rates are at or below your current rate, the logic flips completely: the refi reprices your whole loan <em>downward</em>, and it's usually the better tool. That single comparison — your current rate versus today's — does most of the deciding.</p>
+
+    <h2>Closing costs: the quiet thumb on the scale</h2>
+    <p>This calculator's totals exclude closing costs, and that omission flatters the refi. A cash-out refinance re-originates your entire mortgage, with costs typically running <strong>2–5% of the new loan</strong> — $7,000 to $18,000 at the defaults — in origination fees, appraisal, title, and escrow. HELOCs are famously cheap to open: many lenders charge <strong>little or nothing upfront</strong>, with perhaps a modest annual fee and an early-closure fee if you terminate the line within a few years. If the interest math between the paths is close, closing costs usually break the tie toward the HELOC. If you do refinance, resist rolling the costs into the loan without doing the math — financed closing costs compound at mortgage rates for decades.</p>
+
+    <h2>Fixed vs. variable: what you're really choosing</h2>
+    <p>The refi's flat bar hides its best feature: <strong>certainty</strong>. Every payment is known to the dollar for the full term, immune to whatever the Federal Reserve does. The HELOC path carries two uncertainties: the <strong>variable rate</strong> — nearly all HELOCs float on prime plus a margin, so the payment you see here is a snapshot, not a promise — and the built-in <strong>payment shock</strong> when interest-only draws convert to amortizing repayment. This calculator holds the HELOC rate constant and flags the shock explicitly; before committing, re-run the comparison with the HELOC rate two points higher and make sure the staircase still fits your budget. If you want the HELOC's structure without the rate risk, a fixed-rate home equity loan sits in between: lump sum, fixed rate, no draw period, first mortgage untouched.</p>
+
+    <h2>When each path makes sense</h2>
+    <p><strong>The HELOC path usually wins</strong> when your current mortgage rate is meaningfully below today's rates — the common case for anyone who bought or refinanced in a low-rate era. You protect the cheap debt, pay premium rates only on the slice of new money, and skip most closing costs. <strong>The cash-out refi usually wins</strong> when today's rates are at or below your current rate, when you need more cash than HELOC combined-LTV limits allow, when you're consolidating into one predictable payment, or when variable-rate exposure genuinely doesn't fit your life. And if the reason you're tapping equity is a payoff strategy rather than a purchase, run the <a href="/mortgage-extra-payment-calculator">mortgage extra-payment calculator</a> first — sometimes the best use of surplus cash flow is making the equity question moot.</p>
+
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <h3>Which is better — cash-out refi or HELOC?</h3>
+      <p>Usually whichever avoids repricing cheap debt. Current rate below today's rates → HELOC path protects it. Current rate at or above today's → the refi reprices you downward and takes the lead. The blended-rate check settles most cases.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is a cash-out refinance?</h3>
+      <p>A new, larger mortgage that pays off your old one and hands you the difference in cash. One loan, one fixed payment — but your entire balance moves to today's rate and a restarted term.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What's the blended rate comparison?</h3>
+      <p>Weight your current rate by your balance and the HELOC rate by the cash: that's the average rate of the keep-it path. Compare it to the refi rate on the same total debt. Lower blend wins on cost.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How do closing costs differ?</h3>
+      <p>Refi: 2–5% of the whole new loan ($7k–$18k at the defaults). HELOC: often near zero upfront, maybe a small annual fee. Not modeled in the totals here — mentally add them to the refi side.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Are HELOC rates fixed?</h3>
+      <p>Almost never — they float on prime plus a margin. This page holds the rate constant as a snapshot; stress-test 2 points higher. Some lenders offer fixed-rate locks on drawn balances.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does a refi reset my mortgage clock?</h3>
+      <p>Yes. A fresh 30-year term restarts amortization at the interest-heavy end, on a bigger balance. Matching the refi term to your remaining years (e.g., 25) avoids stretching the debt, at a higher payment.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How much equity can I actually tap?</h3>
+      <p>Cash-out refis generally cap at 80% loan-to-value; HELOCs typically allow 80–90% combined LTV depending on lender and credit. The calculator warns when your inputs breach typical limits.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What about a home equity loan instead?</h3>
+      <p>The fixed-rate middle path: lump sum, fixed payments from day one, first mortgage untouched, no payment shock. Often the right answer for a single known expense. Approximate it here with a 1-year draw period.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is the interest tax-deductible?</h3>
+      <p>Only for funds that buy, build, or substantially improve the home, under the $750k combined-debt cap, and only if you itemize — the same use-of-funds test for both paths. Consolidation and tuition don't qualify.</p>
+    </div>
+    <div class="faq-item">
+      <h3>When does the cash-out refi clearly win?</h3>
+      <p>Rates at or below your current rate, very large cash needs, a strong preference for one fixed payment, or little remaining low-rate interest worth protecting. Then the repricing costs little and buys certainty.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is the payment shock on the HELOC path?</h3>
+      <p>When the interest-only draw ends, the line converts to principal-and-interest — the staircase's step up, automatic and non-negotiable. The chart and Path B bar size it for you before you sign.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What does this calculator leave out?</h3>
+      <p>Closing costs, HELOC rate movement, annual fees, PMI above 80% LTV, points, and taxes. Total interest covers each path's own life, which can differ in length. Get itemized loan estimates before deciding.</p>
+    </div>
+
+    <p style="margin-top:32px;"><em>This calculator is for education, not lending or financial advice. Rates, fees, and limits vary by lender and credit profile; HELOC rates are variable and will move. Compare official loan estimates side by side before committing either way.</em></p>
+  </article>
+
+  <div class="support-footer">
+    <p class="support-line">
+      If this calculator was useful, a tip helps keep it free and ad-free —
+      <a href="https://buymeacoffee.com/ctong" target="_blank" rel="noopener">buy me a coffee</a>.
+    </p>
+    <p class="support-line">
+      I also use <a href="https://monarch.com/referral/rk2olzfae9?r_source=copy" target="_blank" rel="noopener">Monarch</a> to track net worth and spending — that's a referral link, so if you sign up I get a discount on my own subscription. No pressure either way.
+    </p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  // Shim parseFloat so every existing call site transparently tolerates
+  // comma-grouped input ("100,000") without needing to touch each call site.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
+  const AMBER = '#C9A45C';
+  const SLATE = '#5B7A9D';
+  const COPPER = '#B07A4E';
+  const SEAM = '#24344A';
+  const PARCHMENT_FAINT = '#948D79';
+
+  const LIMITS = {
+    balance: { min: 10000, max: 5000000 },
+    curRate: { min: 0.1, max: 15 },
+    yearsLeft: { min: 1, max: 40 },
+    homeValue: { min: 50000, max: 20000000 },
+    cash: { min: 5000, max: 2000000 },
+    refiRate: { min: 0.1, max: 15 },
+    refiTerm: { min: 5, max: 40 },
+    helocRate: { min: 0.1, max: 20 },
+    drawYears: { min: 1, max: 15 },
+    repayYears: { min: 5, max: 30 }
+  };
+
+  let chart = null;
+
+  function fmt(n) {
+    const sign = n < 0 ? '-' : '';
+    return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  // Same as fmt() but without the leading $ — used to redisplay money input
+  // fields themselves with thousands separators after the user leaves them.
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
+  }
+  function clamp(val, min, max) {
+    if (isNaN(val)) return min;
+    return Math.min(max, Math.max(min, val));
+  }
+  function markValidity(el, value, min, max) {
+    const bad = isNaN(value) || value < min || value > max;
+    el.classList.toggle('invalid', bad);
+  }
+  function getInputs() {
+    const g = id => parseFloat(document.getElementById(id).value);
+    return {
+      balance: clamp(g('balance'), LIMITS.balance.min, LIMITS.balance.max),
+      curRate: clamp(g('cur-rate'), LIMITS.curRate.min, LIMITS.curRate.max),
+      yearsLeft: Math.round(clamp(g('years-left'), LIMITS.yearsLeft.min, LIMITS.yearsLeft.max)),
+      homeValue: clamp(g('home-value'), LIMITS.homeValue.min, LIMITS.homeValue.max),
+      cash: clamp(g('cash'), LIMITS.cash.min, LIMITS.cash.max),
+      refiRate: clamp(g('refi-rate'), LIMITS.refiRate.min, LIMITS.refiRate.max),
+      refiTerm: Math.round(clamp(g('refi-term'), LIMITS.refiTerm.min, LIMITS.refiTerm.max)),
+      helocRate: clamp(g('heloc-rate'), LIMITS.helocRate.min, LIMITS.helocRate.max),
+      drawYears: Math.round(clamp(g('draw-years'), LIMITS.drawYears.min, LIMITS.drawYears.max)),
+      repayYears: Math.round(clamp(g('repay-years'), LIMITS.repayYears.min, LIMITS.repayYears.max))
+    };
+  }
+
+  // --- Shareable link encode/decode (same pattern as the other Phases calculators) ---
+  function encodeState() {
+    const i = getInputs();
+    const state = { b: i.balance, c: i.curRate, y: i.yearsLeft, v: i.homeValue, k: i.cash, r: i.refiRate, t: i.refiTerm, h: i.helocRate, d: i.drawYears, p: i.repayYears };
+    const json = JSON.stringify(state);
+    const b64 = btoa(unescape(encodeURIComponent(json)));
+    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function decodeState(encoded) {
+    try {
+      const b64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+      const json = decodeURIComponent(escape(atob(b64)));
+      const state = JSON.parse(json);
+      if (!state || typeof state.b === 'undefined') return null;
+      return state;
+    } catch (e) { return null; }
+  }
+  function applyState(s) {
+    const set = (id, val, lim, isMoney) => {
+      const corrected = clamp(val, lim.min, lim.max);
+      document.getElementById(id).value = isMoney ? formatMoneyValue(corrected) : corrected;
+    };
+    set('balance', s.b, LIMITS.balance, true); set('cur-rate', s.c, LIMITS.curRate);
+    set('years-left', s.y, LIMITS.yearsLeft); set('home-value', s.v, LIMITS.homeValue, true);
+    set('cash', s.k, LIMITS.cash, true); set('refi-rate', s.r, LIMITS.refiRate);
+    set('refi-term', s.t, LIMITS.refiTerm); set('heloc-rate', s.h, LIMITS.helocRate);
+    set('draw-years', s.d, LIMITS.drawYears); set('repay-years', s.p, LIMITS.repayYears);
+  }
+  function updateUrlSilently() {
+    const url = new URL(window.location.href);
+    url.searchParams.set('d', encodeState());
+    window.history.replaceState(null, '', url.toString());
+  }
+  let urlUpdateTimer = null;
+  function scheduleUrlUpdate() {
+    clearTimeout(urlUpdateTimer);
+    urlUpdateTimer = setTimeout(updateUrlSilently, 400);
+  }
+
+  function monthlyPayment(loan, annualRate, years) {
+    if (loan <= 0) return 0;
+    const n = years * 12;
+    const mr = annualRate / 100 / 12;
+    if (mr === 0) return loan / n;
+    const f = Math.pow(1 + mr, n);
+    return loan * mr * f / (f - 1);
+  }
+
+  function compute() {
+    const i = getInputs();
+
+    // Path A: cash-out refinance — one new loan at the refi rate.
+    const refiLoan = i.balance + i.cash;
+    const refiPmt = monthlyPayment(refiLoan, i.refiRate, i.refiTerm);
+    const refiMonths = i.refiTerm * 12;
+    const refiInterest = refiPmt * refiMonths - refiLoan;
+
+    // Path B: keep the first mortgage + add a HELOC for the cash.
+    const firstPmt = monthlyPayment(i.balance, i.curRate, i.yearsLeft);
+    const firstMonths = i.yearsLeft * 12;
+    const firstInterest = firstPmt * firstMonths - i.balance;
+
+    const helocIO = i.cash * (i.helocRate / 100) / 12;              // interest-only, draw period
+    const drawMonths = i.drawYears * 12;
+    const drawInterest = helocIO * drawMonths;
+    const helocRepayPmt = monthlyPayment(i.cash, i.helocRate, i.repayYears);
+    const repayMonths = i.repayYears * 12;
+    const repayInterest = helocRepayPmt * repayMonths - i.cash;
+    const helocInterest = drawInterest + repayInterest;
+
+    const pathBInterest = firstInterest + helocInterest;
+    const pathBMonths = Math.max(firstMonths, drawMonths + repayMonths);
+
+    // Combined Path B payment at any month.
+    function pathBPmtAt(m) { // m is 1-based month
+      const first = m <= firstMonths ? firstPmt : 0;
+      const heloc = m <= drawMonths ? helocIO : (m <= drawMonths + repayMonths ? helocRepayPmt : 0);
+      return first + heloc;
+    }
+
+    // Phases of Path B for the shock bar: breakpoints where the payment changes.
+    const bps = [...new Set([drawMonths, firstMonths, drawMonths + repayMonths, pathBMonths])]
+      .filter(m => m > 0 && m <= pathBMonths).sort((a, b) => a - b);
+    const phases = [];
+    let start = 0;
+    bps.forEach(end => {
+      if (end > start) {
+        phases.push({ startM: start, endM: end, months: end - start, pmt: pathBPmtAt(start + 1) });
+        start = end;
+      }
+    });
+
+    const pmtNow = pathBPmtAt(1);
+    const pmtAfterDraw = drawMonths < pathBMonths ? pathBPmtAt(drawMonths + 1) : pmtNow;
+    const shockPct = pmtNow > 0 ? (pmtAfterDraw - pmtNow) / pmtNow * 100 : 0;
+
+    // Blended rate of Path B vs the refi rate — the decision heuristic.
+    const blendedRate = (i.balance * i.curRate + i.cash * i.helocRate) / (i.balance + i.cash);
+
+    // LTV checks.
+    const refiLTV = refiLoan / i.homeValue * 100;
+    const cltv = (i.balance + i.cash) / i.homeValue * 100;
+
+    // Payment series for the chart (monthly resolution, sampled yearly for labels).
+    const horizon = Math.max(refiMonths, pathBMonths);
+    const series = [];
+    for (let m = 1; m <= horizon; m++) {
+      series.push({
+        month: m,
+        refi: m <= refiMonths ? refiPmt : 0,
+        pathB: pathBPmtAt(m)
+      });
+    }
+
+    const closingEstLo = refiLoan * 0.02, closingEstHi = refiLoan * 0.05;
+
+    return {
+      inputs: i, refiLoan, refiPmt, refiMonths, refiInterest,
+      firstPmt, firstMonths, firstInterest,
+      helocIO, drawMonths, helocRepayPmt, repayMonths, helocInterest,
+      pathBInterest, pathBMonths, phases, pmtNow, pmtAfterDraw, shockPct,
+      blendedRate, refiLTV, cltv, series, horizon, closingEstLo, closingEstHi
+    };
+  }
+
+  function renderWarnings(r) {
+    const el = document.getElementById('warnings');
+    el.innerHTML = '';
+    function add(cls, text) {
+      const div = document.createElement('div');
+      div.className = cls;
+      div.textContent = text;
+      el.appendChild(div);
+    }
+    if (r.cltv > 90) {
+      add('warning', 'Combined loan-to-value is ' + Math.round(r.cltv) + '% — beyond what most lenders allow for either option (refi ~80% LTV, HELOC ~80–90% CLTV). You likely can’t borrow this much cash against this home value.');
+    } else if (r.refiLTV > 80) {
+      add('info-note', 'The refi path is at ' + Math.round(r.refiLTV) + '% LTV — above the ~80% cap most cash-out refi lenders apply. The HELOC path may be the only one available at these numbers (HELOCs often allow up to ~90% CLTV).');
+    }
+    add('info-note', 'Rate assumption: HELOCs are variable (prime + margin) — the ' + r.inputs.helocRate + '% here is held constant, which real rates won’t be. Stress-test the HELOC path by re-running at ' + (r.inputs.helocRate + 2).toFixed(2).replace(/\.00$/, '') + '%.');
+    if (r.inputs.refiRate <= r.inputs.curRate) {
+      add('info-note', 'Today’s refi rate is at or below your current rate — repricing your whole balance costs nothing extra, so the refi path is unusually strong here. Closing costs become the main question.');
+    }
+    add('info-note', 'Closing costs excluded from the totals: a cash-out refi typically runs 2–5% of the new loan (' + fmt(r.closingEstLo) + '–' + fmt(r.closingEstHi) + ' here); HELOCs are often near $0 upfront.');
+  }
+
+  function renderResults(r) {
+    document.getElementById('refi-pmt').textContent = fmt(r.refiPmt) + '/mo';
+    document.getElementById('refi-pmt-sub').textContent = 'fixed for ' + r.inputs.refiTerm + ' yrs';
+
+    document.getElementById('heloc-pmt').textContent = fmt(r.pmtNow) + '/mo';
+    const shockTxt = r.shockPct > 0.5
+      ? 'then ' + fmt(r.pmtAfterDraw) + ' (<span class="jump">+' + Math.round(r.shockPct) + '%</span>) after draw'
+      : 'mortgage + interest-only line';
+    document.getElementById('heloc-pmt-sub').innerHTML = shockTxt;
+
+    document.getElementById('refi-interest').textContent = fmt(r.refiInterest);
+    document.getElementById('refi-interest-sub').textContent = 'over ' + r.inputs.refiTerm + ' yrs on ' + fmt(r.refiLoan);
+
+    document.getElementById('heloc-interest').textContent = fmt(r.pathBInterest);
+    document.getElementById('heloc-interest-sub').textContent = 'mortgage ' + fmt(r.firstInterest) + ' + line ' + fmt(r.helocInterest);
+  }
+
+  function renderVerdict(r) {
+    const el = document.getElementById('verdict-note');
+    const diff = r.refiInterest - r.pathBInterest;
+    const winner = Math.abs(diff) < 100 ? null : (diff > 0 ? 'HELOC path' : 'Cash-out refi');
+    let html = 'Blended rate check: keeping the ' + r.inputs.curRate + '% mortgage and adding the ' + r.inputs.helocRate +
+      '% line averages <strong>' + r.blendedRate.toFixed(2) + '%</strong> on the same ' + fmt(r.refiLoan) +
+      ' of debt, vs <strong>' + r.inputs.refiRate + '%</strong> for the refi. ';
+    if (winner) {
+      html += 'On total interest, the <strong>' + winner + ' comes out ahead by ' + fmt(Math.abs(diff)) + '</strong>' +
+        (winner === 'HELOC path' ? ' — the refi reprices your entire existing balance, not just the cash.' :
+          ' — repricing the whole balance at today’s rate works in your favor here.');
+    } else {
+      html += 'Total interest is nearly identical — closing costs and rate risk should break the tie.';
+    }
+    el.innerHTML = html;
+  }
+
+  function renderBars(r) {
+    const maxPmt = Math.max(r.refiPmt, ...r.phases.map(p => p.pmt), 1);
+    const H = 74, MIN = 24;
+
+    // Path A: one flat block.
+    const refiBar = document.getElementById('refi-bar');
+    refiBar.innerHTML = '';
+    const a = document.createElement('div');
+    a.className = 'shock-seg refi';
+    a.style.height = Math.max(MIN, r.refiPmt / maxPmt * H) + 'px';
+    a.style.flex = '1';
+    a.textContent = fmt(r.refiPmt) + '/mo · ' + r.inputs.refiTerm + ' yrs';
+    refiBar.appendChild(a);
+    document.getElementById('refi-caption').textContent =
+      'One fixed payment — every dollar of the old balance repriced at ' + r.inputs.refiRate + '%.';
+
+    // Path B: staircase phases.
+    const bar = document.getElementById('heloc-bar');
+    bar.innerHTML = '';
+    r.phases.forEach((p, idx) => {
+      const seg = document.createElement('div');
+      const inDraw = p.endM <= r.drawMonths;
+      seg.className = 'shock-seg ' + (inDraw ? 'draw' : (idx === r.phases.length - 1 && r.phases.length > 2 ? 'tail' : 'repay'));
+      seg.style.height = Math.max(MIN, p.pmt / maxPmt * H) + 'px';
+      seg.style.flex = String(p.months);
+      seg.textContent = fmt(p.pmt) + '/mo';
+      seg.title = 'Months ' + (p.startM + 1) + '–' + p.endM;
+      bar.appendChild(seg);
+    });
+    const cap = document.getElementById('heloc-caption');
+    if (r.shockPct > 0.5) {
+      cap.innerHTML = 'Steps <span class="jump">+' + Math.round(r.shockPct) + '%</span> when the draw ends in year ' +
+        r.inputs.drawYears + '; steps down when the mortgage retires in year ' + r.inputs.yearsLeft + '.';
+    } else {
+      cap.textContent = 'Mortgage plus line, phase by phase.';
+    }
+  }
+
+  function renderChart(r) {
+    const ctx = document.getElementById('chart');
+    // Sample the series at yearly points for a clean stepped chart.
+    const labels = [], refiData = [], pathBData = [];
+    for (let y = 0; y <= Math.ceil(r.horizon / 12); y++) {
+      const m = Math.min(Math.max(1, y * 12), r.horizon);
+      labels.push('Yr ' + y);
+      const pt = r.series[m - 1];
+      refiData.push(Math.round(pt.refi));
+      pathBData.push(Math.round(pt.pathB));
+    }
+    const drawEndIdx = r.inputs.drawYears; // index in yearly labels
+
+    if (chart) chart.destroy();
+    chart = new Chart(ctx, {
+      type: 'line',
+      data: { labels, datasets: [
+        {
+          label: 'Cash-out refi payment',
+          data: refiData,
+          borderColor: COPPER, backgroundColor: 'transparent',
+          stepped: true, pointRadius: 0, borderWidth: 2
+        },
+        {
+          label: 'HELOC path payment',
+          data: pathBData,
+          borderColor: AMBER, backgroundColor: 'rgba(201,164,92,0.08)',
+          stepped: true, fill: true, pointRadius: 0, borderWidth: 2
+        }
+      ]},
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: item => item.dataset.label + ': ' + fmt(item.parsed.y) + '/mo' } }
+        },
+        scales: {
+          x: { ticks: { maxTicksLimit: 12, color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } }, grid: { display: false }, border: { color: SEAM } },
+          y: {
+            title: { display: true, text: 'Total monthly payment', color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            ticks: { callback: v => '$' + (Math.abs(v) >= 1000 ? (v/1000).toFixed(1).replace(/\.0$/,'') + 'k' : v), color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            grid: { color: SEAM }, border: { color: SEAM }, beginAtZero: true
+          }
+        }
+      },
+      plugins: [{
+        id: 'drawEndLine',
+        afterDraw(c) {
+          const { ctx: g, chartArea, scales } = c;
+          const x = scales.x.getPixelForValue(drawEndIdx);
+          if (x < chartArea.left || x > chartArea.right) return;
+          g.save();
+          g.strokeStyle = SLATE;
+          g.lineWidth = 2;
+          g.beginPath(); g.moveTo(x, chartArea.top); g.lineTo(x, chartArea.bottom); g.stroke();
+          g.fillStyle = SLATE;
+          g.beginPath(); g.arc(x, chartArea.top + 6, 3, 0, Math.PI * 2); g.fill();
+          g.restore();
+        }
+      }]
+    });
+  }
+
+  function renderSummaryTable(r) {
+    const el = document.getElementById('summary-table');
+    const debtFreeA = r.inputs.refiTerm;
+    const debtFreeB = Math.ceil(r.pathBMonths / 12);
+    let html = '<table><tr><th></th><th>Path A — cash-out refi</th><th>Path B — mortgage + HELOC</th></tr>';
+    html += '<tr><td>Payment, years 1–' + r.inputs.drawYears + '</td><td>' + fmt(r.refiPmt) + '/mo</td><td class="hi">' + fmt(r.pmtNow) + '/mo</td></tr>';
+    if (r.drawMonths < r.pathBMonths) {
+      html += '<tr><td>Payment after draw ends (yr ' + r.inputs.drawYears + ')</td><td>' + fmt(r.refiMonths > r.drawMonths ? r.refiPmt : 0) + '/mo</td><td>' + fmt(r.pmtAfterDraw) + '/mo</td></tr>';
+    }
+    if (r.firstMonths < r.pathBMonths) {
+      const afterFirst = (r.firstMonths >= r.drawMonths && r.firstMonths < r.drawMonths + r.repayMonths) ? r.helocRepayPmt : (r.firstMonths < r.drawMonths ? r.helocIO : 0);
+      html += '<tr><td>Payment after mortgage retires (yr ' + r.inputs.yearsLeft + ')</td><td>' + fmt(r.refiMonths > r.firstMonths ? r.refiPmt : 0) + '/mo</td><td>' + fmt(afterFirst) + '/mo</td></tr>';
+    }
+    html += '<tr><td>Total interest</td><td class="' + (r.refiInterest <= r.pathBInterest ? 'hi' : '') + '">' + fmt(r.refiInterest) + '</td><td class="' + (r.pathBInterest <= r.refiInterest ? 'hi' : '') + '">' + fmt(r.pathBInterest) + '</td></tr>';
+    html += '<tr><td>Debt-free in</td><td>' + debtFreeA + ' yrs</td><td>' + debtFreeB + ' yrs</td></tr>';
+    html += '</table>';
+    el.innerHTML = html;
+
+    const i = r.inputs;
+    document.getElementById('assumptions-note').textContent =
+      'Assumes the HELOC’s full ' + fmt(i.cash) + ' is drawn on day one at a constant ' + i.helocRate +
+      '% (real HELOCs are variable), interest-only during the ' + i.drawYears + '-yr draw, amortizing over ' + i.repayYears +
+      ' yrs; refi = ' + fmt(r.refiLoan) + ' at ' + i.refiRate + '% for ' + i.refiTerm +
+      ' yrs. Closing costs, fees, PMI, and rate changes excluded. Total interest covers each path’s own term. Estimate only.';
+  }
+
+  function update() {
+    const r = compute();
+    renderWarnings(r);
+    renderResults(r);
+    renderVerdict(r);
+    renderBars(r);
+    renderChart(r);
+    renderSummaryTable(r);
+    scheduleUrlUpdate();
+  }
+
+  // Wire inputs with the same input/blur clamp pattern as the other Phases calculators.
+  [
+    ['balance', LIMITS.balance, true], ['cur-rate', LIMITS.curRate, false], ['years-left', LIMITS.yearsLeft, false],
+    ['home-value', LIMITS.homeValue, true], ['cash', LIMITS.cash, true],
+    ['refi-rate', LIMITS.refiRate, false], ['refi-term', LIMITS.refiTerm, false],
+    ['heloc-rate', LIMITS.helocRate, false], ['draw-years', LIMITS.drawYears, false], ['repay-years', LIMITS.repayYears, false]
+  ].forEach(([id, lim, isMoney]) => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => {
+      markValidity(el, parseFloat(el.value), lim.min, lim.max);
+      update();
+    });
+    el.addEventListener('blur', () => {
+      const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
+      el.value = isMoney ? formatMoneyValue(corrected) : corrected;
+      el.classList.remove('invalid');
+      update();
+    });
+  });
+
+  document.getElementById('copy-link').addEventListener('click', () => {
+    updateUrlSilently();
+    const statusEl = document.getElementById('copy-status');
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      statusEl.textContent = 'link copied';
+      setTimeout(() => { statusEl.textContent = ''; }, 2200);
+    }).catch(() => {
+      statusEl.textContent = 'copy failed — select the URL bar';
+      setTimeout(() => { statusEl.textContent = ''; }, 2800);
+    });
+  });
+
+  (function hydrateFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const encoded = params.get('d');
+    if (encoded) {
+      const state = decodeState(encoded);
+      if (state) applyState(state);
+    }
+  })();
+
+  update();
+})();
+</script>
+</body>
+</html>

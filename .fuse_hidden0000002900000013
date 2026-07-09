@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MH7FWJX2M3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MH7FWJX2M3');
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Trump Account Calculator — project growth, tax-free basis, and taxable earnings</title>
+<meta name="description" content="Free Trump Account calculator. Project your child's account growth to age 18 and beyond — the $1,000 federal seed, the tax-free vs. taxable split at withdrawal, the age-18 Roth conversion strategy, and the kiddie tax trap to avoid." />
+<link rel="canonical" href="https://phasecalc.com/trump-account-calculator" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Phases" />
+<meta property="og:url" content="https://phasecalc.com/trump-account-calculator" />
+<meta property="og:title" content="Trump Account Calculator — growth, tax-free basis, and taxable earnings" />
+<meta property="og:description" content="Project a Trump Account to age 18 and beyond — the $1,000 federal seed, the tax-free vs. taxable split every other calculator skips, and the age-18 Roth conversion play." />
+<meta property="og:image" content="https://phasecalc.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Trump Account Calculator — growth, tax-free basis, and taxable earnings" />
+<meta name="twitter:description" content="Project a Trump Account to age 18 and beyond — the $1,000 federal seed, the tax-free vs. taxable split every other calculator skips, and the age-18 Roth conversion play." />
+<meta name="twitter:image" content="https://phasecalc.com/og-image.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How much can you contribute to a Trump Account per year?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The combined annual limit is $5,000 per child (2026 and 2027, indexed for inflation afterward). This cap covers contributions from parents, family, friends, and employers together. Employers can contribute up to $2,500 per year, but employer dollars count toward the same $5,000 cap. The one-time $1,000 federal seed contribution and qualified charitable contributions (like the Dell Foundation's $250 grants) do NOT count against the annual limit."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Who gets the $1,000 federal seed contribution?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "U.S. citizen children born between January 1, 2025 and December 31, 2028 are eligible for a one-time $1,000 contribution from the Treasury under the pilot program. A parent or guardian must make the election (via IRS Form 4547 or the online portal). Children born outside that window can still have a Trump Account — they just don't receive the federal seed."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are Trump Account withdrawals tax-free?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No — and this is the most misunderstood part. A Trump Account is a type of traditional IRA, not a Roth. After-tax contributions from family come back out tax-free as basis, but ALL investment earnings, the $1,000 federal seed, charitable grants, and pre-tax employer contributions are taxed as ordinary income when withdrawn. Withdrawals before age 59½ may also face a 10% penalty unless an exception applies."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What can a Trump Account be invested in?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "During the growth period (before the year the child turns 18), funds must be invested in low-cost index mutual funds or ETFs tracking the S&P 500 or another index of primarily U.S. equities, with fees capped at 0.10% and no leverage. After the child turns 18, the account follows standard traditional IRA rules and investment options broaden."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is a Trump Account better than a 529 plan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "They solve different problems. A 529 offers tax-FREE growth for education expenses; a Trump Account offers tax-DEFERRED growth for retirement, locked until 18. If your child qualifies for the $1,000 federal seed or your employer contributes, the free money makes a Trump Account worth opening. For education savings, a 529 generally remains stronger. Many families will sensibly use both."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can a Trump Account be converted to a Roth IRA?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. From January 1 of the year the child turns 18, a Trump Account is a traditional IRA, so it can be converted to a Roth IRA in whole or in parts. The taxable portion converted (earnings, federal seed, employer contributions) counts as ordinary income in the conversion year, while after-tax basis converts tax-free. Converting during low-income college or early-career years can lock in low tax rates — but beware the kiddie tax, which can tax a dependent student's unearned income above a small threshold at the parents' marginal rate through age 23."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "When can money be withdrawn from a Trump Account?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Generally not before January 1 of the year the child turns 18, with narrow exceptions (certain rollovers, death, excess-contribution removal). From 18 onward the account is treated as a traditional IRA: withdrawals are taxed as ordinary income (excluding basis), and withdrawals before 59½ typically incur a 10% penalty unless an exception like higher education or a first home applies."
+      }
+    }
+  ]
+}
+</script>
+<style>
+  :root {
+    --ink: #0F1B2D;
+    --ink-raised: #142539;
+    --parchment: #EDE6D6;
+    --parchment-dim: #B8AF9C;
+    --parchment-faint: #948D79;
+    --amber: #C9A45C;
+    --amber-dim: #4A3C24;
+    --slate: #5B7A9D;
+    --slate-dim: #25333F;
+    --copper: #B07A4E;
+    --seam: #24344A;
+    --warn: #C46552;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--parchment);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .masthead {
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--seam);
+    padding-bottom: 24px;
+  }
+
+  .masthead .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 10px;
+  }
+  .masthead .eyebrow a {
+    color: var(--parchment-faint);
+    text-decoration: none;
+    border-bottom: 1px solid var(--seam);
+  }
+  .masthead .eyebrow a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .wordmark svg { display: block; }
+  .wordmark span {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    letter-spacing: 0.02em;
+    color: var(--parchment);
+  }
+  .brandbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--seam);
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .wordmark svg { display: block; }
+  .wordmark span {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    letter-spacing: 0.01em;
+    color: var(--parchment);
+  }
+  .sitenav {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+  }
+  .sitenav a {
+    color: var(--parchment-faint);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+  }
+  .sitenav a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+  .sitenav a.current { color: var(--parchment); border-bottom-color: var(--seam); }
+
+  .masthead h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 32px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+
+  .masthead p {
+    color: var(--parchment-dim);
+    font-size: 15px;
+    margin: 0;
+    max-width: 540px;
+  }
+
+  .panel {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--amber);
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 18px;
+  }
+
+  .field label {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin-bottom: 6px;
+  }
+
+  .field .input-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .field .prefix, .field .suffix {
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    color: var(--parchment-dim);
+  }
+
+  /* Floating help bubbles */
+  .tip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: 1px;
+    cursor: help;
+    outline: none;
+  }
+  .tip .tip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid var(--parchment-faint);
+    color: var(--parchment-faint);
+    font-size: 9px;
+    line-height: 1;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .tip:hover .tip-icon, .tip:focus .tip-icon { border-color: var(--amber); color: var(--amber); }
+  .tip .tip-box {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 9px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 230px;
+    max-width: calc(100vw - 56px);
+    background: var(--ink);
+    border: 1px solid var(--seam);
+    border-radius: 3px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--parchment-dim);
+    white-space: normal;
+    z-index: 20;
+  }
+  .tip .tip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--seam);
+  }
+  .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
+
+  input[type="number"], input[type="text"] {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--seam);
+    color: var(--parchment);
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    padding: 2px 0;
+    width: 100%;
+    transition: border-color 0.15s ease;
+  }
+  input:focus { outline: none; border-bottom-color: var(--amber); }
+  input.invalid { border-bottom-color: var(--warn); }
+
+  .toggles {
+    display: flex;
+    gap: 24px;
+    margin-top: 18px;
+    padding-top: 16px;
+    border-top: 1px solid var(--seam);
+    flex-wrap: wrap;
+  }
+  .toggle {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-dim);
+    cursor: pointer;
+    user-select: none;
+  }
+  .toggle input { width: auto; accent-color: #C9A45C; cursor: pointer; }
+  .toggle .hint { color: var(--parchment-faint); }
+
+  /* Results strip */
+  .results-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 2px;
+    margin-bottom: 10px;
+  }
+  .result-cell {
+    background: var(--ink-raised);
+    padding: 16px 16px 14px;
+  }
+  .result-cell .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 6px;
+    line-height: 1.4;
+  }
+  .result-cell .value {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    margin: 0;
+    color: var(--parchment);
+  }
+  .result-cell.hero .value { color: var(--amber); }
+  .result-cell .value.basis { color: var(--amber); }
+  .result-cell .value.taxable { color: var(--slate); }
+
+  /* Basis bar — the signature element */
+  .basis-bar {
+    display: flex;
+    height: 34px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .basis-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0 8px;
+    min-width: 0;
+  }
+  .basis-seg.b { background: var(--amber-dim); color: var(--amber); }
+  .basis-seg.t { background: var(--slate-dim); color: var(--slate); border-left: 2px solid var(--ink); }
+  .basis-caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 32px;
+  }
+
+  .warning {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--warn);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .info-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--copper);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  .chart-wrap { position: relative; height: 280px; margin-bottom: 14px; }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-dim);
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .legend .swatch { display: inline-block; width: 9px; height: 9px; margin-right: 6px; vertical-align: -1px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
+  th, td { padding: 9px 6px; text-align: right; border-bottom: 1px solid var(--seam); }
+  th:first-child, td:first-child { text-align: left; }
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    font-weight: 400;
+  }
+  td { font-family: 'Source Serif 4', serif; color: var(--parchment-dim); }
+  td:first-child { font-family: 'Inter', sans-serif; color: var(--parchment); font-size: 13px; }
+  td.hi { color: var(--parchment); font-weight: 500; }
+  .footnote { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--parchment-faint); margin: 8px 0 0; }
+
+  .share-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 0;
+  }
+  .copy-link-btn {
+    background: none;
+    border: 1px solid var(--seam);
+    color: var(--parchment-dim);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    padding: 7px 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+  .copy-link-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .copy-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--amber);
+  }
+
+  /* Article */
+  .article {
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--seam);
+  }
+  .article h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+  }
+  .article h2:first-child { margin-top: 0; }
+  .article h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 28px 0 8px;
+  }
+  .article p {
+    color: var(--parchment-dim);
+    font-size: 16.5px;
+    line-height: 1.7;
+    margin: 0 0 18px;
+  }
+  .article strong { color: var(--parchment); font-weight: 500; }
+  .article a { color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber-dim); }
+  .article a:hover { border-bottom-color: var(--amber); }
+  .article table td { font-size: 13.5px; }
+  .article table td:first-child { white-space: nowrap; }
+
+  .faq-item { margin-bottom: 24px; }
+  .faq-item h3 { margin-bottom: 6px; }
+  .faq-item p { margin-bottom: 0; }
+
+  .support-footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--seam);
+  }
+  .support-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 8px;
+    line-height: 1.6;
+  }
+  .support-line a {
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 1px solid var(--amber-dim);
+  }
+  .support-line a:hover { border-bottom-color: var(--amber); }
+
+  @media (max-width: 620px) {
+    .field-grid { grid-template-columns: 1fr 1fr; }
+    .results-strip { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+
+  <header class="brandbar">
+    <a class="wordmark" href="/"><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="7" width="12" height="18" fill="#C9A45C"/><rect x="16.5" y="7" width="8.5" height="18" fill="#8A6E3D"/><rect x="27" y="7" width="3.5" height="18" fill="#5B7A9D"/></svg><span>Phases</span></a>
+    <nav class="sitenav">
+      <a href="/">Compound Interest</a>
+      <a href="/retirement-backtest-calculator">Retirement Backtest</a>
+      <a href="/trump-account-calculator" class="current">Trump Account</a>
+      <a href="/529-superfunding-calculator">529 Superfund</a>
+      <a href="/roth-vs-traditional-calculator">Roth vs Trad</a>
+      <a href="/coast-fire-calculator">Coast FIRE</a>
+      <a href="/savings-goal-calculator">Savings Goal</a>
+      <a href="/dca-calculator">DCA</a>
+      <a href="/drip-calculator">DRIP</a>
+      <a href="/margin-loan-calculator">Margin</a>
+      <a href="/capital-gains-tax-calculator">Capital Gains</a>
+      <a href="/inflation-adjusted-return-calculator">Real Return</a>
+      <a href="/heloc-payment-calculator">HELOC</a>
+      <a href="/cash-out-refinance-vs-heloc-calculator">Refi vs HELOC</a>
+      <a href="/mortgage-extra-payment-calculator">Mortgage Payoff</a>
+      <a href="/rental-property-calculator">Rental</a>
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </header>
+
+  <div class="masthead">
+    <h1>Trump Account calculator</h1>
+    <p>Project your child's Trump Account (§530A) to age 18 and beyond — including the $1,000 federal seed, employer contributions, and the part every other calculator skips: how much of the ending balance is actually tax-free.</p>
+  </div>
+
+  <div class="panel">
+    <div class="field-grid">
+      <div class="field">
+        <label>Child's birth year<span class="tip" tabindex="0" aria-label="Help: child's birth year"><span class="tip-icon">?</span><span class="tip-box">Any child under 18 can have a Trump Account, but only U.S. citizen children born 2025–2028 get the $1,000 federal seed. A 2025 baby gets 17 contribution years (the program opened in 2026); 2026 and later get 18.</span></span></label>
+        <input type="number" id="birth-year" value="2025" min="2009" max="2028" step="1" />
+      </div>
+      <div class="field">
+        <label>Family $ / year (after-tax)<span class="tip" tabindex="0" aria-label="Help: family contributions"><span class="tip-icon">?</span><span class="tip-box">Money from parents, grandparents, and friends. It's after-tax, so it comes back out tax-free as basis. Family + employer share one combined $5,000/year cap.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="family-contrib" value="2,500" min="0" max="5000" step="250" /></div>
+      </div>
+      <div class="field">
+        <label>Employer $ / year (pre-tax)<span class="tip" tabindex="0" aria-label="Help: employer contributions"><span class="tip-icon">?</span><span class="tip-box">Employers can contribute up to $2,500/year, excluded from your wages. It counts against the same $5,000 cap and is taxable when withdrawn. Leave at 0 if no employer plan.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="employer-contrib" value="0" min="0" max="2500" step="250" /></div>
+      </div>
+      <div class="field">
+        <label>Annual return %<span class="tip" tabindex="0" aria-label="Help: annual return"><span class="tip-icon">?</span><span class="tip-box">Expected average yearly growth. 7% is a common long-run assumption for U.S. stock index funds (the only allowed investment before 18) — a planning guess, not a prediction.</span></span></label>
+        <div class="input-row"><input type="number" id="rate" value="7" min="0" max="15" step="0.1" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Hold untouched to age<span class="tip" tabindex="0" aria-label="Help: hold age"><span class="tip-icon">?</span><span class="tip-box">The account unlocks the year your child turns 18, but nothing forces a withdrawal. This models leaving it fully invested until the age you pick.</span></span></label>
+        <input type="number" id="hold-age" value="30" min="18" max="70" step="1" />
+      </div>
+      <div class="field">
+        <label>Tax rate at withdrawal %<span class="tip" tabindex="0" aria-label="Help: tax rate at withdrawal"><span class="tip-icon">?</span><span class="tip-box">Your child's future ordinary income tax bracket when they eventually withdraw the taxable portion (earnings + seed + employer money). Nobody knows this decades out — 22% is a middle-income guess. Basis is never taxed again.</span></span></label>
+        <div class="input-row"><input type="number" id="tax-rate" value="22" min="0" max="50" step="1" /><span class="suffix">%</span></div>
+      </div>
+    </div>
+    <div class="toggles">
+      <label class="toggle">
+        <input type="checkbox" id="fed-seed" checked />
+        <span>$1,000 federal seed <span class="hint">(U.S. citizens born 2025–2028)</span></span>
+      </label>
+      <label class="toggle">
+        <input type="checkbox" id="dell-grant" />
+        <span>$250 Dell Foundation grant <span class="hint">(if eligible)</span></span>
+      </label>
+    </div>
+  </div>
+
+  <div id="warnings"></div>
+
+  <div class="results-strip">
+    <div class="result-cell hero">
+      <p class="label">Balance at 18</p>
+      <p class="value" id="bal-18">$0</p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Balance at hold age</p>
+      <p class="value" id="bal-hold">$0</p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Tax-free basis</p>
+      <p class="value basis" id="basis-val">$0</p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Est. after-tax value</p>
+      <p class="value" id="after-tax-val">$0</p>
+    </div>
+  </div>
+
+  <div class="basis-bar" id="basis-bar"></div>
+  <p class="basis-caption" id="basis-caption"></p>
+
+  <div class="chart-wrap">
+    <canvas id="chart" role="img" aria-label="Line chart of projected Trump Account balance by age. The yellow line is the tax-free basis, the blue line is the total balance, and the shaded area between the two lines is the portion taxed as ordinary income at withdrawal.">Projected balance by age: yellow line is tax-free basis, blue line is total balance, shaded gap between them is the taxable portion.</canvas>
+  </div>
+  <div class="legend">
+    <span><span class="swatch" style="background:#C9A45C"></span>Tax-free basis — yellow line (family contributions)</span>
+    <span><span class="swatch" style="background:#5B7A9D"></span>Total balance — blue line</span>
+    <span><span class="swatch" style="background:rgba(91,122,157,0.35)"></span>Shaded gap between the lines — taxable at withdrawal (earnings + seed + employer)</span>
+    <span><span class="swatch" style="background:#B07A4E"></span>Age 18 — account becomes a traditional IRA</span>
+  </div>
+
+  <div id="summary-table"></div>
+  <p class="footnote" id="assumptions-note"></p>
+
+  <div class="share-row">
+    <button class="copy-link-btn" id="copy-link">copy shareable link</button>
+    <span class="copy-status" id="copy-status"></span>
+  </div>
+
+  <article class="article">
+    <h2>How this Trump Account calculator works</h2>
+    <p>Trump Accounts — formally section 530A accounts, created by the One Big Beautiful Bill Act of 2025 — opened for contributions on <strong>July 4, 2026</strong>. They're a new kind of custodial traditional IRA for children: anyone can contribute up to a <strong>combined $5,000 per year</strong> (indexed for inflation after 2027), with no earned-income requirement, and the money must sit in low-cost U.S. equity index funds (expense ratios capped at 0.10%) until the year the child turns 18.</p>
+    <p>This calculator models contributions from your child's first eligible year (2026 at the earliest) through December 31 of the year they turn 17 — the last year outside money can go in. It compounds annually at your chosen return, applies the one-time <strong>$1,000 federal seed</strong> for eligible children born 2025–2028, optionally adds the Dell Foundation's $250 grant, and then lets the balance ride untouched to whatever age you choose. The default 7% return is a common long-run assumption for U.S. equities; it is not a prediction.</p>
+    <p><strong>Why the result differs from a plain compound-interest calculator.</strong> Two structural reasons, both deliberate. First, contributions can't start before the program opened in 2026 — so a child born in 2025 gets only <strong>17 contribution years</strong> before 18, not 18 (children born 2026 or later get the full 18). Second, this calculator deposits each contribution at the <strong>start</strong> of the calendar year, matching the incentive to contribute early; most generic calculators assume end-of-year deposits, and some compound monthly. At the defaults ($1,000 seed, $2,500/year, 7%, born 2025), this page shows about $85,700 at 18, while a generic 18-year end-of-year calculator shows about $88,400. Same compounding math — different assumptions about when the money arrives.</p>
+
+    <h2>The tax treatment nobody explains</h2>
+    <p>Here is the detail that most coverage — and every other calculator — glosses over: <strong>a Trump Account is not a Roth</strong>. It's a traditional IRA with special childhood rules. That means the ending balance is really two different pools of money:</p>
+    <p><strong>Tax-free basis.</strong> After-tax contributions from parents, grandparents, and other individuals come back out tax-free. If you contribute $2,500 a year from 2026 through the year your child turns 17, that's $42,500 of basis (17 years, for a 2025 baby) your child will never pay tax on again.</p>
+    <p><strong>Taxable at withdrawal.</strong> Everything else — all investment earnings, the $1,000 federal seed, charitable grants, and pre-tax employer contributions — is taxed as <strong>ordinary income</strong> when withdrawn. And because the account follows traditional IRA rules from age 18, withdrawals before 59½ generally add a 10% penalty on top, unless an exception applies (qualified higher education expenses and a first-home purchase up to $10,000 are the notable ones).</p>
+    <p>That's why the gap between the two lines on the chart matters more than the headline number. The yellow <strong>tax-free basis</strong> line is the money your child can always take out tax-free; the blue <strong>total balance</strong> line is everything in the account; and the shaded area between them is the portion the IRS taxes at withdrawal. Over long horizons, compounding means that shaded gap dominates: hold the account to retirement age and 80–90% of the balance may be earnings taxed at your child's future ordinary rate. The headline projections you've seen in the news — six or seven figures by retirement — are pre-tax numbers.</p>
+
+    <h2>Contribution rules worth knowing</h2>
+    <p><strong>The $5,000 cap is shared.</strong> Family and employer contributions count against the same combined limit. An employer can put in up to $2,500 per year (pre-tax, excluded from the employee's wages), but that leaves only $2,500 of room for family money that year. Excess contributions draw a 6% annual penalty until removed.</p>
+    <p><strong>Free money sits outside the cap.</strong> The $1,000 federal pilot contribution and qualified charitable grants (like Dell's $250) do not count against the $5,000 limit — but note they land in the <em>taxable</em> pool at withdrawal, since nobody paid tax on them going in.</p>
+    <p><strong>Calendar-year deadline.</strong> Unlike IRAs, there's no April 15 grace period. Contributions must land within the calendar year.</p>
+    <p><strong>Contributions are gifts.</strong> Individual contributions are generally treated as gifts for federal gift-tax purposes, which matters mostly for grandparents doing larger multi-account giving.</p>
+
+    <h2>The age-18 Roth conversion play — and the kiddie tax trap</h2>
+    <p>Because a Trump Account becomes an ordinary <strong>traditional IRA</strong> on January 1 of the year your child turns 18, it inherits a powerful traditional-IRA feature: it can be <strong>converted to a Roth IRA</strong>, in whole or in slices. The taxable portion converted (earnings, seed, employer money) counts as ordinary income in the year of conversion; the after-tax basis converts tax-free. Once inside the Roth, all future growth is tax-free forever.</p>
+    <p>The reason to do this young is bracket arbitrage. An 18-to-23-year-old in college or early career sits in the 0%, 10%, or 12% bracket — likely the lowest tax rates of their entire life. Converting then means paying tax on today's modest taxable portion at a low rate, instead of paying ordinary income tax decades later on a vastly larger sum. At the defaults, roughly $43,000 of the age-18 balance is taxable; convert it across a few low-income years at 10–12% and the lifetime tax bill can shrink dramatically compared with withdrawing hundreds of thousands of taxable dollars at retirement rates.</p>
+    <p>The trap is the <strong>kiddie tax</strong>. Conversion income is <em>unearned</em> income, and the kiddie tax applies not just to minors but to 18-year-olds whose earned income doesn't cover more than half their own support — and to full-time students up to age 23 in the same position. Above a small threshold (roughly the first $2,700 of unearned income in 2025, indexed annually), the child's unearned income is taxed at the <strong>parents' marginal rate</strong>, which erases the whole point of converting early.</p>
+    <p>The playbook, then: either <strong>wait until the kiddie tax no longer applies</strong> (typically age 24 for full-time students, or as soon as your child's earned income exceeds half their support), or <strong>convert in small annual slices</strong> that stay under the kiddie-tax threshold during the college years, then convert the rest in low-income years afterward. A new graduate's gap between finishing school and their first big salary is often the single best conversion window. This is exactly the kind of move worth confirming with a CPA — pro-rata rules across other IRAs, state taxes, and financial-aid effects (conversion income counts on the FAFSA) can all change the answer.</p>
+
+    <h2>Trump Account vs. 529 vs. custodial Roth IRA</h2>
+    <table>
+      <tr><th></th><th>Trump Account</th><th>529 plan</th><th>Custodial Roth</th></tr>
+      <tr><td>Earnings taxed?</td><td>Ordinary income at withdrawal</td><td class="hi">Never, if used for education</td><td class="hi">Never, if qualified</td></tr>
+      <tr><td>Earned income required</td><td class="hi">No</td><td class="hi">No</td><td>Yes</td></tr>
+      <tr><td>Free seed money</td><td class="hi">$1,000 federal (born 2025–28)</td><td>No</td><td>No</td></tr>
+      <tr><td>Annual limit</td><td>$5,000 combined</td><td>Gift-tax limits (high)</td><td>IRA limit, ≤ earned income</td></tr>
+      <tr><td>Locked until</td><td>Age 18</td><td>Education use (flexible)</td><td>59½ (contributions exit anytime)</td></tr>
+    </table>
+    <p style="margin-top:16px;">The honest ranking for most families: free money first, tax-free growth second. If your child qualifies for the federal seed or your employer contributes, open the Trump Account and capture those dollars — they're a guaranteed, instant return. Beyond the free money, a 529 (for education goals) or a custodial Roth (if your child has legitimate earned income) offers strictly better tax treatment on earnings, because tax-free beats tax-deferred-then-ordinary-income over almost any horizon. Model the phases of a longer plan with the <a href="/">multi-phase compound interest calculator</a>.</p>
+
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <h3>How much can you contribute to a Trump Account per year?</h3>
+      <p>$5,000 combined per child in 2026–2027 (indexed afterward), covering family and employer contributions together. Employers max out at $2,500 within that cap. The federal seed and charitable grants don't count against it.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Who gets the $1,000 federal seed?</h3>
+      <p>U.S. citizen children born January 1, 2025 through December 31, 2028, with an election filed by a parent or guardian (Form 4547 or trumpaccounts.gov). Children born outside the window can still open accounts — no seed, though.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Are withdrawals tax-free?</h3>
+      <p>No. After-tax family contributions return tax-free as basis; earnings, the seed, grants, and employer contributions are taxed as ordinary income, with a possible 10% penalty before age 59½.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What are the investment options?</h3>
+      <p>Before 18: U.S. equity index funds or ETFs only, with expenses capped at 0.10% and no leverage. From 18 on, standard traditional IRA rules and options apply.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is it better than a 529?</h3>
+      <p>Different jobs. 529s win for education (tax-free growth); Trump Accounts win for capturing the federal seed and employer money, and for retirement-length compounding with no earned-income requirement. Many families will use both.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can a Trump Account be converted to a Roth IRA?</h3>
+      <p>Yes — from age 18 it's a traditional IRA, so Roth conversion rules apply. The taxable portion converted counts as ordinary income that year. Converting during low-income college or early-career years can lock in 10–12% rates, but watch the kiddie tax: it can apply to full-time students up to age 23 and taxes unearned income above ~$2,700 at the parents' rate.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why doesn't this match other compound-interest calculators?</h3>
+      <p>Children born in 2025 get only 17 contribution years (the program opened in 2026), and this calculator deposits contributions at the start of each year with annual compounding. Generic calculators typically assume 18 end-of-year deposits, and some compound monthly — small timing differences that move the age-18 number by a few thousand dollars.</p>
+    </div>
+
+    <p style="margin-top:32px;"><em>This calculator is for education, not tax or investment advice. Trump Account rules are new and Treasury guidance is still evolving — confirm specifics with a CPA before acting.</em></p>
+  </article>
+
+  <div class="support-footer">
+    <p class="support-line">
+      If this calculator was useful, a tip helps keep it free and ad-free —
+      <a href="https://buymeacoffee.com/ctong" target="_blank" rel="noopener">buy me a coffee</a>.
+    </p>
+    <p class="support-line">
+      I also use <a href="https://monarch.com/referral/rk2olzfae9?r_source=copy" target="_blank" rel="noopener">Monarch</a> to track net worth and spending — that's a referral link, so if you sign up I get a discount on my own subscription. No pressure either way.
+    </p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  // Shim parseFloat so every existing call site transparently tolerates
+  // comma-grouped input ("100,000") without needing to touch each call site.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
+  const AMBER = '#C9A45C';
+  const SLATE = '#5B7A9D';
+  const COPPER = '#B07A4E';
+  const SEAM = '#24344A';
+  const PARCHMENT_FAINT = '#948D79';
+
+  const PROGRAM_START = 2026;      // first year contributions are allowed
+  const SEED_MIN = 2025, SEED_MAX = 2028;
+
+  const LIMITS = {
+    birthYear: { min: 2009, max: 2028 },
+    family: { min: 0, max: 5000 },
+    employer: { min: 0, max: 2500 },
+    combined: 5000,
+    rate: { min: 0, max: 15 },
+    holdAge: { min: 18, max: 70 },
+    taxRate: { min: 0, max: 50 }
+  };
+
+  let chart = null;
+
+  function fmt(n) {
+    const sign = n < 0 ? '-' : '';
+    return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  // Same as fmt() but without the leading $ — used to redisplay money input
+  // fields themselves with thousands separators after the user leaves them.
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
+  }
+  function clamp(val, min, max) {
+    if (isNaN(val)) return min;
+    return Math.min(max, Math.max(min, val));
+  }
+  function markValidity(el, value, min, max) {
+    const bad = isNaN(value) || value < min || value > max;
+    el.classList.toggle('invalid', bad);
+  }
+  function getInputs() {
+    return {
+      birthYear: clamp(parseFloat(document.getElementById('birth-year').value), LIMITS.birthYear.min, LIMITS.birthYear.max),
+      family: clamp(parseFloat(document.getElementById('family-contrib').value), LIMITS.family.min, LIMITS.family.max),
+      employer: clamp(parseFloat(document.getElementById('employer-contrib').value), LIMITS.employer.min, LIMITS.employer.max),
+      rate: clamp(parseFloat(document.getElementById('rate').value), LIMITS.rate.min, LIMITS.rate.max),
+      holdAge: Math.round(clamp(parseFloat(document.getElementById('hold-age').value), LIMITS.holdAge.min, LIMITS.holdAge.max)),
+      taxRate: clamp(parseFloat(document.getElementById('tax-rate').value), LIMITS.taxRate.min, LIMITS.taxRate.max),
+      fedSeed: document.getElementById('fed-seed').checked,
+      dell: document.getElementById('dell-grant').checked
+    };
+  }
+
+  // --- Shareable link encode/decode (same pattern as the Phases calculator) ---
+  function encodeState() {
+    const i = getInputs();
+    const state = { by: i.birthYear, f: i.family, e: i.employer, r: i.rate, h: i.holdAge, t: i.taxRate, s: i.fedSeed ? 1 : 0, d: i.dell ? 1 : 0 };
+    const json = JSON.stringify(state);
+    const b64 = btoa(unescape(encodeURIComponent(json)));
+    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function decodeState(encoded) {
+    try {
+      const b64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+      const json = decodeURIComponent(escape(atob(b64)));
+      const state = JSON.parse(json);
+      if (!state || typeof state.by === 'undefined') return null;
+      return state;
+    } catch (e) { return null; }
+  }
+  function applyState(s) {
+    document.getElementById('birth-year').value = clamp(s.by, LIMITS.birthYear.min, LIMITS.birthYear.max);
+    document.getElementById('family-contrib').value = formatMoneyValue(clamp(s.f, LIMITS.family.min, LIMITS.family.max));
+    document.getElementById('employer-contrib').value = formatMoneyValue(clamp(s.e, LIMITS.employer.min, LIMITS.employer.max));
+    document.getElementById('rate').value = clamp(s.r, LIMITS.rate.min, LIMITS.rate.max);
+    document.getElementById('hold-age').value = clamp(s.h, LIMITS.holdAge.min, LIMITS.holdAge.max);
+    document.getElementById('tax-rate').value = clamp(s.t, LIMITS.taxRate.min, LIMITS.taxRate.max);
+    document.getElementById('fed-seed').checked = !!s.s;
+    document.getElementById('dell-grant').checked = !!s.d;
+  }
+  function updateUrlSilently() {
+    const url = new URL(window.location.href);
+    url.searchParams.set('d', encodeState());
+    window.history.replaceState(null, '', url.toString());
+  }
+  let urlUpdateTimer = null;
+  function scheduleUrlUpdate() {
+    clearTimeout(urlUpdateTimer);
+    urlUpdateTimer = setTimeout(updateUrlSilently, 400);
+  }
+
+  function computeSeries() {
+    const i = getInputs();
+    const seedEligible = i.fedSeed && i.birthYear >= SEED_MIN && i.birthYear <= SEED_MAX;
+
+    // Enforce the shared $5,000 cap: employer keeps its slice, family is clipped.
+    let family = i.family;
+    let clippedFamily = false;
+    if (family + i.employer > LIMITS.combined) {
+      family = LIMITS.combined - i.employer;
+      clippedFamily = true;
+    }
+
+    const firstContribYear = Math.max(PROGRAM_START, i.birthYear);
+    const lastContribYear = i.birthYear + 17;              // through Dec 31 of the year the child turns 17
+    // The series labels the end-of-year balance as age (year - birthYear + 1),
+    // i.e. "balance at 18" = the balance when the account unlocks on Jan 1 of the
+    // year the child turns 18. The last compounding year is therefore
+    // birthYear + holdAge - 1 — looping to birthYear + holdAge would add an
+    // extra year of growth beyond the chosen hold age.
+    const endYear = i.birthYear + i.holdAge - 1;
+    const startAge = Math.max(0, firstContribYear - i.birthYear);
+
+    let balance = 0, basis = 0;
+    let totalFamily = 0, totalEmployer = 0, totalFree = 0;
+    const series = [];
+    let bal18 = 0, basis18 = 0;
+    let seedApplied = false, dellApplied = false;
+
+    // Record the starting point (just before the first contribution year).
+    series.push({ age: startAge, balance: 0, basis: 0 });
+
+    for (let year = firstContribYear; year <= endYear; year++) {
+      const age = year - i.birthYear;
+      // Contributions land at the start of the year, then the whole balance compounds for that year.
+      if (year >= firstContribYear && year <= lastContribYear && year >= PROGRAM_START) {
+        if (seedEligible && !seedApplied) { balance += 1000; totalFree += 1000; seedApplied = true; }
+        if (i.dell && !dellApplied)       { balance += 250;  totalFree += 250;  dellApplied = true; }
+        balance += family + i.employer;
+        basis += family;
+        totalFamily += family;
+        totalEmployer += i.employer;
+      }
+      balance = balance * (1 + i.rate / 100);
+      series.push({ age: age + 1, balance, basis });
+      if (age + 1 === 18) { bal18 = balance; basis18 = basis; }
+    }
+    if (i.holdAge === 18) { bal18 = balance; basis18 = basis; }
+
+    const taxable = Math.max(0, balance - basis);
+    const afterTax = basis + taxable * (1 - i.taxRate / 100);
+
+    return {
+      series, inputs: i, family, clippedFamily, seedEligible,
+      bal18, basis18, finalBalance: balance, basis, taxable, afterTax,
+      totalFamily, totalEmployer, totalFree,
+      firstContribYear, lastContribYear
+    };
+  }
+
+  function renderWarnings(r) {
+    const el = document.getElementById('warnings');
+    el.innerHTML = '';
+    if (r.clippedFamily) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = 'Family + employer contributions exceed the shared $5,000 annual cap \u2014 family contributions were reduced to ' + fmt(r.family) + '/yr. Excess contributions draw a 6% annual penalty until removed.';
+      el.appendChild(div);
+    }
+    if (r.inputs.fedSeed && !r.seedEligible) {
+      const div = document.createElement('div');
+      div.className = 'info-note';
+      div.textContent = 'The $1,000 federal seed only applies to children born 2025\u20132028, so it was not included for a ' + r.inputs.birthYear + ' birth year.';
+      el.appendChild(div);
+    }
+    if (r.firstContribYear > Math.max(PROGRAM_START, r.inputs.birthYear)) {
+      // no-op, kept for clarity
+    }
+  }
+
+  function renderBasisBar(r) {
+    const bar = document.getElementById('basis-bar');
+    const cap = document.getElementById('basis-caption');
+    bar.innerHTML = '';
+    const total = r.finalBalance || 1;
+    const bPct = Math.max(2, (r.basis / total) * 100);
+    const tPct = Math.max(2, 100 - bPct);
+
+    const b = document.createElement('div');
+    b.className = 'basis-seg b';
+    b.style.flex = bPct;
+    b.textContent = 'tax-free ' + fmt(r.basis);
+    const t = document.createElement('div');
+    t.className = 'basis-seg t';
+    t.style.flex = tPct;
+    t.textContent = 'taxable ' + fmt(r.taxable);
+    bar.appendChild(b); bar.appendChild(t);
+
+    const pct = Math.round((r.taxable / total) * 100);
+    cap.textContent = 'At age ' + r.inputs.holdAge + ', ' + pct + '% of the balance is taxable as ordinary income when withdrawn \u2014 the account is a traditional IRA, not a Roth.';
+  }
+
+  function renderSummaryTable(r) {
+    const el = document.getElementById('summary-table');
+    const milestones = [18, 25, 30, 40, 50, 59, 65].filter(a => a <= r.inputs.holdAge && a > (r.firstContribYear - r.inputs.birthYear));
+    if (!milestones.includes(r.inputs.holdAge)) milestones.push(r.inputs.holdAge);
+    milestones.sort((a, b) => a - b);
+
+    let html = '<table><tr><th>Age</th><th>Year</th><th>Balance</th><th>Tax-free basis</th><th>Taxable portion</th></tr>';
+    milestones.forEach(a => {
+      const pt = r.series.find(s => s.age === a);
+      if (!pt) return;
+      html += '<tr><td>' + a + (a === 18 ? ' \u2014 becomes IRA' : '') + '</td><td>' + (r.inputs.birthYear + a) + '</td>' +
+        '<td class="hi">' + fmt(pt.balance) + '</td><td>' + fmt(pt.basis) + '</td><td>' + fmt(Math.max(0, pt.balance - pt.basis)) + '</td></tr>';
+    });
+    html += '</table>';
+    el.innerHTML = html;
+
+    const note = document.getElementById('assumptions-note');
+    note.textContent = 'Assumes contributions of ' + fmt(r.family + r.inputs.employer) + '/yr from ' + r.firstContribYear + ' through ' + r.lastContribYear +
+      ' (' + fmt(r.totalFamily) + ' family + ' + fmt(r.totalEmployer) + ' employer' + (r.totalFree ? ' + ' + fmt(r.totalFree) + ' seed/grants' : '') +
+      '), applied at the start of each year, compounding annually at ' + r.inputs.rate + '%. The $5,000 cap is held constant (it indexes to inflation after 2027), and returns ignore fees and sequence risk.';
+  }
+
+  function renderChart(r) {
+    const ctx = document.getElementById('chart');
+    const labels = r.series.map(s => String(s.age));
+    const basisData = r.series.map(s => Math.round(s.basis));
+    const totalData = r.series.map(s => Math.round(s.balance));
+
+    if (chart) chart.destroy();
+    chart = new Chart(ctx, {
+      type: 'line',
+      data: { labels, datasets: [
+        {
+          label: 'Tax-free basis',
+          data: basisData,
+          borderColor: AMBER, backgroundColor: 'rgba(201,164,92,0.18)',
+          fill: true, tension: 0.15, pointRadius: 0, borderWidth: 2
+        },
+        {
+          label: 'Total balance',
+          data: totalData,
+          borderColor: SLATE, backgroundColor: 'rgba(91,122,157,0.22)',
+          fill: '-1', tension: 0.15, pointRadius: 0, borderWidth: 2
+        }
+      ]},
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              title: items => 'Age ' + items[0].label + ' (' + (r.inputs.birthYear + parseInt(items[0].label, 10)) + ')',
+              label: item => item.dataset.label + ': ' + fmt(item.parsed.y),
+              afterBody: items => {
+                const idx = items[0].dataIndex;
+                return 'Taxable portion (shaded gap): ' + fmt(Math.max(0, totalData[idx] - basisData[idx]));
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            title: { display: true, text: 'Age', color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            ticks: { maxTicksLimit: 12, color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            grid: { display: false }, border: { color: SEAM }
+          },
+          y: {
+            ticks: { callback: v => '$' + (Math.abs(v) >= 1000000 ? (v/1000000).toFixed(1) + 'M' : Math.abs(v) >= 1000 ? Math.round(v/1000) + 'k' : v), color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            grid: { color: SEAM }, border: { color: SEAM }
+          }
+        }
+      },
+      plugins: [{
+        id: 'age18Line',
+        afterDraw(c) {
+          const { ctx, chartArea, scales } = c;
+          const idx = labels.indexOf('18');
+          if (idx === -1) return;
+          const x = scales.x.getPixelForValue(idx);
+          ctx.save();
+          ctx.strokeStyle = COPPER;
+          ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(x, chartArea.top); ctx.lineTo(x, chartArea.bottom); ctx.stroke();
+          ctx.fillStyle = COPPER;
+          ctx.beginPath(); ctx.arc(x, chartArea.top + 6, 3, 0, Math.PI * 2); ctx.fill();
+          ctx.restore();
+        }
+      }]
+    });
+  }
+
+  function update() {
+    const r = computeSeries();
+    document.getElementById('bal-18').textContent = fmt(r.bal18);
+    document.getElementById('bal-hold').textContent = fmt(r.finalBalance);
+    document.getElementById('basis-val').textContent = fmt(r.basis);
+    document.getElementById('after-tax-val').textContent = fmt(r.afterTax);
+    renderWarnings(r);
+    renderBasisBar(r);
+    renderChart(r);
+    renderSummaryTable(r);
+    scheduleUrlUpdate();
+  }
+
+  // Wire inputs with the same input/blur clamp pattern as the Phases calculator.
+  [
+    ['birth-year', LIMITS.birthYear, false],
+    ['family-contrib', LIMITS.family, true],
+    ['employer-contrib', LIMITS.employer, true],
+    ['rate', LIMITS.rate, false],
+    ['hold-age', LIMITS.holdAge, false],
+    ['tax-rate', LIMITS.taxRate, false]
+  ].forEach(([id, lim, isMoney]) => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => {
+      markValidity(el, parseFloat(el.value), lim.min, lim.max);
+      update();
+    });
+    el.addEventListener('blur', () => {
+      const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
+      el.value = isMoney ? formatMoneyValue(corrected) : corrected;
+      el.classList.remove('invalid');
+      update();
+    });
+  });
+  ['fed-seed', 'dell-grant'].forEach(id => {
+    document.getElementById(id).addEventListener('change', update);
+  });
+
+  document.getElementById('copy-link').addEventListener('click', () => {
+    updateUrlSilently();
+    const statusEl = document.getElementById('copy-status');
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      statusEl.textContent = 'link copied';
+      setTimeout(() => { statusEl.textContent = ''; }, 2200);
+    }).catch(() => {
+      statusEl.textContent = 'copy failed \u2014 select the URL bar';
+      setTimeout(() => { statusEl.textContent = ''; }, 2800);
+    });
+  });
+
+  (function hydrateFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const encoded = params.get('d');
+    if (encoded) {
+      const state = decodeState(encoded);
+      if (state) applyState(state);
+    }
+  })();
+
+  update();
+})();
+</script>
+</body>
+</html>

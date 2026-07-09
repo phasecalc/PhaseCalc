@@ -1,0 +1,1666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MH7FWJX2M3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MH7FWJX2M3');
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Historical Retirement Backtest Calculator — Phases</title>
+<meta name="description" content="Build a timeline of savings phases and one-time events, then stress-test your retirement drawdown against every real historical market cycle since 1928. Free historical-cycle backtest with success rate." />
+<link rel="canonical" href="https://phasecalc.com/retirement-backtest-calculator" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Phases" />
+<meta property="og:url" content="https://phasecalc.com/retirement-backtest-calculator" />
+<meta property="og:title" content="Historical Retirement Backtest Calculator — Phases" />
+<meta property="og:description" content="Stress-test your retirement drawdown against every real historical market cycle since 1928 — free, no signup." />
+<meta property="og:image" content="https://phasecalc.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Historical Retirement Backtest Calculator — Phases" />
+<meta name="twitter:description" content="Stress-test your retirement drawdown against every real historical market cycle since 1928 — free, no signup." />
+<meta name="twitter:image" content="https://phasecalc.com/og-image.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is historical-cycle backtesting (a Trinity-study-style test)?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Instead of assuming one average return for every year of retirement, historical-cycle backtesting replays the actual sequence of stock and bond returns that occurred starting in each historical year - 1928, 1929, 1930, and so on - and checks whether your withdrawals would have depleted the portfolio. This is the same methodology behind the well-known Trinity study and the '4% rule.' A high success rate means your plan survived nearly every real historical sequence of returns, not just the average one."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the sequence of returns matter, not just the average return?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Two retirements with the identical average annual return can end very differently depending on the order the returns arrive in. A severe market drop in the first few years of retirement, while you're also withdrawing money, permanently shrinks the base that has to recover - there's less principal left to benefit when the market rebounds. A similar drop late in retirement, after decades of growth, barely matters. This is called sequence-of-returns risk, and it's the main reason a single average-return projection can be dangerously misleading for a drawdown phase."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Where does the historical return data come from?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Annual stock returns (S&P 500, including dividends) and 10-year U.S. Treasury bond returns are from Aswath Damodaran's historical returns dataset at NYU Stern, covering 1928 through the most recently completed year. Annual inflation is the U.S. Bureau of Labor Statistics' Consumer Price Index (CPI-U) annual average percent change. Both are public data series; nothing here is proprietary or estimated."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does historical backtesting only apply to the retirement phase, not my whole timeline?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Sequence-of-returns risk is sharpest when you're simultaneously withdrawing money and exposed to market swings - which is specifically what happens during retirement drawdown. During accumulation years you're adding money, not withdrawing it, so a bad year early on is far less damaging and, over decades, tends to average out. This calculator keeps every phase before retirement as a simple, deterministic straight-line projection, and reserves the full historical replay for the one phase where it matters most: the terminal drawdown."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What counts as a 'successful' historical cycle?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A cycle succeeds if the portfolio balance never hits zero across the entire length of your retirement, using that historical starting year's actual sequence of returns and inflation. A cycle fails (depletes) if withdrawals combined with poor returns drive the balance to zero before the drawdown period ends. The historical success rate is simply the percentage of all testable historical starting years that succeeded."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does the 10th, 50th, and 90th percentile ending balance mean?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Each historical starting year produces one ending balance (zero, if depleted). Sorting all of those ending balances and reading off the 10th percentile shows a pessimistic outcome - only 10% of historical cycles ended lower. The 50th percentile (median) is the typical outcome, and the 90th percentile shows an optimistic outcome where markets were unusually kind. Looking at the spread, not just the median, is the point: retirement planning is about surviving the bad cycles, not just the average one."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How are withdrawals adjusted for inflation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Your entered withdrawal amount is in today's (plan-start) dollars. Because upstream growth is nominal, that today's-dollar amount is first grown at your assumed upstream inflation rate across the upstream years to express it in dollars at retirement start - that inflated figure is the year-one withdrawal. From then on, for each subsequent year within a given historical cycle, the withdrawal is increased by that specific cycle's actual historical inflation rate for the prior year - not a flat assumed rate. This means a cycle starting in a high-inflation year like 1973 will show withdrawals rising faster than a cycle starting in a low-inflation year like 1955, exactly as would have happened in reality."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is stock allocation and fee drag in the terminal phase?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Stock allocation is the percentage of the retirement portfolio held in stocks versus bonds (e.g. 60% stocks / 40% bonds); each historical year's return is blended accordingly. Fee drag is an annual percentage - typically fund expense ratios and advisory fees - subtracted from the blended return every year, since even small annual fees compound meaningfully over a multi-decade retirement."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I model a down payment, career break, or inheritance before retirement?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Add any number of growth phases (each with its own duration, growth rate, and annual contribution) and lump-sum events (a one-time deposit or withdrawal at a specific year) in any order before your retirement phase. All of these upstream phases use simple, deterministic straight-line math - they are not historically backtested - because the point of this tool is to isolate sequence-of-returns risk specifically in the drawdown years."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why is the retirement/drawdown phase locked to the end of the timeline?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Backtesting a drawdown phase that isn't the last phase - for example, an early retirement followed by a return to work - would require threading a continuous historical path through multiple phases with different contribution and withdrawal rules, which is significantly more complex and not needed for the common case of a single terminal retirement. That is a possible future extension, not part of the current scope."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is this calculator free to use?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, entirely free with no signup, same as every other calculator on this site."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What are the limitations of this backtest?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It only uses U.S. stock and bond history (1928-present), so it can't capture other countries' worse or better historical outcomes. Only 98 overlapping historical starting years exist, and longer retirement windows have fewer independent cycles, so percentages from very long drawdowns carry more uncertainty. It doesn't model taxes, Social Security, required minimum distributions, changing spending needs in later retirement, or the fact that past returns are not a guarantee of future ones."
+      }
+    }
+  ]
+}
+</script>
+
+
+<style>
+  :root {
+    --ink: #0F1B2D;
+    --ink-raised: #142539;
+    --parchment: #EDE6D6;
+    --parchment-dim: #B8AF9C;
+    --parchment-faint: #948D79;
+    --amber: #C9A45C;
+    --amber-dim: #4A3C24;
+    --slate: #5B7A9D;
+    --slate-dim: #25333F;
+    --copper: #B07A4E;
+    --seam: #24344A;
+    --warn: #C46552;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--parchment);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .brandbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--seam);
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .wordmark svg { display: block; }
+  .wordmark span {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    letter-spacing: 0.01em;
+    color: var(--parchment);
+  }
+  .sitenav {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+  }
+  .sitenav a {
+    color: var(--parchment-faint);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+  }
+  .sitenav a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+  .sitenav a.current { color: var(--parchment); border-bottom-color: var(--seam); }
+
+  .masthead {
+    margin-bottom: 48px;
+    border-bottom: 1px solid var(--seam);
+    padding-bottom: 24px;
+  }
+  .masthead .eyebrow {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 10px;
+  }
+  .masthead h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 32px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .masthead p {
+    color: var(--parchment-dim);
+    font-size: 15px;
+    margin: 0;
+    max-width: 520px;
+  }
+
+  .field label {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin-bottom: 6px;
+  }
+  .field .input-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .field .prefix {
+    font-family: 'Source Serif 4', serif;
+    font-size: 20px;
+    color: var(--parchment-dim);
+  }
+
+  .tip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: 1px;
+    cursor: help;
+    outline: none;
+  }
+  .tip .tip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid var(--parchment-faint);
+    color: var(--parchment-faint);
+    font-size: 9px;
+    line-height: 1;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .tip:hover .tip-icon, .tip:focus .tip-icon { border-color: var(--amber); color: var(--amber); }
+  .tip .tip-box {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 9px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 230px;
+    max-width: calc(100vw - 56px);
+    background: var(--ink);
+    border: 1px solid var(--seam);
+    border-radius: 3px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--parchment-dim);
+    white-space: normal;
+    z-index: 20;
+  }
+  .tip .tip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--seam);
+  }
+  .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
+
+  input[type="number"], input[type="text"] {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--seam);
+    color: var(--parchment);
+    font-family: 'Source Serif 4', serif;
+    font-size: 20px;
+    padding: 2px 0;
+    width: 120px;
+    transition: border-color 0.15s ease;
+  }
+  input[type="text"] {
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    width: 100%;
+  }
+  input:focus { outline: none; border-bottom-color: var(--amber); }
+  input.invalid { border-bottom-color: var(--warn); }
+
+  .controls-row {
+    display: flex;
+    gap: 28px;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .result-block { text-align: right; }
+  .result-block .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 6px;
+  }
+  .result-block .value {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 26px;
+    margin: 0 0 10px;
+    color: var(--amber);
+  }
+
+  .copy-link-btn {
+    background: none;
+    border: 1px solid var(--seam);
+    color: var(--parchment-dim);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    padding: 7px 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+  .copy-link-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .copy-status {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--amber);
+    margin-top: 6px;
+    height: 14px;
+  }
+
+  .horizon-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-faint);
+    margin-bottom: 14px;
+  }
+  .horizon-note.over { color: var(--warn); }
+
+  /* Timeline */
+  .timeline {
+    display: flex;
+    height: 64px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 6px;
+    position: relative;
+  }
+  .timeline-seg {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.02em;
+    padding: 0 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    cursor: default;
+  }
+  .timeline-seg.accum { background: var(--amber-dim); color: var(--amber); }
+  .timeline-seg.draw { background: var(--slate-dim); color: var(--slate); }
+  .timeline-seg + .timeline-seg { border-left: 2px solid var(--ink); }
+  .timeline-seg::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, currentColor 0, currentColor 3px, transparent 3px, transparent 7px);
+    opacity: 0.25;
+  }
+  .lump-mark {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 2px;
+    background: var(--copper);
+  }
+  .timeline-axis {
+    display: flex;
+    margin-bottom: 40px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--parchment-faint);
+  }
+
+  .warning {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--warn);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  /* Phase cards */
+  .phase-list { display: flex; flex-direction: column; gap: 2px; margin-bottom: 20px; }
+  .phase-card {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--amber);
+    padding: 18px 20px;
+    position: relative;
+  }
+  .phase-card.lump { border-left-color: var(--copper); }
+  .phase-card.terminal { border-left-color: var(--slate); margin-top: 18px; }
+  .phase-card + .phase-card { margin-top: 10px; }
+
+  .phase-card .phase-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .type-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    border: 1px solid var(--seam);
+    padding: 3px 7px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .type-badge.locked { color: var(--slate); border-color: var(--slate-dim); }
+
+  .remove-btn {
+    background: none;
+    border: none;
+    color: var(--parchment-faint);
+    cursor: pointer;
+    padding: 4px;
+    font-size: 13px;
+    font-family: 'IBM Plex Mono', monospace;
+    transition: color 0.15s ease;
+    margin-left: auto;
+  }
+  .remove-btn:hover { color: var(--warn); }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 16px;
+  }
+  .field-grid.cols-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+  .field-grid .field label { font-size: 10px; }
+  .field-grid input { width: 100%; font-size: 16px; }
+
+  .add-row { display: flex; gap: 10px; margin-bottom: 44px; flex-wrap: wrap; }
+  .add-phase-btn {
+    flex: 1;
+    min-width: 180px;
+    background: none;
+    border: 1px dashed var(--seam);
+    color: var(--parchment-dim);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    padding: 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+  .add-phase-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .add-phase-btn.lump:hover { border-color: var(--copper); color: var(--copper); }
+  .add-phase-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 10px;
+  }
+
+  .stat-row { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 20px; }
+  .stat-box { flex: 1; min-width: 130px; }
+  .stat-box .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--parchment-faint);
+    margin: 0 0 6px;
+  }
+  .stat-box .value {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 21px;
+    margin: 0;
+    color: var(--parchment);
+  }
+
+  .headline-block {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--slate);
+    padding: 22px 24px;
+    margin-bottom: 24px;
+  }
+  .headline-block .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 8px;
+  }
+  .headline-block .value {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 46px;
+    margin: 0;
+    color: var(--amber);
+    line-height: 1.1;
+  }
+  .headline-block .sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-faint);
+    margin-top: 8px;
+  }
+
+  .projection-block {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--amber);
+    padding: 18px 20px;
+    margin-bottom: 24px;
+  }
+  .projection-block .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 8px;
+  }
+  .projection-block .value {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 28px;
+    margin: 0;
+    color: var(--parchment);
+  }
+  .projection-block .sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-faint);
+    margin-top: 6px;
+  }
+
+  .chart-wrap { position: relative; height: 320px; margin-bottom: 14px; }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-dim);
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .legend .swatch { display: inline-block; width: 14px; height: 3px; margin-right: 6px; vertical-align: 2px; }
+  .legend .swatch.dot { width: 9px; height: 9px; border-radius: 50%; vertical-align: -1px; }
+
+  .cycle-table-wrap {
+    max-height: 340px;
+    overflow-y: auto;
+    border: 1px solid var(--seam);
+    border-radius: 2px;
+    margin-bottom: 8px;
+  }
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+  th, td { padding: 8px 10px; text-align: right; border-bottom: 1px solid var(--seam); }
+  th:first-child, td:first-child { text-align: left; }
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    font-weight: 400;
+    position: sticky;
+    top: 0;
+    background: var(--ink-raised);
+  }
+  td { font-family: 'Source Serif 4', serif; color: var(--parchment-dim); }
+  td:first-child { font-family: 'Inter', sans-serif; color: var(--parchment); font-size: 12.5px; }
+  .status-ok { color: var(--slate); }
+  .status-fail { color: var(--warn); }
+  .footnote { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--parchment-faint); margin-top: 8px; margin-bottom: 40px; }
+
+  /* Article */
+  .article {
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--seam);
+  }
+  .article h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+  }
+  .article h2:first-child { margin-top: 0; }
+  .article h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 28px 0 8px;
+  }
+  .article p {
+    color: var(--parchment-dim);
+    font-size: 16.5px;
+    line-height: 1.7;
+    margin: 0 0 18px;
+  }
+  .article strong { color: var(--parchment); font-weight: 500; }
+  .article a { color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber-dim); }
+  .article a:hover { border-bottom-color: var(--amber); }
+  .faq-item { margin-bottom: 24px; }
+  .faq-item h3 { margin-bottom: 6px; }
+  .faq-item p { margin-bottom: 0; }
+
+  .support-footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--seam);
+  }
+  .support-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 8px;
+    line-height: 1.6;
+  }
+  .support-line a {
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 1px solid var(--amber-dim);
+  }
+  .support-line a:hover { border-bottom-color: var(--amber); }
+
+  @media (max-width: 540px) {
+    .field-grid, .field-grid.cols-4 { grid-template-columns: 1fr 1fr; }
+    .controls-row { flex-direction: column; align-items: flex-start; }
+    .result-block { text-align: left; }
+    .stat-row { flex-direction: column; gap: 14px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brandbar">
+    <a class="wordmark" href="/"><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="7" width="12" height="18" fill="#C9A45C"/><rect x="16.5" y="7" width="8.5" height="18" fill="#8A6E3D"/><rect x="27" y="7" width="3.5" height="18" fill="#5B7A9D"/></svg><span>Phases</span></a>
+    <nav class="sitenav">
+      <a href="/">Compound Interest</a>
+      <a href="/retirement-backtest-calculator" class="current">Retirement Backtest</a>
+      <a href="/trump-account-calculator">Trump Account</a>
+      <a href="/529-superfunding-calculator">529 Superfund</a>
+      <a href="/roth-vs-traditional-calculator">Roth vs Trad</a>
+      <a href="/coast-fire-calculator">Coast FIRE</a>
+      <a href="/savings-goal-calculator">Savings Goal</a>
+      <a href="/dca-calculator">DCA</a>
+      <a href="/drip-calculator">DRIP</a>
+      <a href="/margin-loan-calculator">Margin</a>
+      <a href="/capital-gains-tax-calculator">Capital Gains</a>
+      <a href="/inflation-adjusted-return-calculator">Real Return</a>
+      <a href="/heloc-payment-calculator">HELOC</a>
+      <a href="/cash-out-refinance-vs-heloc-calculator">Refi vs HELOC</a>
+      <a href="/mortgage-extra-payment-calculator">Mortgage Payoff</a>
+      <a href="/rental-property-calculator">Rental</a>
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </header>
+
+  <div class="masthead">
+    <p class="eyebrow">Historical cycle backtest</p>
+    <h1>Retirement backtest calculator</h1>
+    <p>Build your savings timeline, then stress-test the retirement drawdown against every real historical U.S. market cycle since 1928 — not just one assumed average return.</p>
+  </div>
+
+  <div class="controls-row">
+    <div class="field">
+      <label>Starting balance</label>
+      <div class="input-row">
+        <span class="prefix">$</span>
+        <input type="text" inputmode="decimal" id="starting-balance" value="0" />
+      </div>
+    </div>
+    <div class="field">
+      <label>Assumed inflation % / yr (upstream)<span class="tip" tabindex="0" aria-label="Help: assumed upstream inflation"><span class="tip-icon">?</span><span class="tip-box">Used only to convert your today's-dollar retirement withdrawal into dollars at retirement start. Once retirement begins, each historical cycle uses its own actual CPI instead.</span></span></label>
+      <div class="input-row">
+        <input type="number" id="upstream-inflation" value="2.5" step="0.1" />
+      </div>
+    </div>
+    <div class="result-block">
+      <p class="label">Balance entering retirement</p>
+      <p class="value" id="projection-value">$0</p>
+      <button class="copy-link-btn" id="copy-link">copy shareable link</button>
+      <span class="copy-status" id="copy-status"></span>
+    </div>
+  </div>
+
+  <p class="horizon-note" id="horizon-note"></p>
+
+  <div class="timeline" id="timeline"></div>
+  <div class="timeline-axis" id="timeline-axis"></div>
+
+  <div id="upstream-warnings"></div>
+
+  <p class="section-label">Upstream phases — deterministic, straight-line</p>
+  <div class="phase-list" id="phase-list"></div>
+
+  <div class="add-row">
+    <button class="add-phase-btn" id="add-growth">+ add growth phase</button>
+    <button class="add-phase-btn lump" id="add-lump">+ add lump-sum event</button>
+  </div>
+
+  <p class="section-label">Accumulation — deterministic projection to retirement</p>
+  <div class="projection-block">
+    <p class="label">Projection — entering retirement</p>
+    <p class="value" id="projection-detail">—</p>
+    <p class="sub" id="projection-sub"></p>
+  </div>
+  <div class="chart-wrap">
+    <canvas id="chart-accum" role="img" aria-label="Line chart of the deterministic straight-line accumulation projection through the upstream phases, with vertical markers for one-time lump-sum events, ending at the balance entering retirement.">Balance grows deterministically through the upstream accumulation phases to the balance entering retirement.</canvas>
+  </div>
+  <div class="legend" id="legend-accum"></div>
+
+  <p class="section-label">Terminal phase — historically backtested</p>
+  <div id="terminal-card"></div>
+
+  <div style="margin-top:36px;"></div>
+  <div id="terminal-warnings"></div>
+
+  <p class="section-label">Retirement backtest — every historical cycle</p>
+  <div class="headline-block">
+    <p class="label">Historical success rate — terminal phase only</p>
+    <p class="value" id="success-rate">—</p>
+    <p class="sub" id="success-sub"></p>
+  </div>
+
+  <div class="stat-row">
+    <div class="stat-box">
+      <p class="label">10th percentile ending balance</p>
+      <p class="value" id="p10-value">—</p>
+    </div>
+    <div class="stat-box">
+      <p class="label">Median (50th) ending balance</p>
+      <p class="value" id="p50-value">—</p>
+    </div>
+    <div class="stat-box">
+      <p class="label">90th percentile ending balance</p>
+      <p class="value" id="p90-value">—</p>
+    </div>
+  </div>
+  <p class="footnote">Ending balances are nominal dollars in each cycle's own end year — not adjusted back to today's purchasing power.</p>
+
+  <div class="chart-wrap">
+    <canvas id="chart-retire" role="img" aria-label="Line chart starting from the balance entering retirement, fanning out into one line per historical cycle plus 10th, 50th and 90th percentile bands across the drawdown.">From the balance entering retirement, each historical cycle's actual path fans out, with 10th, 50th and 90th percentile bands.</canvas>
+  </div>
+  <div class="legend" id="legend-retire"></div>
+
+  <p class="section-label">Every historical cycle tested</p>
+  <div class="cycle-table-wrap">
+    <table id="cycle-table"></table>
+  </div>
+  <p class="footnote">Each row replays one historical starting year's actual sequential stock/bond returns and inflation, starting from the projected balance entering retirement. Adjacent windows share almost all of their years, so N cycles are far fewer than N independent samples.</p>
+
+  <article class="article">
+    <h2>How this backtest works</h2>
+    <p>Most retirement calculators assume one flat average return for every year of the plan. That average can be exactly right and still miss the thing that actually breaks retirements: the <strong>order</strong> those returns arrive in. A portfolio that loses 30% in year one of retirement, while withdrawals are also draining it, ends up in a very different place than one that loses 30% in year twenty-five, even if both retirements average the same long-run return. This is <strong>sequence-of-returns risk</strong>, and averages can't see it.</p>
+    <p>This calculator addresses that directly by replaying <strong>real history</strong>. Every phase before retirement — accumulation, career breaks, one-time lump sums like a home down payment or inheritance — runs as a simple deterministic straight-line projection, producing a single ending balance labeled the <strong>projection</strong>. That balance then becomes the starting point for the terminal retirement phase, which is tested against every historical starting year with enough subsequent data to cover the full drawdown length: 1928, 1929, 1930, and so on through the most recent completed year. Each of those replays uses that specific year's actual sequential stock and bond returns and actual inflation. The percentage of those replays that never ran out of money is the <strong>historical success rate</strong>.</p>
+
+    <h3>Why only the terminal phase is backtested</h3>
+    <p>Sequence-of-returns risk is sharpest exactly when you're withdrawing money and exposed to markets at the same time — which is what retirement drawdown is. During accumulation, you're adding money each year, so a bad early year is far less damaging and tends to average out over decades; a deterministic projection is a reasonable simplification there. Backtesting a non-terminal drawdown — say, an early retirement followed by a return to work — would require threading one continuous historical path across phases with different contribution and withdrawal rules at each step, a meaningfully more complex problem than testing one locked terminal phase. That's a possible future extension, not needed for the common case this calculator targets: any number of upstream phases followed by one final, permanent retirement.</p>
+
+    <h3>The data behind the replay</h3>
+    <p>Annual U.S. stock returns (S&P 500 including dividends) and 10-year Treasury bond returns come from Aswath Damodaran's historical returns dataset at NYU Stern, spanning 1928 to the most recently completed year. Annual inflation is the Bureau of Labor Statistics' CPI-U annual average. Your withdrawal is entered in today's dollars; since upstream growth is nominal, it is first grown at your assumed upstream inflation rate to express it in dollars at retirement start, then within each cycle it is inflation-adjusted using that cycle's own actual historical inflation path, not a flat assumed rate — so a cycle starting in 1973 sees withdrawals grow the way they actually would have during that decade's inflation.</p>
+
+    <h3>Reading the chart and the percentiles</h3>
+    <p>The single amber line is the deterministic upstream projection. Once the terminal phase begins, thin lines fan out — one per historical starting year, each tracing that cycle's actual balance path. The bold overlay lines mark the 10th, 50th (median), and 90th percentile ending balances across all cycles. A wide gap between the 10th and 90th percentile is the visual signature of sequence-of-returns risk: the same withdrawal plan can end in wildly different places purely because of which years the retirement happened to start in.</p>
+
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <h3>What is historical-cycle backtesting?</h3>
+      <p>It replays the actual sequence of historical stock and bond returns starting in each historical year, rather than assuming one average return, to see whether your withdrawals would have depleted the portfolio. It's the same method behind the Trinity study and the "4% rule."</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why does the sequence of returns matter more than the average?</h3>
+      <p>A bad market year early in retirement, while you're withdrawing, permanently shrinks the base left to recover. The same bad year late in retirement barely matters. Averages can't distinguish between these two very different outcomes.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Where does the historical data come from?</h3>
+      <p>Stock and bond returns are from Aswath Damodaran's dataset at NYU Stern (1928-present); inflation is the BLS CPI-U annual average. Both are public data series.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why is only the retirement phase backtested?</h3>
+      <p>Sequence risk is sharpest when withdrawing and exposed to markets simultaneously — specifically retirement. Earlier accumulation phases stay deterministic since a bad early accumulation year is far less damaging and tends to average out.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What counts as a successful historical cycle?</h3>
+      <p>The portfolio balance never hits zero across the entire drawdown length using that year's actual returns and inflation. The historical success rate is the percentage of all testable years that succeeded.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What do the 10th/50th/90th percentile balances mean?</h3>
+      <p>Sorting every historical cycle's ending balance, the 10th percentile is a pessimistic outcome, the 50th (median) is typical, and the 90th is an optimistic one. The spread between them matters more than any single number.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How are withdrawals inflation-adjusted?</h3>
+      <p>Your entered withdrawal is in today's dollars. Because upstream growth is nominal, it is first grown at your assumed upstream inflation rate to dollars at retirement start (that becomes the year-one withdrawal), then each later year within a cycle increases it by that specific cycle's actual historical inflation, not a flat assumed rate.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What are stock allocation and fee drag?</h3>
+      <p>Stock allocation splits the retirement portfolio between stocks and bonds for blending each year's historical return. Fee drag is an annual percentage — fund expenses and advisory fees — subtracted from that blended return every year.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I model a down payment, career break, or inheritance?</h3>
+      <p>Yes — add any number of growth phases and lump-sum events in any order before retirement. These upstream phases are deterministic straight-line, not historically backtested.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Why is the retirement phase locked to the end?</h3>
+      <p>Backtesting a non-terminal drawdown (e.g. early retirement then back to work) requires threading a continuous historical path across differing phase rules — significantly more complex, and deferred as a future extension rather than part of this scope.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is this free?</h3>
+      <p>Yes, entirely free with no signup, like every calculator on this site.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What are this backtest's limitations?</h3>
+      <p>Only U.S. market history (1928-present) is used; only 98 overlapping starting years exist, so long drawdowns have fewer independent cycles; taxes, Social Security, RMDs, and changing spending needs aren't modeled; and past returns never guarantee future ones.</p>
+    </div>
+  </article>
+
+  <div class="support-footer">
+    <p class="support-line">
+      If this calculator was useful, a tip helps keep it free and ad-free —
+      <a href="https://buymeacoffee.com/ctong" target="_blank" rel="noopener">buy me a coffee</a>.
+    </p>
+    <p class="support-line">
+      I also use <a href="https://monarch.com/referral/rk2olzfae9?r_source=copy" target="_blank" rel="noopener">Monarch</a> to track net worth and spending — that's a referral link, so if you sign up I get a discount on my own subscription. No pressure either way.
+    </p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  // Shim parseFloat so every existing call site transparently tolerates
+  // comma-grouped input ("100,000") without needing to touch each call site.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
+  const AMBER = '#C9A45C';
+  const SLATE = '#5B7A9D';
+  const COPPER = '#B07A4E';
+  const WARN = '#C46552';
+  const SEAM = '#24344A';
+  const PARCHMENT = '#EDE6D6';
+  const PARCHMENT_FAINT = '#948D79';
+
+  // --- Historical annual return dataset --------------------------------
+  // Public-domain sources, merged and stored as static data:
+  //   s (stockReturn %) / b (bondReturn %) - Aswath Damodaran, NYU Stern
+  //     Historical Returns on Stocks, Bonds and Bills (S&P 500 incl.
+  //     dividends; 10-year US T-Bond), 1928-present.
+  //     https://pages.stern.nyu.edu/~adamodar/New_Home_Page/datafile/histretSP.html
+  //   i (inflation %) - US Bureau of Labor Statistics CPI-U annual average,
+  //     via https://www.usinflationcalculator.com/inflation/historical-inflation-rates/
+  // Short keys (y/s/b/i) keep this array compact since it's embedded inline.
+  const HIST = [{y:1928,s:43.81,b:0.84,i:-1.7},{y:1929,s:-8.3,b:4.2,i:0.0},{y:1930,s:-25.12,b:4.54,i:-2.3},{y:1931,s:-43.84,b:-2.56,i:-9.0},{y:1932,s:-8.64,b:8.79,i:-9.9},{y:1933,s:49.98,b:1.86,i:-5.1},{y:1934,s:-1.19,b:7.96,i:3.1},{y:1935,s:46.74,b:4.47,i:2.2},{y:1936,s:31.94,b:5.02,i:1.5},{y:1937,s:-35.34,b:1.38,i:3.6},{y:1938,s:29.28,b:4.21,i:-2.1},{y:1939,s:-1.1,b:4.41,i:-1.4},{y:1940,s:-10.67,b:5.4,i:0.7},{y:1941,s:-12.77,b:-2.02,i:5.0},{y:1942,s:19.17,b:2.29,i:10.9},{y:1943,s:25.06,b:2.49,i:6.1},{y:1944,s:19.03,b:2.58,i:1.7},{y:1945,s:35.82,b:3.8,i:2.3},{y:1946,s:-8.43,b:3.13,i:8.3},{y:1947,s:5.2,b:0.92,i:14.4},{y:1948,s:5.7,b:1.95,i:8.1},{y:1949,s:18.3,b:4.66,i:-1.2},{y:1950,s:30.81,b:0.43,i:1.3},{y:1951,s:23.68,b:-0.3,i:7.9},{y:1952,s:18.15,b:2.27,i:1.9},{y:1953,s:-1.21,b:4.14,i:0.8},{y:1954,s:52.56,b:3.29,i:0.7},{y:1955,s:32.6,b:-1.34,i:-0.4},{y:1956,s:7.44,b:-2.26,i:1.5},{y:1957,s:-10.46,b:6.8,i:3.3},{y:1958,s:43.72,b:-2.1,i:2.8},{y:1959,s:12.06,b:-2.65,i:0.7},{y:1960,s:0.34,b:11.64,i:1.7},{y:1961,s:26.64,b:2.06,i:1.0},{y:1962,s:-8.81,b:5.69,i:1.0},{y:1963,s:22.61,b:1.68,i:1.3},{y:1964,s:16.42,b:3.73,i:1.3},{y:1965,s:12.4,b:0.72,i:1.6},{y:1966,s:-9.97,b:2.91,i:2.9},{y:1967,s:23.8,b:-1.58,i:3.1},{y:1968,s:10.81,b:3.27,i:4.2},{y:1969,s:-8.24,b:-5.01,i:5.5},{y:1970,s:3.56,b:16.75,i:5.7},{y:1971,s:14.22,b:9.79,i:4.4},{y:1972,s:18.76,b:2.82,i:3.2},{y:1973,s:-14.31,b:3.66,i:6.2},{y:1974,s:-25.9,b:1.99,i:11.0},{y:1975,s:37.0,b:3.61,i:9.1},{y:1976,s:23.83,b:15.98,i:5.8},{y:1977,s:-6.98,b:1.29,i:6.5},{y:1978,s:6.51,b:-0.78,i:7.6},{y:1979,s:18.52,b:0.67,i:11.3},{y:1980,s:31.74,b:-2.99,i:13.5},{y:1981,s:-4.7,b:8.2,i:10.3},{y:1982,s:20.42,b:32.81,i:6.2},{y:1983,s:22.34,b:3.2,i:3.2},{y:1984,s:6.15,b:13.73,i:4.3},{y:1985,s:31.24,b:25.71,i:3.6},{y:1986,s:18.49,b:24.28,i:1.9},{y:1987,s:5.81,b:-4.96,i:3.6},{y:1988,s:16.54,b:8.22,i:4.1},{y:1989,s:31.48,b:17.69,i:4.8},{y:1990,s:-3.06,b:6.24,i:5.4},{y:1991,s:30.23,b:15.0,i:4.2},{y:1992,s:7.49,b:9.36,i:3.0},{y:1993,s:9.97,b:14.21,i:3.0},{y:1994,s:1.33,b:-8.04,i:2.6},{y:1995,s:37.2,b:23.48,i:2.8},{y:1996,s:22.68,b:1.43,i:3.0},{y:1997,s:33.1,b:9.94,i:2.3},{y:1998,s:28.34,b:14.92,i:1.6},{y:1999,s:20.89,b:-8.25,i:2.2},{y:2000,s:-9.03,b:16.66,i:3.4},{y:2001,s:-11.85,b:5.57,i:2.8},{y:2002,s:-21.97,b:15.12,i:1.6},{y:2003,s:28.36,b:0.38,i:2.3},{y:2004,s:10.74,b:4.49,i:2.7},{y:2005,s:4.83,b:2.87,i:3.4},{y:2006,s:15.61,b:1.96,i:3.2},{y:2007,s:5.48,b:10.21,i:2.8},{y:2008,s:-36.55,b:20.1,i:3.8},{y:2009,s:25.94,b:-11.12,i:-0.4},{y:2010,s:14.82,b:8.46,i:1.6},{y:2011,s:2.1,b:16.04,i:3.2},{y:2012,s:15.89,b:2.97,i:2.1},{y:2013,s:32.15,b:-9.1,i:1.5},{y:2014,s:13.52,b:10.75,i:1.6},{y:2015,s:1.38,b:1.28,i:0.1},{y:2016,s:11.77,b:0.69,i:1.3},{y:2017,s:21.61,b:2.8,i:2.1},{y:2018,s:-4.23,b:-0.02,i:2.4},{y:2019,s:31.21,b:9.64,i:1.8},{y:2020,s:18.02,b:11.33,i:1.2},{y:2021,s:28.47,b:-4.42,i:4.7},{y:2022,s:-18.04,b:-17.83,i:8.0},{y:2023,s:26.06,b:3.88,i:4.1},{y:2024,s:24.88,b:-1.64,i:2.9},{y:2025,s:17.78,b:7.8,i:2.6}];
+  const HIST_FIRST_YEAR = HIST[0].y;
+  const HIST_LAST_YEAR = HIST[HIST.length - 1].y;
+
+  const LIMITS = {
+    startingBalance: { min: 0, max: 1000000000 },
+    upstreamInflation: { min: 0, max: 10 },
+    growthYears: { min: 1, max: 60 },
+    growthRate: { min: -20, max: 20 },
+    contribution: { min: -1000000, max: 1000000 },
+    totalUpstreamYears: 80,
+    lumpYear: { min: 0, max: 80 },
+    lumpAmount: { min: -10000000, max: 10000000 },
+    terminalYears: { min: 1, max: 70 },
+    withdrawal: { min: 0, max: 1000000 },
+    stockAllocation: { min: 0, max: 100 },
+    feeDrag: { min: 0, max: 3 }
+  };
+
+  let phases = [
+    { id: 1, type: 'growth', label: 'Early career', years: 8, growthRate: 7, contributions: 14000 },
+    { id: 2, type: 'lumpSum', label: 'Home down payment', year: 8, amount: -100000 },
+    { id: 3, type: 'growth', label: 'Mid career', years: 10, growthRate: 7, contributions: 24000 },
+    { id: 4, type: 'growth', label: 'Peak career', years: 19, growthRate: 7, contributions: 40000 }
+  ];
+  let terminal = { label: 'Retirement', years: 35, withdrawalAmount: 50000, stockAllocation: 60, feeDrag: 0.2 };
+  let nextId = 5;
+  let accumChart = null;
+  let retireChart = null;
+  // Year 0 of the plan is the current calendar year, so the x-axes read as real
+  // years (e.g. 2026, 2027, ...). Computed once at load.
+  const BASE_YEAR = new Date().getFullYear();
+
+  function fmt(n) {
+    const sign = n < 0 ? '-' : '';
+    return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
+  }
+  function clamp(val, min, max) {
+    if (isNaN(val)) return min;
+    return Math.min(max, Math.max(min, val));
+  }
+  function markValidity(el, value, min, max) {
+    const bad = isNaN(value) || value < min || value > max;
+    el.classList.toggle('invalid', bad);
+  }
+  function growthPhases() { return phases.filter(p => p.type === 'growth'); }
+  function totalUpstreamYears() { return growthPhases().reduce((s, p) => s + p.years, 0); }
+  function maxYearsFor(phase) {
+    const othersTotal = growthPhases().filter(p => p.id !== phase.id).reduce((s, p) => s + p.years, 0);
+    return Math.max(LIMITS.growthYears.min, LIMITS.totalUpstreamYears - othersTotal);
+  }
+
+  // ======================================================================
+  // ENGINE - two pure functions, no DOM access.
+  //
+  // If a future need arises for backtesting a NON-terminal drawdown phase
+  // (e.g. early retirement, then back to work, then retire again for real),
+  // it would require threading one continuous historical path through
+  // multiple phases with different contribution/withdrawal rules at each
+  // step - a materially harder problem than testing a single locked
+  // terminal phase. That is deferred; not needed for the current scope,
+  // where the drawdown is always the last, permanent phase.
+  // ======================================================================
+
+  // runUpstreamPhases(phases[], startingBalance) -> deterministic ending balance
+  // Handles an ordered array of:
+  //   { type:'growth', years, growthRate, contributions } - straight-line
+  //     CAGR; each year the balance is (balance + annual contribution)
+  //     compounded once at growthRate. Purely deterministic, no historical
+  //     data involved.
+  //   { type:'lumpSum', year, amount } - a one-time deposit/withdrawal
+  //     applied against the running straight-line balance at the given
+    // elapsed-year offset from the plan's start (0 = immediately; can fall
+  //     inside a growth phase, not just at a phase boundary). Withdrawals
+  //     are clamped so balance never goes below $0.
+  function runUpstreamPhases(phaseList, startingBalance) {
+    let balance = startingBalance;
+    const growthSteps = [];
+    const lumpSums = [];
+    phaseList.forEach(function (phase) {
+      if (phase.type === 'lumpSum') {
+        lumpSums.push({ year: Math.max(0, Math.round(phase.year || 0)), amount: phase.amount || 0, label: phase.label || 'Lump sum' });
+      } else {
+        const years = Math.max(1, Math.round(phase.years || 1));
+        const rate = (phase.growthRate || 0) / 100;
+        const contribution = phase.contributions || 0;
+        for (let i = 0; i < years; i++) growthSteps.push({ rate: rate, contribution: contribution, label: phase.label });
+      }
+    });
+    const totalYears = growthSteps.length;
+    const timeline = [{ year: 0, balance: balance }];
+    const lumpEvents = [];
+    const clippedLumps = [];
+    const droppedLumps = [];
+    const ruinedPhases = [];
+    const ruinedLabels = {};
+    for (let y = 0; y < totalYears; y++) {
+      lumpSums.filter(function (l) { return l.year === y; }).forEach(function (l) {
+        let applied = l.amount;
+        if (l.amount < 0 && Math.abs(l.amount) > balance) {
+          applied = -balance;
+          clippedLumps.push({ label: l.label, requested: l.amount, applied: applied, availableBalance: balance });
+        }
+        balance += applied;
+        if (balance < 0) balance = 0;
+        lumpEvents.push({ year: y, amount: applied, label: l.label });
+      });
+      const step = growthSteps[y];
+      // A negative annual contribution larger than the running balance drives the
+      // balance negative and is clamped to $0 (silent upstream ruin). Record it
+      // once per phase so it can be surfaced to the user.
+      if ((balance + step.contribution) < 0 && !ruinedLabels[step.label]) {
+        ruinedLabels[step.label] = true;
+        ruinedPhases.push({ label: step.label || 'Phase', year: y + 1 });
+      }
+      balance = (balance + step.contribution) * (1 + step.rate);
+      if (balance < 0) balance = 0;
+      timeline.push({ year: y + 1, balance: balance });
+    }
+    // Lumps scheduled at or beyond the end of the upstream horizon fall in the
+    // retirement/drawdown window. They must NOT be applied to the retirement
+    // entry balance (that would credit mid-retirement money to year zero of the
+    // drawdown). Exclude them and report them so the user can move them earlier.
+    lumpSums.filter(function (l) { return l.year >= totalYears; }).forEach(function (l) {
+      droppedLumps.push({ label: l.label, year: l.year, amount: l.amount });
+    });
+    if (timeline.length) timeline[timeline.length - 1] = { year: totalYears, balance: balance };
+    return { finalBalance: balance, timeline: timeline, totalYears: totalYears, lumpEvents: lumpEvents, clippedLumps: clippedLumps, droppedLumps: droppedLumps, ruinedPhases: ruinedPhases };
+  }
+
+  function percentile(sortedArr, p) {
+    if (sortedArr.length === 0) return 0;
+    const idx = (p / 100) * (sortedArr.length - 1);
+    const lo = Math.floor(idx), hi = Math.ceil(idx);
+    if (lo === hi) return sortedArr[lo];
+    return sortedArr[lo] + (sortedArr[hi] - sortedArr[lo]) * (idx - lo);
+  }
+
+  // runTerminalBacktest(terminalPhase, startingBalance) -> per-historical-
+  // year results {startYear, finalBalance, depleted, depletionYear},
+  // aggregated to a success rate % and 10th/50th/90th percentile ending
+  // balances. For every historical starting year with enough subsequent
+  // years of data to cover the full drawdown length, replays that year's
+  // actual sequential stock/bond returns (blended by stockAllocation, net
+  // of feeDrag), withdrawing at the start of each year and inflating the
+  // withdrawal by that specific cycle's own historical CPI.
+  function runTerminalBacktest(terminalPhase, startingBalance, upstreamYears, upstreamInflation) {
+    const years = Math.max(1, Math.round(terminalPhase.years || 1));
+    const withdrawalAmount = terminalPhase.withdrawalAmount || 0;
+    // The withdrawal is entered in today's (plan-start) dollars. Upstream growth
+    // is nominal, so inflate the today's-dollar withdrawal to retirement-start
+    // dollars using the assumed upstream inflation rate. After year one, each
+    // cycle uses its own actual historical CPI (unchanged).
+    const upstreamMultiplier = Math.pow(1 + (upstreamInflation || 0) / 100, Math.max(0, Math.round(upstreamYears || 0)));
+    const withdrawalYearOne = withdrawalAmount * upstreamMultiplier;
+    const stockAllocation = clamp(terminalPhase.stockAllocation != null ? terminalPhase.stockAllocation : 60, 0, 100);
+    const feeDrag = terminalPhase.feeDrag || 0;
+    const stockPct = stockAllocation / 100;
+    const bondPct = 1 - stockPct;
+
+    const results = [];
+    const maxStartIndex = HIST.length - years;
+    for (let i = 0; i <= maxStartIndex; i++) {
+      const startYear = HIST[i].y;
+      let balance = startingBalance;
+      let depleted = false;
+      let depletionYear = null;
+      let withdrawal = withdrawalYearOne;
+      const path = [{ year: 0, balance: balance }];
+      for (let y = 0; y < years; y++) {
+        if (y > 0) withdrawal *= (1 + HIST[i + y - 1].i / 100);
+        // Determine shortfall BEFORE subtracting: a cycle is depleted only if the
+        // withdrawal cannot be fully funded (epsilon for float safety). Landing on
+        // exactly $0 with every withdrawal fully funded counts as survival.
+        if (!depleted && withdrawal > balance + 1e-9) {
+          depleted = true; depletionYear = startYear + y;
+        }
+        balance -= withdrawal;
+        if (balance < 0) balance = 0;
+        const yd = HIST[i + y];
+        const blended = (stockPct * yd.s + bondPct * yd.b) / 100;
+        const net = blended - (feeDrag / 100);
+        balance = balance * (1 + net);
+        if (balance < 0) balance = 0;
+        path.push({ year: y + 1, balance: balance });
+      }
+      results.push({ startYear: startYear, finalBalance: balance, depleted: depleted, depletionYear: depletionYear, path: path });
+    }
+
+    const successCount = results.filter(function (r) { return !r.depleted; }).length;
+    const successRate = results.length ? (successCount / results.length) * 100 : null;
+    const finalSorted = results.map(function (r) { return r.finalBalance; }).sort(function (a, b) { return a - b; });
+
+    // Per-year percentile bands across all cycles, for the chart's fan.
+    const yearlyBands = [];
+    for (let y = 0; y <= years; y++) {
+      const vals = results.map(function (r) { return r.path[y] ? r.path[y].balance : null; }).filter(function (v) { return v !== null; }).sort(function (a, b) { return a - b; });
+      yearlyBands.push({ year: y, p10: percentile(vals, 10), p50: percentile(vals, 50), p90: percentile(vals, 90) });
+    }
+
+    return {
+      results: results,
+      cyclesRun: results.length,
+      years: years,
+      successRate: successRate,
+      p10: percentile(finalSorted, 10),
+      p50: percentile(finalSorted, 50),
+      p90: percentile(finalSorted, 90),
+      yearlyBands: yearlyBands
+    };
+  }
+
+  // --- Shareable link encode/decode ---
+  function encodeState() {
+    const sb = clamp(parseFloat(document.getElementById('starting-balance').value), LIMITS.startingBalance.min, LIMITS.startingBalance.max);
+    const ui = clamp(parseFloat(document.getElementById('upstream-inflation').value), LIMITS.upstreamInflation.min, LIMITS.upstreamInflation.max);
+    const state = {
+      sb: sb,
+      ui: ui,
+      p: phases.map(function (ph) {
+        if (ph.type === 'lumpSum') return { t: 'l', l: ph.label, y: ph.year, a: ph.amount };
+        return { t: 'g', l: ph.label, y: ph.years, r: ph.growthRate, c: ph.contributions || 0 };
+      }),
+      tm: { l: terminal.label, y: terminal.years, w: terminal.withdrawalAmount, sa: terminal.stockAllocation, f: terminal.feeDrag }
+    };
+    const json = JSON.stringify(state);
+    const b64 = btoa(unescape(encodeURIComponent(json)));
+    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+
+  function decodeState(encoded) {
+    try {
+      const b64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+      const json = decodeURIComponent(escape(atob(b64)));
+      const state = JSON.parse(json);
+      if (!state || !Array.isArray(state.p) || !state.tm) return null;
+      return state;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function applyState(state) {
+    document.getElementById('starting-balance').value = formatMoneyValue(clamp(state.sb, LIMITS.startingBalance.min, LIMITS.startingBalance.max));
+    // Legacy links without the inflation field decode to the 2.5 default.
+    document.getElementById('upstream-inflation').value = clamp(state.ui != null ? state.ui : 2.5, LIMITS.upstreamInflation.min, LIMITS.upstreamInflation.max);
+    let loaded = state.p.map(function (ph) {
+      if (ph.t === 'l') {
+        return { id: nextId++, type: 'lumpSum', label: String(ph.l || 'Lump sum'), year: clamp(ph.y, LIMITS.lumpYear.min, LIMITS.lumpYear.max), amount: clamp(ph.a, LIMITS.lumpAmount.min, LIMITS.lumpAmount.max) };
+      }
+      return { id: nextId++, type: 'growth', label: String(ph.l || 'Phase'), years: clamp(ph.y, LIMITS.growthYears.min, LIMITS.growthYears.max), growthRate: clamp(ph.r, LIMITS.growthRate.min, LIMITS.growthRate.max), contributions: clamp(ph.c || 0, LIMITS.contribution.min, LIMITS.contribution.max) };
+    });
+    // Enforce the total-upstream-years cap across growth phases only.
+    const growthOnly = loaded.filter(function (p) { return p.type === 'growth'; });
+    const sum = growthOnly.reduce(function (s, p) { return s + p.years; }, 0);
+    if (sum > LIMITS.totalUpstreamYears && sum > 0) {
+      const scale = LIMITS.totalUpstreamYears / sum;
+      growthOnly.forEach(function (p) { p.years = Math.max(LIMITS.growthYears.min, Math.round(p.years * scale)); });
+    }
+    phases = loaded;
+    terminal = {
+      label: String(state.tm.l || 'Retirement drawdown'),
+      years: clamp(state.tm.y, LIMITS.terminalYears.min, LIMITS.terminalYears.max),
+      withdrawalAmount: clamp(state.tm.w, LIMITS.withdrawal.min, LIMITS.withdrawal.max),
+      stockAllocation: clamp(state.tm.sa, LIMITS.stockAllocation.min, LIMITS.stockAllocation.max),
+      feeDrag: clamp(state.tm.f, LIMITS.feeDrag.min, LIMITS.feeDrag.max)
+    };
+  }
+
+  function updateUrlSilently() {
+    const encoded = encodeState();
+    const url = new URL(window.location.href);
+    url.searchParams.set('d', encoded);
+    window.history.replaceState(null, '', url.toString());
+  }
+  let urlUpdateTimer = null;
+  function scheduleUrlUpdate() {
+    clearTimeout(urlUpdateTimer);
+    urlUpdateTimer = setTimeout(updateUrlSilently, 400);
+  }
+
+  // --- Rendering ---
+
+  function renderHorizonNote() {
+    const t = totalUpstreamYears();
+    const el = document.getElementById('horizon-note');
+    el.textContent = 'Upstream horizon — ' + t + ' of ' + LIMITS.totalUpstreamYears + ' years, then a ' + terminal.years + '-year backtested retirement';
+    el.classList.toggle('over', t > LIMITS.totalUpstreamYears);
+  }
+
+  function renderTimeline() {
+    const upstreamT = Math.max(totalUpstreamYears(), 1);
+    const termT = Math.max(terminal.years, 1);
+    const grand = upstreamT + termT;
+    const tl = document.getElementById('timeline');
+    const ax = document.getElementById('timeline-axis');
+    tl.innerHTML = '';
+    ax.innerHTML = '';
+
+    let cursor = 0;
+    growthPhases().forEach(function (p, i) {
+      const yearsHere = Math.max(p.years, 0.1);
+      const seg = document.createElement('div');
+      seg.className = 'timeline-seg accum';
+      seg.style.flex = (yearsHere / grand);
+      seg.textContent = p.label || ('Phase ' + (i + 1));
+
+      phases.filter(function (ph) { return ph.type === 'lumpSum'; }).forEach(function (lp) {
+        if (lp.year >= cursor && lp.year < cursor + p.years) {
+          const marker = document.createElement('div');
+          marker.className = 'lump-mark';
+          const offsetPct = clamp((lp.year - cursor) / p.years, 0, 1) * 100;
+          marker.style.left = offsetPct + '%';
+          marker.title = lp.label + ': ' + (lp.amount > 0 ? '+' : '') + fmt(lp.amount);
+          seg.appendChild(marker);
+        }
+      });
+      tl.appendChild(seg);
+      cursor += p.years;
+
+      const lbl = document.createElement('div');
+      lbl.style.flex = (yearsHere / grand);
+      lbl.style.textAlign = 'center';
+      lbl.textContent = 'yr ' + Math.round(cursor);
+      ax.appendChild(lbl);
+    });
+
+    const termSeg = document.createElement('div');
+    termSeg.className = 'timeline-seg draw';
+    termSeg.style.flex = (termT / grand);
+    termSeg.textContent = terminal.label || 'Retirement drawdown';
+    tl.appendChild(termSeg);
+    const termLbl = document.createElement('div');
+    termLbl.style.flex = (termT / grand);
+    termLbl.style.textAlign = 'right';
+    termLbl.textContent = 'yr ' + Math.round(upstreamT + termT);
+    ax.appendChild(termLbl);
+  }
+
+  function renderPhaseList() {
+    const list = document.getElementById('phase-list');
+    list.innerHTML = '';
+    phases.forEach(function (p) {
+      const card = document.createElement('div');
+      if (p.type === 'lumpSum') {
+        card.className = 'phase-card lump';
+        card.innerHTML =
+          '<div class="phase-top">' +
+            '<span class="type-badge">lump sum</span>' +
+            '<input type="text" data-field="label" value="' + p.label.replace(/"/g, '&quot;') + '" placeholder="Event name" />' +
+            '<button class="remove-btn" data-action="remove" aria-label="Remove event">remove</button>' +
+          '</div>' +
+          '<div class="field-grid">' +
+            '<div class="field"><label>Years from plan start</label>' +
+              '<input type="number" data-field="year" data-min="' + LIMITS.lumpYear.min + '" data-max="' + LIMITS.lumpYear.max + '" value="' + p.year + '" step="1" /></div>' +
+            '<div class="field"><label>Amount $ (+/-)<span class="tip" tabindex="0" aria-label="Help: lump sum amount"><span class="tip-icon">?</span><span class="tip-box">A one-time event: an inheritance or bonus arriving (+), or a down payment leaving the balance (−). Applied against the straight-line upstream balance at the given year.</span></span></label>' +
+              '<input type="text" inputmode="decimal" data-field="amount" data-money="1" data-min="' + LIMITS.lumpAmount.min + '" data-max="' + LIMITS.lumpAmount.max + '" value="' + formatMoneyValue(p.amount) + '" step="1000" /></div>' +
+          '</div>';
+      } else {
+        const maxYearsHere = maxYearsFor(p);
+        card.className = 'phase-card';
+        card.innerHTML =
+          '<div class="phase-top">' +
+            '<span class="type-badge">growth</span>' +
+            '<input type="text" data-field="label" value="' + p.label.replace(/"/g, '&quot;') + '" placeholder="Phase name" />' +
+            '<button class="remove-btn" data-action="remove" aria-label="Remove phase">remove</button>' +
+          '</div>' +
+          '<div class="field-grid">' +
+            '<div class="field"><label>Years (1–' + maxYearsHere + ')</label>' +
+              '<input type="number" data-field="years" data-min="' + LIMITS.growthYears.min + '" data-max="' + maxYearsHere + '" value="' + p.years + '" step="1" /></div>' +
+            '<div class="field"><label>Nominal growth rate % (' + LIMITS.growthRate.min + ' to ' + LIMITS.growthRate.max + ')<span class="tip" tabindex="0" aria-label="Help: nominal growth rate"><span class="tip-icon">?</span><span class="tip-box">A before-inflation (nominal) return. Upstream growth is nominal, so use a nominal rate here; the assumed inflation field converts your withdrawal to retirement-start dollars separately.</span></span></label>' +
+              '<input type="number" data-field="growthRate" data-min="' + LIMITS.growthRate.min + '" data-max="' + LIMITS.growthRate.max + '" value="' + p.growthRate + '" step="0.1" /></div>' +
+            '<div class="field"><label>Annual contribution $<span class="tip" tabindex="0" aria-label="Help: contribution"><span class="tip-icon">?</span><span class="tip-box">Added at the start of each year, then the whole balance compounds at the growth rate. Use 0 for a career break with no saving.</span></span></label>' +
+              '<input type="text" inputmode="decimal" data-field="contributions" data-money="1" data-min="' + LIMITS.contribution.min + '" data-max="' + LIMITS.contribution.max + '" value="' + formatMoneyValue(p.contributions || 0) + '" step="500" /></div>' +
+          '</div>';
+      }
+
+      card.querySelectorAll('input[data-field]').forEach(function (inp) {
+        const field = inp.dataset.field;
+        const isMoney = inp.dataset.money === '1';
+        if (field === 'label') return;
+        const min = parseFloat(inp.dataset.min);
+        const max = parseFloat(inp.dataset.max);
+        inp.addEventListener('input', function () {
+          const raw = parseFloat(inp.value);
+          let effectiveMax = max;
+          if (field === 'years') effectiveMax = maxYearsFor(p);
+          // Show .invalid against the raw typed value, but only ever let a
+          // clamped value reach the engine (never run on out-of-range state).
+          markValidity(inp, raw, min, effectiveMax);
+          if (!isNaN(raw)) { p[field] = clamp(raw, min, effectiveMax); update(false); }
+        });
+        inp.addEventListener('blur', function () {
+          let raw = parseFloat(inp.value);
+          let effectiveMax = max;
+          if (field === 'years') effectiveMax = maxYearsFor(p);
+          const corrected = clamp(raw, min, effectiveMax);
+          p[field] = corrected;
+          inp.value = isMoney ? formatMoneyValue(corrected) : corrected;
+          inp.classList.remove('invalid');
+          update(field === 'years');
+        });
+      });
+      card.querySelector('input[data-field="label"]').addEventListener('input', function (e) {
+        p.label = e.target.value;
+        update(false);
+      });
+      card.querySelector('[data-action="remove"]').addEventListener('click', function () {
+        phases = phases.filter(function (ph) { return ph.id !== p.id; });
+        update(true);
+      });
+
+      list.appendChild(card);
+    });
+  }
+
+  function renderTerminalCard() {
+    const el = document.getElementById('terminal-card');
+    el.innerHTML =
+      '<div class="phase-card terminal">' +
+        '<div class="phase-top">' +
+          '<span class="type-badge locked">retirement drawdown — locked to end</span>' +
+          '<input type="text" data-field="label" value="' + terminal.label.replace(/"/g, '&quot;') + '" placeholder="Phase name" />' +
+        '</div>' +
+        '<div class="field-grid cols-4">' +
+          '<div class="field"><label>Years (' + LIMITS.terminalYears.min + '–' + LIMITS.terminalYears.max + ')</label>' +
+            '<input type="number" data-field="years" data-min="' + LIMITS.terminalYears.min + '" data-max="' + LIMITS.terminalYears.max + '" value="' + terminal.years + '" step="1" /></div>' +
+          '<div class="field"><label>Annual withdrawal $ (yr 1)<span class="tip" tabindex="0" aria-label="Help: withdrawal"><span class="tip-icon">?</span><span class="tip-box">Entered in today’s dollars. It is grown at your assumed upstream inflation rate until retirement starts, then in every later year of a given historical cycle it rises by that cycle’s own actual historical inflation (CPI).</span></span></label>' +
+            '<input type="text" inputmode="decimal" data-field="withdrawalAmount" data-money="1" data-min="' + LIMITS.withdrawal.min + '" data-max="' + LIMITS.withdrawal.max + '" value="' + formatMoneyValue(terminal.withdrawalAmount) + '" step="1000" /></div>' +
+          '<div class="field"><label>Stock allocation % (' + LIMITS.stockAllocation.min + '–' + LIMITS.stockAllocation.max + ')<span class="tip" tabindex="0" aria-label="Help: allocation"><span class="tip-icon">?</span><span class="tip-box">Percent of the retirement portfolio in stocks; the remainder is bonds. Each historical year’s return is blended by this split.</span></span></label>' +
+            '<input type="number" data-field="stockAllocation" data-min="' + LIMITS.stockAllocation.min + '" data-max="' + LIMITS.stockAllocation.max + '" value="' + terminal.stockAllocation + '" step="5" /></div>' +
+          '<div class="field"><label>Fee drag % / yr (' + LIMITS.feeDrag.min + '–' + LIMITS.feeDrag.max + ')<span class="tip" tabindex="0" aria-label="Help: fee drag"><span class="tip-icon">?</span><span class="tip-box">Annual fund expenses and advisory fees, subtracted from the blended return every year.</span></span></label>' +
+            '<input type="number" data-field="feeDrag" data-min="' + LIMITS.feeDrag.min + '" data-max="' + LIMITS.feeDrag.max + '" value="' + terminal.feeDrag + '" step="0.05" /></div>' +
+        '</div>' +
+      '</div>';
+
+    el.querySelectorAll('input[data-field]').forEach(function (inp) {
+      const field = inp.dataset.field;
+      const isMoney = inp.dataset.money === '1';
+      if (field === 'label') return;
+      const min = parseFloat(inp.dataset.min);
+      const max = parseFloat(inp.dataset.max);
+      inp.addEventListener('input', function () {
+        const raw = parseFloat(inp.value);
+        // Show .invalid against the raw typed value, but only ever let a
+        // clamped value reach the engine (never run on out-of-range state).
+        markValidity(inp, raw, min, max);
+        if (!isNaN(raw)) { terminal[field] = clamp(raw, min, max); update(false); }
+      });
+      inp.addEventListener('blur', function () {
+        const raw = parseFloat(inp.value);
+        const corrected = clamp(raw, min, max);
+        terminal[field] = corrected;
+        inp.value = isMoney ? formatMoneyValue(corrected) : corrected;
+        inp.classList.remove('invalid');
+        update(false);
+      });
+    });
+    el.querySelector('input[data-field="label"]').addEventListener('input', function (e) {
+      terminal.label = e.target.value;
+      update(false);
+    });
+  }
+
+  function renderUpstreamWarnings(upstream) {
+    const el = document.getElementById('upstream-warnings');
+    el.innerHTML = '';
+    if (upstream.finalBalance <= 0) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = 'The upstream projection reaches $0 before retirement begins — the terminal phase will start from an empty balance.';
+      el.appendChild(div);
+    }
+    (upstream.clippedLumps || []).forEach(function (c) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = '"' + c.label + '" lump sum of ' + fmt(c.requested) + ' exceeds the ' + fmt(c.availableBalance) + ' available — only ' + fmt(c.applied) + ' was applied.';
+      el.appendChild(div);
+    });
+    (upstream.droppedLumps || []).forEach(function (d) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = '"' + d.label + '" is scheduled at year ' + d.year + ', after the upstream phases end (year ' + upstream.totalYears + ') — it was excluded. Move it earlier or extend a phase.';
+      el.appendChild(div);
+    });
+    (upstream.ruinedPhases || []).forEach(function (r) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = '"' + r.label + '" drained the balance to $0 in year ' + r.year + ' — its negative annual contribution exceeded the balance, so growth after that point started from empty.';
+      el.appendChild(div);
+    });
+  }
+
+  function renderTerminalWarnings(terminalResult) {
+    const el = document.getElementById('terminal-warnings');
+    el.innerHTML = '';
+    if (terminalResult.cyclesRun === 0) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = 'No historical cycle is long enough to test a ' + terminal.years + '-year retirement — the dataset only covers ' + HIST_FIRST_YEAR + '–' + HIST_LAST_YEAR + ' (' + HIST.length + ' years). Reduce the retirement length.';
+      el.appendChild(div);
+    } else if (terminalResult.cyclesRun < 20) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = 'Only ' + terminalResult.cyclesRun + ' independent historical starting years are long enough to test this ' + terminal.years + '-year retirement — treat the success rate as a smaller, noisier sample.';
+      el.appendChild(div);
+    }
+  }
+
+  function renderResultsHeader(upstream, terminalResult) {
+    document.getElementById('projection-value').textContent = fmt(upstream.finalBalance);
+    document.getElementById('projection-detail').textContent = fmt(upstream.finalBalance);
+    document.getElementById('projection-sub').textContent = upstream.totalYears > 0
+      ? 'After ' + upstream.totalYears + ' upstream year' + (upstream.totalYears === 1 ? '' : 's') + ' of deterministic, straight-line growth.'
+      : 'No upstream phases — retirement starts from the starting balance directly.';
+
+    if (terminalResult.cyclesRun === 0) {
+      document.getElementById('success-rate').textContent = '—';
+      document.getElementById('success-sub').textContent = 'Not enough historical data to test this retirement length.';
+      document.getElementById('p10-value').textContent = '—';
+      document.getElementById('p50-value').textContent = '—';
+      document.getElementById('p90-value').textContent = '—';
+    } else {
+      document.getElementById('success-rate').textContent = terminalResult.successRate.toFixed(0) + '%';
+      const successCount = terminalResult.results.filter(function (r) { return !r.depleted; }).length;
+      document.getElementById('success-sub').textContent = successCount + ' of ' + terminalResult.cyclesRun + ' historical ' + terminal.years + '-year cycles (starting ' + terminalResult.results[0].startYear + '–' + terminalResult.results[terminalResult.results.length - 1].startYear + ') never ran out of money.';
+      document.getElementById('p10-value').textContent = fmt(terminalResult.p10);
+      document.getElementById('p50-value').textContent = fmt(terminalResult.p50);
+      document.getElementById('p90-value').textContent = fmt(terminalResult.p90);
+    }
+  }
+
+  function renderCycleTable(terminalResult) {
+    const el = document.getElementById('cycle-table');
+    if (terminalResult.cyclesRun === 0) { el.innerHTML = ''; return; }
+    let html = '<thead><tr><th>Start year</th><th>End year</th><th>Ending balance</th><th>Status</th></tr></thead><tbody>';
+    terminalResult.results.forEach(function (r) {
+      const endYear = r.startYear + terminal.years - 1;
+      const status = r.depleted ? ('<span class="status-fail">depleted ' + r.depletionYear + '</span>') : '<span class="status-ok">survived</span>';
+      html += '<tr><td>' + r.startYear + '</td><td>' + endYear + '</td><td>' + fmt(r.finalBalance) + '</td><td>' + status + '</td></tr>';
+    });
+    html += '</tbody>';
+    el.innerHTML = html;
+  }
+
+  const yTickCallback = function (v) { return '$' + (Math.abs(v) >= 1000 ? Math.round(v / 1000) + 'k' : v); };
+  const yFont = { family: 'IBM Plex Mono', size: 10 };
+
+  function renderLegends(hasLumpEvents, hasCycles) {
+    let accum =
+      '<span><span class="swatch" style="background:' + AMBER + '"></span>Projection (accumulation)</span>';
+    if (hasLumpEvents) accum += '<span><span class="swatch" style="display:inline-block;width:2px;height:12px;background:' + COPPER + ';vertical-align:-2px;margin-right:6px;"></span>One-time lump sum</span>';
+    document.getElementById('legend-accum').innerHTML = accum;
+
+    let retire = '';
+    if (hasCycles) {
+      retire =
+        '<span><span class="swatch" style="background:' + SLATE + '; opacity:0.35;"></span>Historical cycles</span>' +
+        '<span><span class="swatch" style="background:' + WARN + '"></span>10th percentile</span>' +
+        '<span><span class="swatch" style="background:' + COPPER + '"></span>Median (50th)</span>' +
+        '<span><span class="swatch" style="background:' + SLATE + '"></span>90th percentile</span>';
+    }
+    document.getElementById('legend-retire').innerHTML = retire;
+  }
+
+  // Accumulation chart: the deterministic straight-line projection through the
+  // upstream phases, on its own linear scale so the accumulation is legible.
+  // Lump-sum events are drawn as vertical copper lines.
+  function renderAccumChart(upstream) {
+    const ctx = document.getElementById('chart-accum');
+    const upstreamYears = upstream.totalYears;
+    const labels = [];
+    for (let i = 0; i <= upstreamYears; i++) labels.push(String(BASE_YEAR + i));
+
+    const upstreamData = new Array(upstreamYears + 1).fill(null);
+    upstream.timeline.forEach(function (pt) { upstreamData[pt.year] = Math.round(pt.balance); });
+    const datasets = [{ data: upstreamData, borderColor: AMBER, backgroundColor: 'rgba(201,164,92,0.08)', fill: false, tension: 0.1, pointRadius: upstreamYears === 0 ? 3 : 0, pointBackgroundColor: AMBER, borderWidth: 2.5 }];
+
+    if (accumChart) accumChart.destroy();
+    accumChart = new Chart(ctx, {
+      type: 'line',
+      data: { labels: labels, datasets: datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        plugins: { legend: { display: false }, tooltip: { enabled: true } },
+        scales: {
+          x: { ticks: { maxTicksLimit: 10, color: PARCHMENT_FAINT, font: yFont }, grid: { display: false }, border: { color: SEAM } },
+          y: { beginAtZero: true, ticks: { callback: yTickCallback, color: PARCHMENT_FAINT, font: yFont }, grid: { color: SEAM }, border: { color: SEAM } }
+        }
+      },
+      plugins: [{
+        id: 'lumpLines',
+        afterDraw: function (c) {
+          const chartArea = c.chartArea, scales = c.scales;
+          c.ctx.save();
+          c.ctx.strokeStyle = COPPER;
+          c.ctx.lineWidth = 2;
+          upstream.lumpEvents.forEach(function (ev) {
+            const lx = scales.x.getPixelForValue(ev.year);
+            c.ctx.beginPath(); c.ctx.moveTo(lx, chartArea.top); c.ctx.lineTo(lx, chartArea.bottom); c.ctx.stroke();
+          });
+          c.ctx.restore();
+        }
+      }]
+    });
+  }
+
+  // Retirement chart: starts from the balance entering retirement and fans out
+  // into one line per historical cycle, plus 10th/50th/90th percentile bands,
+  // on its own linear scale.
+  function renderRetireChart(upstream, terminalResult) {
+    const ctx = document.getElementById('chart-retire');
+    if (retireChart) { retireChart.destroy(); retireChart = null; }
+    if (terminalResult.cyclesRun === 0) { return; }
+
+    const upstreamYears = upstream.totalYears;
+    const termYears = terminal.years;
+    const labels = [];
+    for (let k = 0; k <= termYears; k++) labels.push(String(BASE_YEAR + upstreamYears + k));
+
+    const datasets = [];
+    terminalResult.results.forEach(function (r) {
+      const arr = new Array(termYears + 1).fill(null);
+      r.path.forEach(function (pt) { arr[pt.year] = Math.round(pt.balance); });
+      datasets.push({ data: arr, borderColor: 'rgba(91,122,157,0.18)', borderWidth: 1, fill: false, tension: 0, pointRadius: 0, order: 3 });
+    });
+    function bandDataset(key, color) {
+      const arr = new Array(termYears + 1).fill(null);
+      terminalResult.yearlyBands.forEach(function (b) { arr[b.year] = Math.round(b[key]); });
+      return { data: arr, borderColor: color, borderWidth: 2, borderDash: [5, 3], fill: false, tension: 0.1, pointRadius: 0, order: 2 };
+    }
+    datasets.push(bandDataset('p10', WARN));
+    datasets.push(bandDataset('p50', COPPER));
+    datasets.push(bandDataset('p90', SLATE));
+
+    retireChart = new Chart(ctx, {
+      type: 'line',
+      data: { labels: labels, datasets: datasets },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        plugins: { legend: { display: false }, tooltip: { enabled: true } },
+        scales: {
+          x: { ticks: { maxTicksLimit: 10, color: PARCHMENT_FAINT, font: yFont }, grid: { display: false }, border: { color: SEAM } },
+          y: { beginAtZero: true, ticks: { callback: yTickCallback, color: PARCHMENT_FAINT, font: yFont }, grid: { color: SEAM }, border: { color: SEAM } }
+        }
+      }
+    });
+  }
+
+  function update(rebuildList) {
+    renderHorizonNote();
+    renderTimeline();
+    if (rebuildList) { renderPhaseList(); renderTerminalCard(); }
+
+    const startingBalance = clamp(parseFloat(document.getElementById('starting-balance').value), LIMITS.startingBalance.min, LIMITS.startingBalance.max);
+    const upstreamInflation = clamp(parseFloat(document.getElementById('upstream-inflation').value), LIMITS.upstreamInflation.min, LIMITS.upstreamInflation.max);
+    const upstream = runUpstreamPhases(phases, startingBalance);
+    const terminalResult = runTerminalBacktest(terminal, upstream.finalBalance, upstream.totalYears, upstreamInflation);
+
+    renderUpstreamWarnings(upstream);
+    renderTerminalWarnings(terminalResult);
+    renderResultsHeader(upstream, terminalResult);
+    renderAccumChart(upstream);
+    renderRetireChart(upstream, terminalResult);
+    renderLegends(upstream.lumpEvents.length > 0, terminalResult.cyclesRun > 0);
+    renderCycleTable(terminalResult);
+    scheduleUrlUpdate();
+  }
+
+  const startingBalanceInput = document.getElementById('starting-balance');
+  startingBalanceInput.addEventListener('input', function () {
+    markValidity(startingBalanceInput, parseFloat(startingBalanceInput.value), LIMITS.startingBalance.min, LIMITS.startingBalance.max);
+    update(false);
+  });
+  startingBalanceInput.addEventListener('blur', function () {
+    const corrected = clamp(parseFloat(startingBalanceInput.value), LIMITS.startingBalance.min, LIMITS.startingBalance.max);
+    startingBalanceInput.value = formatMoneyValue(corrected);
+    startingBalanceInput.classList.remove('invalid');
+    update(false);
+  });
+
+  const upstreamInflationInput = document.getElementById('upstream-inflation');
+  upstreamInflationInput.addEventListener('input', function () {
+    // Show .invalid against the raw typed value; update() reads and clamps the
+    // field before it reaches the engine, so out-of-range state never runs.
+    markValidity(upstreamInflationInput, parseFloat(upstreamInflationInput.value), LIMITS.upstreamInflation.min, LIMITS.upstreamInflation.max);
+    update(false);
+  });
+  upstreamInflationInput.addEventListener('blur', function () {
+    const corrected = clamp(parseFloat(upstreamInflationInput.value), LIMITS.upstreamInflation.min, LIMITS.upstreamInflation.max);
+    upstreamInflationInput.value = corrected;
+    upstreamInflationInput.classList.remove('invalid');
+    update(false);
+  });
+
+  document.getElementById('add-growth').addEventListener('click', function () {
+    const used = totalUpstreamYears();
+    if (used >= LIMITS.totalUpstreamYears) return;
+    const room = Math.min(5, LIMITS.totalUpstreamYears - used);
+    phases.push({ id: nextId++, type: 'growth', label: 'New phase', years: room, growthRate: 6, contributions: 500 });
+    update(true);
+  });
+  document.getElementById('add-lump').addEventListener('click', function () {
+    phases.push({ id: nextId++, type: 'lumpSum', label: 'New event', year: Math.round(totalUpstreamYears() / 2), amount: 10000 });
+    update(true);
+  });
+
+  document.getElementById('copy-link').addEventListener('click', function () {
+    updateUrlSilently();
+    const statusEl = document.getElementById('copy-status');
+    navigator.clipboard.writeText(window.location.href).then(function () {
+      statusEl.textContent = 'link copied';
+      setTimeout(function () { statusEl.textContent = ''; }, 2200);
+    }).catch(function () {
+      statusEl.textContent = 'copy failed — select the URL bar';
+      setTimeout(function () { statusEl.textContent = ''; }, 2800);
+    });
+  });
+
+  (function hydrateFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const encoded = params.get('d');
+    if (encoded) {
+      const state = decodeState(encoded);
+      if (state) applyState(state);
+    }
+  })();
+
+  renderPhaseList();
+  renderTerminalCard();
+  update(false);
+})();
+</script>
+</body>
+</html>

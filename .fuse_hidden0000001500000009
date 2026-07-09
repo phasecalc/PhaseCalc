@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MH7FWJX2M3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MH7FWJX2M3');
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>HELOC Payment Calculator — interest-only draw, repayment, and payment shock</title>
+<meta name="description" content="Free HELOC payment calculator. See your interest-only payment during the draw period, the jump when repayment starts, total interest cost, and whether your interest is tax-deductible — with a worked example of how revolving draws work." />
+<link rel="canonical" href="https://phasecalc.com/heloc-payment-calculator" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Phases" />
+<meta property="og:url" content="https://phasecalc.com/heloc-payment-calculator" />
+<meta property="og:title" content="HELOC Payment Calculator — interest-only draw, repayment, and payment shock" />
+<meta property="og:description" content="See your interest-only payment, the jump when the draw period ends, total interest cost, and whether your HELOC interest is tax-deductible." />
+<meta property="og:image" content="https://phasecalc.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="HELOC Payment Calculator — interest-only draw, repayment, and payment shock" />
+<meta name="twitter:description" content="See your interest-only payment, the jump when the draw period ends, total interest cost, and whether your HELOC interest is tax-deductible." />
+<meta name="twitter:image" content="https://phasecalc.com/og-image.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "How is a HELOC payment calculated?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "During the draw period (typically 10 years), most HELOCs require interest-only payments: your balance times the annual rate, divided by 12. On a $60,000 balance at 7.25%, that's $362.50/month. When the draw period ends, the loan converts to fully amortizing principal-and-interest payments over the repayment period (typically 20 years) — often 30% or more higher than the interest-only payment."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I pay interest on the full HELOC credit line or just what I've drawn?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only on the drawn balance. A HELOC is a revolving line — during the draw period you can borrow, repay, and borrow again, and the required interest-only payment floats with the outstanding balance. Example on a $100,000 line at 7.25%: draw $40,000 and pay about $242/month; pay $15,000 back and the payment drops to about $151/month; draw another $35,000 and it rises to about $363/month. Whatever is outstanding when the draw period ends converts to principal-and-interest payments. The unused limit costs nothing beyond any annual fee."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is HELOC payment shock?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Payment shock is the jump in your required monthly payment when the interest-only draw period ends and principal repayment begins. A $60,000 balance at 7.25% goes from about $363/month interest-only to about $474/month amortizing over 20 years — a 31% increase overnight. Borrowers who only budgeted for the interest-only payment are frequently caught off guard."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is HELOC interest tax-deductible?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only if the funds are used to buy, build, or substantially improve the home securing the loan — a rule the One Big Beautiful Bill Act made permanent. Interest on HELOC funds used for debt consolidation, cars, tuition, or other expenses is not deductible. The deduction is also capped at $750,000 of combined mortgage plus HELOC debt (for loans after Dec 15, 2017), and you must itemize deductions, which most households don't."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are HELOC rates fixed or variable?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Almost all HELOCs carry variable rates tied to the prime rate, so your payment can rise or fall as rates move. This calculator assumes a constant rate for the projection, which is a simplification — treat the results as a snapshot at today's rate, and stress-test by re-running with a rate 1-2 points higher. Some lenders offer fixed-rate conversion options on drawn balances."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Should I get a HELOC or a cash-out refinance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A HELOC keeps your existing mortgage untouched and lets you borrow only what you need, when you need it — usually the better choice if your current mortgage rate is lower than today's rates. A cash-out refinance replaces your whole mortgage at current rates, which only makes sense if today's rates are at or below your existing rate, or you want one fixed payment. Home equity loans (fixed lump sum, fixed rate) sit in between."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I pay off a HELOC early?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Generally yes — most HELOCs allow principal payments during the draw period with no penalty, which reduces both your interest cost and the payment shock at conversion. Some lenders charge early-closure fees if you close the line entirely within the first few years, so check your agreement before terminating the line itself."
+      }
+    }
+  ]
+}
+</script>
+<style>
+  :root {
+    --ink: #0F1B2D;
+    --ink-raised: #142539;
+    --parchment: #EDE6D6;
+    --parchment-dim: #B8AF9C;
+    --parchment-faint: #948D79;
+    --amber: #C9A45C;
+    --amber-dim: #4A3C24;
+    --slate: #5B7A9D;
+    --slate-dim: #25333F;
+    --copper: #B07A4E;
+    --seam: #24344A;
+    --warn: #C46552;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--parchment);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .brandbar { margin-bottom: 16px; }
+  .wordmark {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .wordmark svg { display: block; }
+  .wordmark span {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    letter-spacing: 0.02em;
+    color: var(--parchment);
+  }
+
+  .sitenav {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+  }
+  .sitenav a {
+    color: var(--parchment-faint);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+  }
+  .sitenav a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+  .sitenav a.current { color: var(--parchment); border-bottom-color: var(--seam); }
+
+  .masthead {
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--seam);
+    padding-bottom: 24px;
+  }
+  .masthead h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 32px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .masthead p {
+    color: var(--parchment-dim);
+    font-size: 15px;
+    margin: 0;
+    max-width: 540px;
+  }
+
+  .panel {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--amber);
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 18px;
+  }
+
+  .field label {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin-bottom: 6px;
+  }
+
+  .field .input-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .field .prefix, .field .suffix {
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    color: var(--parchment-dim);
+  }
+
+  /* Floating help bubbles */
+  .tip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: 1px;
+    cursor: help;
+    outline: none;
+  }
+  .tip .tip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid var(--parchment-faint);
+    color: var(--parchment-faint);
+    font-size: 9px;
+    line-height: 1;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .tip:hover .tip-icon, .tip:focus .tip-icon { border-color: var(--amber); color: var(--amber); }
+  .tip .tip-box {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 9px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 230px;
+    max-width: calc(100vw - 56px);
+    background: var(--ink);
+    border: 1px solid var(--seam);
+    border-radius: 3px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--parchment-dim);
+    white-space: normal;
+    z-index: 20;
+  }
+  .tip .tip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--seam);
+  }
+  .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
+
+  input[type="number"], input[type="text"] {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--seam);
+    color: var(--parchment);
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    padding: 2px 0;
+    width: 100%;
+    transition: border-color 0.15s ease;
+  }
+  input:focus { outline: none; border-bottom-color: var(--amber); }
+  input.invalid { border-bottom-color: var(--warn); }
+
+  /* Results strip */
+  .results-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 2px;
+    margin-bottom: 10px;
+  }
+  .result-cell {
+    background: var(--ink-raised);
+    padding: 16px 16px 14px;
+  }
+  .result-cell .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 6px;
+    line-height: 1.4;
+  }
+  .result-cell .value {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    margin: 0;
+    color: var(--parchment);
+  }
+  .result-cell .value.draw { color: var(--amber); }
+  .result-cell .value.repay { color: var(--slate); }
+  .result-cell .value.shock { color: var(--warn); }
+
+  /* Payment shock bar — the signature element */
+  .shock-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 74px;
+    margin-bottom: 6px;
+  }
+  .shock-seg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    overflow: hidden;
+    border-radius: 3px 3px 0 0;
+  }
+  .shock-seg.draw { background: var(--amber-dim); color: var(--amber); }
+  .shock-seg.repay { background: var(--slate-dim); color: var(--slate); }
+  .shock-caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 32px;
+  }
+  .shock-caption .jump { color: var(--warn); }
+
+  .warning {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--warn);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .info-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--copper);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  .chart-wrap { position: relative; height: 280px; margin-bottom: 14px; }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-dim);
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .legend .swatch { display: inline-block; width: 9px; height: 9px; margin-right: 6px; vertical-align: -1px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; margin-bottom: 8px; }
+  th, td { padding: 9px 6px; text-align: right; border-bottom: 1px solid var(--seam); }
+  th:first-child, td:first-child { text-align: left; }
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    font-weight: 400;
+  }
+  td { font-family: 'Source Serif 4', serif; color: var(--parchment-dim); }
+  td:first-child { font-family: 'Inter', sans-serif; color: var(--parchment); font-size: 13px; }
+  td.hi { color: var(--parchment); font-weight: 500; }
+  .footnote { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--parchment-faint); margin: 8px 0 0; }
+
+  .share-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 0;
+  }
+  .copy-link-btn {
+    background: none;
+    border: 1px solid var(--seam);
+    color: var(--parchment-dim);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    padding: 7px 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+  .copy-link-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .copy-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--amber);
+  }
+
+  /* Article */
+  .article {
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--seam);
+  }
+  .article h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+  }
+  .article h2:first-child { margin-top: 0; }
+  .article h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 28px 0 8px;
+  }
+  .article p {
+    color: var(--parchment-dim);
+    font-size: 16.5px;
+    line-height: 1.7;
+    margin: 0 0 18px;
+  }
+  .article strong { color: var(--parchment); font-weight: 500; }
+  .article a { color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber-dim); }
+  .article a:hover { border-bottom-color: var(--amber); }
+  .article table td { font-size: 14px; }
+  .article table td:first-child { white-space: nowrap; }
+
+  .faq-item { margin-bottom: 24px; }
+  .faq-item h3 { margin-bottom: 6px; }
+  .faq-item p { margin-bottom: 0; }
+
+  .support-footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--seam);
+  }
+  .support-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 8px;
+    line-height: 1.6;
+  }
+  .support-line a {
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 1px solid var(--amber-dim);
+  }
+  .support-line a:hover { border-bottom-color: var(--amber); }
+
+  @media (max-width: 620px) {
+    .field-grid { grid-template-columns: 1fr 1fr; }
+    .results-strip { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brandbar">
+    <a class="wordmark" href="/" aria-label="Phases home">
+      <svg viewBox="0 0 32 32" width="22" height="22" aria-hidden="true"><rect width="32" height="32" rx="4" fill="#0F1B2D" stroke="#24344A" stroke-width="1.5"/><rect x="5" y="9" width="9" height="14" fill="#C9A45C"/><rect x="15.5" y="9" width="6.5" height="14" fill="#8A6E3D"/><rect x="23.5" y="9" width="3.5" height="14" fill="#5B7A9D"/></svg>
+      <span>Phases</span>
+    </a>
+    <nav class="sitenav">
+      <a href="/">Compound Interest</a>
+      <a href="/retirement-backtest-calculator">Retirement Backtest</a>
+      <a href="/trump-account-calculator">Trump Account</a>
+      <a href="/529-superfunding-calculator">529 Superfund</a>
+      <a href="/roth-vs-traditional-calculator">Roth vs Trad</a>
+      <a href="/coast-fire-calculator">Coast FIRE</a>
+      <a href="/savings-goal-calculator">Savings Goal</a>
+      <a href="/dca-calculator">DCA</a>
+      <a href="/drip-calculator">DRIP</a>
+      <a href="/margin-loan-calculator">Margin</a>
+      <a href="/capital-gains-tax-calculator">Capital Gains</a>
+      <a href="/inflation-adjusted-return-calculator">Real Return</a>
+      <a href="/heloc-payment-calculator" class="current">HELOC</a>
+      <a href="/cash-out-refinance-vs-heloc-calculator">Refi vs HELOC</a>
+      <a href="/mortgage-extra-payment-calculator">Mortgage Payoff</a>
+      <a href="/rental-property-calculator">Rental</a>
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </header>
+
+  <div class="masthead">
+    <h1>HELOC payment calculator</h1>
+    <p>A HELOC is two loans wearing one trench coat: cheap interest-only payments during the draw period, then a jump to full principal-and-interest when repayment starts. See both payments, the size of the jump, and the total interest cost.</p>
+  </div>
+
+  <div class="panel">
+    <div class="field-grid">
+      <div class="field">
+        <label>Balance drawn<span class="tip" tabindex="0" aria-label="Help: balance drawn"><span class="tip-icon">?</span><span class="tip-box">The amount you actually borrow — not your credit limit. You only pay interest on what's drawn. If you'll draw in stages, enter the balance you expect to be carrying.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="balance" value="60,000" min="1000" max="2000000" step="5000" /></div>
+      </div>
+      <div class="field">
+        <label>Interest rate %<span class="tip" tabindex="0" aria-label="Help: interest rate"><span class="tip-icon">?</span><span class="tip-box">HELOC rates are almost always variable (prime + a margin). This calculator holds the rate constant — re-run it 1–2 points higher to stress-test your budget.</span></span></label>
+        <div class="input-row"><input type="number" id="rate" value="7.25" min="0.1" max="20" step="0.05" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Draw period (yrs)<span class="tip" tabindex="0" aria-label="Help: draw period"><span class="tip-icon">?</span><span class="tip-box">The years you can borrow from the line, typically 10. During this phase most lenders require interest-only payments, so the balance doesn't shrink on its own.</span></span></label>
+        <input type="number" id="draw-years" value="10" min="1" max="15" step="1" />
+      </div>
+      <div class="field">
+        <label>Repayment period (yrs)<span class="tip" tabindex="0" aria-label="Help: repayment period"><span class="tip-icon">?</span><span class="tip-box">After the draw period ends, the remaining balance converts to full principal-and-interest payments over this many years — typically 20. Check your agreement; terms vary.</span></span></label>
+        <input type="number" id="repay-years" value="20" min="5" max="30" step="1" />
+      </div>
+      <div class="field">
+        <label>Extra principal $/mo (draw)<span class="tip" tabindex="0" aria-label="Help: extra principal"><span class="tip-icon">?</span><span class="tip-box">Optional voluntary principal you pay during the draw period, on top of required interest. Even modest amounts shrink the payment jump and lifetime interest.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="extra" value="0" min="0" max="50000" step="50" /></div>
+      </div>
+      <div class="field">
+        <label>Marginal tax rate % (if deductible)<span class="tip" tabindex="0" aria-label="Help: marginal tax rate"><span class="tip-icon">?</span><span class="tip-box">Leave at 0 unless ALL three are true: the funds buy, build, or substantially improve this home; combined mortgage + HELOC debt is under $750k; and you itemize deductions. If so, enter your tax bracket to see after-tax interest cost.</span></span></label>
+        <div class="input-row"><input type="number" id="tax-rate" value="0" min="0" max="50" step="1" /><span class="suffix">%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="warnings"></div>
+
+  <div class="results-strip">
+    <div class="result-cell">
+      <p class="label">Payment during draw</p>
+      <p class="value draw" id="draw-pmt">$0</p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Payment during repayment</p>
+      <p class="value repay" id="repay-pmt">$0</p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Payment jump</p>
+      <p class="value shock" id="shock-pct">0%</p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Total interest</p>
+      <p class="value" id="total-interest">$0</p>
+    </div>
+  </div>
+
+  <div class="shock-bar" id="shock-bar"></div>
+  <p class="shock-caption" id="shock-caption"></p>
+
+  <div class="chart-wrap">
+    <canvas id="chart" role="img" aria-label="Chart of HELOC balance and cumulative interest paid over time, with a marker where the draw period ends and repayment begins.">HELOC balance declines over the repayment period while cumulative interest accrues; a marker shows where the draw period converts to repayment.</canvas>
+  </div>
+  <div class="legend">
+    <span><span class="swatch" style="background:#C9A45C"></span>Remaining balance</span>
+    <span><span class="swatch" style="background:#5B7A9D"></span>Cumulative interest paid</span>
+    <span><span class="swatch" style="background:#B07A4E"></span>Draw period ends</span>
+  </div>
+
+  <div id="summary-table"></div>
+  <p class="footnote" id="assumptions-note"></p>
+
+  <div class="share-row">
+    <button class="copy-link-btn" id="copy-link">copy shareable link</button>
+    <span class="copy-status" id="copy-status"></span>
+  </div>
+
+  <article class="article">
+    <h2>How this HELOC calculator works</h2>
+    <p>A home equity line of credit has two distinct phases, and confusing them is the most expensive mistake borrowers make. During the <strong>draw period</strong> — typically 10 years — you can borrow against the line, and most lenders require only interest payments on whatever you've drawn. The math is simple: balance × annual rate ÷ 12. Draw $60,000 at 7.25% and the required payment is $362.50 a month, none of which touches the principal.</p>
+    <p>Then the draw period ends, the line closes to new borrowing, and the loan converts to the <strong>repayment period</strong> — typically 20 years of fully amortizing principal-and-interest payments, calculated with the standard mortgage amortization formula on whatever balance remains. This calculator models both phases: it assumes the balance is drawn on day one, applies any extra principal payments you choose to make during the draw, then amortizes the remaining balance over the repayment period. On the chart, the solid yellow line is your remaining balance, the dashed blue line is cumulative interest paid, and the vertical orange marker is where the draw period converts to repayment.</p>
+    <p>One honest simplification: nearly all HELOCs carry <strong>variable rates</strong> tied to prime, and this calculator holds the rate constant. Treat the output as a snapshot at today's rate — and stress-test your budget by re-running the numbers a point or two higher, because over a 30-year total term, rates will not sit still.</p>
+
+    <h2>How the revolving part actually works — a worked example</h2>
+    <p>A HELOC is a <strong>revolving</strong> line, like a credit card secured by your house: during the draw period you can borrow, repay, and borrow again, and you only pay interest on what's outstanding — never on the unused limit. Your required payment floats with the balance. Here's what a realistic decade looks like on a <strong>$100,000 line at 7.25%</strong>:</p>
+    <table>
+      <tr><th>When</th><th>Action</th><th>Balance</th><th>Required payment</th></tr>
+      <tr><td>Year 1</td><td>Draw $40,000 — kitchen remodel</td><td>$40,000</td><td class="hi">$242/mo</td></tr>
+      <tr><td>Year 3</td><td>Pay back $15,000</td><td>$25,000</td><td class="hi">$151/mo</td></tr>
+      <tr><td>Year 6</td><td>Draw $35,000 — roof + HVAC</td><td>$60,000</td><td class="hi">$363/mo</td></tr>
+      <tr><td>Year 10</td><td>Draw ends; $60,000 converts to repayment</td><td>$60,000</td><td class="hi">$474/mo</td></tr>
+    </table>
+    <p style="margin-top:16px;">Notice two things. The payment tracks the balance up <em>and</em> down during the draw — that flexibility is the product's whole appeal for staged projects and uncertain costs. And whatever is outstanding when the draw ends is what converts to principal-and-interest, regardless of when you borrowed it. This calculator simplifies by assuming your balance is drawn on day one, which slightly overstates draw-period interest for staged borrowers — for the payment-shock math that matters, just enter the balance you expect to carry into conversion.</p>
+
+    <h2>The payment shock nobody budgets for</h2>
+    <p>The bar above the chart is the point of this page. Interest-only payments feel comfortable — that's the product design. But at the default numbers, the required payment jumps roughly 31% the month the draw period ends, and the borrower gets no vote. On larger balances or shorter repayment periods, the jump is bigger. Regulators have flagged this "payment shock" for years because it reliably surprises people who set their budget around the draw-period payment a decade earlier.</p>
+    <p>There's a second, quieter shock in the totals: interest-only payments mean a decade of paying without owing a dollar less. At the defaults, the draw period alone costs $43,500 in interest while the balance stays at $60,000 — and total interest over the full life approaches the original balance itself. The fix for both shocks is the same and it's the extra-principal field above: even modest voluntary principal payments during the draw shrink the converted balance, the payment jump, and the lifetime interest simultaneously.</p>
+
+    <h2>Is your HELOC interest actually tax-deductible?</h2>
+    <p>Probably not — and it's worth knowing why before a lender's marketing implies otherwise. Under rules the One Big Beautiful Bill Act made permanent, HELOC interest is deductible <strong>only if the funds are used to buy, build, or substantially improve the home securing the loan</strong>. A kitchen remodel or room addition qualifies. Debt consolidation, a car, tuition, or a vacation does not — the IRS applies a use-of-funds test, and the loan being secured by your house is irrelevant.</p>
+    <p>Even qualifying borrowers face two more gates. First, the deduction is capped at <strong>$750,000 of combined acquisition debt</strong> — your first mortgage plus the HELOC together ($375,000 married filing separately; mortgages from before December 16, 2017 keep the old $1 million cap, but a new HELOC doesn't inherit it). Second, you must <strong>itemize</strong>, and with 2026 standard deductions at $16,100 single and $32,200 married filing jointly, roughly nine in ten households don't. If you do qualify on all three counts, enter your marginal tax rate above and the calculator shows your effective after-tax interest cost. If you don't, leave it at zero — that's the honest default. Keep contractor invoices and receipts either way; the burden of proof is yours.</p>
+
+    <h2>HELOC vs. home equity loan vs. cash-out refinance</h2>
+    <table>
+      <tr><th></th><th>HELOC</th><th>Home equity loan</th><th>Cash-out refi</th></tr>
+      <tr><td>Structure</td><td>Revolving line, draw as needed</td><td>Lump sum</td><td>Replaces entire mortgage</td></tr>
+      <tr><td>Rate</td><td>Variable (usually)</td><td class="hi">Fixed</td><td class="hi">Fixed</td></tr>
+      <tr><td>Keeps your current mortgage rate</td><td class="hi">Yes</td><td class="hi">Yes</td><td>No — whole loan reprices</td></tr>
+      <tr><td>Best when</td><td>Ongoing/uncertain costs</td><td>One known cost</td><td>Rates ≤ your current rate</td></tr>
+      <tr><td>Payment risk</td><td>Rate changes + payment shock</td><td>None (fixed schedule)</td><td>None (fixed schedule)</td></tr>
+    </table>
+    <p style="margin-top:16px;">The decisive question in a high-rate environment: what's your current mortgage rate? If you're sitting on a low fixed rate from years past, a cash-out refinance reprices your entire balance at today's rates to extract some equity — usually a terrible trade. A HELOC or home equity loan leaves the cheap mortgage untouched and prices only the new borrowing. To see what the money you're borrowing could earn instead — or model the payoff alongside the rest of your finances — the <a href="/">multi-phase compound interest calculator</a> handles the other side of the ledger.</p>
+
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <h3>How is a HELOC payment calculated?</h3>
+      <p>Draw period: balance × rate ÷ 12, interest-only. Repayment period: standard amortization of the remaining balance over the repayment term. This page computes both and the jump between them.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Do I pay interest on the full credit line or just what I've drawn?</h3>
+      <p>Only on the drawn balance. A HELOC is revolving — you can borrow, repay, and re-borrow during the draw period, and the required payment floats with the outstanding balance. The unused limit costs nothing beyond any annual fee.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is payment shock?</h3>
+      <p>The automatic increase in your required payment when the draw period ends — often 30%+ — because principal repayment begins. It's the number in red above.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is HELOC interest tax-deductible?</h3>
+      <p>Only for funds used to buy, build, or substantially improve the securing home, within the $750,000 combined-debt cap, and only if you itemize. Most borrowers fail at least one of the three tests.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Are HELOC rates fixed?</h3>
+      <p>Usually variable, tied to prime. This calculator assumes a constant rate — re-run it 1–2 points higher to stress-test your budget. Some lenders offer fixed-rate locks on drawn balances.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Can I pay a HELOC off early?</h3>
+      <p>Principal payments during the draw are generally penalty-free and are the single best lever against both payment shock and total interest. Closing the line entirely in the first few years can trigger early-closure fees — check your agreement.</p>
+    </div>
+
+    <p style="margin-top:32px;"><em>This calculator is for education, not financial or tax advice. HELOC terms vary by lender — confirm your draw period, repayment term, rate structure, and fees against your actual agreement, and talk to a CPA about deductibility for your situation.</em></p>
+  </article>
+
+  <div class="support-footer">
+    <p class="support-line">
+      If this calculator was useful, a tip helps keep it free and ad-free —
+      <a href="https://buymeacoffee.com/ctong" target="_blank" rel="noopener">buy me a coffee</a>.
+    </p>
+    <p class="support-line">
+      I also use <a href="https://monarch.com/referral/rk2olzfae9?r_source=copy" target="_blank" rel="noopener">Monarch</a> to track net worth and spending — that's a referral link, so if you sign up I get a discount on my own subscription. No pressure either way.
+    </p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  // Shim parseFloat so every existing call site transparently tolerates
+  // comma-grouped input ("100,000") without needing to touch each call site.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
+  const AMBER = '#C9A45C';
+  const SLATE = '#5B7A9D';
+  const COPPER = '#B07A4E';
+  const SEAM = '#24344A';
+  const PARCHMENT_FAINT = '#948D79';
+
+  const LIMITS = {
+    balance: { min: 1000, max: 2000000 },
+    rate: { min: 0.1, max: 20 },
+    drawYears: { min: 1, max: 15 },
+    repayYears: { min: 5, max: 30 },
+    extra: { min: 0, max: 50000 },
+    taxRate: { min: 0, max: 50 }
+  };
+
+  let chart = null;
+
+  function fmt(n) {
+    const sign = n < 0 ? '-' : '';
+    return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  // Same as fmt() but without the leading $ — used to redisplay money input
+  // fields themselves with thousands separators after the user leaves them.
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
+  }
+  function fmt2(n) {
+    return '$' + n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+  }
+  function clamp(val, min, max) {
+    if (isNaN(val)) return min;
+    return Math.min(max, Math.max(min, val));
+  }
+  function markValidity(el, value, min, max) {
+    const bad = isNaN(value) || value < min || value > max;
+    el.classList.toggle('invalid', bad);
+  }
+  function getInputs() {
+    return {
+      balance: clamp(parseFloat(document.getElementById('balance').value), LIMITS.balance.min, LIMITS.balance.max),
+      rate: clamp(parseFloat(document.getElementById('rate').value), LIMITS.rate.min, LIMITS.rate.max),
+      drawYears: Math.round(clamp(parseFloat(document.getElementById('draw-years').value), LIMITS.drawYears.min, LIMITS.drawYears.max)),
+      repayYears: Math.round(clamp(parseFloat(document.getElementById('repay-years').value), LIMITS.repayYears.min, LIMITS.repayYears.max)),
+      extra: clamp(parseFloat(document.getElementById('extra').value), LIMITS.extra.min, LIMITS.extra.max),
+      taxRate: clamp(parseFloat(document.getElementById('tax-rate').value), LIMITS.taxRate.min, LIMITS.taxRate.max)
+    };
+  }
+
+  // --- Shareable link (same pattern as the other Phases calculators) ---
+  function encodeState() {
+    const i = getInputs();
+    const state = { b: i.balance, r: i.rate, d: i.drawYears, p: i.repayYears, e: i.extra, t: i.taxRate };
+    const json = JSON.stringify(state);
+    const b64 = btoa(unescape(encodeURIComponent(json)));
+    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function decodeState(encoded) {
+    try {
+      const b64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+      const json = decodeURIComponent(escape(atob(b64)));
+      const state = JSON.parse(json);
+      if (!state || typeof state.b === 'undefined') return null;
+      return state;
+    } catch (e) { return null; }
+  }
+  function applyState(s) {
+    document.getElementById('balance').value = formatMoneyValue(clamp(s.b, LIMITS.balance.min, LIMITS.balance.max));
+    document.getElementById('rate').value = clamp(s.r, LIMITS.rate.min, LIMITS.rate.max);
+    document.getElementById('draw-years').value = clamp(s.d, LIMITS.drawYears.min, LIMITS.drawYears.max);
+    document.getElementById('repay-years').value = clamp(s.p, LIMITS.repayYears.min, LIMITS.repayYears.max);
+    document.getElementById('extra').value = formatMoneyValue(clamp(s.e, LIMITS.extra.min, LIMITS.extra.max));
+    document.getElementById('tax-rate').value = clamp(s.t, LIMITS.taxRate.min, LIMITS.taxRate.max);
+  }
+  function updateUrlSilently() {
+    const url = new URL(window.location.href);
+    url.searchParams.set('d', encodeState());
+    window.history.replaceState(null, '', url.toString());
+  }
+  let urlUpdateTimer = null;
+  function scheduleUrlUpdate() {
+    clearTimeout(urlUpdateTimer);
+    urlUpdateTimer = setTimeout(updateUrlSilently, 400);
+  }
+
+  function computeSeries() {
+    const i = getInputs();
+    const mr = (i.rate / 100) / 12;
+
+    let balance = i.balance;
+    let cumInterest = 0;
+    const series = [{ month: 0, balance, cumInterest: 0 }];
+    let paidOffMonth = null;
+
+    // Draw period: interest-only required payment + optional extra principal
+    const drawMonths = i.drawYears * 12;
+    let drawInterestTotal = 0;
+    const firstDrawInterest = balance * mr;
+    for (let m = 1; m <= drawMonths; m++) {
+      if (balance <= 0) { series.push({ month: m, balance: 0, cumInterest }); continue; }
+      const interest = balance * mr;
+      cumInterest += interest;
+      drawInterestTotal += interest;
+      balance = Math.max(0, balance - i.extra);
+      if (balance === 0 && paidOffMonth === null) paidOffMonth = m;
+      if (m % 12 === 0) series.push({ month: m, balance, cumInterest });
+    }
+    const balanceAtConversion = balance;
+
+    // Repayment period: fully amortizing on the remaining balance
+    const repayMonths = i.repayYears * 12;
+    let repayPmt = 0;
+    if (balanceAtConversion > 0) {
+      repayPmt = balanceAtConversion * mr / (1 - Math.pow(1 + mr, -repayMonths));
+      for (let m = 1; m <= repayMonths; m++) {
+        const interest = balance * mr;
+        cumInterest += interest;
+        const principal = Math.min(balance, repayPmt - interest);
+        balance = Math.max(0, balance - principal);
+        if (balance === 0 && paidOffMonth === null) paidOffMonth = drawMonths + m;
+        if (m % 12 === 0) series.push({ month: drawMonths + m, balance, cumInterest });
+      }
+    } else {
+      for (let m = 12; m <= repayMonths; m += 12) {
+        series.push({ month: drawMonths + m, balance: 0, cumInterest });
+      }
+    }
+
+    const drawPmtRequired = firstDrawInterest;              // required interest-only payment (month 1)
+    const drawPmtTotal = drawPmtRequired + i.extra;          // what the borrower actually pays
+    const shockPct = drawPmtTotal > 0 && repayPmt > 0 ? ((repayPmt - drawPmtTotal) / drawPmtTotal) * 100 : 0;
+    const afterTaxInterest = cumInterest * (1 - i.taxRate / 100);
+
+    return {
+      inputs: i, series,
+      drawPmtRequired, drawPmtTotal, repayPmt, shockPct,
+      totalInterest: cumInterest, afterTaxInterest,
+      drawInterestTotal, balanceAtConversion, paidOffMonth,
+      drawMonths, repayMonths
+    };
+  }
+
+  function renderWarnings(r) {
+    const el = document.getElementById('warnings');
+    el.innerHTML = '';
+    if (r.paidOffMonth !== null && r.paidOffMonth <= r.drawMonths) {
+      const div = document.createElement('div');
+      div.className = 'info-note';
+      div.textContent = 'Extra principal payments clear the balance in month ' + r.paidOffMonth + ' \u2014 before the draw period even ends. No payment shock, no repayment phase.';
+      el.appendChild(div);
+    } else if (r.shockPct >= 25) {
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = 'Payment shock: your required payment jumps ' + Math.round(r.shockPct) + '% when the draw period ends in year ' + r.inputs.drawYears + '. Budget for the repayment-period payment from day one, or make extra principal payments to shrink the jump.';
+      el.appendChild(div);
+    }
+    if (r.inputs.taxRate > 0) {
+      const div = document.createElement('div');
+      div.className = 'info-note';
+      div.textContent = 'Tax note: the ' + r.inputs.taxRate + '% rate only applies if funds buy, build, or substantially improve the securing home, total acquisition debt stays under $750k, AND you itemize. After-tax interest shown: ' + fmt(r.afterTaxInterest) + '.';
+      el.appendChild(div);
+    }
+  }
+
+  function renderShockBar(r) {
+    const bar = document.getElementById('shock-bar');
+    const cap = document.getElementById('shock-caption');
+    bar.innerHTML = '';
+
+    const maxPmt = Math.max(r.drawPmtTotal, r.repayPmt, 1);
+    const drawH = Math.max(28, (r.drawPmtTotal / maxPmt) * 74);
+    const repayH = Math.max(28, (r.repayPmt / maxPmt) * 74);
+
+    const d = document.createElement('div');
+    d.className = 'shock-seg draw';
+    d.style.height = drawH + 'px';
+    d.style.flex = r.inputs.drawYears;
+    d.textContent = fmt(r.drawPmtTotal) + '/mo \u00b7 draw';
+    bar.appendChild(d);
+
+    if (r.balanceAtConversion > 0) {
+      const p = document.createElement('div');
+      p.className = 'shock-seg repay';
+      p.style.height = repayH + 'px';
+      p.style.flex = r.inputs.repayYears;
+      p.textContent = fmt(r.repayPmt) + '/mo \u00b7 repayment';
+      bar.appendChild(p);
+      const jump = Math.round(r.shockPct);
+      cap.innerHTML = 'The month the draw period ends, the required payment ' +
+        (jump >= 0 ? 'jumps <span class="jump">+' + jump + '%</span>' : 'changes ' + jump + '%') +
+        ' \u2014 automatically, with no new borrowing.';
+    } else {
+      cap.textContent = 'Balance fully paid during the draw period \u2014 the repayment phase never arrives.';
+    }
+  }
+
+  function renderSummaryTable(r) {
+    const el = document.getElementById('summary-table');
+    const rows = [];
+    const drawEnd = r.series.find(s => s.month === r.drawMonths);
+    rows.push({ label: 'End of draw period (year ' + r.inputs.drawYears + ')', balance: drawEnd.balance, cum: drawEnd.cumInterest, hi: true });
+    for (let y = 5; y < r.inputs.repayYears; y += 5) {
+      const pt = r.series.find(s => s.month === r.drawMonths + y * 12);
+      if (pt && pt.balance > 0) rows.push({ label: 'Repayment year ' + y + ' (year ' + (r.inputs.drawYears + y) + ')', balance: pt.balance, cum: pt.cumInterest, hi: false });
+    }
+    const last = r.series[r.series.length - 1];
+    const payoffYr = r.paidOffMonth ? Math.ceil(r.paidOffMonth / 12) : r.inputs.drawYears + r.inputs.repayYears;
+    rows.push({ label: 'Paid off (year ' + payoffYr + ')', balance: 0, cum: last.cumInterest, hi: true });
+
+    let html = '<table><tr><th>Milestone</th><th>Balance</th><th>Cumulative interest</th></tr>';
+    rows.forEach(row => {
+      html += '<tr><td>' + row.label + '</td><td class="' + (row.hi ? 'hi' : '') + '">' + fmt(row.balance) + '</td><td>' + fmt(row.cum) + '</td></tr>';
+    });
+    html += '</table>';
+    el.innerHTML = html;
+
+    document.getElementById('assumptions-note').textContent =
+      'Assumes the full ' + fmt(r.inputs.balance) + ' is drawn at opening, a constant ' + r.inputs.rate +
+      '% rate (real HELOCs are variable), interest-only required payments during the ' + r.inputs.drawYears +
+      '-year draw, and full amortization over the ' + r.inputs.repayYears + '-year repayment period. Fees and rate changes not included.';
+  }
+
+  function renderChart(r) {
+    const ctx = document.getElementById('chart');
+    const labels = r.series.map(s => 'Yr ' + Math.round(s.month / 12));
+    const balData = r.series.map(s => Math.round(s.balance));
+    const intData = r.series.map(s => Math.round(s.cumInterest));
+    const drawEndIdx = r.series.findIndex(s => s.month === r.drawMonths);
+
+    if (chart) chart.destroy();
+    chart = new Chart(ctx, {
+      type: 'line',
+      data: { labels, datasets: [
+        {
+          label: 'Remaining balance',
+          data: balData,
+          borderColor: AMBER, backgroundColor: 'rgba(201,164,92,0.10)',
+          fill: true, tension: 0.15, pointRadius: 0, borderWidth: 2
+        },
+        {
+          label: 'Cumulative interest paid',
+          data: intData,
+          borderColor: SLATE, backgroundColor: 'transparent',
+          fill: false, tension: 0.15, pointRadius: 0, borderWidth: 2, borderDash: [5, 4]
+        }
+      ]},
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: item => item.dataset.label + ': ' + fmt(item.parsed.y) } }
+        },
+        scales: {
+          x: { ticks: { maxTicksLimit: 11, color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } }, grid: { display: false }, border: { color: SEAM } },
+          y: { ticks: { callback: v => '$' + (Math.abs(v) >= 1000 ? Math.round(v/1000) + 'k' : v), color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } }, grid: { color: SEAM }, border: { color: SEAM } }
+        }
+      },
+      plugins: [{
+        id: 'drawEndLine',
+        afterDraw(c) {
+          if (drawEndIdx === -1) return;
+          const { ctx, chartArea, scales } = c;
+          const x = scales.x.getPixelForValue(drawEndIdx);
+          ctx.save();
+          ctx.strokeStyle = COPPER;
+          ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(x, chartArea.top); ctx.lineTo(x, chartArea.bottom); ctx.stroke();
+          ctx.fillStyle = COPPER;
+          ctx.beginPath(); ctx.arc(x, chartArea.top + 6, 3, 0, Math.PI * 2); ctx.fill();
+          ctx.restore();
+        }
+      }]
+    });
+  }
+
+  function update() {
+    const r = computeSeries();
+    document.getElementById('draw-pmt').textContent = fmt(r.drawPmtTotal) + '/mo';
+    document.getElementById('repay-pmt').textContent = (r.balanceAtConversion > 0 ? fmt(r.repayPmt) + '/mo' : '\u2014');
+    document.getElementById('shock-pct').textContent = (r.balanceAtConversion > 0 ? '+' + Math.round(r.shockPct) + '%' : 'none');
+    document.getElementById('total-interest').textContent = fmt(r.totalInterest);
+    renderWarnings(r);
+    renderShockBar(r);
+    renderChart(r);
+    renderSummaryTable(r);
+    scheduleUrlUpdate();
+  }
+
+  [
+    ['balance', LIMITS.balance, true],
+    ['rate', LIMITS.rate, false],
+    ['draw-years', LIMITS.drawYears, false],
+    ['repay-years', LIMITS.repayYears, false],
+    ['extra', LIMITS.extra, true],
+    ['tax-rate', LIMITS.taxRate, false]
+  ].forEach(([id, lim, isMoney]) => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => {
+      markValidity(el, parseFloat(el.value), lim.min, lim.max);
+      update();
+    });
+    el.addEventListener('blur', () => {
+      const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
+      el.value = isMoney ? formatMoneyValue(corrected) : corrected;
+      el.classList.remove('invalid');
+      update();
+    });
+  });
+
+  document.getElementById('copy-link').addEventListener('click', () => {
+    updateUrlSilently();
+    const statusEl = document.getElementById('copy-status');
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      statusEl.textContent = 'link copied';
+      setTimeout(() => { statusEl.textContent = ''; }, 2200);
+    }).catch(() => {
+      statusEl.textContent = 'copy failed \u2014 select the URL bar';
+      setTimeout(() => { statusEl.textContent = ''; }, 2800);
+    });
+  });
+
+  (function hydrateFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const encoded = params.get('d');
+    if (encoded) {
+      const state = decodeState(encoded);
+      if (state) applyState(state);
+    }
+  })();
+
+  update();
+})();
+</script>
+</body>
+</html>
