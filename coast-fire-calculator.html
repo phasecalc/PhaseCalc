@@ -356,10 +356,39 @@
   .toggle input { width: auto; accent-color: #C9A45C; cursor: pointer; }
   .toggle .hint { color: var(--parchment-faint); }
 
-  /* Results strip */
+  /* Hero result + results strip */
+  .hero-result {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--amber);
+    padding: 20px 20px 18px;
+    margin-bottom: 2px;
+  }
+  .hero-result .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 6px;
+  }
+  .hero-value {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 42px;
+    line-height: 1.1;
+    margin: 0;
+    color: var(--amber);
+  }
+  .hero-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-dim);
+    margin: 8px 0 0;
+    line-height: 1.55;
+  }
   .results-strip {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0,1fr));
+    grid-template-columns: repeat(3, minmax(0,1fr));
     gap: 2px;
     margin-bottom: 10px;
   }
@@ -383,7 +412,6 @@
     margin: 0;
     color: var(--parchment);
   }
-  .result-cell.hero .value { color: var(--amber); }
   .result-cell .value.good { color: var(--amber); }
   .result-cell .value.pending { color: var(--slate); }
 
@@ -445,10 +473,32 @@
     font-family: 'IBM Plex Mono', monospace;
     font-size: 11px;
     color: var(--parchment-dim);
-    margin-bottom: 36px;
+    margin-bottom: 20px;
     flex-wrap: wrap;
   }
   .legend .swatch { display: inline-block; width: 9px; height: 9px; margin-right: 6px; vertical-align: -1px; }
+
+  /* Retirement drawdown summary (below chart) */
+  .drawdown {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--copper);
+    padding: 20px;
+    margin-bottom: 36px;
+  }
+  .drawdown-lede {
+    font-family: 'Inter', sans-serif;
+    font-size: 13.5px;
+    color: var(--parchment-dim);
+    margin: 0 0 4px;
+    line-height: 1.6;
+  }
+  .drawdown-lede strong {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 17px;
+    color: var(--copper);
+  }
+  .drawdown-lede strong.support { color: var(--parchment); }
 
   table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
   th, td { padding: 9px 6px; text-align: right; border-bottom: 1px solid var(--seam); }
@@ -556,9 +606,133 @@
   }
   .support-line a:hover { border-bottom-color: var(--amber); }
 
+  /* Phase cards */
+  .phase-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+  .phase-card {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--amber);
+    padding: 20px;
+    position: relative;
+  }
+  .phase-card.coast { border-left-color: var(--slate); }
+  .phase-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .phase-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    border: 1px solid var(--seam);
+    padding: 3px 8px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+  .phase-top h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 17px;
+    margin: 0;
+    flex: 1;
+    min-width: 160px;
+  }
+  .phase-desc {
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    color: var(--parchment-dim);
+    margin: 0 0 16px;
+    line-height: 1.5;
+  }
+  .phase-output {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    color: var(--amber);
+    margin: 14px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--seam);
+  }
+  .phase-card.coast .phase-output { color: var(--slate); }
+  .phase-alert {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink);
+    border-left: 2px solid var(--warn);
+    padding: 10px 14px;
+    margin: 14px 0 0;
+    line-height: 1.5;
+  }
+  .solved-pill {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--copper);
+    border: 1px solid var(--copper);
+    padding: 2px 7px;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+
+  /* Mode tabs */
+  .mode-tabs { display: inline-flex; gap: 6px; margin-bottom: 18px; flex-wrap: wrap; }
+  .mode-tab {
+    font-family: 'IBM Plex Mono', monospace; font-size: 11.5px; letter-spacing: 0.03em;
+    padding: 8px 14px; border: 1px solid var(--seam); border-radius: 2px;
+    color: var(--parchment-dim); background: none; cursor: pointer; transition: all 0.15s ease;
+  }
+  .mode-tab.active { border-color: var(--amber); color: var(--parchment); background: var(--amber-dim); }
+  .mode-tab:hover { color: var(--parchment); }
+
+  /* Phase timeline — signature staircase strip */
+  .timeline-wrap { margin-bottom: 28px; }
+  .phase-timeline {
+    display: flex;
+    height: 46px;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .tl-seg {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .tl-seg .tl-name { font-size: 10.5px; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tl-seg .tl-sub { font-size: 10px; opacity: 0.8; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tl-seg.contribute { background: var(--amber-dim); color: var(--amber); }
+  .tl-seg.coast { background: var(--slate-dim); color: var(--slate); border-left: 2px solid var(--ink); }
+  .tl-marker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--copper);
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+  }
+  .tl-marker span { white-space: nowrap; }
+
+  .backtest-link {
+    display: inline-block; margin-top: 10px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 11.5px;
+    color: var(--copper); text-decoration: none; border-bottom: 1px solid var(--amber-dim);
+  }
+  .backtest-link:hover { border-bottom-color: var(--copper); }
+
   @media (max-width: 620px) {
     .field-grid { grid-template-columns: 1fr 1fr; }
     .results-strip { grid-template-columns: 1fr 1fr; }
+    .results-strip .result-cell:last-child { grid-column: 1 / -1; }
+    .hero-value { font-size: 34px; }
   }
 </style>
 </head>
@@ -597,7 +771,7 @@
   <div class="panel">
     <div class="field-grid">
       <div class="field">
-        <label>Current age<span class="tip" tabindex="0" aria-label="Help: current age"><span class="tip-icon">?</span><span class="tip-box">Your age today. The gap between this and your target retirement age is how long compounding gets to work.</span></span></label>
+        <label>Current age<span class="tip" tabindex="0" aria-label="Help: current age"><span class="tip-icon">?</span><span class="tip-box">Your age today. The gap between this and your target retirement age is how long compounding gets to work across the two phases.</span></span></label>
         <input type="number" id="cur-age" value="30" min="15" max="75" step="1" />
       </div>
       <div class="field">
@@ -605,11 +779,7 @@
         <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="balance" value="100,000" min="0" max="10000000" step="5000" /></div>
       </div>
       <div class="field">
-        <label>Contributing $/mo<span class="tip" tabindex="0" aria-label="Help: monthly contribution"><span class="tip-icon">?</span><span class="tip-box">What you're currently saving per month. This only drives the yellow "still contributing" line and your projected coast age — the coast number itself doesn't depend on it.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="contrib" value="1,000" min="0" max="20000" step="100" /></div>
-      </div>
-      <div class="field">
-        <label>Target retirement age<span class="tip" tabindex="0" aria-label="Help: target retirement age"><span class="tip-icon">?</span><span class="tip-box">The age your portfolio needs to be fully grown. Later ages shrink your coast number dramatically — every extra year is another year of compounding.</span></span></label>
+        <label>Target retirement age<span class="tip" tabindex="0" aria-label="Help: target retirement age"><span class="tip-icon">?</span><span class="tip-box">The age your portfolio needs to be fully grown — the end of the coast phase. Later ages shrink the balance you need today, because compounding gets more time.</span></span></label>
         <input type="number" id="ret-age" value="65" min="20" max="80" step="1" />
       </div>
       <div class="field">
@@ -620,10 +790,6 @@
         <label>Target number<span class="tip" tabindex="0" aria-label="Help: target number"><span class="tip-icon">?</span><span class="tip-box">Your full FIRE number — the portfolio that supports retirement. Auto-computed as spend × 25 unless you tick "set target directly" below.</span></span></label>
         <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="target" value="1,500,000" min="100000" max="25000000" step="50000" disabled /></div>
       </div>
-      <div class="field">
-        <label>Annual return % (after inflation)<span class="tip" tabindex="0" aria-label="Help: annual return"><span class="tip-icon">?</span><span class="tip-box">Use a real (after-inflation) return so today's-dollar targets stay honest: ~5% is a common assumption (7% stocks − 2% inflation). If you enter a nominal 7%, your target should be in inflated future dollars.</span></span></label>
-        <div class="input-row"><input type="number" id="rate" value="5" min="0" max="15" step="0.1" /><span class="suffix">%</span></div>
-      </div>
     </div>
     <div class="toggles">
       <label class="toggle">
@@ -633,38 +799,99 @@
     </div>
   </div>
 
+  <div class="mode-tabs">
+    <button type="button" class="mode-tab active" data-mode="solve" id="tab-solve">Solve for coast age</button>
+    <button type="button" class="mode-tab" data-mode="plan" id="tab-plan">Plan the phases</button>
+  </div>
+
+  <div class="phase-list">
+
+    <div class="phase-card contribute">
+      <div class="phase-top">
+        <span class="phase-badge">Phase 1</span>
+        <h3>Contribution phase</h3>
+        <span class="solved-pill" id="p1-solved">length solved ↓</span>
+      </div>
+      <p class="phase-desc" id="p1-desc">Keep saving while compounding builds a base. In solve mode the calculator finds the shortest this phase can be.</p>
+      <div class="field-grid">
+        <div class="field">
+          <label>Contribution $ / mo<span class="tip" tabindex="0" aria-label="Help: monthly contribution"><span class="tip-icon">?</span><span class="tip-box">Your savings rate — what you add each month during the contribution phase. In solve mode this drives how quickly you reach the point you can stop.</span></span></label>
+          <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="contrib" value="1,000" min="0" max="20000" step="100" /></div>
+        </div>
+        <div class="field">
+          <label>Contribution years<span class="tip" tabindex="0" aria-label="Help: contribution years"><span class="tip-icon">?</span><span class="tip-box">How long you keep contributing before coasting. In "solve for coast age" mode this is computed for you (the earliest you can stop); in "plan the phases" mode you set it.</span></span></label>
+          <input type="number" id="contrib-years" value="10" min="0" max="60" step="1" />
+        </div>
+        <div class="field">
+          <label>Growth % (real)<span class="tip" tabindex="0" aria-label="Help: contribution-phase return"><span class="tip-icon">?</span><span class="tip-box">Expected real (after-inflation) return while you're still contributing. ~5% is a common assumption (≈7% stocks − 2% inflation). Real returns keep every output in today's dollars.</span></span></label>
+          <div class="input-row"><input type="number" id="rate1" value="5" min="0" max="15" step="0.1" /><span class="suffix">%</span></div>
+        </div>
+      </div>
+      <p class="phase-output" id="p1-output">Balance when you stop contributing: $0</p>
+      <p class="phase-alert" id="p1-alert" style="display:none;"></p>
+    </div>
+
+    <div class="phase-card coast">
+      <div class="phase-top">
+        <span class="phase-badge">Phase 2</span>
+        <h3>Coast phase</h3>
+      </div>
+      <p class="phase-desc">Zero contributions from here — the balance simply compounds to your retirement age. This is the "coasting" the whole idea is named for.</p>
+      <div class="field-grid">
+        <div class="field">
+          <label>Coast years<span class="tip" tabindex="0" aria-label="Help: coast years"><span class="tip-icon">?</span><span class="tip-box">Years spent coasting, derived automatically as retirement age minus your coast age. You don't set this directly — it's whatever time is left after the contribution phase.</span></span></label>
+          <input type="number" id="coast-years" value="0" disabled />
+        </div>
+        <div class="field">
+          <label>Growth % (real)<span class="tip" tabindex="0" aria-label="Help: coast-phase return"><span class="tip-icon">?</span><span class="tip-box">Real return during the coast years — set it lower than the contribution phase to model de-risking (a more conservative allocation) as retirement nears.</span></span></label>
+          <div class="input-row"><input type="number" id="rate2" value="5" min="0" max="15" step="0.1" /><span class="suffix">%</span></div>
+        </div>
+      </div>
+      <p class="phase-output" id="p2-output">Balance at retirement: $0</p>
+    </div>
+
+  </div>
+
+  <div class="hero-result">
+    <p class="label" id="rc1-label">Coast FIRE age</p>
+    <p class="hero-value" id="rc1-val">—</p>
+    <p class="hero-sub" id="rc1-sub"></p>
+  </div>
+  <div class="results-strip">
+    <div class="result-cell">
+      <p class="label">Balance at coast age</p>
+      <p class="value" id="rc2-val">$0</p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Balance at retirement</p>
+      <p class="value" id="rc3-val">$0</p>
+    </div>
+    <div class="result-cell">
+      <p class="label" id="rc4-label">Surplus vs target</p>
+      <p class="value" id="rc4-val">$0</p>
+    </div>
+  </div>
+
   <div id="warnings"></div>
 
-  <div class="results-strip">
-    <div class="result-cell hero">
-      <p class="label">Coast FIRE number (today)</p>
-      <p class="value" id="coast-number">$0</p>
-    </div>
-    <div class="result-cell">
-      <p class="label">Progress to coast</p>
-      <p class="value" id="progress-pct">0%</p>
-    </div>
-    <div class="result-cell">
-      <p class="label">Coast FIRE age</p>
-      <p class="value" id="coast-age">—</p>
-    </div>
-    <div class="result-cell">
-      <p class="label">Coast from today → at <span id="ret-age-label">65</span></p>
-      <p class="value" id="coast-projection">$0</p>
-    </div>
+  <div class="timeline-wrap">
+    <div class="phase-timeline" id="phase-timeline"></div>
+    <p class="tl-marker" id="tl-marker"></p>
   </div>
-
-  <div class="coast-bar" id="coast-bar"></div>
-  <p class="coast-caption" id="coast-caption"></p>
 
   <div class="chart-wrap">
-    <canvas id="chart" role="img" aria-label="Line chart from current age to retirement age. The yellow line shows portfolio growth if you keep contributing; the blue line shows growth if you stop contributing today; a dashed line marks the target retirement number and a vertical orange marker shows the age you could stop contributing.">Projected growth to retirement: yellow line keeps contributing, blue line coasts with no further contributions, dashed line is the target number, orange marker is the coast age.</canvas>
+    <canvas id="chart" role="img" aria-label="Line chart from current age to retirement age. The yellow line is your plan — contribute through the contribution phase, then coast with no further contributions. The blue line shows coasting from today with no contributions at all. A dashed line marks the target number and a vertical orange marker shows the coast age where contributions stop.">Projected growth to retirement: yellow line is your contribute-then-coast plan, blue line coasts from today, dashed line is the target number, orange marker is the coast age.</canvas>
   </div>
   <div class="legend">
-    <span><span class="swatch" style="background:#C9A45C"></span>Still contributing — yellow line</span>
-    <span><span class="swatch" style="background:#5B7A9D"></span>Coasting from today — blue line</span>
+    <span><span class="swatch" style="background:#C9A45C"></span>Your plan — contribute then coast (yellow line)</span>
+    <span><span class="swatch" style="background:#5B7A9D"></span>Coast from today — stop contributing now (blue line)</span>
     <span><span class="swatch" style="background:#948D79"></span>Target number — dashed line</span>
-    <span><span class="swatch" style="background:#B07A4E"></span>Coast FIRE age — the age you could stop</span>
+    <span><span class="swatch" style="background:#B07A4E"></span>Coast age — where you stop contributing</span>
+  </div>
+
+  <div class="drawdown">
+    <p class="drawdown-lede">At retirement (age <span id="dd-age">65</span>): <strong id="dd-balance">$0</strong> in today's dollars — supporting about <strong class="support" id="dd-spend">$0</strong>/yr at a 4% withdrawal. The chart above stops here; whether the money survives the drawdown depends on the order returns arrive in, which straight-line math can't see.</p>
+    <a class="backtest-link" href="/retirement-backtest-calculator">Stress-test the drawdown against real market history → Retirement Backtest calculator</a>
   </div>
 
   <div id="summary-table"></div>
@@ -677,8 +904,9 @@
 
   <article class="article">
     <h2>How this Coast FIRE calculator works</h2>
-    <p>Enter your age, invested balance, target retirement age, and either your expected annual spending (the calculator multiplies it by 25, the standard 4%-rule inversion) or a target number of your own. The calculator discounts that target back to today at your expected return, producing your <strong>Coast FIRE number</strong> — the balance that, left completely untouched, compounds into your full retirement number with zero further contributions. If your current balance is at or above it, you've reached Coast FIRE.</p>
-    <p>The chart shows the two futures side by side. The yellow <strong>still contributing</strong> line keeps your current monthly contribution flowing; the blue <strong>coasting from today</strong> line adds nothing ever again. Both compound at the same rate; the dashed line marks your target, and the orange vertical marker is your projected <strong>Coast FIRE age</strong> — the age where your balance crosses the moving coast threshold and you could stop contributing while still hitting the target on schedule. The gap between the two lines at retirement is the price (or the reward) of that decision.</p>
+    <p>This calculator models Coast FIRE as the two phases it actually is. In the <strong>setup</strong> you give your age, invested balance, target retirement age, and either your expected annual spending (multiplied by 25, the 4%-rule inversion) or a target number of your own. Then the plan runs in sequence: <strong>Phase 1, the contribution phase</strong> — you keep saving while compounding builds a base; then <strong>Phase 2, the coast phase</strong> — zero contributions, the balance simply compounds to your retirement age. Each phase takes its own real return, so you can model de-risking to a more conservative allocation during the coast years. The retirement outcome — where the ending balance lands in today's dollars and what it supports at a 4% withdrawal — sits below the chart.</p>
+    <p>There are two modes. <strong>Solve for coast age</strong> (the default) answers the headline question: given your savings rate, return, and target retirement age, what's the <em>earliest</em> age you can stop contributing and still reach the target on compounding alone? It fills in the contribution-phase length and marks that coast point directly on the phase timeline. <strong>Plan the phases</strong> flips it around: you set how long you contribute, and the calculator tells you whether that plan hits the target — and how early you could have stopped. The timeline strip shows the contribute-then-coast split at a glance; the chart overlays your plan (yellow) against coasting from today with no further saving (blue), with the dashed target and the orange coast-age marker.</p>
+    <p>Because the returns are <strong>real</strong> (after inflation), every figure is already in today's purchasing power. The retirement summary below the chart shows what the balance sustainably supports at 4% a year — but for the actual drawdown question (does the money last, and does the <em>order</em> of returns sink it?), Coast FIRE math is deterministic and can't see sequence risk. That's a different job: run your retirement balance through the <a href="/retirement-backtest-calculator">retirement backtest calculator</a>, which tests withdrawals against real historical market sequences.</p>
 
     <h2>What Coast FIRE actually means</h2>
     <p>Coast FIRE is the least extreme member of the FIRE (Financial Independence, Retire Early) family, and arguably the most useful for ordinary savers. Full FIRE demands a portfolio big enough to live on <em>now</em> — 25 times your annual spending, often seven figures. Coast FIRE asks a humbler question: do you have enough invested that compounding alone will finish the job by a normal retirement age? Because compounding does the heavy lifting over multi-decade horizons, the answer arrives far sooner than most people expect. A 30-year-old targeting $1.5 million at 65 needs roughly $272,000 today at a 5% real return — not $1.5 million.</p>
@@ -771,8 +999,7 @@
 
 <script>
 (function(){
-  // Shim parseFloat so every existing call site transparently tolerates
-  // comma-grouped input ("100,000") without needing to touch each call site.
+  // Shim parseFloat so every call site tolerates comma-grouped input ("100,000").
   function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
 
   const AMBER = '#C9A45C';
@@ -788,187 +1015,243 @@
     retAge: { min: 20, max: 80 },
     spend: { min: 10000, max: 1000000 },
     target: { min: 100000, max: 25000000 },
-    rate: { min: 0, max: 15 }
+    rate: { min: 0, max: 15 },
+    contribYears: { min: 0, max: 60 }
   };
 
+  let mode = 'solve';       // 'solve' | 'plan'
   let chart = null;
 
-  function fmt(n) {
-    const sign = n < 0 ? '-' : '';
-    return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
-  }
-  // Same as fmt() but without the leading $ — used to redisplay money input
-  // fields themselves with thousands separators after the user leaves them.
-  function formatMoneyValue(n) {
-    if (isNaN(n)) return '';
-    const sign = n < 0 ? '-' : '';
-    return sign + Math.round(Math.abs(n)).toLocaleString();
-  }
-  function clamp(val, min, max) {
-    if (isNaN(val)) return min;
-    return Math.min(max, Math.max(min, val));
-  }
-  function markValidity(el, value, min, max) {
-    const bad = isNaN(value) || value < min || value > max;
-    el.classList.toggle('invalid', bad);
-  }
+  function fmt(n) { const s = n < 0 ? '-' : ''; return s + '$' + Math.round(Math.abs(n)).toLocaleString(); }
+  function fmtSigned(n) { return (n >= 0 ? '+' : '-') + '$' + Math.round(Math.abs(n)).toLocaleString(); }
+  function formatMoneyValue(n) { if (isNaN(n)) return ''; const s = n < 0 ? '-' : ''; return s + Math.round(Math.abs(n)).toLocaleString(); }
+  function clamp(v, mn, mx) { if (isNaN(v)) return mn; return Math.min(mx, Math.max(mn, v)); }
+  function markValidity(el, v, mn, mx) { el.classList.toggle('invalid', isNaN(v) || v < mn || v > mx); }
+  function pf(id) { return parseFloat(document.getElementById(id).value); }
+  function chk(id) { return document.getElementById(id).checked; }
+  function mr(a) { return Math.pow(1 + a / 100, 1 / 12) - 1; }
+
   function getInputs() {
-    const curAge = Math.round(clamp(parseFloat(document.getElementById('cur-age').value), LIMITS.curAge.min, LIMITS.curAge.max));
-    let retAge = Math.round(clamp(parseFloat(document.getElementById('ret-age').value), LIMITS.retAge.min, LIMITS.retAge.max));
+    const curAge = Math.round(clamp(pf('cur-age'), LIMITS.curAge.min, LIMITS.curAge.max));
+    let retAge = Math.round(clamp(pf('ret-age'), LIMITS.retAge.min, LIMITS.retAge.max));
     const retClamped = retAge <= curAge;
     if (retClamped) retAge = curAge + 1;
-    const direct = document.getElementById('direct-target').checked;
-    const spend = clamp(parseFloat(document.getElementById('spend').value), LIMITS.spend.min, LIMITS.spend.max);
-    const target = direct
-      ? clamp(parseFloat(document.getElementById('target').value), LIMITS.target.min, LIMITS.target.max)
-      : spend * 25;
+    const direct = chk('direct-target');
+    const spend = clamp(pf('spend'), LIMITS.spend.min, LIMITS.spend.max);
+    const target = direct ? clamp(pf('target'), LIMITS.target.min, LIMITS.target.max) : spend * 25;
+    const totalYears = retAge - curAge;
     return {
-      curAge, retAge, retClamped, direct, spend, target,
-      balance: clamp(parseFloat(document.getElementById('balance').value), LIMITS.balance.min, LIMITS.balance.max),
-      contrib: clamp(parseFloat(document.getElementById('contrib').value), LIMITS.contrib.min, LIMITS.contrib.max),
-      rate: clamp(parseFloat(document.getElementById('rate').value), LIMITS.rate.min, LIMITS.rate.max)
+      curAge, retAge, retClamped, direct, spend, target, totalYears,
+      balance: clamp(pf('balance'), LIMITS.balance.min, LIMITS.balance.max),
+      contribMon: clamp(pf('contrib'), LIMITS.contrib.min, LIMITS.contrib.max),
+      contribYears: clamp(pf('contrib-years'), 0, totalYears),
+      rate1: clamp(pf('rate1'), LIMITS.rate.min, LIMITS.rate.max),
+      rate2: clamp(pf('rate2'), LIMITS.rate.min, LIMITS.rate.max),
+      mode
     };
   }
 
-  // --- Shareable link encode/decode (same pattern as the other Phases calculators) ---
+  // ---- engine ----
+  // Earliest contribution months so that coasting the remainder at rate2 hits target.
+  function solveCoastMonths(i) {
+    const totalMonths = i.totalYears * 12, m1 = mr(i.rate1), m2 = mr(i.rate2);
+    let b = i.balance;
+    if (b >= i.target / Math.pow(1 + m2, totalMonths)) return 0;
+    for (let m = 1; m <= totalMonths; m++) {
+      b = b * (1 + m1) + i.contribMon;
+      if (b >= i.target / Math.pow(1 + m2, totalMonths - m)) return m;
+    }
+    return null; // unreachable even contributing the whole way
+  }
+  // Full projection: plan path (contribute contribMonths, then coast) + coast-from-today baseline.
+  function project(i, contribMonths) {
+    const totalMonths = i.totalYears * 12, m1 = mr(i.rate1), m2 = mr(i.rate2);
+    let plan = i.balance, coastToday = i.balance;
+    let balAtCoast = contribMonths <= 0 ? i.balance : null;
+    const series = [{ age: i.curAge, plan, coastToday }];
+    for (let m = 1; m <= totalMonths; m++) {
+      plan = m <= contribMonths ? plan * (1 + m1) + i.contribMon : plan * (1 + m2);
+      coastToday = coastToday * (1 + m2);
+      if (m === contribMonths) balAtCoast = plan;
+      if (m % 12 === 0) series.push({ age: i.curAge + m / 12, plan, coastToday });
+    }
+    if (balAtCoast === null) balAtCoast = plan;
+    return { series, balAtCoast, endBalance: plan, coastTodayEnd: coastToday };
+  }
+  function compute() {
+    const i = getInputs();
+    const totalMonths = i.totalYears * 12;
+    const solvedMonths = solveCoastMonths(i);
+    let contribMonths;
+    if (i.mode === 'solve') contribMonths = solvedMonths === null ? totalMonths : solvedMonths;
+    else contribMonths = Math.max(0, Math.min(totalMonths, Math.round(i.contribYears * 12)));
+
+    const p = project(i, contribMonths);
+    const coastAge = i.curAge + contribMonths / 12;
+    const coastYears = i.totalYears - contribMonths / 12;
+    const surplus = p.endBalance - i.target;
+    const reachedTarget = p.endBalance >= i.target - 0.5;
+    const sustainable = p.endBalance * 0.04;
+    const minCoastAge = solvedMonths === null ? null : i.curAge + solvedMonths / 12;
+    // Best case if contributing every month to retirement — only needed when target is unreachable.
+    const maxEnd = solvedMonths === null ? project(i, totalMonths).endBalance : null;
+
+    return {
+      inputs: i, ...p, totalMonths, contribMonths, coastAge, coastYears,
+      surplus, reachedTarget, sustainable, solvedMonths, minCoastAge, maxEnd,
+      alreadyCoast: solvedMonths === 0, noSolution: solvedMonths === null
+    };
+  }
+
+  // ---- share link ----
   function encodeState() {
     const i = getInputs();
-    const state = { a: i.curAge, b: i.balance, c: i.contrib, g: i.retAge, s: i.spend, n: i.target, m: i.direct ? 1 : 0, r: i.rate };
-    const json = JSON.stringify(state);
-    const b64 = btoa(unescape(encodeURIComponent(json)));
+    const state = { a: i.curAge, b: i.balance, g: i.retAge, s: i.spend, n: i.target, m: i.direct ? 1 : 0,
+      c: i.contribMon, y: i.contribYears, r1: i.rate1, r2: i.rate2,
+      mo: i.mode === 'plan' ? 'p' : 's' };
+    const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(state))));
     return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   }
   function decodeState(encoded) {
     try {
       const b64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
-      const json = decodeURIComponent(escape(atob(b64)));
-      const state = JSON.parse(json);
-      if (!state || typeof state.a === 'undefined') return null;
-      return state;
+      const st = JSON.parse(decodeURIComponent(escape(atob(b64))));
+      if (!st || typeof st.a === 'undefined') return null;
+      return st;
     } catch (e) { return null; }
   }
   function applyState(s) {
     document.getElementById('cur-age').value = clamp(s.a, LIMITS.curAge.min, LIMITS.curAge.max);
     document.getElementById('balance').value = formatMoneyValue(clamp(s.b, LIMITS.balance.min, LIMITS.balance.max));
-    document.getElementById('contrib').value = formatMoneyValue(clamp(s.c, LIMITS.contrib.min, LIMITS.contrib.max));
     document.getElementById('ret-age').value = clamp(s.g, LIMITS.retAge.min, LIMITS.retAge.max);
     document.getElementById('spend').value = formatMoneyValue(clamp(s.s, LIMITS.spend.min, LIMITS.spend.max));
     document.getElementById('target').value = formatMoneyValue(clamp(s.n, LIMITS.target.min, LIMITS.target.max));
     document.getElementById('direct-target').checked = !!s.m;
+    document.getElementById('contrib').value = formatMoneyValue(clamp(typeof s.c === 'undefined' ? 1000 : s.c, LIMITS.contrib.min, LIMITS.contrib.max));
+    document.getElementById('contrib-years').value = clamp(typeof s.y === 'undefined' ? 10 : s.y, 0, 60);
+    // r1/r2 fall back to legacy single rate r, else 5
+    const legacy = typeof s.r === 'undefined' ? 5 : s.r;
+    document.getElementById('rate1').value = clamp(typeof s.r1 === 'undefined' ? legacy : s.r1, LIMITS.rate.min, LIMITS.rate.max);
+    document.getElementById('rate2').value = clamp(typeof s.r2 === 'undefined' ? legacy : s.r2, LIMITS.rate.min, LIMITS.rate.max);
+    mode = s.mo === 'p' ? 'plan' : 'solve';
   }
   function updateUrlSilently() {
     const url = new URL(window.location.href);
     url.searchParams.set('d', encodeState());
     window.history.replaceState(null, '', url.toString());
   }
-  let urlUpdateTimer = null;
-  function scheduleUrlUpdate() {
-    clearTimeout(urlUpdateTimer);
-    urlUpdateTimer = setTimeout(updateUrlSilently, 400);
+  let urlTimer = null;
+  function scheduleUrlUpdate() { clearTimeout(urlTimer); urlTimer = setTimeout(updateUrlSilently, 400); }
+
+  // ---- render ----
+  function setMode(m, skip) {
+    mode = m;
+    document.getElementById('tab-solve').classList.toggle('active', m === 'solve');
+    document.getElementById('tab-plan').classList.toggle('active', m === 'plan');
+    document.getElementById('p1-solved').style.display = m === 'solve' ? '' : 'none';
+    const cy = document.getElementById('contrib-years');
+    cy.disabled = m === 'solve';
+    document.getElementById('p1-desc').textContent = m === 'solve'
+      ? 'Keep saving while compounding builds a base. The calculator finds the shortest this phase can be and still hit your target — that length is filled in below.'
+      : 'Keep saving while compounding builds a base. Set how many years you contribute; the coast phase fills the rest of the runway to retirement.';
+    if (!skip) update();
   }
 
-  function computeSeries() {
-    const i = getInputs();
-    const r = i.rate / 100;
-    const years = i.retAge - i.curAge;
-    const months = years * 12;
-    // Geometric monthly rate so 12 months of compounding exactly equals the
-    // stated annual rate — keeps the simulation consistent with the closed-form
-    // coast number: target / (1+r)^years.
-    const mr = Math.pow(1 + r, 1 / 12) - 1;
-
-    const coastNumber = i.target / Math.pow(1 + r, years);
-    const reached = i.balance >= coastNumber;
-
-    // Month-by-month simulation of both paths. Contributions land at the end
-    // of each month (same convention as the Phases compound calculator).
-    let contribBal = i.balance;
-    let coastBal = i.balance;
-    let coastAgeMonths = reached ? 0 : null;
-    const series = [{ age: i.curAge, contributing: contribBal, coasting: coastBal }];
-
-    for (let m = 1; m <= months; m++) {
-      contribBal = contribBal * (1 + mr) + i.contrib;
-      coastBal = coastBal * (1 + mr);
-      // The coast threshold shrinks the target by the compounding still to come.
-      if (coastAgeMonths === null) {
-        const threshold = i.target / Math.pow(1 + r, (months - m) / 12);
-        if (contribBal >= threshold) coastAgeMonths = m;
-      }
-      if (m % 12 === 0) series.push({ age: i.curAge + m / 12, contributing: contribBal, coasting: coastBal });
+  function renderResults(r) {
+    const set = (id, t) => { document.getElementById(id).textContent = t; };
+    const rc1 = document.getElementById('rc1-val');
+    const sub = document.getElementById('rc1-sub');
+    if (r.inputs.mode === 'solve') {
+      set('rc1-label', 'Coast FIRE age');
+      rc1.textContent = r.noSolution ? '—' : (r.alreadyCoast ? 'now' : '~' + Math.round(r.coastAge));
+      if (r.noSolution) sub.textContent = 'Not reachable by age ' + r.inputs.retAge + ' at ' + fmt(r.inputs.contribMon) + '/mo — see the Phase 1 alert above.';
+      else if (r.alreadyCoast) sub.textContent = 'Already coasting — ' + fmt(r.inputs.balance) + ' grows to ' + fmt(r.endBalance) + ' by age ' + r.inputs.retAge + ' with no further saving.';
+      else sub.textContent = 'Contributing ' + fmt(r.inputs.contribMon) + '/mo, you can stop saving at ' + Math.round(r.coastAge) + ' and coast to ' + fmt(r.endBalance) + ' by ' + r.inputs.retAge + '.';
+    } else {
+      set('rc1-label', 'Coast age (your plan)');
+      rc1.textContent = 'age ' + Math.round(r.coastAge);
+      sub.textContent = r.reachedTarget
+        ? 'Stopping at ' + Math.round(r.coastAge) + ' lands ' + fmt(r.endBalance) + ' by ' + r.inputs.retAge + ' — ' + fmtSigned(r.surplus) + ' vs target.'
+        : 'Stopping at ' + Math.round(r.coastAge) + ' lands ' + fmt(r.endBalance) + ' by ' + r.inputs.retAge + ' — ' + fmt(Math.abs(r.surplus)) + ' short of target.';
     }
+    set('rc2-val', fmt(r.balAtCoast));
+    set('rc3-val', fmt(r.endBalance));
+    const rc4 = document.getElementById('rc4-val');
+    set('rc4-label', r.surplus >= 0 ? 'Surplus vs target' : 'Shortfall vs target');
+    rc4.textContent = fmtSigned(r.surplus);
+    rc4.style.color = r.surplus >= 0 ? AMBER : '#C46552';
 
-    const coastAtRet = coastBal;          // balance at retirement if you stop today
-    const contribAtRet = contribBal;      // balance at retirement if you keep going
-    const progress = Math.min(100, (i.balance / coastNumber) * 100);
-    const surplus = i.balance - coastNumber;
+    // phase outputs
+    set('p1-output', r.noSolution && r.inputs.mode === 'solve'
+      ? 'Balance contributing all the way to age ' + r.inputs.retAge + ': ' + fmt(r.balAtCoast)
+      : 'Balance when you stop contributing (age ' + Math.round(r.coastAge) + '): ' + fmt(r.balAtCoast));
+    set('p2-output', 'Balance at retirement (age ' + r.inputs.retAge + '): ' + fmt(r.endBalance));
 
-    return {
-      inputs: i, series, years, coastNumber, reached, progress, surplus,
-      coastAgeMonths, coastAge: coastAgeMonths !== null ? i.curAge + coastAgeMonths / 12 : null,
-      coastAtRet, contribAtRet
-    };
+    // phase 1 alert — target unreachable even contributing every month to retirement
+    const alertEl = document.getElementById('p1-alert');
+    if (r.noSolution) {
+      alertEl.style.display = '';
+      alertEl.textContent = 'Not able to coast: contributing ' + fmt(r.inputs.contribMon) + '/mo every month to age ' + r.inputs.retAge +
+        ' reaches ' + fmt(r.maxEnd) + ' — ' + fmt(r.inputs.target - r.maxEnd) + ' short of your ' + fmt(r.inputs.target) +
+        ' target. Raise contributions, push retirement later, or lower the target.';
+    } else {
+      alertEl.style.display = 'none';
+    }
+    document.getElementById('p1-solved').style.display = (r.inputs.mode === 'solve' && !r.noSolution) ? '' : 'none';
+
+    // retirement drawdown summary (below chart)
+    set('dd-age', r.inputs.retAge);
+    set('dd-balance', fmt(r.endBalance));
+    set('dd-spend', fmt(r.sustainable));
+
+    // solved / derived field values
+    const cy = document.getElementById('contrib-years');
+    if (r.inputs.mode === 'solve') cy.value = (r.contribMonths / 12).toFixed(1).replace(/\.0$/, '');
+    document.getElementById('coast-years').value = r.coastYears.toFixed(1).replace(/\.0$/, '');
+  }
+
+  function renderTimeline(r) {
+    const tl = document.getElementById('phase-timeline');
+    const mk = document.getElementById('tl-marker');
+    tl.innerHTML = '';
+    const cY = r.contribMonths / 12, kY = r.coastYears;
+    const contribFlex = Math.max(0.001, cY), coastFlex = Math.max(0.001, kY);
+    if (cY > 0.01) {
+      const a = document.createElement('div');
+      a.className = 'tl-seg contribute'; a.style.flex = contribFlex;
+      a.innerHTML = '<span class="tl-name">Contribute</span><span class="tl-sub">' + (Math.round(cY * 10) / 10) + 'y → age ' + Math.round(r.coastAge) + '</span>';
+      tl.appendChild(a);
+    }
+    if (kY > 0.01) {
+      const b = document.createElement('div');
+      b.className = 'tl-seg coast'; b.style.flex = coastFlex;
+      b.innerHTML = '<span class="tl-name">Coast</span><span class="tl-sub">' + (Math.round(kY * 10) / 10) + 'y → age ' + r.inputs.retAge + '</span>';
+      tl.appendChild(b);
+    }
+    let left;
+    if (r.inputs.mode === 'solve') {
+      left = r.noSolution ? '● Can’t reach target by ' + r.inputs.retAge
+        : (r.alreadyCoast ? '● Already coasting — stop contributing now'
+          : '● Coast age ' + Math.round(r.coastAge) + ' — earliest you can stop');
+    } else {
+      left = '● Coast age ' + Math.round(r.coastAge) + (r.minCoastAge !== null ? ' (earliest possible: ' + Math.round(r.minCoastAge) + ')' : '');
+    }
+    mk.innerHTML = '<span>' + left + '</span><span>Target ' + fmt(r.inputs.target) + ' at ' + r.inputs.retAge + '</span>';
   }
 
   function renderWarnings(r) {
-    const el = document.getElementById('warnings');
-    el.innerHTML = '';
-    if (r.inputs.retClamped) {
-      const div = document.createElement('div');
-      div.className = 'warning';
-      div.textContent = 'Target retirement age must be after your current age — using age ' + r.inputs.retAge + '.';
-      el.appendChild(div);
+    const el = document.getElementById('warnings'); el.innerHTML = '';
+    const add = (cls, t) => { const d = document.createElement('div'); d.className = cls; d.textContent = t; el.appendChild(d); };
+    if (r.inputs.retClamped) add('warning', 'Target retirement age must be after your current age — using age ' + r.inputs.retAge + '.');
+    // Solve-mode outcomes live in the hero sub-line and Phase 1 alert now; plan mode keeps its guidance here.
+    if (r.inputs.mode === 'plan') {
+      if (!r.reachedTarget && r.minCoastAge !== null) {
+        add('warning', 'This plan falls ' + fmt(Math.abs(r.surplus)) + ' short. The earliest you could stop and still hit the target is age ' + Math.round(r.minCoastAge) + '.');
+      } else if (r.reachedTarget && r.minCoastAge !== null && r.coastAge > r.minCoastAge + 0.08) {
+        add('info-note', 'This plan overshoots by ' + fmt(r.surplus) + '. You could stop as early as age ' + Math.round(r.minCoastAge) + ' and still reach the target.');
+      }
     }
-    if (r.reached) {
-      const div = document.createElement('div');
-      div.className = 'info-note';
-      div.textContent = 'You’ve reached Coast FIRE. Coasting from today — zero further contributions — your ' + fmt(r.inputs.balance) +
-        ' grows to ' + fmt(r.coastAtRet) + ' by age ' + r.inputs.retAge + ', ' + fmt(r.coastAtRet - r.inputs.target) + ' above your ' + fmt(r.inputs.target) + ' target.';
-      el.appendChild(div);
-    } else if (r.coastAgeMonths === null) {
-      const div = document.createElement('div');
-      div.className = 'warning';
-      div.textContent = 'At ' + fmt(r.inputs.contrib) + '/mo you don’t reach the target by age ' + r.inputs.retAge +
-        ' — you’d land at ' + fmt(r.contribAtRet) + ' of ' + fmt(r.inputs.target) + '. Raise contributions, push the retirement age, or lower the spend target.';
-      el.appendChild(div);
-    }
-    if (r.inputs.rate >= 8) {
-      const div = document.createElement('div');
-      div.className = 'info-note';
-      div.textContent = r.inputs.rate + '% looks like a nominal (before-inflation) return. If your target is in today’s dollars, consider a real return (~5%) — otherwise the results overstate your readiness.';
-      el.appendChild(div);
-    }
-  }
-
-  function renderCoastBar(r) {
-    const bar = document.getElementById('coast-bar');
-    const cap = document.getElementById('coast-caption');
-    bar.innerHTML = '';
-
-    if (r.reached) {
-      const h = document.createElement('div');
-      h.className = 'coast-seg have';
-      h.style.flex = 1;
-      h.textContent = 'coast number reached · ' + fmt(r.surplus) + ' above the line';
-      bar.appendChild(h);
-      cap.textContent = 'Saving for retirement is now optional. Every extra dollar contributed retires you earlier — or richer.';
-      return;
-    }
-
-    const havePct = Math.max(2, r.progress);
-    const gapPct = Math.max(2, 100 - havePct);
-    const h = document.createElement('div');
-    h.className = 'coast-seg have';
-    h.style.flex = havePct;
-    h.textContent = 'have ' + fmt(r.inputs.balance);
-    const g = document.createElement('div');
-    g.className = 'coast-seg gap';
-    g.style.flex = gapPct;
-    g.textContent = 'gap ' + fmt(r.coastNumber - r.inputs.balance);
-    bar.appendChild(h); bar.appendChild(g);
-
-    cap.textContent = 'You’re ' + Math.round(r.progress) + '% of the way to your Coast FIRE number' +
-      (r.coastAge !== null ? ' — at ' + fmt(r.inputs.contrib) + '/mo you cross it around age ' + Math.round(r.coastAge) + '.' : '.');
+    if (r.inputs.rate1 >= 8 || r.inputs.rate2 >= 8) add('info-note', 'A return of 8%+ looks nominal (before inflation). Since the target is in today’s dollars, a real return (~5%) keeps the projection honest — otherwise it overstates your readiness.');
   }
 
   function renderSummaryTable(r) {
@@ -976,90 +1259,64 @@
     const ages = [];
     for (let a = r.inputs.curAge + 5; a < r.inputs.retAge; a += 5) ages.push(a);
     if (!ages.includes(r.inputs.retAge)) ages.push(r.inputs.retAge);
-
-    let html = '<table><tr><th>Age</th><th>Still contributing</th><th>Coasting from today</th><th>Coast number at that age</th></tr>';
+    let html = '<table><tr><th>Age</th><th>Your plan</th><th>Coast from today</th><th>Coast number at that age</th></tr>';
     ages.forEach(a => {
-      const pt = r.series.find(s => s.age === a);
+      const pt = r.series.find(s => Math.round(s.age) === a);
       if (!pt) return;
-      const threshold = r.inputs.target / Math.pow(1 + r.inputs.rate / 100, r.inputs.retAge - a);
-      html += '<tr><td>' + a + (a === r.inputs.retAge ? ' — retirement' : '') + '</td>' +
-        '<td class="hi">' + fmt(pt.contributing) + '</td><td>' + fmt(pt.coasting) + '</td><td>' + fmt(threshold) + '</td></tr>';
+      const threshold = r.inputs.target / Math.pow(1 + r.inputs.rate2 / 100, r.inputs.retAge - a);
+      html += '<tr><td>' + a + (a === r.inputs.retAge ? ' — retirement' : (Math.round(r.coastAge) === a ? ' — coast' : '')) + '</td>' +
+        '<td class="hi">' + fmt(pt.plan) + '</td><td>' + fmt(pt.coastToday) + '</td><td>' + fmt(threshold) + '</td></tr>';
     });
     html += '</table>';
     el.innerHTML = html;
 
-    document.getElementById('assumptions-note').textContent =
-      'Assumes ' + fmt(r.inputs.contrib) + '/mo contributions (yellow line only) at the end of each month, a constant ' + r.inputs.rate +
-      '% annual return compounded monthly, and a target of ' + fmt(r.inputs.target) +
-      (r.inputs.direct ? ' (set directly)' : ' (' + fmt(r.inputs.spend) + ' × 25, the 4% rule)') +
-      ' at age ' + r.inputs.retAge + '. Deterministic projection — real returns arrive unevenly.';
+    const note = document.getElementById('assumptions-note');
+    note.textContent = 'Phase 1 contributes ' + fmt(r.inputs.contribMon) + '/mo for ' + (Math.round(r.contribMonths / 12 * 10) / 10) + ' years at ' + r.inputs.rate1 +
+      '% real, then Phase 2 coasts ' + (Math.round(r.coastYears * 10) / 10) + ' years at ' + r.inputs.rate2 + '% real with no contributions, to age ' + r.inputs.retAge +
+      '. Target ' + fmt(r.inputs.target) + (r.inputs.direct ? ' (set directly)' : ' (' + fmt(r.inputs.spend) + ' × 25, the 4% rule)') +
+      '. Real returns keep every figure in today’s dollars. Deterministic projection — real returns arrive unevenly, so treat it as a milestone to re-check, not a guarantee.';
   }
 
   function renderChart(r) {
     const ctx = document.getElementById('chart');
-    const labels = r.series.map(s => String(s.age));
-    const contribData = r.series.map(s => Math.round(s.contributing));
-    const coastData = r.series.map(s => Math.round(s.coasting));
+    const labels = r.series.map(s => String(Math.round(s.age)));
+    const planData = r.series.map(s => Math.round(s.plan));
+    const coastData = r.series.map(s => Math.round(s.coastToday));
     const targetData = r.series.map(() => Math.round(r.inputs.target));
-    const coastIdx = r.coastAgeMonths !== null ? r.coastAgeMonths / 12 : -1;
+    const coastIdx = r.contribMonths / 12;
 
     if (chart) chart.destroy();
     chart = new Chart(ctx, {
       type: 'line',
       data: { labels, datasets: [
-        {
-          label: 'Still contributing',
-          data: contribData,
-          borderColor: AMBER, backgroundColor: 'rgba(201,164,92,0.10)',
-          fill: true, tension: 0.15, pointRadius: 0, borderWidth: 2
-        },
-        {
-          label: 'Coasting from today',
-          data: coastData,
-          borderColor: SLATE, backgroundColor: 'transparent',
-          fill: false, tension: 0.15, pointRadius: 0, borderWidth: 2
-        },
-        {
-          label: 'Target number',
-          data: targetData,
-          borderColor: PARCHMENT_FAINT, backgroundColor: 'transparent',
-          fill: false, tension: 0, pointRadius: 0, borderWidth: 1.5, borderDash: [5, 4]
-        }
+        { label: 'Your plan', data: planData, borderColor: AMBER, backgroundColor: 'rgba(201,164,92,0.10)', fill: true, tension: 0.15, pointRadius: 0, borderWidth: 2 },
+        { label: 'Coast from today', data: coastData, borderColor: SLATE, backgroundColor: 'transparent', fill: false, tension: 0.15, pointRadius: 0, borderWidth: 2 },
+        { label: 'Target number', data: targetData, borderColor: PARCHMENT_FAINT, backgroundColor: 'transparent', fill: false, tension: 0, pointRadius: 0, borderWidth: 1.5, borderDash: [5, 4] }
       ]},
       options: {
         responsive: true, maintainAspectRatio: false,
         interaction: { mode: 'index', intersect: false },
         plugins: {
           legend: { display: false },
-          tooltip: {
-            callbacks: {
-              title: items => 'Age ' + items[0].label,
-              label: item => item.dataset.label + ': ' + fmt(item.parsed.y)
-            }
-          }
+          tooltip: { callbacks: {
+            title: items => 'Age ' + items[0].label,
+            label: item => item.dataset.label + ': ' + fmt(item.parsed.y)
+          } }
         },
         scales: {
-          x: {
-            title: { display: true, text: 'Age', color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
-            ticks: { maxTicksLimit: 12, color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
-            grid: { display: false }, border: { color: SEAM }
-          },
-          y: {
-            ticks: { callback: v => '$' + (Math.abs(v) >= 1000000 ? (v/1000000).toFixed(1) + 'M' : Math.abs(v) >= 1000 ? Math.round(v/1000) + 'k' : v), color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
-            grid: { color: SEAM }, border: { color: SEAM }
-          }
+          x: { title: { display: true, text: 'Age', color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } }, ticks: { maxTicksLimit: 12, color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } }, grid: { display: false }, border: { color: SEAM } },
+          y: { ticks: { callback: v => '$' + (Math.abs(v) >= 1000000 ? (v/1000000).toFixed(1) + 'M' : Math.abs(v) >= 1000 ? Math.round(v/1000) + 'k' : v), color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } }, grid: { color: SEAM }, border: { color: SEAM } }
         }
       },
       plugins: [{
         id: 'coastAgeLine',
         afterDraw(c) {
-          if (coastIdx < 0) return;
+          if (coastIdx <= 0 || coastIdx >= r.inputs.totalYears) return;
           const { ctx, chartArea, scales } = c;
           const x = scales.x.getPixelForValue(coastIdx);
           if (x < chartArea.left || x > chartArea.right) return;
           ctx.save();
-          ctx.strokeStyle = COPPER;
-          ctx.lineWidth = 2;
+          ctx.strokeStyle = COPPER; ctx.lineWidth = 2;
           ctx.beginPath(); ctx.moveTo(x, chartArea.top); ctx.lineTo(x, chartArea.bottom); ctx.stroke();
           ctx.fillStyle = COPPER;
           ctx.beginPath(); ctx.arc(x, chartArea.top + 6, 3, 0, Math.PI * 2); ctx.fill();
@@ -1071,46 +1328,34 @@
 
   function update() {
     const i0 = getInputs();
-    // Keep the target field synced to spend × 25 unless the user drives it directly.
-    const targetEl = document.getElementById('target');
-    const spendEl = document.getElementById('spend');
+    const targetEl = document.getElementById('target'), spendEl = document.getElementById('spend');
     targetEl.disabled = !i0.direct;
     spendEl.disabled = i0.direct;
     if (!i0.direct) targetEl.value = formatMoneyValue(Math.round(i0.spend * 25));
 
-    const r = computeSeries();
-    document.getElementById('coast-number').textContent = fmt(r.coastNumber);
-    const progEl = document.getElementById('progress-pct');
-    progEl.textContent = r.reached ? 'reached' : Math.round(r.progress) + '%';
-    progEl.className = 'value ' + (r.reached ? 'good' : 'pending');
-    const ageEl = document.getElementById('coast-age');
-    ageEl.textContent = r.reached ? 'now' : (r.coastAge !== null ? '~' + Math.round(r.coastAge) : '—');
-    ageEl.className = 'value ' + (r.reached ? 'good' : '');
-    document.getElementById('ret-age-label').textContent = r.inputs.retAge;
-    document.getElementById('coast-projection').textContent = fmt(r.coastAtRet);
+    const r = compute();
+    renderResults(r);
+    renderTimeline(r);
     renderWarnings(r);
-    renderCoastBar(r);
     renderChart(r);
     renderSummaryTable(r);
     scheduleUrlUpdate();
   }
 
-  // Wire inputs with the same input/blur clamp pattern as the other Phases calculators.
-  // Money fields (isMoney=true) redisplay with thousands separators on blur.
+  // ---- wiring ----
   [
     ['cur-age', LIMITS.curAge, false],
     ['balance', LIMITS.balance, true],
-    ['contrib', LIMITS.contrib, true],
     ['ret-age', LIMITS.retAge, false],
     ['spend', LIMITS.spend, true],
     ['target', LIMITS.target, true],
-    ['rate', LIMITS.rate, false]
+    ['contrib', LIMITS.contrib, true],
+    ['contrib-years', LIMITS.contribYears, false],
+    ['rate1', LIMITS.rate, false],
+    ['rate2', LIMITS.rate, false]
   ].forEach(([id, lim, isMoney]) => {
     const el = document.getElementById(id);
-    el.addEventListener('input', () => {
-      markValidity(el, parseFloat(el.value), lim.min, lim.max);
-      update();
-    });
+    el.addEventListener('input', () => { markValidity(el, parseFloat(el.value), lim.min, lim.max); update(); });
     el.addEventListener('blur', () => {
       const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
       el.value = isMoney ? formatMoneyValue(corrected) : corrected;
@@ -1119,6 +1364,8 @@
     });
   });
   document.getElementById('direct-target').addEventListener('change', update);
+  document.getElementById('tab-solve').addEventListener('click', () => setMode('solve'));
+  document.getElementById('tab-plan').addEventListener('click', () => setMode('plan'));
 
   document.getElementById('copy-link').addEventListener('click', () => {
     updateUrlSilently();
@@ -1132,15 +1379,13 @@
     });
   });
 
+  // ---- init ----
   (function hydrateFromUrl() {
     const params = new URLSearchParams(window.location.search);
     const encoded = params.get('d');
-    if (encoded) {
-      const state = decodeState(encoded);
-      if (state) applyState(state);
-    }
+    if (encoded) { const st = decodeState(encoded); if (st) applyState(st); }
   })();
-
+  setMode(mode, true);
   update();
 })();
 </script>
