@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2262583425156336"
+     crossorigin="anonymous"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MH7FWJX2M3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MH7FWJX2M3');
+
+  // ---- GA4 custom event helper ----
+  window.trackEvent = function (name, params) {
+    try {
+      if (typeof window.gtag === 'function') { window.gtag('event', name, params || {}); }
+    } catch (e) { /* analytics must never break the page */ }
+  };
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>REPS Hours Log Template — free Excel download for the 750-hour test</title>
+<meta name="description" content="Free REPS hours log template (Excel, works in Google Sheets). Track real estate professional status hours contemporaneously — the 750-hour test, more-than-half test, and category breakdowns calculate automatically. No signup." />
+<link rel="canonical" href="https://phasecalc.com/reps-hours-log" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Phases" />
+<meta property="og:url" content="https://phasecalc.com/reps-hours-log" />
+<meta property="og:title" content="REPS Hours Log Template — free download, no signup" />
+<meta property="og:description" content="Track your real estate professional hours the way Tax Court expects: contemporaneous, specific, and totaled against the 750-hour and more-than-half tests automatically." />
+<meta property="og:image" content="https://phasecalc.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="REPS Hours Log Template — free download, no signup" />
+<meta name="twitter:description" content="Contemporaneous hours tracking for real estate professional status. 750-hour and more-than-half tests calculate automatically." />
+<meta name="twitter:image" content="https://phasecalc.com/og-image.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is a contemporaneous hours log for REPS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A record kept as the work happens — same day or same week — rather than reconstructed later. The regulations under §469 allow participation to be established by any reasonable means, but Tax Court decisions have repeatedly rejected after-the-fact estimates, ballpark summaries, and logs assembled once an audit notice arrived. Each entry should capture the date, the property, the type of work, a specific description, and the hours."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What activities count toward the 750 hours for REPS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Hands-on work in real property trades or businesses in which you materially participate: property management, tenant screening and relations, maintenance and repairs you perform or directly supervise, bookkeeping and administration for the rentals, acquisition and disposition work, and renovations. Investor-level activities generally do not count — reviewing financial statements, researching markets casually, or monitoring your portfolio. Travel and education hours are contested territory and shouldn't be the backbone of your log."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What should each REPS log entry include?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Date, property or activity, a category, a specific description, and hours. Specificity is what survives scrutiny: 'screened 2 rental applications, ran credit and background checks, called both references — 1.5 hrs' holds up; 'worked on rentals — 8 hrs' does not. Round numbers every day and identical repeated entries are audit red flags."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need a separate hours log for each rental property?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "You need per-property visibility, because material participation is tested property by property unless you've filed a valid aggregation election under §469(c)(7)(A). One log with a property column (like this template) handles it: total hours feed the REPS tests, and filtering by property shows whether each rental separately clears a material participation test — most commonly 500+ hours, or substantially all the participation, or 100+ hours with no one participating more."
+      }
+    }
+  ]
+}
+</script>
+<style>
+  :root {
+    --ink: #0F1B2D;
+    --ink-raised: #142539;
+    --parchment: #EDE6D6;
+    --parchment-dim: #B8AF9C;
+    --parchment-faint: #948D79;
+    --amber: #C9A45C;
+    --amber-dim: #4A3C24;
+    --slate: #5B7A9D;
+    --slate-dim: #25333F;
+    --copper: #B07A4E;
+    --seam: #24344A;
+    --warn: #C46552;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--parchment);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .brandbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--seam);
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .wordmark svg { display: block; }
+  .wordmark span {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    letter-spacing: 0.01em;
+    color: var(--parchment);
+  }
+  .sitenav {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+  }
+  .sitenav a {
+    color: var(--parchment-faint);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+  }
+  .sitenav a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+  .sitenav a.current { color: var(--parchment); border-bottom-color: var(--seam); }
+
+  .masthead {
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--seam);
+    padding-bottom: 24px;
+  }
+  .masthead h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 32px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .masthead p {
+    color: var(--parchment-dim);
+    font-size: 15px;
+    margin: 0;
+    max-width: 560px;
+  }
+
+  .panel {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--amber);
+    padding: 24px;
+    margin-bottom: 28px;
+  }
+  .panel-caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--seam);
+  }
+
+  .download-btn {
+    display: inline-block;
+    background: var(--amber);
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 13px 26px;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.15s ease;
+  }
+  .download-btn:hover { background: #D9B876; }
+  .download-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-faint);
+    margin: 12px 0 0;
+    line-height: 1.7;
+  }
+  .download-meta a { color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber-dim); }
+  .download-meta a:hover { border-bottom-color: var(--amber); }
+
+  .planner-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-faint);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--slate);
+    padding: 9px 14px;
+    margin-bottom: 28px;
+    line-height: 1.55;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
+  th, td { padding: 9px 6px; text-align: left; border-bottom: 1px solid var(--seam); }
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    font-weight: 400;
+  }
+  td { font-family: 'Source Serif 4', serif; color: var(--parchment-dim); }
+  td:first-child { font-family: 'Inter', sans-serif; color: var(--parchment); font-size: 13px; white-space: nowrap; }
+
+  .article h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+  }
+  .article h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 28px 0 8px;
+  }
+  .article p {
+    color: var(--parchment-dim);
+    font-size: 16.5px;
+    line-height: 1.7;
+    margin: 0 0 18px;
+  }
+  .article strong { color: var(--parchment); font-weight: 500; }
+  .article a { color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber-dim); }
+  .article a:hover { border-bottom-color: var(--amber); }
+  .article .formula {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13.5px;
+    color: var(--parchment);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--amber);
+    padding: 12px 16px;
+    margin: 0 0 18px;
+    overflow-x: auto;
+  }
+
+  .entry-example {
+    background: var(--ink-raised);
+    border-left: 2px solid var(--copper);
+    padding: 12px 16px;
+    margin: 0 0 18px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--parchment-dim);
+  }
+  .entry-example .good { color: var(--amber); }
+  .entry-example .bad { color: var(--warn); text-decoration: line-through; }
+
+  .faq-item { margin-bottom: 24px; }
+  .faq-item h3 { margin-bottom: 6px; }
+  .faq-item p { margin-bottom: 0; }
+
+  .support-footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--seam);
+  }
+  .support-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 8px;
+    line-height: 1.6;
+  }
+  .support-line a {
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 1px solid var(--amber-dim);
+  }
+  .support-line a:hover { border-bottom-color: var(--amber); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brandbar">
+    <a class="wordmark" href="/"><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="7" width="12" height="18" fill="#C9A45C"/><rect x="16.5" y="7" width="8.5" height="18" fill="#8A6E3D"/><rect x="27" y="7" width="3.5" height="18" fill="#5B7A9D"/></svg><span>Phases</span></a>
+    <nav class="sitenav">
+      <a href="/">Compound Interest</a>
+      <a href="/retirement-backtest-calculator">Retirement Backtest</a>
+      <a href="/trump-account-calculator">Trump Account</a>
+      <a href="/529-superfunding-calculator">529 Superfund</a>
+      <a href="/roth-vs-traditional-calculator">Roth vs Trad</a>
+      <a href="/coast-fire-calculator">Coast FIRE</a>
+      <a href="/savings-goal-calculator">Savings Goal</a>
+      <a href="/dca-calculator">DCA</a>
+      <a href="/drip-calculator">DRIP</a>
+      <a href="/margin-loan-calculator">Margin</a>
+      <a href="/capital-gains-tax-calculator">Capital Gains</a>
+      <a href="/inflation-adjusted-return-calculator">Real Return</a>
+      <a href="/heloc-payment-calculator">HELOC</a>
+      <a href="/cash-out-refinance-vs-heloc-calculator">Refi vs HELOC</a>
+      <a href="/mortgage-extra-payment-calculator">Mortgage Payoff</a>
+      <a href="/rental-property-calculator">Rental</a>
+      <a href="/real-estate-professional-calculator">REPS</a>
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </header>
+
+  <div class="masthead">
+    <h1>REPS hours log template</h1>
+    <p>Your hours log is your primary evidence if the IRS questions real estate professional status. This free template tracks every hour contemporaneously and runs the 750-hour and more-than-half tests automatically. No signup, no email — just the file.</p>
+  </div>
+
+  <p class="planner-note">RECORD-KEEPING TOOL, NOT TAX ADVICE — this template documents hours; it doesn't determine whether you qualify. REPS depends on your specific facts. Consult a CPA before relying on it for a return.</p>
+
+  <div class="panel">
+    <p class="panel-caption">Free download — Excel format</p>
+    <a class="download-btn" id="download-template" href="/downloads/reps-hours-log-template.xlsx" download>Download the template (.xlsx)</a>
+    <p class="download-meta">
+      19 KB · 3 tabs · works in Excel, Numbers, and LibreOffice.<br>
+      Prefer Google Sheets? Upload it via <strong>File&nbsp;&rarr;&nbsp;Import</strong> in any Sheet — formulas carry over cleanly.<br>
+      Comparing tools first? See <a href="/reps-hours-tracker-comparison">free template vs. paid tracking apps</a>.
+    </p>
+  </div>
+
+  <article class="article">
+    <h2>What's inside</h2>
+    <table>
+      <tr><th>Tab</th><th>What it does</th></tr>
+      <tr><td>Instructions</td><td>The two REPS tests, the separate material participation requirement, how to log, and what the yellow input cells are.</td></tr>
+      <tr><td>Hours Log</td><td>~400 rows: date, property/activity, category (8-option dropdown), specific description, hours. One example entry shows the level of detail that survives an audit.</td></tr>
+      <tr><td>Summary</td><td>Auto-calculates the 750-hour test (total, remaining, pass/fail), the more-than-half test (enter your other-job hours in one yellow cell), and hours by category and by property.</td></tr>
+    </table>
+
+    <h2>Why contemporaneous logging decides REPS audits</h2>
+    <p>The regulations let you establish participation "by any reasonable means" — but the Tax Court has drawn a hard line in practice. Taxpayers who kept <strong>dated, specific, as-you-go records</strong> have won; taxpayers who showed up with round-number estimates, calendars reconstructed months later, or "approximately 800 hours" summaries have lost, over and over. The IRS treats a log created after the audit notice as nearly worthless. The habit matters more than the tool: log the same day, or at worst the same week.</p>
+    <p>Specificity is the second half of credibility:</p>
+    <div class="entry-example">
+      <span class="good">✓ 1/15 · 123 Main St · Tenant Relations · "Screened 2 rental applications, ran credit/background checks, called both references" · 1.5 hrs</span><br>
+      <span class="bad">✗ January · rentals · "worked on properties" · 40 hrs</span>
+    </div>
+    <p>Watch the red flags auditors are trained on: identical hours every day, suspiciously tidy totals (exactly 750.0), travel and "education" padding out the log, and investor-level activities — reviewing statements, browsing Zillow — counted as participation. If the real work is happening, an honest log clears 750 with room to spare; the <a href="/real-estate-professional-calculator">REPS calculator</a>'s audit-risk section covers what typically sinks claims.</p>
+
+    <h2>The tests this template tracks</h2>
+    <p><strong>750-hour test:</strong> more than 750 hours in real property trades or businesses in which you materially participate. The Summary tab totals your log and shows hours remaining.</p>
+    <p><strong>More-than-half test:</strong> those hours must exceed half of <em>all</em> your personal-service hours for the year. Enter your other-job hours in the yellow cell and the tab computes your share — this is the test that makes REPS nearly impossible alongside a full-time W-2, and why the strategy typically uses a non-W-2 spouse. Spouses cannot combine hours for either test.</p>
+    <p><strong>Material participation, per property:</strong> a separate hurdle the summary flags but can't fully automate — it's tested property by property unless you file an aggregation election. Filter the log by property to check the common tests: 500+ hours, substantially all the participation, or 100+ hours with no one participating more.</p>
+
+    <h2>Where the hours pay off</h2>
+    <p>If REPS holds, rental losses convert from passive to non-passive and offset W-2 income on a joint return — instead of being suspended entirely above $150,000 MAGI. To see what that's worth in dollars — cost segregation, bonus depreciation, the year-1 refund, recapture at sale, and whether the whole strategy beats an index fund — run your numbers through the <a href="/real-estate-professional-calculator">real estate professional status calculator</a>. And before any of the tax math matters, the property itself has to work: the <a href="/rental-property-calculator">rental property calculator</a> underwrites the deal on its own merits.</p>
+
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <h3>What makes a log "contemporaneous"?</h3>
+      <p>Kept as the work happens — same day or same week. Court cases consistently reject estimates and calendars reconstructed after an audit notice. Each entry: date, property, category, specific description, hours.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What activities count toward the 750 hours?</h3>
+      <p>Hands-on work in real property businesses you materially participate in: management, tenant screening, maintenance you do or directly supervise, rental bookkeeping, acquisitions, renovations. Investor-level activity (reviewing statements, casual market research) doesn't; travel and education hours are contested — don't build the log on them.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What should each entry look like?</h3>
+      <p>Specific and verifiable: "screened 2 applications, ran credit checks, called references — 1.5 hrs" survives scrutiny; "worked on rentals — 8 hrs" doesn't. Avoid identical repeated entries and round-number totals.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Do I need a separate log per property?</h3>
+      <p>One log with a property column works — but material participation is tested per property unless you've filed an aggregation election, so keep the property field filled in and use the per-property breakdown on the Summary tab.</p>
+    </div>
+
+    <p style="margin-top:32px;"><em>This template and page are for general informational and record-keeping purposes only — not tax, legal, or financial advice. REPS qualification is fact-specific and heavily audited; consult a qualified CPA or tax attorney before relying on it.</em></p>
+  </article>
+
+  <div class="support-footer">
+    <p class="support-line">
+      If this template was useful, a tip helps keep it free and signup-free —
+      <a href="https://buymeacoffee.com/ctong" target="_blank" rel="noopener">buy me a coffee</a>.
+    </p>
+    <p class="support-line">
+      I also use <a href="https://monarch.com/referral/rk2olzfae9?r_source=copy" target="_blank" rel="noopener">Monarch</a> to track net worth and spending — that's a referral link, so if you sign up I get a discount on my own subscription. No pressure either way.
+    </p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  // ---- GA4: download + outbound-link tracking ----
+  var dl = document.getElementById('download-template');
+  if (dl) { dl.addEventListener('click', function () { window.trackEvent && window.trackEvent('template_download', { template: 'reps-hours-log' }); }); }
+  document.querySelectorAll('a[href*="monarch.com/referral"]').forEach(function (a) {
+    a.addEventListener('click', function () { window.trackEvent && window.trackEvent('affiliate_click', { link_id: 'monarch' }); });
+  });
+  document.querySelectorAll('a[href*="buymeacoffee.com"]').forEach(function (a) {
+    a.addEventListener('click', function () { window.trackEvent && window.trackEvent('bmac_click'); });
+  });
+})();
+</script>
+</body>
+</html>

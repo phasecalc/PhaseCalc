@@ -10,6 +10,13 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-MH7FWJX2M3');
+
+  // ---- GA4 custom event helper ----
+  window.trackEvent = function (name, params) {
+    try {
+      if (typeof window.gtag === 'function') { window.gtag('event', name, params || {}); }
+    } catch (e) { /* analytics must never break the page */ }
+  };
 </script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -187,6 +194,7 @@
       <a href="/cash-out-refinance-vs-heloc-calculator">Refi vs HELOC</a>
       <a href="/mortgage-extra-payment-calculator">Mortgage Payoff</a>
       <a href="/rental-property-calculator">Rental</a>
+      <a href="/real-estate-professional-calculator">REPS</a>
       <a href="/about" class="current">About</a>
       <a href="/privacy">Privacy</a>
     </nav>
@@ -221,5 +229,16 @@
   </div>
 
 </div>
+<!-- GA4 outbound-link tracking -->
+<script>
+(function () {
+  document.querySelectorAll('a[href*="monarch.com/referral"]').forEach(function (a) {
+    a.addEventListener('click', function () { window.trackEvent && window.trackEvent('affiliate_click', { link_id: 'monarch' }); });
+  });
+  document.querySelectorAll('a[href*="buymeacoffee.com"]').forEach(function (a) {
+    a.addEventListener('click', function () { window.trackEvent && window.trackEvent('bmac_click'); });
+  });
+})();
+</script>
 </body>
 </html>

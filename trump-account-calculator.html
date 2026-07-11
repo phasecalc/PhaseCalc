@@ -10,6 +10,13 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-MH7FWJX2M3');
+
+  // ---- GA4 custom event helper ----
+  window.trackEvent = function (name, params) {
+    try {
+      if (typeof window.gtag === 'function') { window.gtag('event', name, params || {}); }
+    } catch (e) { /* analytics must never break the page */ }
+  };
 </script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -756,6 +763,7 @@
       <a href="/cash-out-refinance-vs-heloc-calculator">Refi vs HELOC</a>
       <a href="/mortgage-extra-payment-calculator">Mortgage Payoff</a>
       <a href="/rental-property-calculator">Rental</a>
+      <a href="/real-estate-professional-calculator">REPS</a>
       <a href="/about">About</a>
       <a href="/privacy">Privacy</a>
     </nav>
@@ -1033,6 +1041,15 @@
 
 <script>
 (function(){
+  // ---- GA4: debounced calculate tracking (skips programmatic/init recalcs) ----
+  var _calcReady = false, _calcTimer;
+  function trackCalculate() {
+    if (!_calcReady) return;
+    clearTimeout(_calcTimer);
+    _calcTimer = setTimeout(function () {
+      window.trackEvent && window.trackEvent('calculate', { calculator: 'trump-account' });
+    }, 700);
+  }
   // Shim parseFloat so every call site transparently tolerates comma-grouped
   // input ("12,000") without touching each call site.
   function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
@@ -1528,6 +1545,7 @@
   }
 
   function update() {
+    trackCalculate();
     const r = project(getInputs());
     r.inputs = getInputs();
     renderResults(r);
@@ -1621,6 +1639,17 @@
   setMode(mode, true);
   setLumpVisible(parseFloat(document.getElementById('lump-sum').value) !== 0);
   update();
+
+  // ---- GA4: outbound-link + share tracking; enable calculate events ----
+  document.querySelectorAll('a[href*="monarch.com/referral"]').forEach(function (a) {
+    a.addEventListener('click', function () { window.trackEvent && window.trackEvent('affiliate_click', { link_id: 'monarch' }); });
+  });
+  document.querySelectorAll('a[href*="buymeacoffee.com"]').forEach(function (a) {
+    a.addEventListener('click', function () { window.trackEvent && window.trackEvent('bmac_click'); });
+  });
+  var _shareBtn = document.getElementById('copy-link');
+  if (_shareBtn) { _shareBtn.addEventListener('click', function () { window.trackEvent && window.trackEvent('share_copy'); }); }
+  _calcReady = true;
 })();
 </script>
 </body>

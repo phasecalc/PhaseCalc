@@ -10,6 +10,13 @@
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-MH7FWJX2M3');
+
+  // ---- GA4 custom event helper ----
+  window.trackEvent = function (name, params) {
+    try {
+      if (typeof window.gtag === 'function') { window.gtag('event', name, params || {}); }
+    } catch (e) { /* analytics must never break the page */ }
+  };
 </script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -132,6 +139,14 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "Yes. Grandparents, other relatives, and even friends can each make their own superfunded contribution to the same beneficiary's 529 plan, each using their own $95,000 (2026) 5-year election capacity, as long as they don't also make other gifts to that beneficiary during the same five-year window."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What if my 529 runs out before graduation?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The remaining years get paid another way: current cash flow, the student's earnings, scholarships, or student loans (of which up to $10,000 lifetime can later be repaid from a future 529). Running out isn't a tax problem - there's no penalty for exhausting the account on qualified expenses - it's a funding-gap problem, and it's far cheaper to see it a decade early. This calculator flags the exact college year the balance hits zero and the total shortfall, so you can size a bigger lump sum, add ongoing contributions, or adjust the annual draw while there's still time to compound."
       }
     }
   ]
@@ -357,6 +372,51 @@
   .toggle input { width: auto; accent-color: #C9A45C; cursor: pointer; }
   .toggle .hint { color: var(--parchment-faint); }
 
+  /* Phase cards (pattern shared with the compound interest + retirement backtest calculators) */
+  .phase-list { display: flex; flex-direction: column; margin-bottom: 28px; }
+  .phase-card {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--amber);
+    padding: 18px 20px;
+    position: relative;
+  }
+  .phase-card.terminal { border-left-color: var(--slate); margin-top: 18px; }
+  .phase-card + .phase-card { margin-top: 10px; }
+  .phase-card .phase-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  .phase-title {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--parchment);
+  }
+  .type-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    border: 1px solid var(--seam);
+    padding: 3px 7px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+  .type-badge.locked { color: var(--slate); border-color: var(--slate-dim); }
+  .phase-meta {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-faint);
+    margin: 14px 0 0;
+    padding-top: 12px;
+    border-top: 1px solid var(--seam);
+    line-height: 1.6;
+  }
+  .phase-meta strong { color: var(--amber); font-weight: 500; }
+
   /* Results strip */
   .results-strip {
     display: grid;
@@ -387,6 +447,12 @@
   .result-cell.hero .value { color: var(--amber); }
   .result-cell .value.growth { color: var(--amber); }
   .result-cell .value.warn-val { color: var(--warn); }
+  .result-cell .sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--parchment-faint);
+    margin: 4px 0 0;
+  }
 
   /* Growth bar — the signature element (principal vs. tax-free growth) */
   .growth-bar {
@@ -585,6 +651,7 @@
       <a href="/cash-out-refinance-vs-heloc-calculator">Refi vs HELOC</a>
       <a href="/mortgage-extra-payment-calculator">Mortgage Payoff</a>
       <a href="/rental-property-calculator">Rental</a>
+      <a href="/real-estate-professional-calculator">REPS</a>
       <a href="/about">About</a>
       <a href="/privacy">Privacy</a>
     </nav>
@@ -592,75 +659,155 @@
 
   <div class="masthead">
     <h1>529 superfunding calculator</h1>
-    <p>Model a lump-sum 529 contribution using the 5-year gift-tax averaging election — how much of your annual exclusion it uses each year, whether any of it spills into your lifetime exemption, and how much of the ending balance is tax-free growth.</p>
+    <p>Model the full arc of a superfunded 529 in three phases: the lump sum (with the 5-year gift-tax election), the years of untouched compounding, and the drawdown — undergrad plus an optional grad-school segment — including whether the account covers the whole schedule or runs out mid-degree.</p>
   </div>
 
-  <div class="panel">
-    <div class="field-grid">
-      <div class="field">
-        <label>Lump-sum contribution<span class="tip" tabindex="0" aria-label="Help: lump-sum contribution"><span class="tip-icon">?</span><span class="tip-box">The total amount deposited today, split evenly among your contributors below. In 2026, five years of exclusion per contributor is $95,000 ($19,000 x 5) — $190,000 for two contributors.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="lump-sum" value="190,000" min="0" max="1000000" step="1000" /></div>
+  <div class="phase-list">
+
+    <div class="phase-card">
+      <div class="phase-top">
+        <span class="phase-title">Superfund the account today</span>
+        <span class="type-badge">Phase 1 · lump sum, deposited today</span>
       </div>
-      <div class="field">
-        <label>Number of contributors<span class="tip" tabindex="0" aria-label="Help: number of contributors"><span class="tip-icon">?</span><span class="tip-box">Each person who gifts to this beneficiary has their own separate annual exclusion. Two parents each gifting is the common case; grandparents can also each use their own.</span></span></label>
-        <input type="number" id="contributors" value="2" min="1" max="6" step="1" />
+      <div class="field-grid">
+        <div class="field">
+          <label>Deposit per contributor<span class="tip" tabindex="0" aria-label="Help: deposit per contributor"><span class="tip-icon">?</span><span class="tip-box">What each person puts in today — the model assumes the lump sum lands now, at the beneficiary's current age. In 2026, five years of exclusion per contributor is $95,000 ($19,000 x 5). Grandparents can layer their own on top of parents'.</span></span></label>
+          <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="deposit" value="95,000" /></div>
+        </div>
+        <div class="field">
+          <label>Existing 529 balance<span class="tip" tabindex="0" aria-label="Help: existing balance"><span class="tip-icon">?</span><span class="tip-box">Anything already in the account before today's lump sum — years of regular contributions, or a past superfund. It compounds alongside the new deposit but isn't a new gift, so it doesn't touch the gift-tax schedule below.</span></span></label>
+          <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="existing" value="0" /></div>
+        </div>
+        <div class="field">
+          <label>Number of contributors<span class="tip" tabindex="0" aria-label="Help: number of contributors"><span class="tip-icon">?</span><span class="tip-box">Each person who gifts to this beneficiary has their own separate annual exclusion. Two parents is the common case; add grandparents as extra contributors.</span></span></label>
+          <input type="number" id="contributors" value="2" min="1" max="6" step="1" />
+        </div>
+        <div class="field">
+          <label>Annual gift tax exclusion<span class="tip" tabindex="0" aria-label="Help: annual gift tax exclusion"><span class="tip-icon">?</span><span class="tip-box">The amount one person can gift another per year, tax-free and exemption-free ($19,000 in 2026). Indexed for inflation — edit it to model a different year.</span></span></label>
+          <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="exclusion" value="19,000" /></div>
+        </div>
       </div>
-      <div class="field">
-        <label>Annual gift tax exclusion<span class="tip" tabindex="0" aria-label="Help: annual gift tax exclusion"><span class="tip-icon">?</span><span class="tip-box">The amount one person can gift another per year, tax-free and exemption-free ($19,000 in 2026). This is indexed for inflation and changes most years — edit it to model a different year.</span></span></label>
-        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="exclusion" value="19,000" min="1000" max="50000" step="500" /></div>
-      </div>
-      <div class="field">
-        <label>Expected annual return %<span class="tip" tabindex="0" aria-label="Help: annual return"><span class="tip-icon">?</span><span class="tip-box">Expected average yearly growth of the 529 investment portfolio. 5-7% is a common long-run assumption for an equity-heavy age-based portfolio — a planning guess, not a prediction.</span></span></label>
-        <div class="input-row"><input type="number" id="rate" value="6" min="0" max="15" step="0.1" /><span class="suffix">%</span></div>
-      </div>
-      <div class="field">
-        <label>Years until funds are needed<span class="tip" tabindex="0" aria-label="Help: years until funds needed"><span class="tip-icon">?</span><span class="tip-box">The investment horizon before the beneficiary starts drawing on the account for qualified education expenses.</span></span></label>
-        <input type="number" id="years" value="10" min="1" max="30" step="1" />
-      </div>
-      <div class="field">
-        <label>&nbsp;</label>
-        <label class="toggle" style="margin-top:2px;">
+      <div class="toggles" style="margin-top:14px;">
+        <label class="toggle">
           <input type="checkbox" id="five-year-election" checked />
           <span>Elect 5-year averaging <span class="hint">(Form 709)</span></span>
         </label>
       </div>
+      <p class="phase-meta" id="lump-meta"></p>
     </div>
+
+    <div class="phase-card">
+      <div class="phase-top">
+        <span class="phase-title">Let it compound</span>
+        <span class="type-badge">Phase 2 · growth</span>
+      </div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Beneficiary's age today<span class="tip" tabindex="0" aria-label="Help: beneficiary age"><span class="tip-icon">?</span><span class="tip-box">Used to compute the growth window: college start age minus age today. The younger the child, the more years the lump sum compounds untouched.</span></span></label>
+          <input type="number" id="ben-age" value="8" min="0" max="25" step="1" />
+        </div>
+        <div class="field">
+          <label>College starts at age<span class="tip" tabindex="0" aria-label="Help: college start age"><span class="tip-icon">?</span><span class="tip-box">18 is the standard assumption — edit for a gap year, early start, or a custom horizon.</span></span></label>
+          <input type="number" id="college-age" value="18" min="1" max="40" step="1" />
+        </div>
+        <div class="field">
+          <label>Expected annual return %<span class="tip" tabindex="0" aria-label="Help: annual return"><span class="tip-icon">?</span><span class="tip-box">~7% is the long-run US stock assumption (before inflation) used across this site. Age-based 529 portfolios de-risk toward bonds as college nears — knock 1-2% off if you're on a glide path rather than a static equity portfolio.</span></span></label>
+          <div class="input-row"><input type="number" id="rate" value="7" min="0" max="15" step="0.1" /><span class="suffix">%</span></div>
+        </div>
+        <div class="field">
+          <label>Ongoing contribution /yr<span class="tip" tabindex="0" aria-label="Help: ongoing contribution"><span class="tip-icon">?</span><span class="tip-box">Optional additions during the growth phase. Default $0 — the point of superfunding is usually fund once and let it ride. Note: gifts during the 5-year election window reduce that year's remaining exclusion.</span></span></label>
+          <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="ongoing" value="0" /></div>
+        </div>
+        <div class="field" id="contrib-start-field">
+          <label>Contributions start in year<span class="tip" tabindex="0" aria-label="Help: contribution start year"><span class="tip-icon">?</span><span class="tip-box">When the ongoing contributions begin. Set to 6 to wait out the 5-year election window and resume gifting with a clean exclusion — the common pattern after a superfund.</span></span></label>
+          <input type="number" id="contrib-start" value="6" min="1" max="30" step="1" />
+        </div>
+      </div>
+      <p class="phase-meta" id="growth-meta"></p>
+    </div>
+
+    <div class="phase-card terminal">
+      <div class="phase-top">
+        <span class="phase-title">Draw it down</span>
+        <span class="type-badge locked">Phase 3 · drawdown · locked to end</span>
+      </div>
+      <div class="field-grid">
+        <div class="field">
+          <label>Years of college<span class="tip" tabindex="0" aria-label="Help: years of college"><span class="tip-icon">?</span><span class="tip-box">4 for a standard undergrad degree. Extend for grad school, a five-year program, or multiple beneficiaries drawing sequentially.</span></span></label>
+          <input type="number" id="draw-years" value="4" min="1" max="12" step="1" />
+        </div>
+        <div class="field">
+          <label>Annual withdrawal<span class="tip" tabindex="0" aria-label="Help: annual withdrawal"><span class="tip-icon">?</span><span class="tip-box">Qualified spending per undergrad year in today's dollars — tuition, fees, room and board, books. Rough 2025-26 cost of attendance: ~$25-30k in-state public, ~$60k+ private. Grown at the tuition inflation rate to each withdrawal year.</span></span></label>
+          <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="withdrawal" value="45,000" /></div>
+        </div>
+        <div class="field">
+          <label>College cost inflation %/yr<span class="tip" tabindex="0" aria-label="Help: college cost inflation"><span class="tip-icon">?</span><span class="tip-box">A blended rate for all-in cost of attendance — tuition, housing, food, books. Tuition led historically (~5.9%/yr since the 1960s), but housing has outpaced tuition since 2010 and is now the bigger line at public in-state schools. 3-4.5% is a reasonable blend; both withdrawals grow at this rate from today's dollars. Set 0 for flat costs.</span></span></label>
+          <div class="input-row"><input type="number" id="tuition-inf" value="4" min="0" max="10" step="0.5" /><span class="suffix">%</span></div>
+        </div>
+        <div class="field">
+          <label>Grad school years<span class="tip" tabindex="0" aria-label="Help: grad school years"><span class="tip-icon">?</span><span class="tip-box">A second drawdown segment right after undergrad — med school, law, MBA, PhD-with-tuition. Set to 0 for undergrad only.</span></span></label>
+          <input type="number" id="grad-years" value="4" min="0" max="8" step="1" />
+        </div>
+        <div class="field" id="grad-wd-field">
+          <label>Grad annual withdrawal<span class="tip" tabindex="0" aria-label="Help: grad withdrawal"><span class="tip-icon">?</span><span class="tip-box">All-in cost per grad year in today's dollars, grown at the tuition inflation rate. Med school commonly runs $70-100k/yr today; law and MBA are similar territory. 529 funds spend tax-free on grad school just like undergrad.</span></span></label>
+          <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="grad-withdrawal" value="70,000" /></div>
+        </div>
+        <div class="field">
+          <label>&nbsp;</label>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--parchment-faint);display:block;padding-top:6px;line-height:1.6;">Straight-line growth only — no backtesting. Sequence risk over a short window is modest; the remaining balance keeps compounding at your rate.</span>
+        </div>
+      </div>
+      <p class="phase-meta" id="draw-meta"></p>
+    </div>
+
   </div>
 
   <div id="warnings"></div>
 
   <div class="results-strip">
     <div class="result-cell hero">
-      <p class="label">Balance in <span id="years-label-1">10</span> years</p>
+      <p class="label">Balance at college start</p>
       <p class="value" id="bal-end">$0</p>
+      <p class="sub" id="bal-sub"></p>
     </div>
     <div class="result-cell">
-      <p class="label">Lump-sum contributed</p>
-      <p class="value" id="principal-val">$0</p>
+      <p class="label">Tuition covered</p>
+      <p class="value" id="tuition-pct">0%</p>
+      <p class="sub" id="tuition-sub"></p>
     </div>
     <div class="result-cell">
-      <p class="label">Tax-free growth</p>
-      <p class="value growth" id="growth-val">$0</p>
+      <p class="label">After drawdown</p>
+      <p class="value" id="residual-val">$0</p>
+      <p class="sub" id="residual-sub"></p>
     </div>
     <div class="result-cell">
       <p class="label">Lifetime exemption used</p>
       <p class="value" id="exemption-val">$0</p>
+      <p class="sub" id="exemption-sub"></p>
     </div>
   </div>
 
   <div class="growth-bar" id="growth-bar"></div>
   <p class="growth-caption" id="growth-caption"></p>
 
+  <div class="info-note" id="superfund-delta" style="margin-bottom:18px;"></div>
+
   <div class="chart-wrap">
-    <canvas id="chart" role="img" aria-label="Line chart of projected 529 balance by year. The amber line is the contributed principal, the blue line is the total balance, and the shaded area between the two lines is tax-free investment growth.">Projected 529 balance by year: amber line is contributed principal, blue line is total balance, shaded gap between them is tax-free investment growth.</canvas>
+    <canvas id="chart" role="img" aria-label="Line chart of the projected 529 balance across all three phases. The blue area is the superfunded balance; a dashed dark-amber line shows the same total gift paced annually over five years instead; the amber line is contributed principal during the growth phase; dashed vertical lines mark college and grad school start; the balance steps down through the drawdown years, with a red marker if the account is depleted early.">Projected 529 balance across growth and drawdown: blue area is the superfunded balance, dashed line is the same gift paced annually, amber line is contributed principal, vertical dashes mark college and grad start, red marker flags early depletion.</canvas>
   </div>
   <div class="legend">
-    <span><span class="swatch" style="background:#C9A45C"></span>Principal — amber line (your lump-sum contribution)</span>
-    <span><span class="swatch" style="background:#5B7A9D"></span>Total balance — blue line</span>
-    <span><span class="swatch" style="background:rgba(91,122,157,0.35)"></span>Shaded gap between the lines — tax-free investment growth</span>
+    <span><span class="swatch" style="background:rgba(91,122,157,0.35)"></span>Superfunded balance</span>
+    <span><span class="swatch" style="background:#8A6E3D"></span>Same gift paced annually (dashed)</span>
+    <span><span class="swatch" style="background:#C9A45C"></span>Contributed principal (growth phase)</span>
+    <span><span class="swatch" style="background:#948D79"></span>Vertical dashes — college / grad start</span>
+    <span><span class="swatch" style="background:#C46552"></span>Depleted marker</span>
   </div>
 
-  <h2 class="subhead">5-year gift-tax exclusion usage schedule</h2>
+  <h2 class="subhead">Drawdown, year by year</h2>
+  <div id="drawdown-table"></div>
+  <p class="footnote" id="drawdown-note"></p>
+
+  <h2 class="subhead" style="margin-top:36px;">5-year gift-tax exclusion usage schedule</h2>
   <div id="schedule-table"></div>
   <p class="footnote" id="schedule-note"></p>
 
@@ -671,7 +818,8 @@
 
   <article class="article">
     <h2>How this 529 superfunding calculator works</h2>
-    <p>"Superfunding" a 529 plan means front-loading up to five years of gifting into one lump-sum contribution, then using a special IRS election to avoid triggering gift tax or eating into your lifetime exemption. This calculator takes your lump sum, splits it evenly across the number of contributors you enter (typically two parents, sometimes grandparents too), and — if you elect 5-year averaging — divides each contributor's share by five to find the amount reported to the IRS each year. It then compares that per-year, per-contributor figure against the annual gift tax exclusion you enter (editable, since it's indexed for inflation and changes most years) to show exactly how much fits inside the exclusion and how much, if any, spills into your lifetime gift and estate tax exemption. Separately, it projects the lump sum forward at your expected return to show how much of the ending balance is tax-free investment growth on top of your original contribution. For background on this site's other account-and-tax-treatment calculators, see the <a href="/trump-account-calculator">Trump Account calculator</a> and the <a href="/">multi-phase compound interest calculator</a>.</p>
+    <p>"Superfunding" a 529 plan means front-loading up to five years of gifting into one lump-sum contribution, then using a special IRS election to avoid triggering gift tax or eating into your lifetime exemption. This calculator models the plan the way families actually live it, in <strong>three phases</strong>. Phase one is the lump sum, deposited today: each contributor's deposit (typically two parents, sometimes grandparents layered on top) plus anything already sitting in the account from earlier contributions, with the 5-year Form 709 election on the new gift — which, importantly, is gift-tax <em>reporting</em> only; the full amount is invested and compounding from day one. Phase two is the growth window, from the beneficiary's age today to college, compounding untouched — with optional ongoing contributions if you're not strictly a fund-once household. Phase three is the drawdown, in two segments: undergrad years at one annual withdrawal, then an optional grad-school stretch — med school, law, MBA — at its own (usually higher) annual cost, tracked year by year to answer the question a blended average can't — <strong>does the account cover the full schedule, or does it run out mid-degree, and by how much?</strong> A superfund made early often blows past a four-year undergrad budget; the grad segment is where that surplus meets its match. The gift-tax schedule below still shows exactly how much of each year's exclusion is used and whether anything spills into your lifetime exemption. For the same phase-based approach applied elsewhere, see the <a href="/">multi-phase compound interest calculator</a> and the <a href="/coast-fire-calculator">Coast FIRE calculator</a>; for other account-and-tax-treatment tools, the <a href="/trump-account-calculator">Trump Account calculator</a>.</p>
+    <p>One modeling note: withdrawal amounts are entered in <strong>today's dollars</strong> and grown at your college-cost-inflation rate — a blended rate covering tuition, housing, food, and books, since 529 withdrawals pay for all of it — to the year they're actually taken — a $45,000 cost of attendance becomes roughly $66,600 ten years out at 4%/yr, which is exactly the gap that makes flat-dollar college planning quietly optimistic. Withdrawals come out at the start of each year, and the remaining balance keeps compounding at your rate — straight-line, deliberately without historical backtesting. Sequence-of-returns risk over a four-to-five-year drawdown is modest compared to a thirty-year retirement; if you want to see what real historical sequences do to a long drawdown, that's the <a href="/retirement-backtest-calculator">retirement backtest calculator</a>'s job.</p>
 
     <h2>The 5-year election, explained</h2>
     <p>Under IRC section 529(c)(2)(B), a contribution to a 529 plan is treated as a gift to the beneficiary in the year it's made. Ordinarily, any gift above the annual exclusion counts immediately against your lifetime gift and estate tax exemption. The 5-year election changes the timing: it lets you treat one lump-sum 529 contribution as if you'd made it in five equal installments over five calendar years, purely for gift-tax accounting. Nothing about the actual 529 account changes — the full amount is invested and growing from day one — only the IRS paperwork spreads it out.</p>
@@ -747,6 +895,10 @@
       <h3>Can grandparents also superfund a 529 plan?</h3>
       <p>Yes — each contributing individual has their own separate five-year exclusion capacity for the same beneficiary, as long as no one adds other gifts to that beneficiary during the window.</p>
     </div>
+    <div class="faq-item">
+      <h3>What if my 529 runs out before graduation?</h3>
+      <p>There's no penalty — it's a funding gap, not a tax event. The remaining years come from cash flow, scholarships, or loans. This calculator flags the exact year the balance hits zero and the shortfall, so you can fix it a decade early with a bigger lump sum, ongoing contributions, or a smaller draw.</p>
+    </div>
 
     <p style="margin-top:32px;"><em>This calculator is for education, not tax or legal advice. Gift tax rules, exclusion amounts, and 529 plan limits vary and change — confirm your specific numbers with a CPA or estate attorney before filing Form 709 or making a large contribution.</em></p>
   </article>
@@ -765,6 +917,15 @@
 
 <script>
 (function(){
+  // ---- GA4: debounced calculate tracking (skips programmatic/init recalcs) ----
+  var _calcReady = false, _calcTimer;
+  function trackCalculate() {
+    if (!_calcReady) return;
+    clearTimeout(_calcTimer);
+    _calcTimer = setTimeout(function () {
+      window.trackEvent && window.trackEvent('calculate', { calculator: '529-superfunding' });
+    }, 700);
+  }
   // Shim parseFloat so every existing call site transparently tolerates
   // comma-grouped input ("100,000") without needing to touch each call site.
   function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
@@ -775,11 +936,20 @@
   const PARCHMENT_FAINT = '#948D79';
 
   const LIMITS = {
-    lumpSum: { min: 0, max: 1000000 },
+    deposit: { min: 0, max: 1000000 },
+    existing: { min: 0, max: 5000000 },
     contributors: { min: 1, max: 6 },
     exclusion: { min: 1000, max: 50000 },
+    benAge: { min: 0, max: 25 },
+    collegeAge: { min: 1, max: 40 },
     rate: { min: 0, max: 15 },
-    years: { min: 1, max: 30 }
+    ongoing: { min: 0, max: 100000 },
+    contribStart: { min: 1, max: 30 },
+    drawYears: { min: 1, max: 12 },
+    withdrawal: { min: 0, max: 500000 },
+    gradYears: { min: 0, max: 8 },
+    gradWithdrawal: { min: 0, max: 500000 },
+    tuitionInf: { min: 0, max: 10 }
   };
 
   let chart = null;
@@ -805,20 +975,35 @@
     el.classList.toggle('invalid', bad);
   }
   function getInputs() {
-    return {
-      lumpSum: clamp(parseFloat(document.getElementById('lump-sum').value), LIMITS.lumpSum.min, LIMITS.lumpSum.max),
-      contributors: Math.round(clamp(parseFloat(document.getElementById('contributors').value), LIMITS.contributors.min, LIMITS.contributors.max)),
-      exclusion: clamp(parseFloat(document.getElementById('exclusion').value), LIMITS.exclusion.min, LIMITS.exclusion.max),
-      rate: clamp(parseFloat(document.getElementById('rate').value), LIMITS.rate.min, LIMITS.rate.max),
-      years: Math.round(clamp(parseFloat(document.getElementById('years').value), LIMITS.years.min, LIMITS.years.max)),
+    const g = id => parseFloat(document.getElementById(id).value);
+    const i = {
+      deposit: clamp(g('deposit'), LIMITS.deposit.min, LIMITS.deposit.max),
+      existing: clamp(g('existing'), LIMITS.existing.min, LIMITS.existing.max),
+      contributors: Math.round(clamp(g('contributors'), LIMITS.contributors.min, LIMITS.contributors.max)),
+      exclusion: clamp(g('exclusion'), LIMITS.exclusion.min, LIMITS.exclusion.max),
+      benAge: Math.round(clamp(g('ben-age'), LIMITS.benAge.min, LIMITS.benAge.max)),
+      collegeAge: Math.round(clamp(g('college-age'), LIMITS.collegeAge.min, LIMITS.collegeAge.max)),
+      rate: clamp(g('rate'), LIMITS.rate.min, LIMITS.rate.max),
+      ongoing: clamp(g('ongoing'), LIMITS.ongoing.min, LIMITS.ongoing.max),
+      contribStart: Math.round(clamp(g('contrib-start'), LIMITS.contribStart.min, LIMITS.contribStart.max)),
+      drawYears: Math.round(clamp(g('draw-years'), LIMITS.drawYears.min, LIMITS.drawYears.max)),
+      withdrawal: clamp(g('withdrawal'), LIMITS.withdrawal.min, LIMITS.withdrawal.max),
+      gradYears: Math.round(clamp(g('grad-years'), LIMITS.gradYears.min, LIMITS.gradYears.max)),
+      gradWithdrawal: clamp(g('grad-withdrawal'), LIMITS.gradWithdrawal.min, LIMITS.gradWithdrawal.max),
+      tuitionInf: clamp(g('tuition-inf'), LIMITS.tuitionInf.min, LIMITS.tuitionInf.max),
       fiveYear: document.getElementById('five-year-election').checked
     };
+    i.lumpSum = i.deposit * i.contributors;
+    i.growthYears = Math.max(0, i.collegeAge - i.benAge);
+    return i;
   }
 
   // --- Shareable link encode/decode (same pattern as the Phases calculator) ---
   function encodeState() {
     const i = getInputs();
-    const state = { l: i.lumpSum, c: i.contributors, x: i.exclusion, r: i.rate, y: i.years, f: i.fiveYear ? 1 : 0 };
+    const state = { d: i.deposit, e: i.existing, c: i.contributors, x: i.exclusion, b: i.benAge, g: i.collegeAge,
+      r: i.rate, o: i.ongoing, cs: i.contribStart, w: i.drawYears, a: i.withdrawal,
+      gw: i.gradYears, gd: i.gradWithdrawal, ti: i.tuitionInf, f: i.fiveYear ? 1 : 0 };
     const json = JSON.stringify(state);
     const b64 = btoa(unescape(encodeURIComponent(json)));
     return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
@@ -828,16 +1013,43 @@
       const b64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
       const json = decodeURIComponent(escape(atob(b64)));
       const state = JSON.parse(json);
-      if (!state || typeof state.l === 'undefined') return null;
+      if (!state) return null;
+      // Backward compatibility: pre-phase-engine links used { l: total lump, y: years }.
+      if (typeof state.d === 'undefined' && typeof state.l !== 'undefined') {
+        const c = clamp(state.c || 1, LIMITS.contributors.min, LIMITS.contributors.max);
+        state.d = state.l / c;
+        state.b = Math.max(0, 18 - (state.y || 10));
+        state.g = 18;
+      }
+      if (typeof state.d === 'undefined') return null;
+      // Links shared before the grad-school segment existed: keep their
+      // undergrad-only scenario rather than injecting the new grad defaults.
+      if (typeof state.gw === 'undefined') { state.gw = 0; state.gd = 0; }
+      // Links shared before tuition inflation existed modeled flat costs.
+      if (typeof state.ti === 'undefined') state.ti = 0;
       return state;
     } catch (e) { return null; }
   }
   function applyState(s) {
-    document.getElementById('lump-sum').value = formatMoneyValue(clamp(s.l, LIMITS.lumpSum.min, LIMITS.lumpSum.max));
-    document.getElementById('contributors').value = clamp(s.c, LIMITS.contributors.min, LIMITS.contributors.max);
-    document.getElementById('exclusion').value = formatMoneyValue(clamp(s.x, LIMITS.exclusion.min, LIMITS.exclusion.max));
-    document.getElementById('rate').value = clamp(s.r, LIMITS.rate.min, LIMITS.rate.max);
-    document.getElementById('years').value = clamp(s.y, LIMITS.years.min, LIMITS.years.max);
+    const set = (id, val, lim, isMoney) => {
+      if (typeof val === 'undefined') return;
+      const corrected = clamp(val, lim.min, lim.max);
+      document.getElementById(id).value = isMoney ? formatMoneyValue(corrected) : corrected;
+    };
+    set('deposit', s.d, LIMITS.deposit, true);
+    set('existing', s.e, LIMITS.existing, true);
+    set('contributors', s.c, LIMITS.contributors);
+    set('exclusion', s.x, LIMITS.exclusion, true);
+    set('ben-age', s.b, LIMITS.benAge);
+    set('college-age', s.g, LIMITS.collegeAge);
+    set('rate', s.r, LIMITS.rate);
+    set('ongoing', s.o, LIMITS.ongoing, true);
+    set('contrib-start', s.cs, LIMITS.contribStart);
+    set('draw-years', s.w, LIMITS.drawYears);
+    set('withdrawal', s.a, LIMITS.withdrawal, true);
+    set('grad-years', s.gw, LIMITS.gradYears);
+    set('grad-withdrawal', s.gd, LIMITS.gradWithdrawal, true);
+    set('tuition-inf', s.ti, LIMITS.tuitionInf);
     document.getElementById('five-year-election').checked = !!s.f;
   }
   function updateUrlSilently() {
@@ -853,20 +1065,101 @@
 
   function computeResult() {
     const i = getInputs();
+    const r = i.rate / 100;
 
-    // Growth series: single lump-sum deposit at year 0, compounding annually.
-    const series = [];
-    let balance = i.lumpSum;
-    series.push({ year: 0, balance });
-    for (let y = 1; y <= i.years; y++) {
-      balance = balance * (1 + i.rate / 100);
-      series.push({ year: y, balance });
+    // ---- Phase 1 + 2: today's lump sum plus any existing balance, compounding
+    // annually, optional ongoing contributions added at the end of each growth
+    // year. The existing balance is not a new gift — it stays out of the
+    // gift-tax schedule. ----
+    const series = [];   // one point per timeline year, both phases
+    let balance = i.lumpSum + i.existing;
+    let contributed = i.lumpSum + i.existing;
+    series.push({ year: 0, phase: 'growth', balance, principal: contributed });
+    for (let y = 1; y <= i.growthYears; y++) {
+      const add = y >= i.contribStart ? i.ongoing : 0;
+      balance = balance * (1 + r) + add;
+      contributed += add;
+      series.push({ year: y, phase: 'growth', balance, principal: contributed });
     }
-    const finalBalance = balance;
-    const growth = Math.max(0, finalBalance - i.lumpSum);
+    const collegeStartBalance = balance;
+    const totalContributed = contributed;
+    const growth = Math.max(0, collegeStartBalance - totalContributed);
 
-    // Exclusion usage schedule.
-    const perContributorGift = i.contributors > 0 ? i.lumpSum / i.contributors : 0;
+    // ---- Phase 3: drawdown in two segments — undergrad, then optional grad
+    // school — each with its own annual withdrawal, taken at the start of the
+    // year. Remainder compounds straight-line at the same rate. No
+    // backtesting: sequence risk over a short window is deliberately out of
+    // scope. ----
+    const segments = [
+      { label: 'college', years: i.drawYears, wd: i.withdrawal },
+      { label: 'grad', years: i.gradYears, wd: i.gradWithdrawal }
+    ];
+    // Withdrawal amounts are entered in today's dollars and grown at the
+    // tuition inflation rate to the year they're actually taken.
+    const ti = i.tuitionInf / 100;
+    const drawdown = [];
+    let covered = 0;
+    let scheduled = 0;
+    let depleted = null;          // { segment, segYear, drawYear } when money runs out
+    let t = 0;                    // overall drawdown year counter
+    segments.forEach(seg => {
+      for (let k = 1; k <= seg.years; k++) {
+        t++;
+        const planned = seg.wd * Math.pow(1 + ti, i.growthYears + t - 1);
+        scheduled += planned;
+        const startBal = balance;
+        const wd = Math.min(balance, planned);
+        covered += wd;
+        balance -= wd;
+        const short = planned - wd;
+        if (short > 0.005 && depleted === null) depleted = { segment: seg.label, segYear: k, segYears: seg.years, drawYear: t };
+        balance = balance * (1 + r);
+        drawdown.push({
+          segment: seg.label, segYear: k, drawYear: t,
+          timelineYear: i.growthYears + t,
+          calendarYear: CURRENT_YEAR + i.growthYears + t - 1,
+          startBal, withdrawn: wd, planned, shortfall: short, endBal: balance
+        });
+        series.push({ year: i.growthYears + t, phase: 'draw', segment: seg.label,
+          balance, principal: null, withdrawn: wd, shortfall: short });
+      }
+    });
+    // ---- Comparison path: the same total gift paced as five equal annual
+    // installments (today + end of years 1-4) instead of one lump sum.
+    // Existing balance, ongoing contributions, return, and the withdrawal
+    // schedule are identical — the only difference is when the gift money
+    // arrives, which isolates the time-in-market value of superfunding. ----
+    const inst = i.lumpSum / 5;
+    const altSeries = [];
+    let altBal = i.existing + inst;
+    altSeries.push(altBal);
+    for (let y = 1; y <= i.growthYears; y++) {
+      altBal = altBal * (1 + r) + (y <= 4 ? inst : 0) + (y >= i.contribStart ? i.ongoing : 0);
+      altSeries.push(altBal);
+    }
+    const altCollegeStart = altBal;
+    let altCovered = 0, altDepleted = null;
+    drawdown.forEach(d => {
+      const wd = Math.min(altBal, d.planned);
+      altCovered += wd;
+      if (d.planned - wd > 0.005 && altDepleted === null) altDepleted = { segment: d.segment, segYear: d.segYear };
+      altBal = (altBal - wd) * (1 + r) + (d.timelineYear <= 4 ? inst : 0);
+      altSeries.push(altBal);
+    });
+    const altLeftover = altBal;
+
+    const totalDrawYears = i.drawYears + i.gradYears;
+    const scheduledToday = i.withdrawal * i.drawYears + i.gradWithdrawal * i.gradYears;
+    const shortfallTotal = Math.max(0, scheduled - covered);
+    const pctFunded = scheduled > 0 ? covered / scheduled * 100 : 100;
+    const leftover = balance;
+    // SECURE 2.0 Roth rollover seasoning: account must be open 15+ years.
+    const accountAgeAtEnd = i.growthYears + totalDrawYears;
+    const seasoningMet = accountAgeAtEnd >= 15;
+
+    // ---- Gift-tax exclusion schedule (informational — the 5-year framing is
+    // Form 709 reporting, not fund timing; the money compounds from day 0). ----
+    const perContributorGift = i.deposit;
     const reportYears = i.fiveYear ? 5 : 1;
     const perYearGift = perContributorGift / reportYears;
     const used = Math.min(perYearGift, i.exclusion);
@@ -889,15 +1182,97 @@
     const totalReportedAllContributors = perYearGift * reportYears * i.contributors;
 
     return {
-      inputs: i, series, finalBalance, growth,
+      inputs: i, series,
+      collegeStartBalance, totalContributed, growth,
+      drawdown, covered, scheduled, scheduledToday, shortfallTotal, pctFunded, leftover,
+      depleted, totalDrawYears, accountAgeAtEnd, seasoningMet,
+      inst, altSeries, altCollegeStart, altCovered, altDepleted, altLeftover,
+      altPctFunded: scheduled > 0 ? altCovered / scheduled * 100 : 100,
       perContributorGift, reportYears, perYearGift, used, excessPerYear,
       schedule, totalExcessAllContributors, totalUsedAllContributors, totalReportedAllContributors
     };
   }
 
+  function renderPhaseMeta(r) {
+    const i = r.inputs;
+    document.getElementById('lump-meta').innerHTML =
+      'Deposited today: <strong>' + fmt(i.lumpSum) + '</strong> (' + i.contributors + ' × ' + fmt(i.deposit) + ')' +
+      (i.existing > 0 ? ' on top of ' + fmt(i.existing) + ' already in the account — ' + fmt(i.lumpSum + i.existing) + ' total working from day one. ' : '. ') +
+      (i.fiveYear
+        ? 'The 5-year framing is gift-tax reporting only — the full amount is invested and compounding from day one.'
+        : 'Without the election, the whole gift is reported this year.');
+    document.getElementById('growth-meta').innerHTML =
+      i.growthYears > 0
+        ? '<strong>' + i.growthYears + ' year' + (i.growthYears === 1 ? '' : 's') + '</strong> of compounding (age ' + i.benAge + ' → ' + i.collegeAge + ')' +
+          (i.ongoing > 0
+            ? (i.contribStart > i.growthYears
+              ? ' — note: contributions start in year ' + i.contribStart + ', after college begins, so none land.'
+              : ', plus ' + fmt(i.ongoing) + '/yr from year ' + i.contribStart + ' (' + (CURRENT_YEAR + i.contribStart - 1) + (i.contribStart === 6 && i.fiveYear ? ', right after the election window closes' : '') + ').')
+            : ' — fund once, let it ride.')
+        : 'No growth window — college starts immediately at these ages.';
+    document.getElementById('draw-meta').innerHTML =
+      'Scheduled: ' + fmt(i.withdrawal) + '/yr × ' + i.drawYears + ' undergrad' +
+      (i.gradYears > 0 ? ' + ' + fmt(i.gradWithdrawal) + '/yr × ' + i.gradYears + ' grad' : '') +
+      ' in today’s dollars (' + fmt(r.scheduledToday) + ') — <strong>' + fmt(r.scheduled) + ' in future dollars</strong> after ' + i.tuitionInf + '%/yr college cost inflation.';
+  }
+
   function renderWarnings(r) {
     const el = document.getElementById('warnings');
     el.innerHTML = '';
+
+    // ---- Drawdown outcome: the headline question. ----
+    if (r.depleted !== null) {
+      const d = r.depleted;
+      const where = d.segment === 'college' ? 'college year ' + d.segYear + ' of ' + d.segYears : 'grad school year ' + d.segYear + ' of ' + d.segYears;
+      const div = document.createElement('div');
+      div.className = 'warning';
+      div.textContent = 'The account runs out in ' + where +
+        ' (' + (CURRENT_YEAR + r.inputs.growthYears + d.drawYear - 1) + ') — ' + fmt(r.shortfallTotal) +
+        ' of the ' + fmt(r.scheduled) + ' schedule is unfunded (' + Math.round(r.pctFunded) + '% covered). ' +
+        'Close the gap with a bigger lump sum, ongoing contributions, or a lower annual draw.';
+      el.appendChild(div);
+    } else if (r.leftover > 0.5) {
+      const div = document.createElement('div');
+      div.className = 'info-note';
+      div.textContent = fmt(r.leftover) + ' remains after the full drawdown. Options: roll to a sibling beneficiary, keep it for grad school, or convert up to $35,000 to the beneficiary’s Roth IRA (SECURE 2.0 — requires 15 years of account seasoning; this account would be ' + r.accountAgeAtEnd + ' years old at the end of the drawdown, so seasoning ' + (r.seasoningMet ? 'is met' : 'is not yet met') + ').';
+      el.appendChild(div);
+    }
+    if (r.inputs.growthYears === 0) {
+      const div = document.createElement('div');
+      div.className = 'info-note';
+      div.textContent = 'Growth phase is 0 years — the drawdown starts immediately, so the lump sum gets no untouched compounding. Check the beneficiary age and college start age.';
+      el.appendChild(div);
+    }
+
+    // ---- 5-year election window interactions. ----
+    if (r.inputs.fiveYear) {
+      // This lump sum consumes the next 5 years of exclusion. For very young
+      // beneficiaries (under 5), multiple fresh superfunding windows open
+      // before college — the superfund-at-birth, again-at-5 pattern.
+      const extraWindows = Math.floor((r.inputs.growthYears - 1) / 5);
+      if (r.inputs.benAge < 5 && extraWindows >= 1) {
+        const nextYear = CURRENT_YEAR + 5;
+        const nextAge = r.inputs.benAge + 5;
+        const div = document.createElement('div');
+        div.className = 'info-note';
+        div.textContent = 'Today’s deposit consumes each contributor’s gift-tax exclusion for this beneficiary for the next 5 years (' + CURRENT_YEAR + '–' + (CURRENT_YEAR + 4) + '). With ' + r.inputs.growthYears + ' years until college, ' + (extraWindows === 1 ? 'a second superfunding window opens' : extraWindows + ' more superfunding windows open') + ' before the drawdown: the next in ' + nextYear + ' (age ' + nextAge + '), when each contributor could superfund another ' + fmt(r.inputs.deposit) + ' with a fresh 5-year election.';
+        el.appendChild(div);
+      }
+      // Ongoing contributions during the election window collide with the
+      // exclusion the lump sum already consumed. Starting in year 6+ waits
+      // out the window and avoids this entirely.
+      if (r.inputs.ongoing > 0 && r.inputs.contribStart <= 5) {
+        const headroom = Math.max(0, r.inputs.exclusion - r.perYearGift) * r.inputs.contributors;
+        if (r.inputs.ongoing > headroom + 0.5) {
+          const div = document.createElement('div');
+          div.className = 'warning';
+          div.textContent = 'Ongoing contributions collide with the 5-year election: the lump sum already uses ' + fmt(r.perYearGift) + ' of each contributor’s ' + fmt(r.inputs.exclusion) + ' exclusion per year through ' + (CURRENT_YEAR + 4) + ', leaving ' + fmt(headroom) + '/yr of headroom across contributors. Contributions in years ' + r.inputs.contribStart + '–5 exceed that — the excess draws on lifetime exemption and must be reported on Form 709. Set contributions to start in year 6 to wait out the window.';
+          el.appendChild(div);
+        }
+      }
+    }
+
+    // ---- Gift-tax outcome. ----
     if (r.excessPerYear > 0 && r.inputs.fiveYear) {
       const div = document.createElement('div');
       div.className = 'warning';
@@ -920,14 +1295,14 @@
     const bar = document.getElementById('growth-bar');
     const cap = document.getElementById('growth-caption');
     bar.innerHTML = '';
-    const total = r.finalBalance || 1;
-    const pPct = Math.max(2, (r.inputs.lumpSum / total) * 100);
+    const total = r.collegeStartBalance || 1;
+    const pPct = Math.max(2, (r.totalContributed / total) * 100);
     const gPct = Math.max(2, 100 - pPct);
 
     const p = document.createElement('div');
     p.className = 'growth-seg p';
     p.style.flex = pPct;
-    p.textContent = 'principal ' + fmt(r.inputs.lumpSum);
+    p.textContent = 'principal ' + fmt(r.totalContributed);
     const g = document.createElement('div');
     g.className = 'growth-seg g';
     g.style.flex = gPct;
@@ -935,7 +1310,29 @@
     bar.appendChild(p); bar.appendChild(g);
 
     const pct = Math.round((r.growth / total) * 100);
-    cap.textContent = 'In ' + r.inputs.years + ' year' + (r.inputs.years === 1 ? '' : 's') + ', ' + pct + '% of the balance (' + fmt(r.growth) + ') is investment growth — tax-free if spent on qualified education expenses.';
+    cap.textContent = 'At college start (' + r.inputs.growthYears + ' year' + (r.inputs.growthYears === 1 ? '' : 's') + ' of compounding), ' + pct + '% of the balance (' + fmt(r.growth) + ') is investment growth — tax-free when spent on qualified education expenses.';
+  }
+
+  function renderDrawdownTable(r) {
+    const el = document.getElementById('drawdown-table');
+    let html = '<table><tr><th>Year</th><th>Balance at start</th><th>Withdrawal</th><th>Ending balance</th><th>Status</th></tr>';
+    r.drawdown.forEach(d => {
+      const isShort = d.shortfall > 0.005;
+      const exhaustedNow = isShort && r.depleted && r.depleted.drawYear === d.drawYear;
+      const label = (d.segment === 'grad' ? 'Grad ' : 'Year ') + d.segYear + ' (' + d.calendarYear + ')';
+      html += '<tr><td>' + label + '</td>' +
+        '<td>' + fmt(d.startBal) + '</td>' +
+        '<td class="hi">' + fmt(d.withdrawn) + (isShort ? ' of ' + fmt(d.planned) : '') + '</td>' +
+        '<td>' + fmt(d.endBal) + '</td>' +
+        '<td class="' + (isShort ? 'bad' : 'ok') + '">' + (isShort ? (exhaustedNow ? 'DEPLETED — short ' + fmt(d.shortfall) : 'short ' + fmt(d.shortfall)) : 'funded') + '</td></tr>';
+    });
+    html += '</table>';
+    el.innerHTML = html;
+
+    document.getElementById('drawdown-note').textContent =
+      'Withdrawals entered in today’s dollars and grown at ' + r.inputs.tuitionInf + '%/yr college cost inflation to each withdrawal year, taken at the start of the year; the remaining balance compounds at ' + r.inputs.rate +
+      '%/yr straight-line (no historical backtesting — sequence risk over a ' + r.totalDrawYears +
+      '-year window is modest compared to a multi-decade retirement). Estimate only.';
   }
 
   function renderScheduleTable(r) {
@@ -961,25 +1358,38 @@
 
   function renderChart(r) {
     const ctx = document.getElementById('chart');
+    const WARN = '#C46552';
     const labels = r.series.map(s => String(s.year));
-    const principalData = r.series.map(() => Math.round(r.inputs.lumpSum));
     const totalData = r.series.map(s => Math.round(s.balance));
+    const principalData = r.series.map(s => s.principal === null ? null : Math.round(s.principal));
+    const collegeIdx = r.inputs.growthYears;
+    // Red marker on drawdown years with a shortfall.
+    const pointRadii = r.series.map(s => (s.phase === 'draw' && s.shortfall > 0.005) ? 4 : 0);
+    const pointColors = r.series.map(() => WARN);
 
     if (chart) chart.destroy();
     chart = new Chart(ctx, {
       type: 'line',
       data: { labels, datasets: [
         {
-          label: 'Principal',
-          data: principalData,
-          borderColor: AMBER, backgroundColor: 'rgba(201,164,92,0.18)',
-          fill: true, tension: 0, pointRadius: 0, borderWidth: 2
-        },
-        {
-          label: 'Total balance',
+          label: 'Account balance',
           data: totalData,
           borderColor: SLATE, backgroundColor: 'rgba(91,122,157,0.22)',
-          fill: '-1', tension: 0.15, pointRadius: 0, borderWidth: 2
+          fill: true, tension: 0.15, borderWidth: 2,
+          pointRadius: pointRadii, pointHoverRadius: 5,
+          pointBackgroundColor: pointColors, pointBorderColor: pointColors
+        },
+        {
+          label: 'Contributed principal',
+          data: principalData,
+          borderColor: AMBER, backgroundColor: AMBER,
+          fill: false, tension: 0, pointRadius: 0, borderWidth: 2, spanGaps: false
+        },
+        {
+          label: 'Same gift paced annually',
+          data: r.altSeries.map(v => Math.round(v)),
+          borderColor: '#8A6E3D', backgroundColor: '#8A6E3D',
+          borderDash: [5, 4], fill: false, tension: 0.15, pointRadius: 0, borderWidth: 1.75
         }
       ]},
       options: {
@@ -989,11 +1399,25 @@
           legend: { display: false },
           tooltip: {
             callbacks: {
-              title: items => 'Year ' + items[0].label + ' (' + (CURRENT_YEAR + parseInt(items[0].label, 10)) + ')',
+              title: items => {
+                const y = parseInt(items[0].label, 10);
+                const cal = CURRENT_YEAR + y;
+                const gradIdx = collegeIdx + r.inputs.drawYears;
+                return y < collegeIdx ? 'Year ' + y + ' (' + cal + ') — growth phase'
+                  : y === collegeIdx ? 'Year ' + y + ' (' + cal + ') — college starts'
+                  : y <= gradIdx ? 'Year ' + y + ' (' + cal + ') — college year ' + (y - collegeIdx)
+                  : 'Year ' + y + ' (' + cal + ') — grad year ' + (y - gradIdx);
+              },
               label: item => item.dataset.label + ': ' + fmt(item.parsed.y),
               afterBody: items => {
                 const idx = items[0].dataIndex;
-                return 'Tax-free growth (shaded gap): ' + fmt(Math.max(0, totalData[idx] - principalData[idx]));
+                const s = r.series[idx];
+                if (s.phase === 'draw') {
+                  return s.shortfall > 0.005
+                    ? 'Withdrew ' + fmt(s.withdrawn) + ' — SHORT ' + fmt(s.shortfall)
+                    : 'Withdrew ' + fmt(s.withdrawn);
+                }
+                return principalData[idx] === null ? '' : 'Tax-free growth: ' + fmt(Math.max(0, totalData[idx] - principalData[idx]));
               }
             }
           }
@@ -1001,41 +1425,125 @@
         scales: {
           x: {
             title: { display: true, text: 'Years from now', color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
-            ticks: { maxTicksLimit: 12, color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            ticks: { maxTicksLimit: 14, color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
             grid: { display: false }, border: { color: SEAM }
           },
           y: {
+            beginAtZero: true,
             ticks: { callback: v => '$' + (Math.abs(v) >= 1000000 ? (v/1000000).toFixed(1) + 'M' : Math.abs(v) >= 1000 ? Math.round(v/1000) + 'k' : v), color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
             grid: { color: SEAM }, border: { color: SEAM }
           }
         }
-      }
+      },
+      plugins: [{
+        id: 'phaseDividers',
+        afterDraw(c) {
+          const { ctx: g, chartArea, scales } = c;
+          const marks = [{ idx: collegeIdx, label: 'college' }];
+          if (r.inputs.gradYears > 0) marks.push({ idx: collegeIdx + r.inputs.drawYears, label: 'grad' });
+          g.save();
+          marks.forEach(mk => {
+            if (mk.idx <= 0 || mk.idx >= r.series.length) return;
+            const x = scales.x.getPixelForValue(mk.idx);
+            if (isNaN(x) || x < chartArea.left || x > chartArea.right) return;
+            g.strokeStyle = PARCHMENT_FAINT;
+            g.lineWidth = 1;
+            g.setLineDash([4, 4]);
+            g.beginPath(); g.moveTo(x, chartArea.top); g.lineTo(x, chartArea.bottom); g.stroke();
+            g.setLineDash([]);
+            g.fillStyle = PARCHMENT_FAINT;
+            g.font = '10px "IBM Plex Mono", monospace';
+            g.textAlign = 'left';
+            g.fillText(mk.label, x + 5, chartArea.top + 12);
+          });
+          g.restore();
+        }
+      }]
     });
   }
 
   function update() {
+    trackCalculate();
     const r = computeResult();
-    document.getElementById('years-label-1').textContent = r.inputs.years;
-    document.getElementById('bal-end').textContent = fmt(r.finalBalance);
-    document.getElementById('principal-val').textContent = fmt(r.inputs.lumpSum);
-    document.getElementById('growth-val').textContent = fmt(r.growth);
+
+    document.getElementById('bal-end').textContent = fmt(r.collegeStartBalance);
+    document.getElementById('bal-sub').textContent = 'after ' + r.inputs.growthYears + ' yr' + (r.inputs.growthYears === 1 ? '' : 's') + ' of growth · ' + fmt(r.growth) + ' is tax-free growth';
+
+    const tuitionEl = document.getElementById('tuition-pct');
+    tuitionEl.textContent = Math.round(r.pctFunded) + '%';
+    tuitionEl.classList.toggle('warn-val', r.pctFunded < 99.5);
+    tuitionEl.classList.toggle('growth', r.pctFunded >= 99.5);
+    document.getElementById('tuition-sub').textContent = fmt(r.covered) + ' of ' + fmt(r.scheduled) + ' scheduled';
+
+    const residualEl = document.getElementById('residual-val');
+    if (r.shortfallTotal > 0.5) {
+      residualEl.textContent = '-' + fmt(r.shortfallTotal).replace('-', '');
+      residualEl.classList.add('warn-val');
+      document.getElementById('residual-sub').textContent = 'shortfall — runs out in ' +
+        (r.depleted.segment === 'grad' ? 'grad yr ' : 'college yr ') + r.depleted.segYear;
+    } else {
+      residualEl.textContent = fmt(r.leftover);
+      residualEl.classList.remove('warn-val');
+      document.getElementById('residual-sub').textContent = r.leftover > 0.5 ? 'left for sibling, grad school, or Roth' : 'exactly exhausted';
+    }
+
     const exemptionEl = document.getElementById('exemption-val');
     exemptionEl.textContent = fmt(r.totalExcessAllContributors);
     exemptionEl.classList.toggle('warn-val', r.totalExcessAllContributors > 0);
+    document.getElementById('exemption-sub').textContent = r.totalExcessAllContributors > 0 ? 'reported on Form 709' : 'fits in annual exclusions';
+
+    // Superfund-vs-annual-gifting delta callout.
+    const deltaEl = document.getElementById('superfund-delta');
+    if (r.inputs.lumpSum > 0 && r.inputs.growthYears > 0) {
+      const delta = r.collegeStartBalance - r.altCollegeStart;
+      const deltaPct = r.altCollegeStart > 0 ? Math.round(delta / r.altCollegeStart * 100) : 0;
+      let text = 'Superfunding advantage: +' + fmt(delta) + ' more at college start (+' + deltaPct + '%) vs gifting the same ' +
+        fmt(r.inputs.lumpSum) + ' as ' + fmt(r.inst) + '/yr over the 5-year window — pure time in the market, compounding tax-free.';
+      if (r.depleted === null && r.altDepleted !== null) {
+        text += ' The annual-pace path runs out in ' + (r.altDepleted.segment === 'grad' ? 'grad' : 'college') + ' year ' + r.altDepleted.segYear + '; the superfunded path covers the full schedule.';
+      } else if (r.depleted !== null && r.altDepleted !== null) {
+        text += ' Coverage: ' + Math.round(r.pctFunded) + '% superfunded vs ' + Math.round(r.altPctFunded) + '% paced annually.';
+      } else if (r.depleted === null && r.altDepleted === null) {
+        text += ' Both cover the full schedule; the superfunded path ends ' + fmt(r.leftover - r.altLeftover) + ' ahead.';
+      }
+      text += ' (The annual path also needs no Form 709.)';
+      deltaEl.style.display = 'block';
+      deltaEl.textContent = text;
+    } else {
+      deltaEl.style.display = 'none';
+      deltaEl.textContent = '';
+    }
+
+    // Start-year field is only meaningful when there are ongoing contributions;
+    // grad withdrawal only when there are grad years.
+    document.getElementById('contrib-start-field').classList.toggle('dimmed', r.inputs.ongoing <= 0);
+    document.getElementById('grad-wd-field').classList.toggle('dimmed', r.inputs.gradYears <= 0);
+
+    renderPhaseMeta(r);
     renderWarnings(r);
     renderGrowthBar(r);
     renderChart(r);
+    renderDrawdownTable(r);
     renderScheduleTable(r);
     scheduleUrlUpdate();
   }
 
   // Wire inputs with the same input/blur clamp pattern as the Phases calculator.
   [
-    ['lump-sum', LIMITS.lumpSum, true],
+    ['deposit', LIMITS.deposit, true],
+    ['existing', LIMITS.existing, true],
     ['contributors', LIMITS.contributors, false],
     ['exclusion', LIMITS.exclusion, true],
+    ['ben-age', LIMITS.benAge, false],
+    ['college-age', LIMITS.collegeAge, false],
     ['rate', LIMITS.rate, false],
-    ['years', LIMITS.years, false]
+    ['ongoing', LIMITS.ongoing, true],
+    ['contrib-start', LIMITS.contribStart, false],
+    ['draw-years', LIMITS.drawYears, false],
+    ['withdrawal', LIMITS.withdrawal, true],
+    ['grad-years', LIMITS.gradYears, false],
+    ['grad-withdrawal', LIMITS.gradWithdrawal, true],
+    ['tuition-inf', LIMITS.tuitionInf, false]
   ].forEach(([id, lim, isMoney]) => {
     const el = document.getElementById(id);
     el.addEventListener('input', () => {
@@ -1073,6 +1581,17 @@
   })();
 
   update();
+
+  // ---- GA4: outbound-link + share tracking; enable calculate events ----
+  document.querySelectorAll('a[href*="monarch.com/referral"]').forEach(function (a) {
+    a.addEventListener('click', function () { window.trackEvent && window.trackEvent('affiliate_click', { link_id: 'monarch' }); });
+  });
+  document.querySelectorAll('a[href*="buymeacoffee.com"]').forEach(function (a) {
+    a.addEventListener('click', function () { window.trackEvent && window.trackEvent('bmac_click'); });
+  });
+  var _shareBtn = document.getElementById('copy-link');
+  if (_shareBtn) { _shareBtn.addEventListener('click', function () { window.trackEvent && window.trackEvent('share_copy'); }); }
+  _calcReady = true;
 })();
 </script>
 </body>

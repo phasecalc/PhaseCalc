@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2262583425156336"
+     crossorigin="anonymous"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MH7FWJX2M3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MH7FWJX2M3');
+
+  // ---- GA4 custom event helper ----
+  window.trackEvent = function (name, params) {
+    try {
+      if (typeof window.gtag === 'function') { window.gtag('event', name, params || {}); }
+    } catch (e) { /* analytics must never break the page */ }
+  };
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>REPS Hours Tracker: Free Template vs. Paid Apps (2026 Comparison)</title>
+<meta name="description" content="How to document your REPS 750-hour and material participation tests: free spreadsheet template vs. general time-tracking apps vs. dedicated REPS trackers. What the IRS actually looks for, and when paying makes sense." />
+<link rel="canonical" href="https://phasecalc.com/reps-hours-tracker-comparison" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Phases" />
+<meta property="og:url" content="https://phasecalc.com/reps-hours-tracker-comparison" />
+<meta property="og:title" content="REPS Hours Tracker: Free Template vs. Paid Apps (2026)" />
+<meta property="og:description" content="Your hours log is your audit evidence. Here's what actually matters in a REPS tracker — and why most households don't need to pay for one." />
+<meta property="og:image" content="https://phasecalc.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="REPS Hours Tracker: Free Template vs. Paid Apps (2026)" />
+<meta name="twitter:description" content="Your hours log is your audit evidence. What actually matters in a REPS tracker — and when paying makes sense." />
+<meta name="twitter:image" content="https://phasecalc.com/og-image.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0F1B2D;
+    --ink-raised: #142539;
+    --parchment: #EDE6D6;
+    --parchment-dim: #B8AF9C;
+    --parchment-faint: #948D79;
+    --amber: #C9A45C;
+    --amber-dim: #4A3C24;
+    --slate: #5B7A9D;
+    --slate-dim: #25333F;
+    --copper: #B07A4E;
+    --seam: #24344A;
+    --warn: #C46552;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--parchment);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .brandbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--seam);
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .wordmark svg { display: block; }
+  .wordmark span {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    letter-spacing: 0.01em;
+    color: var(--parchment);
+  }
+  .sitenav {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+  }
+  .sitenav a {
+    color: var(--parchment-faint);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+  }
+  .sitenav a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+  .sitenav a.current { color: var(--parchment); border-bottom-color: var(--seam); }
+
+  .masthead {
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--seam);
+    padding-bottom: 24px;
+  }
+  .masthead h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 32px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .masthead p {
+    color: var(--parchment-dim);
+    font-size: 15px;
+    margin: 0;
+    max-width: 560px;
+  }
+
+  .planner-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-faint);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--slate);
+    padding: 9px 14px;
+    margin-bottom: 28px;
+    line-height: 1.55;
+  }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
+  th, td { padding: 9px 6px; text-align: left; border-bottom: 1px solid var(--seam); }
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    font-weight: 400;
+  }
+  td { font-family: 'Source Serif 4', serif; color: var(--parchment-dim); font-size: 13.5px; }
+  td:first-child { font-family: 'Inter', sans-serif; color: var(--parchment); font-size: 13px; white-space: nowrap; }
+
+  .article h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+  }
+  .article h2:first-child { margin-top: 0; }
+  .article h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 28px 0 8px;
+  }
+  .article p {
+    color: var(--parchment-dim);
+    font-size: 16.5px;
+    line-height: 1.7;
+    margin: 0 0 18px;
+  }
+  .article strong { color: var(--parchment); font-weight: 500; }
+  .article a { color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber-dim); }
+  .article a:hover { border-bottom-color: var(--amber); }
+
+  .cta-panel {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--amber);
+    padding: 20px 24px;
+    margin: 28px 0;
+  }
+  .cta-panel p { margin: 0 0 12px; }
+  .cta-panel p:last-child { margin: 0; }
+  .download-btn, .article a.download-btn {
+    display: inline-block;
+    background: var(--amber);
+    color: var(--ink);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12.5px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 11px 22px;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: background 0.15s ease;
+    border-bottom: none !important;
+  }
+  .download-btn:hover { background: #D9B876; }
+
+  .support-footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--seam);
+  }
+  .support-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 8px;
+    line-height: 1.6;
+  }
+  .support-line a {
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 1px solid var(--amber-dim);
+  }
+  .support-line a:hover { border-bottom-color: var(--amber); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brandbar">
+    <a class="wordmark" href="/"><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="7" width="12" height="18" fill="#C9A45C"/><rect x="16.5" y="7" width="8.5" height="18" fill="#8A6E3D"/><rect x="27" y="7" width="3.5" height="18" fill="#5B7A9D"/></svg><span>Phases</span></a>
+    <nav class="sitenav">
+      <a href="/">Compound Interest</a>
+      <a href="/retirement-backtest-calculator">Retirement Backtest</a>
+      <a href="/trump-account-calculator">Trump Account</a>
+      <a href="/529-superfunding-calculator">529 Superfund</a>
+      <a href="/roth-vs-traditional-calculator">Roth vs Trad</a>
+      <a href="/coast-fire-calculator">Coast FIRE</a>
+      <a href="/savings-goal-calculator">Savings Goal</a>
+      <a href="/dca-calculator">DCA</a>
+      <a href="/drip-calculator">DRIP</a>
+      <a href="/margin-loan-calculator">Margin</a>
+      <a href="/capital-gains-tax-calculator">Capital Gains</a>
+      <a href="/inflation-adjusted-return-calculator">Real Return</a>
+      <a href="/heloc-payment-calculator">HELOC</a>
+      <a href="/cash-out-refinance-vs-heloc-calculator">Refi vs HELOC</a>
+      <a href="/mortgage-extra-payment-calculator">Mortgage Payoff</a>
+      <a href="/rental-property-calculator">Rental</a>
+      <a href="/real-estate-professional-calculator">REPS</a>
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </header>
+
+  <div class="masthead">
+    <h1>REPS hours tracker: free template vs. paid apps</h1>
+    <p>How to document your 750-hour and material participation tests without paying for software you don't need — a 2026 comparison of what's out there and what the IRS actually looks for.</p>
+  </div>
+
+  <p class="planner-note">NOT TAX ADVICE — this page compares record-keeping tools only. It doesn't determine whether you qualify for REPS; talk to a CPA about your specific situation.</p>
+
+  <article class="article">
+    <h2>Why hour tracking matters for REPS</h2>
+    <p>If you're pursuing real estate professional status under IRC §469(c)(7) to convert rental losses from passive to non-passive, your hours log is your <strong>primary evidence in an audit</strong>. The IRS has repeatedly disallowed REPS claims not because taxpayers didn't do the work, but because they couldn't document it — post-hoc reconstructions and vague summaries ("worked on rentals, ~800 hrs") get thrown out in Tax Court. Contemporaneous, specific logs hold up. Estimates made after the fact generally don't.</p>
+    <p>That means the tool you pick matters less than the habit — but a decent tool makes the habit stick.</p>
+
+    <h2>The options</h2>
+
+    <h3>1. Free spreadsheet template</h3>
+    <p>A downloadable Excel template (imports cleanly into Google Sheets): log date, property, category, and a specific description per entry, with the 750-hour test, more-than-half test, and category/property breakdowns calculated automatically.</p>
+    <p><strong>Good for:</strong> anyone who wants zero cost, full control over their data, and no account or app dependency. Works offline, exports easily to hand a CPA — or, if it comes to that, to produce for an audit.</p>
+    <p><strong>Limitation:</strong> manual entry — no mobile time-tracking widget, no location auto-detection, no receipt/photo attachment.</p>
+    <div class="cta-panel">
+      <p><strong>The free REPS hours log template</strong> — 3 tabs, both tests auto-calculated, no signup.</p>
+      <p><a class="download-btn" href="/reps-hours-log">Get the free template &rarr;</a></p>
+    </div>
+
+    <h3>2. General time-tracking apps (Toggl, Clockify, Harvest)</h3>
+    <p>Not built for REPS specifically, but usable if you create dedicated projects per property and tag entries by category.</p>
+    <p><strong>Good for:</strong> people who already use one of these for other work and want everything in one place. Clean mobile timers.</p>
+    <p><strong>Limitation:</strong> no built-in 750-hour or more-than-half test logic — you're exporting to a spreadsheet anyway to do the actual REPS math. You're paying (most have free tiers with limits) for tracking that still needs a manual layer on top.</p>
+
+    <h3>3. Dedicated REPS / real-estate hour-tracking apps</h3>
+    <p>A small niche of purpose-built apps has emerged, generally priced as a monthly or annual subscription, offering REPS-specific fields, automated 750-hour/50% test dashboards, and sometimes audit-defense document generation.</p>
+    <p><strong>Good for:</strong> landlords with multiple properties and multiple family members logging hours, who want the tests calculated automatically and a polished export for a CPA or in case of audit.</p>
+    <p><strong>Limitation:</strong> recurring cost for something a spreadsheet formula does for free; smaller companies, so longevity/support risk is worth weighing if you'll rely on it for a multi-year audit trail.</p>
+
+    <h2>At a glance</h2>
+    <table>
+      <tr><th>Option</th><th>Cost</th><th>REPS test math</th><th>Mobile entry</th><th>Audit trail control</th></tr>
+      <tr><td>Free template</td><td>$0</td><td>Built in</td><td>Manual (Sheets app works)</td><td>Your file, forever</td></tr>
+      <tr><td>Toggl / Clockify</td><td>Free tier → paid</td><td>None — export + DIY</td><td>Excellent</td><td>Export dependent</td></tr>
+      <tr><td>Dedicated REPS apps</td><td>Subscription</td><td>Built in</td><td>Good</td><td>Vendor dependent</td></tr>
+    </table>
+
+    <h2>What actually matters, regardless of tool</h2>
+    <p><strong>Log contemporaneously</strong> — same day or same week, not from memory months later.</p>
+    <p><strong>Be specific</strong> — "screened 2 rental applications, ran credit/background checks" survives scrutiny; "worked on property" does not.</p>
+    <p><strong>Track material participation per property separately</strong> from your overall REPS hours, unless you've filed a valid aggregation election.</p>
+    <p><strong>Keep the more-than-half test in view</strong> — REPS requires your real-estate hours to exceed all your other personal-service hours combined, which is why the strategy usually requires a non-W-2 spouse.</p>
+
+    <h2>Bottom line</h2>
+    <p>Paid apps add convenience — mobile timers, multi-user logging, polished exports — but none of that changes what the IRS is actually looking for. A well-built spreadsheet does the same math for free. If you outgrow it (multiple properties, multiple loggers, automated audit-ready PDFs), a dedicated app becomes worth paying for. Most REPS households don't need to start there.</p>
+    <p><a href="/reps-hours-log">Get the free template</a> · <a href="/real-estate-professional-calculator">Model your REPS W-2 offset scenario &rarr;</a></p>
+  </article>
+
+  <div class="support-footer">
+    <p class="support-line">
+      If this comparison was useful, a tip helps keep the site free —
+      <a href="https://buymeacoffee.com/ctong" target="_blank" rel="noopener">buy me a coffee</a>.
+    </p>
+    <p class="support-line">
+      I also use <a href="https://monarch.com/referral/rk2olzfae9?r_source=copy" target="_blank" rel="noopener">Monarch</a> to track net worth and spending — that's a referral link, so if you sign up I get a discount on my own subscription. No pressure either way.
+    </p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  // ---- GA4: outbound-link + template CTA tracking ----
+  document.querySelectorAll('a[href="/reps-hours-log"]').forEach(function (a) {
+    a.addEventListener('click', function () { window.trackEvent && window.trackEvent('template_cta_click', { source: 'tracker-comparison' }); });
+  });
+  document.querySelectorAll('a[href*="monarch.com/referral"]').forEach(function (a) {
+    a.addEventListener('click', function () { window.trackEvent && window.trackEvent('affiliate_click', { link_id: 'monarch' }); });
+  });
+  document.querySelectorAll('a[href*="buymeacoffee.com"]').forEach(function (a) {
+    a.addEventListener('click', function () { window.trackEvent && window.trackEvent('bmac_click'); });
+  });
+})();
+</script>
+</body>
+</html>

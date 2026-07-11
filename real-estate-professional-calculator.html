@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2262583425156336"
+     crossorigin="anonymous"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-MH7FWJX2M3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-MH7FWJX2M3');
+
+  // ---- GA4 custom event helper ----
+  window.trackEvent = function (name, params) {
+    try {
+      if (typeof window.gtag === 'function') { window.gtag('event', name, params || {}); }
+    } catch (e) { /* analytics must never break the page */ }
+  };
+</script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Real Estate Professional Status (REPS) Calculator — rental loss W-2 offset</title>
+<meta name="description" content="Free REPS calculator. Model how real estate professional status converts rental losses to non-passive so they offset W-2 income — cost segregation, 100% bonus depreciation, recapture at sale, and a head-to-head against an index fund. Scenario planner, not tax advice." />
+<link rel="canonical" href="https://phasecalc.com/real-estate-professional-calculator" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Phases" />
+<meta property="og:url" content="https://phasecalc.com/real-estate-professional-calculator" />
+<meta property="og:title" content="REPS Calculator — can rental losses offset your W-2? Run the numbers." />
+<meta property="og:description" content="Model the real estate professional status strategy: cost segregation, bonus depreciation, the year-1 W-2 tax offset, recapture at sale, and whether it actually beats an index fund." />
+<meta property="og:image" content="https://phasecalc.com/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="REPS Calculator — can rental losses offset your W-2? Run the numbers." />
+<meta name="twitter:description" content="Cost segregation, bonus depreciation, the year-1 W-2 tax offset, recapture at sale — and whether the strategy actually beats an index fund." />
+<meta name="twitter:image" content="https://phasecalc.com/og-image.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Can rental losses offset W-2 income?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Normally no. Rental losses are passive by default under §469, and once modified AGI exceeds $150,000 they can't touch W-2 income at all — they're suspended and carried forward. The exception is real estate professional status (§469(c)(7)): if a taxpayer qualifies as a real estate professional and materially participates in the rental, its losses become non-passive and can offset any income on the return, including a spouse's W-2 on a joint return. Qualification is fact-intensive and heavily audited — the calculator models outcomes assuming REPS applies; it cannot tell you whether it does."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is real estate professional status?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A tax classification under §469(c)(7), not a license. To qualify for a year, a taxpayer must (1) spend more than half of their total personal-service working hours in real property trades or businesses in which they materially participate, and (2) log more than 750 hours in those activities. Then, separately, they must materially participate in the rental itself (or make a grouping election) for its losses to become non-passive. One spouse must meet the hour tests alone — spouses cannot combine hours for the 750-hour or more-than-half tests."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "How many hours do you need for REPS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "More than 750 hours per year in real property trades or businesses, and more than half of all your personal-service working time. The second test is what disqualifies most full-time employees: someone working 2,000 hours at a W-2 job would need 2,000+ hours in real estate on top of it. That's why the classic structure is one spouse with the W-2 and the other — with no full-time job — qualifying as the real estate professional. Hours must be documented with contemporaneous logs; reconstructed estimates are a leading reason taxpayers lose REPS audits."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does cost segregation work for a single rental property?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Often, yes. A cost segregation study typically reclassifies 20–35% of a building's depreciable basis into 5-, 7-, and 15-year property, and with 100% bonus depreciation (made permanent by the 2025 OBBBA for property acquired after January 19, 2025) that entire slice is deductible in year one. On a $400,000 building basis, 25% reclassified is a $100,000 first-year deduction against a $3,000–$5,000 flat-fee virtual study. The catch: without REPS (or short-term-rental treatment), that big paper loss is passive and mostly unusable against wages."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is depreciation recapture?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "When you sell a rental, the depreciation you deducted reduces your cost basis, increasing your gain — and the portion of gain attributable to prior depreciation is taxed less favorably than regular capital gains. Straight-line depreciation on the building is unrecaptured §1250 gain, taxed at up to 25%. Depreciation on cost-segregated 5-, 7-, and 15-year property is §1245 recapture, taxed at ordinary rates. Depreciation is a deferral (and often a rate-arbitrage) strategy, not free money — unless you defer again via a 1031 exchange or hold until a step-up in basis at death."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do both spouses need to qualify as real estate professionals?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No — and that's the entire strategy. Only one spouse must pass the 750-hour and more-than-half tests, using their own hours alone. But on a married-filing-jointly return, once that spouse's rental losses are non-passive, they offset the couple's combined income, including the other spouse's W-2. Married filing separately breaks the mechanism, which is why this is fundamentally an MFJ strategy. For material participation in the rental itself (a separate test), spouses' hours can be combined."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens to rental losses without REPS?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Up to $25,000 of rental losses can offset other income if you actively participate and modified AGI is under $100,000; that allowance phases out at 50 cents per dollar and hits zero at $150,000 MAGI. Above that, losses are suspended and carried forward — usable against future passive income or released when you sell the property. For a household with a $300,000 W-2, the usable amount in the current year is $0. Suspended losses aren't destroyed, but a deduction today at a 32%+ marginal rate is worth far more than the same deduction released years from now."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Is bonus depreciation still 100%?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. The One Big Beautiful Bill Act (July 2025) restored 100% bonus depreciation permanently for qualifying property acquired and placed in service after January 19, 2025, reversing the phase-down that had reduced it to 40%. For rental investors, that means the 5-, 7-, and 15-year property identified in a cost segregation study can be fully deducted in the first year rather than depreciated over its class life."
+      }
+    }
+  ]
+}
+</script>
+<style>
+  :root {
+    --ink: #0F1B2D;
+    --ink-raised: #142539;
+    --parchment: #EDE6D6;
+    --parchment-dim: #B8AF9C;
+    --parchment-faint: #948D79;
+    --amber: #C9A45C;
+    --amber-dim: #4A3C24;
+    --slate: #5B7A9D;
+    --slate-dim: #25333F;
+    --copper: #B07A4E;
+    --seam: #24344A;
+    --warn: #C46552;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ink);
+    color: var(--parchment);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+  }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  .brandbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px 24px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--seam);
+  }
+  .wordmark {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
+  .wordmark svg { display: block; }
+  .wordmark span {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    letter-spacing: 0.01em;
+    color: var(--parchment);
+  }
+  .sitenav {
+    display: flex;
+    gap: 18px;
+    flex-wrap: wrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    letter-spacing: 0.03em;
+  }
+  .sitenav a {
+    color: var(--parchment-faint);
+    text-decoration: none;
+    padding-bottom: 3px;
+    border-bottom: 1px solid transparent;
+  }
+  .sitenav a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+  .sitenav a.current { color: var(--parchment); border-bottom-color: var(--seam); }
+
+  .masthead {
+    margin-bottom: 40px;
+    border-bottom: 1px solid var(--seam);
+    padding-bottom: 24px;
+  }
+  .masthead h1 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 32px;
+    margin: 0 0 8px;
+    letter-spacing: -0.01em;
+  }
+  .masthead p {
+    color: var(--parchment-dim);
+    font-size: 15px;
+    margin: 0;
+    max-width: 560px;
+  }
+
+  .planner-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-faint);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--slate);
+    padding: 9px 14px;
+    margin-bottom: 28px;
+    line-height: 1.55;
+  }
+
+  .panel {
+    background: var(--ink-raised);
+    border-left: 3px solid var(--amber);
+    padding: 20px;
+    margin-bottom: 28px;
+  }
+
+  .field-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 18px;
+  }
+
+  .panel-caption {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--seam);
+  }
+
+  .field label {
+    display: block;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin-bottom: 6px;
+  }
+
+  .field .input-row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+
+  .field .prefix, .field .suffix {
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    color: var(--parchment-dim);
+  }
+
+  .field .static-value {
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    color: var(--parchment-dim);
+    border-bottom: 1px dashed var(--seam);
+    padding: 2px 0;
+    display: block;
+  }
+
+  .field.dimmed { opacity: 0.35; pointer-events: none; }
+
+  .capital-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    border-top: 1px solid var(--seam);
+    margin: 16px 0 0;
+    padding-top: 12px;
+    line-height: 1.6;
+  }
+  .capital-line strong { color: var(--amber); font-weight: 500; }
+
+  /* Floating help bubbles */
+  .tip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    vertical-align: 1px;
+    cursor: help;
+    outline: none;
+  }
+  .tip .tip-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    border: 1px solid var(--parchment-faint);
+    color: var(--parchment-faint);
+    font-size: 9px;
+    line-height: 1;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .tip:hover .tip-icon, .tip:focus .tip-icon { border-color: var(--amber); color: var(--amber); }
+  .tip .tip-box {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 9px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 230px;
+    max-width: calc(100vw - 56px);
+    background: var(--ink);
+    border: 1px solid var(--seam);
+    border-radius: 3px;
+    padding: 10px 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.45);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    line-height: 1.55;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--parchment-dim);
+    white-space: normal;
+    z-index: 20;
+  }
+  .tip .tip-box::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: var(--seam);
+  }
+  .tip:hover .tip-box, .tip:focus .tip-box, .tip:focus-within .tip-box { display: block; }
+
+  input[type="number"], input[type="text"], select {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--seam);
+    color: var(--parchment);
+    font-family: 'Source Serif 4', serif;
+    font-size: 18px;
+    padding: 2px 0;
+    width: 100%;
+    transition: border-color 0.15s ease;
+  }
+  select { cursor: pointer; appearance: none; -webkit-appearance: none; border-radius: 0; }
+  select option { background: var(--ink); color: var(--parchment); }
+  input:focus, select:focus { outline: none; border-bottom-color: var(--amber); }
+  input.invalid { border-bottom-color: var(--warn); }
+
+  /* Results strip */
+  .results-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 2px;
+    margin-bottom: 10px;
+  }
+  .result-cell {
+    background: var(--ink-raised);
+    padding: 16px 16px 14px;
+  }
+  .result-cell .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    margin: 0 0 6px;
+    line-height: 1.4;
+  }
+  .result-cell .value {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 23px;
+    margin: 0;
+    color: var(--parchment);
+  }
+  .result-cell.hero .value.positive { color: var(--amber); }
+  .result-cell.hero .value.negative { color: var(--warn); }
+  .result-cell .sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--parchment-faint);
+    margin: 4px 0 0;
+  }
+
+  .warning {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--warn);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+  .info-note {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--copper);
+    padding: 10px 14px;
+    margin-bottom: 10px;
+    line-height: 1.5;
+  }
+
+  .chart-wrap { position: relative; height: 320px; margin: 18px 0 10px; }
+
+  .legend {
+    display: flex;
+    gap: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--parchment-dim);
+    margin-bottom: 36px;
+    flex-wrap: wrap;
+  }
+  .legend .swatch { display: inline-block; width: 9px; height: 9px; margin-right: 6px; vertical-align: -1px; }
+  .legend .line-swatch { display: inline-block; width: 14px; height: 2px; margin-right: 6px; vertical-align: 3px; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 8px; }
+  th, td { padding: 9px 6px; text-align: right; border-bottom: 1px solid var(--seam); }
+  th:first-child, td:first-child { text-align: left; }
+  th {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--parchment-faint);
+    font-weight: 400;
+  }
+  td { font-family: 'Source Serif 4', serif; color: var(--parchment-dim); }
+  td:first-child { font-family: 'Inter', sans-serif; color: var(--parchment); font-size: 13px; }
+  td.hi { color: var(--parchment); font-weight: 500; }
+  td.neg { color: var(--warn); }
+  .footnote { font-family: 'IBM Plex Mono', monospace; font-size: 10.5px; color: var(--parchment-faint); margin: 8px 0 0; }
+
+  .section-head {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 19px;
+    margin: 36px 0 12px;
+    letter-spacing: -0.01em;
+  }
+
+  .exit-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0,1fr));
+    gap: 2px;
+    margin-bottom: 10px;
+  }
+
+  .share-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 0;
+  }
+  .copy-link-btn {
+    background: none;
+    border: 1px solid var(--seam);
+    color: var(--parchment-dim);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    padding: 7px 14px;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.15s ease;
+  }
+  .copy-link-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .copy-status {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    color: var(--amber);
+  }
+
+  /* Article */
+  .article {
+    margin-top: 64px;
+    padding-top: 40px;
+    border-top: 1px solid var(--seam);
+  }
+  .article h2 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 40px 0 12px;
+  }
+  .article h2:first-child { margin-top: 0; }
+  .article h3 {
+    font-family: 'Source Serif 4', serif;
+    font-weight: 500;
+    font-size: 18px;
+    margin: 28px 0 8px;
+  }
+  .article p {
+    color: var(--parchment-dim);
+    font-size: 16.5px;
+    line-height: 1.7;
+    margin: 0 0 18px;
+  }
+  .article strong { color: var(--parchment); font-weight: 500; }
+  .article a { color: var(--amber); text-decoration: none; border-bottom: 1px solid var(--amber-dim); }
+  .article a:hover { border-bottom-color: var(--amber); }
+  .article table td { font-size: 13.5px; }
+  .article table td:first-child { white-space: nowrap; }
+  .article .formula {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13.5px;
+    color: var(--parchment);
+    background: var(--ink-raised);
+    border-left: 2px solid var(--amber);
+    padding: 12px 16px;
+    margin: 0 0 18px;
+    overflow-x: auto;
+  }
+
+  .faq-item { margin-bottom: 24px; }
+  .faq-item h3 { margin-bottom: 6px; }
+  .faq-item p { margin-bottom: 0; }
+
+  .support-footer {
+    margin-top: 48px;
+    padding-top: 20px;
+    border-top: 1px solid var(--seam);
+  }
+  .support-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    color: var(--parchment-faint);
+    margin: 0 0 8px;
+    line-height: 1.6;
+  }
+  .support-line a {
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 1px solid var(--amber-dim);
+  }
+  .support-line a:hover { border-bottom-color: var(--amber); }
+
+  @media (max-width: 620px) {
+    .field-grid { grid-template-columns: 1fr 1fr; }
+    .results-strip { grid-template-columns: 1fr 1fr; }
+    .exit-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="brandbar">
+    <a class="wordmark" href="/"><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="7" width="12" height="18" fill="#C9A45C"/><rect x="16.5" y="7" width="8.5" height="18" fill="#8A6E3D"/><rect x="27" y="7" width="3.5" height="18" fill="#5B7A9D"/></svg><span>Phases</span></a>
+    <nav class="sitenav">
+      <a href="/">Compound Interest</a>
+      <a href="/retirement-backtest-calculator">Retirement Backtest</a>
+      <a href="/trump-account-calculator">Trump Account</a>
+      <a href="/529-superfunding-calculator">529 Superfund</a>
+      <a href="/roth-vs-traditional-calculator">Roth vs Trad</a>
+      <a href="/coast-fire-calculator">Coast FIRE</a>
+      <a href="/savings-goal-calculator">Savings Goal</a>
+      <a href="/dca-calculator">DCA</a>
+      <a href="/drip-calculator">DRIP</a>
+      <a href="/margin-loan-calculator">Margin</a>
+      <a href="/capital-gains-tax-calculator">Capital Gains</a>
+      <a href="/inflation-adjusted-return-calculator">Real Return</a>
+      <a href="/heloc-payment-calculator">HELOC</a>
+      <a href="/cash-out-refinance-vs-heloc-calculator">Refi vs HELOC</a>
+      <a href="/mortgage-extra-payment-calculator">Mortgage Payoff</a>
+      <a href="/rental-property-calculator">Rental</a>
+      <a href="/real-estate-professional-calculator" class="current">REPS</a>
+      <a href="/about">About</a>
+      <a href="/privacy">Privacy</a>
+    </nav>
+  </header>
+
+  <div class="masthead">
+    <h1>Real estate professional status calculator</h1>
+    <p>One spouse qualifies as a real estate professional, a rental throws off a big paper loss, and suddenly it offsets the other spouse's W-2. Model the whole arc — cost segregation, the year-1 refund, the recapture bill at sale — against just buying index funds.</p>
+  </div>
+
+  <p class="planner-note">SCENARIO PLANNER, NOT TAX ADVICE — this tool models outcomes <em>assuming</em> REPS applies. It cannot determine whether you qualify; that's a fact-intensive test your CPA should assess. The qualification rules are explained below.</p>
+
+  <div class="panel">
+    <p class="panel-caption">Household</p>
+    <div class="field-grid">
+      <div class="field">
+        <label>W-2 income<span class="tip" tabindex="0" aria-label="Help: W-2 income"><span class="tip-icon">?</span><span class="tip-box">The earner spouse's wages. Used for the no-REPS baseline (above $150k MAGI, rental losses are fully suspended) and the §461(l) check.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="w2" value="300,000" /></div>
+      </div>
+      <div class="field">
+        <label>Marginal tax rate<span class="tip" tabindex="0" aria-label="Help: marginal rate"><span class="tip-icon">?</span><span class="tip-box">Combined federal + state rate on your last dollar of income. A $300k MFJ household is typically in the 24% federal bracket — add your state rate. See the 2026 bracket table in the explainer below.</span></span></label>
+        <div class="input-row"><input type="number" id="mrate" value="32" min="0" max="60" step="1" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Filing status<span class="tip" tabindex="0" aria-label="Help: filing status"><span class="tip-icon">?</span><span class="tip-box">Fixed to married filing jointly. The one-spouse-qualifies strategy only works on a joint return — filing separately walls the REP spouse's losses off from the W-2.</span></span></label>
+        <span class="static-value">Married filing jointly</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-caption">Property</p>
+    <div class="field-grid">
+      <div class="field">
+        <label>Purchase price<span class="tip" tabindex="0" aria-label="Help: purchase price"><span class="tip-icon">?</span><span class="tip-box">The agreed price of the rental. Building vs. land split is set by the land value % below.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="price" value="500,000" /></div>
+      </div>
+      <div class="field">
+        <label>Land value<span class="tip" tabindex="0" aria-label="Help: land value"><span class="tip-icon">?</span><span class="tip-box">Land can't be depreciated. 20% is a common default; check your county assessor's land/improvement split. Dense urban lots run higher.</span></span></label>
+        <div class="input-row"><input type="number" id="land-pct" value="20" min="0" max="60" step="1" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Down payment<span class="tip" tabindex="0" aria-label="Help: down payment"><span class="tip-icon">?</span><span class="tip-box">Investment loans usually require 20–25% down. This cash (plus closing costs and the cost seg fee) is what the index fund path gets to invest instead.</span></span></label>
+        <div class="input-row"><input type="number" id="down-pct" value="25" min="0" max="100" step="1" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Closing costs<span class="tip" tabindex="0" aria-label="Help: closing costs"><span class="tip-icon">?</span><span class="tip-box">Lender, title, and escrow fees as % of price — 2–5% is typical. Capitalized into your cost basis here.</span></span></label>
+        <div class="input-row"><input type="number" id="closing-pct" value="3" min="0" max="10" step="0.5" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Loan rate<span class="tip" tabindex="0" aria-label="Help: loan rate"><span class="tip-icon">?</span><span class="tip-box">Investment property rates typically run 0.5–1% above owner-occupied. Annual rate.</span></span></label>
+        <div class="input-row"><input type="number" id="loan-rate" value="6.5" min="0" max="15" step="0.125" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Loan term<span class="tip" tabindex="0" aria-label="Help: loan term"><span class="tip-icon">?</span><span class="tip-box">30 years is standard and maximizes early interest deductions — which is what feeds the paper loss.</span></span></label>
+        <div class="input-row"><input type="number" id="term" value="30" min="5" max="40" step="5" /><span class="suffix">yrs</span></div>
+      </div>
+      <div class="field">
+        <label>Monthly rent<span class="tip" tabindex="0" aria-label="Help: monthly rent"><span class="tip-icon">?</span><span class="tip-box">Market rent. Tax savings can't rescue a property that rents badly — underwrite the deal itself in the rental calculator first.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="rent" value="3,200" /></div>
+      </div>
+      <div class="field">
+        <label>Vacancy<span class="tip" tabindex="0" aria-label="Help: vacancy"><span class="tip-icon">?</span><span class="tip-box">% of the year the unit sits empty. 5–8% is standard planning; one month between tenants is 8.3%.</span></span></label>
+        <div class="input-row"><input type="number" id="vacancy-pct" value="5" min="0" max="50" step="1" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Operating expenses<span class="tip" tabindex="0" aria-label="Help: operating expenses"><span class="tip-icon">?</span><span class="tip-box">Taxes, insurance, maintenance, management, HOA — as one % of scheduled rent. 25–40% is a typical all-in range for long-term rentals (the 50% rule is the conservative bound).</span></span></label>
+        <div class="input-row"><input type="number" id="opex-pct" value="30" min="0" max="80" step="1" /><span class="suffix">% rent</span></div>
+      </div>
+      <div class="field">
+        <label>Appreciation /yr<span class="tip" tabindex="0" aria-label="Help: appreciation"><span class="tip-icon">?</span><span class="tip-box">Annual property value growth. Long-run US average is roughly 3–4% nominal; local markets vary widely.</span></span></label>
+        <div class="input-row"><input type="number" id="appreciation" value="3" min="0" max="10" step="0.5" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Rent growth /yr<span class="tip" tabindex="0" aria-label="Help: rent growth"><span class="tip-icon">?</span><span class="tip-box">Annual rent increase. Operating expenses are grown at the same rate.</span></span></label>
+        <div class="input-row"><input type="number" id="rent-growth" value="2" min="0" max="10" step="0.5" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>Hold period<span class="tip" tabindex="0" aria-label="Help: hold period"><span class="tip-icon">?</span><span class="tip-box">Years until sale. The exit models selling costs, depreciation recapture, and capital gains tax.</span></span></label>
+        <div class="input-row"><input type="number" id="hold" value="10" min="1" max="30" step="1" /><span class="suffix">yrs</span></div>
+      </div>
+      <div class="field">
+        <label>Selling costs<span class="tip" tabindex="0" aria-label="Help: selling costs"><span class="tip-icon">?</span><span class="tip-box">Agent commissions plus closing costs at sale, as % of sale price. 6% is the traditional default.</span></span></label>
+        <div class="input-row"><input type="number" id="sell-pct" value="6" min="0" max="12" step="0.5" /><span class="suffix">%</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-caption">Depreciation strategy</p>
+    <div class="field-grid">
+      <div class="field">
+        <label>Method<span class="tip" tabindex="0" aria-label="Help: depreciation method"><span class="tip-icon">?</span><span class="tip-box">Straight-line spreads the building basis over 27.5 years. A cost segregation study carves out 5/7/15-year property that 100% bonus depreciation deducts entirely in year one.</span></span></label>
+        <select id="mode">
+          <option value="cs" selected>Cost seg + 100% bonus</option>
+          <option value="sl">Straight-line only (27.5-yr)</option>
+        </select>
+      </div>
+      <div class="field" id="reclass-field">
+        <label>Reclassified to 5/7/15-yr<span class="tip" tabindex="0" aria-label="Help: reclassification"><span class="tip-icon">?</span><span class="tip-box">% of building basis a cost seg study moves to short-life property — carpets, appliances, land improvements. 20–35% is the typical range for residential; 25% is a fair planning number.</span></span></label>
+        <div class="input-row"><input type="number" id="reclass-pct" value="25" min="0" max="50" step="1" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field" id="fee-field">
+        <label>Cost seg study fee<span class="tip" tabindex="0" aria-label="Help: study fee"><span class="tip-icon">?</span><span class="tip-box">Flat-fee virtual studies for single-family rentals run $3,000–$5,000. Deducted in year 1 and counted in the cash you invest.</span></span></label>
+        <div class="input-row"><span class="prefix">$</span><input type="text" inputmode="decimal" id="fee" value="4,000" /></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <p class="panel-caption">Opportunity cost — the index fund benchmark</p>
+    <div class="field-grid">
+      <div class="field">
+        <label>Index fund return /yr<span class="tip" tabindex="0" aria-label="Help: index return"><span class="tip-icon">?</span><span class="tip-box">What the same all-in cash would earn in a broad index fund. ~7% is a common long-run assumption for U.S. stocks before inflation — the same default used across this site. Note the property-side assumptions (appreciation, rent growth) are nominal too.</span></span></label>
+        <div class="input-row"><input type="number" id="idx-return" value="7" min="0" max="15" step="0.5" /><span class="suffix">%</span></div>
+      </div>
+      <div class="field">
+        <label>LTCG rate at sale<span class="tip" tabindex="0" aria-label="Help: LTCG rate"><span class="tip-icon">?</span><span class="tip-box">Long-term capital gains rate applied to both exits. 15% covers MFJ taxable income to $613,700 (2026); above that it's 20% — and the 3.8% NIIT applies over $250k MAGI either way.</span></span></label>
+        <div class="input-row"><input type="number" id="ltcg" value="15" min="0" max="40" step="0.5" /><span class="suffix">%</span></div>
+      </div>
+    </div>
+    <p class="capital-line" id="capital-note"></p>
+  </div>
+
+  <div id="warnings"></div>
+
+  <div class="results-strip">
+    <div class="result-cell hero">
+      <p class="label">Year-1 W-2 tax offset</p>
+      <p class="value" id="offset-y1">$0</p>
+      <p class="sub" id="offset-sub"></p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Real estate path, after tax</p>
+      <p class="value" id="re-wealth">$0</p>
+      <p class="sub" id="re-irr"></p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Index fund path, after tax</p>
+      <p class="value" id="idx-wealth">$0</p>
+      <p class="sub" id="idx-irr"></p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Breakeven vs index</p>
+      <p class="value" id="breakeven">—</p>
+      <p class="sub" id="breakeven-sub"></p>
+    </div>
+  </div>
+
+  <h2 class="section-head">Year-1 paper loss → W-2 offset</h2>
+  <div class="chart-wrap">
+    <canvas id="waterfall-chart" role="img" aria-label="Waterfall chart of the year-one rental tax picture. Rent comes in on the left; bars step down for vacancy, operating expenses, mortgage interest, straight-line depreciation, bonus depreciation, and the cost segregation fee; the running total lands below zero as the paper loss; a final bar shows the paper loss multiplied by the marginal tax rate — the W-2 tax offset.">Waterfall: rent in, expenses and depreciation stepping down past zero to the paper loss, then the resulting W-2 tax offset.</canvas>
+  </div>
+  <div class="legend">
+    <span><span class="swatch" style="background:#C9A45C"></span>Rent in</span>
+    <span><span class="swatch" style="background:#C46552"></span>Cash costs</span>
+    <span><span class="swatch" style="background:#B07A4E"></span>Depreciation (paper)</span>
+    <span><span class="swatch" style="background:#5B7A9D"></span>Paper loss / tax offset</span>
+  </div>
+
+  <h2 class="section-head">Wealth over time — rental vs. index fund</h2>
+  <div class="chart-wrap">
+    <canvas id="wealth-chart" role="img" aria-label="Stacked bars show the real estate path's wealth each year, split into initial equity, principal paydown, appreciation, cumulative cash flow, and cumulative tax savings. A line shows the index fund alternative growing from the same starting cash.">Stacked bars of real-estate wealth components by year versus an index fund line.</canvas>
+  </div>
+  <div class="legend">
+    <span><span class="swatch" style="background:#3A4A60"></span>Initial equity</span>
+    <span><span class="swatch" style="background:#B07A4E"></span>Principal paydown</span>
+    <span><span class="swatch" style="background:#5B7A9D"></span>Appreciation</span>
+    <span><span class="swatch" style="background:#8A6E3D"></span>Cumulative cash flow</span>
+    <span><span class="swatch" style="background:#C9A45C"></span>Cumulative tax savings</span>
+    <span><span class="line-swatch" style="background:#EDE6D6"></span>Index fund (pre-tax)</span>
+  </div>
+
+  <h2 class="section-head">Yearly projection</h2>
+  <div id="projection-table"></div>
+  <p class="footnote" id="assumptions-note"></p>
+
+  <h2 class="section-head">The exit — year <span id="exit-year">10</span> sale</h2>
+  <div class="exit-grid">
+    <div class="result-cell">
+      <p class="label">Sale price − selling costs</p>
+      <p class="value" id="exit-realized">$0</p>
+      <p class="sub" id="exit-value-sub"></p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Depreciation recapture (25%)</p>
+      <p class="value" id="exit-recapture">$0</p>
+      <p class="sub" id="exit-dep-sub"></p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Capital gains tax</p>
+      <p class="value" id="exit-ltcg">$0</p>
+      <p class="sub" id="exit-gain-sub"></p>
+    </div>
+    <div class="result-cell">
+      <p class="label">Net after-tax proceeds</p>
+      <p class="value" id="exit-net">$0</p>
+      <p class="sub" id="exit-net-sub"></p>
+    </div>
+  </div>
+  <div class="info-note" id="exit-1031"></div>
+  <p class="footnote">Recapture simplified: all depreciation (including the cost-seg'd portion) is taxed at 25% here — see the explainer for why §1245 property technically recaptures at ordinary rates.</p>
+
+  <div class="share-row">
+    <button class="copy-link-btn" id="copy-link">copy shareable link</button>
+    <span class="copy-status" id="copy-status"></span>
+  </div>
+
+  <article class="article">
+    <h2>What this calculator models</h2>
+    <p>This is the classic high-earner real estate play, drawn end to end. One spouse earns a large W-2 — say $300,000. The other spouse has no full-time job and qualifies as a <strong>real estate professional</strong> under §469(c)(7). The couple buys a rental, orders a cost segregation study, and 100% bonus depreciation converts a quarter of the building into a first-year deduction. On paper the rental loses six figures; in cash it roughly breaks even. Because the REP spouse materially participates, that paper loss is <strong>non-passive</strong> — and on a joint return it offsets the W-2, producing a tax refund that would make the property's actual cash flow blush.</p>
+    <p>The calculator runs the whole arc: the year-1 loss waterfall and W-2 offset, every year of the hold (watching for the year the paper losses dry up), the sale with selling costs, <strong>depreciation recapture</strong>, and capital gains tax — and then puts the result head-to-head against simply putting the same cash in an index fund, with the rental path reinvesting its tax savings and cash flow at the same index return so the comparison is honest. What it does <em>not</em> do is tell you whether you qualify for REPS. Nothing on this page is tax advice; it's a scenario planner for a conversation with a CPA.</p>
+
+    <h2>What real estate professional status actually is</h2>
+    <p>REPS is a tax classification, not a license — no exam, no certificate, just facts and hours. To qualify for a given year, a taxpayer must pass <strong>three tests</strong>:</p>
+    <p><strong>1. The more-than-half test.</strong> More than 50% of all personal-service working hours must be in real property trades or businesses in which they materially participate — development, construction, acquisition, rental, management, brokerage. This is the test that disqualifies almost everyone with a full-time job: 2,000 hours at an employer means needing 2,001 in real estate.</p>
+    <p><strong>2. The 750-hour test.</strong> More than 750 hours in those real property activities during the year — about 14.5 hours a week. Hours must be the taxpayer's own; <strong>spouses cannot combine hours</strong> for this test or the first one.</p>
+    <p><strong>3. Material participation in the rental itself.</strong> Qualifying as a REP only removes the automatic passive label. The taxpayer must also materially participate in the specific rental — most commonly via the 500-hour or "substantially all" tests — or make a grouping election to treat all rental interests as one activity. Miss this step and the losses stay passive anyway.</p>
+    <p>All three tests are about documentation as much as hours. The Tax Court has sided with taxpayers who kept <strong>contemporaneous logs</strong> — dated entries, task descriptions, hours — and against those who reconstructed estimates after an audit notice arrived. If you're pursuing this, keep the log as you go (a <a href="/reps-hours-log">REPS hours log template</a> makes it painless) and be honest about whether the hours are real. "On call" time and investor-level activities like reviewing statements generally don't count.</p>
+
+    <h2>Why this is a married-filing-jointly strategy</h2>
+    <p>The elegant asymmetry at the heart of the strategy: the hour tests are applied <strong>per spouse</strong>, but the tax benefit lands on the <strong>joint return</strong>. A stay-at-home spouse who spends 800+ hours a year genuinely managing the rental — and has no other job competing for the more-than-half test — can qualify alone. Once their rental losses are non-passive, the joint return nets them against the household's combined income, including the other spouse's W-2. File separately and the mechanism breaks: the losses stay on the REP spouse's return with little income to offset. That's why the calculator fixes filing status to MFJ.</p>
+
+    <h2>The baseline: what happens without REPS</h2>
+    <p>Rental real estate is <em>per se</em> passive under §469, no matter how many hours you work — unless REPS (or short-term rental treatment) applies. Passive losses can only offset passive income. There's a consolation prize for moderate earners: up to <strong>$25,000</strong> of rental losses can offset ordinary income with active participation, but it phases out at 50 cents per dollar of modified AGI above $100,000 and is <strong>gone entirely at $150,000</strong>. For the $300k household this tool is built around, the no-REPS baseline is stark: <strong>$0 usable today</strong>. The losses aren't destroyed — they're suspended, carried forward against future passive income, and released in full when the property sells — but a deduction claimed today at 32%+ beats the same deduction released a decade from now, both on time value and on rate arbitrage. The hero number in the results strip shows this gap directly.</p>
+
+    <h2>Cost segregation + 100% bonus: manufacturing the year-1 loss</h2>
+    <p>Straight-line depreciation spreads the building's basis over 27.5 years — useful, but slow. A <strong>cost segregation study</strong> is an engineering analysis that identifies the components of the property that aren't really "building": carpet, appliances, cabinetry (5-year), certain fixtures (7-year), driveways, fencing, landscaping (15-year). For residential rentals, <strong>20–35%</strong> of the building basis typically reclassifies; the calculator defaults to 25%.</p>
+    <p>The multiplier is <strong>bonus depreciation</strong>. The One Big Beautiful Bill Act (July 2025) restored 100% bonus <strong>permanently</strong> for qualifying property acquired after January 19, 2025 — no more phase-down anxiety. Everything the study reclassifies into 5/7/15-year property is deductible <em>in full, in year one</em>. On a $500,000 purchase with 20% land, that's a $400,000 building basis, $100,000 of which becomes a first-year deduction — stacked on top of straight-line depreciation on the remainder, mortgage interest, and operating costs. The result is the waterfall above: a property that roughly breaks even in cash shows a six-figure loss on paper.</p>
+    <p class="formula">Year-1 deduction (cost seg) = building basis × reclass % × 100% bonus<br>+ (building basis − reclassified) ÷ 27.5<br>+ mortgage interest + operating costs + study fee</p>
+    <p>Flat-fee virtual studies for single-family properties run $3,000–$5,000 — trivially worth it when the incremental deduction is worth $30,000+ in taxes, and worth skipping when it isn't (toggle the method above and watch the gap). One honesty note: bonus depreciation doesn't create deductions, it <em>accelerates</em> them. You're trading smaller deductions in years 2–27 and a bigger recapture bill at sale for a large deduction now. That trade is usually favorable at high marginal rates — but it's a trade.</p>
+
+    <h2 id="brackets">Your marginal rate: 2026 federal brackets (MFJ)</h2>
+    <p>The calculator multiplies the paper loss by your <strong>combined federal + state marginal rate</strong> — the rate on your <em>last</em> dollar, not your average rate. For 2026 (per Rev. Proc. 2025-32, filing in early 2027), the MFJ brackets on <em>taxable</em> income (after the $32,200 standard deduction) are:</p>
+    <table>
+      <tr><th>Rate</th><th>MFJ taxable income</th></tr>
+      <tr><td>10%</td><td>$0 – $24,800</td></tr>
+      <tr><td>12%</td><td>$24,801 – $100,800</td></tr>
+      <tr><td>22%</td><td>$100,801 – $211,400</td></tr>
+      <tr><td>24%</td><td>$211,401 – $403,550</td></tr>
+      <tr><td>32%</td><td>$403,551 – $512,450</td></tr>
+      <tr><td>35%</td><td>$512,451 – $768,700</td></tr>
+      <tr><td>37%</td><td>$768,701+</td></tr>
+    </table>
+    <p>A $300,000 W-2 household lands in the <strong>24% federal bracket</strong> after the standard deduction; add your state's top rate (0% in Texas, 9.3% in California at that income) to get the combined number. Two wrinkles worth knowing: a very large loss can straddle brackets, so the true savings are slightly less than loss × top rate (the calculator uses the flat marginal rate you enter — a fine planning approximation); and every dollar of deduction is worth more at 37% than at 22%, which is why this strategy is a high-earner strategy. There's also a hidden bonus not modeled here: reducing AGI can restore phased-out benefits and reduce the 3.8% NIIT base.</p>
+
+    <h2>The exit bill: depreciation recapture</h2>
+    <p>Every dollar of depreciation you deduct reduces your cost basis, and the IRS collects on the way out. At sale, gain attributable to prior straight-line depreciation on the building is <strong>unrecaptured §1250 gain, taxed at up to 25%</strong> — notably higher than the 15% LTCG rate most sellers pay on the rest. The cost-segregated 5/7/15-year property is technically <strong>§1245 property, recaptured at ordinary rates</strong> — this calculator simplifies by taxing all recapture at 25%, which modestly flatters the cost-seg scenario for high-bracket sellers; a CPA will run the exact split. Gain beyond total depreciation is regular long-term capital gain at your entered rate (15%, or 20% + 3.8% NIIT at high incomes — the <a href="/capital-gains-tax-calculator">capital gains calculator</a> handles that bracket math).</p>
+    <p>Even with recapture, the deal often works: you deducted at a 32–37% combined marginal rate and repay at 25%, years later, in inflated dollars — rate arbitrage plus an interest-free loan from Treasury. And the bill is avoidable: a <strong>1031 exchange</strong> rolls the gain and recapture into a replacement property indefinitely (not modeled here — it's a rabbit hole of deadlines and intermediaries), and heirs receive a <strong>stepped-up basis</strong> that erases the deferred tax entirely. "Defer, exchange, die" is a real strategy, morbid as it reads.</p>
+
+    <h2>The §461(l) ceiling</h2>
+    <p>One more guardrail: even with REPS, the <strong>excess business loss</strong> limitation caps how much net business loss can offset non-business income (like wages) in a single year — <strong>$512,000 for MFJ in 2026</strong> (OBBBA re-based the thresholds; they index annually). A single-rental cost seg rarely gets close, but stack bonus depreciation on a large or multiple properties and you can hit the ceiling; the excess carries forward as a net operating loss rather than vanishing. The calculator flags your scenario if the year-1 loss crosses it.</p>
+
+    <h2>Audit risk, honestly</h2>
+    <p>REPS claims by households with large W-2s are a recognized IRS audit target, and the case law is a graveyard of taxpayers with round-number hour estimates and no records. The pattern in the losses is consistent: hours reconstructed after the fact, "investor" activities counted as participation, travel and education hours padding the log, and claimed hours that physically don't fit alongside a full-time job. The pattern in the wins is equally consistent: <strong>contemporaneous, credible, specific logs</strong>. If the qualifying spouse genuinely runs the property — leasing, maintenance coordination, bookkeeping, renovations — the hours are real and documentable. Keep the log from day one (<a href="/reps-hours-log">template here</a>), don't round to suspiciously tidy numbers, and treat the 750 hours as a floor you clear with room to spare, not a target to engineer.</p>
+
+    <h2>When this strategy does <em>not</em> make sense</h2>
+    <p><strong>Low marginal rate.</strong> At a 22–24% combined rate, the year-1 offset shrinks and the recapture rate (25%) can exceed your deduction rate — the arbitrage inverts. This is a strategy that scales with your bracket.</p>
+    <p><strong>Bad property economics.</strong> Tax savings are a percentage rescue on a loss that's real if the deal is bad. A property bleeding $1,000/month of true cash flow doesn't become good because April improved; run it through the <a href="/rental-property-calculator">rental property calculator</a> on its own merits first. The wealth chart above makes this vivid — if the bars can't catch the index line even <em>with</em> the tax savings stacked on top, the market is telling you something.</p>
+    <p><strong>The hours aren't real.</strong> If the qualifying spouse doesn't actually want to spend 750+ hours a year on real estate, the strategy fails either honestly (don't claim it) or expensively (claim it and lose the audit). A fabricated log is not a tax strategy.</p>
+    <p><strong>Short expected hold with no 1031 appetite.</strong> Sell in year 2–3 and recapture claws back most of the acceleration you just paid a study fee to create.</p>
+
+    <h2>Frequently asked questions</h2>
+    <div class="faq-item">
+      <h3>Can rental losses offset W-2 income?</h3>
+      <p>Normally no — they're passive, and above $150k MAGI they're fully suspended. With REPS and material participation, they become non-passive and offset any income on the joint return, including a spouse's W-2.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is real estate professional status?</h3>
+      <p>A §469(c)(7) classification requiring more than half of your working hours and 750+ hours per year in real property trades you materially participate in — plus material participation in the rental itself. No license involved; it's re-tested every year.</p>
+    </div>
+    <div class="faq-item">
+      <h3>How many hours do you need for REPS?</h3>
+      <p>750+ hours a year in real property activities, and more than half of your total working time — which is why it's nearly impossible alongside a full-time job, and why the one-spouse structure exists. Document with contemporaneous logs.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Does cost segregation work for one rental?</h3>
+      <p>Usually — flat-fee virtual studies ($3,000–$5,000) typically reclassify 20–35% of building basis, all deductible in year 1 under permanent 100% bonus depreciation. The deduction only offsets W-2 income if REPS (or STR treatment) applies.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is depreciation recapture?</h3>
+      <p>At sale, gain attributable to prior depreciation is taxed at up to 25% (straight-line §1250) or ordinary rates (cost-seg'd §1245 property). It makes depreciation a deferral + rate-arbitrage play, not free money — unless you 1031 or hold until step-up.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Do both spouses need to qualify?</h3>
+      <p>No — one spouse qualifies using their own hours alone, and the joint return spreads the benefit across both incomes. Filing separately breaks the strategy.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What happens to the losses without REPS?</h3>
+      <p>Up to $25k offsets other income below $100k MAGI, phasing to zero at $150k. Above that, losses suspend and carry forward — released against future passive income or at sale. Usable today at a $300k W-2: $0.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Is bonus depreciation still 100%?</h3>
+      <p>Yes — the OBBBA (July 2025) made 100% bonus permanent for qualifying property acquired after January 19, 2025, ending the scheduled phase-down.</p>
+    </div>
+
+    <p style="margin-top:32px;"><em>This calculator is an educational scenario planner, not tax, legal, or investment advice. It assumes REPS qualification without evaluating it, uses a flat marginal rate, simplifies recapture to 25%, ignores state-level passive loss conformity, NIIT interactions, AMT, and §199A, and rests on assumptions real markets will ignore. Real estate professional status is among the most heavily audited positions in individual taxation — engage a CPA before acting on anything this page suggests.</em></p>
+  </article>
+
+  <div class="support-footer">
+    <p class="support-line">
+      If this calculator was useful, a tip helps keep it free and ad-free —
+      <a href="https://buymeacoffee.com/ctong" target="_blank" rel="noopener">buy me a coffee</a>.
+    </p>
+    <p class="support-line">
+      I also use <a href="https://monarch.com/referral/rk2olzfae9?r_source=copy" target="_blank" rel="noopener">Monarch</a> to track net worth and spending — that's a referral link, so if you sign up I get a discount on my own subscription. No pressure either way.
+    </p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  // ---- GA4: debounced calculate tracking (skips programmatic/init recalcs) ----
+  var _calcReady = false, _calcTimer;
+  function trackCalculate() {
+    if (!_calcReady) return;
+    clearTimeout(_calcTimer);
+    _calcTimer = setTimeout(function () {
+      window.trackEvent && window.trackEvent('calculate', { calculator: 'real-estate-professional' });
+    }, 700);
+  }
+  // Shim parseFloat so every call site transparently tolerates comma-grouped input.
+  function parseFloat(v) { return window.parseFloat(String(v).replace(/,/g, '')); }
+
+  const AMBER = '#C9A45C';
+  const SLATE = '#5B7A9D';
+  const COPPER = '#B07A4E';
+  const SEAM = '#24344A';
+  const WARN = '#C46552';
+  const PARCHMENT = '#EDE6D6';
+  const PARCHMENT_FAINT = '#948D79';
+  const PARCHMENT_DIM = '#B8AF9C';
+
+  const EBL_LIMIT_MFJ_2026 = 512000; // §461(l) excess business loss threshold, MFJ, 2026 (indexed annually)
+
+  const LIMITS = {
+    w2: { min: 0, max: 5000000 },
+    mrate: { min: 0, max: 60 },
+    price: { min: 50000, max: 20000000 },
+    landPct: { min: 0, max: 60 },
+    downPct: { min: 0, max: 100 },
+    closingPct: { min: 0, max: 10 },
+    loanRate: { min: 0, max: 15 },
+    term: { min: 5, max: 40 },
+    rent: { min: 0, max: 100000 },
+    vacancyPct: { min: 0, max: 50 },
+    opexPct: { min: 0, max: 80 },
+    appreciation: { min: 0, max: 10 },
+    rentGrowth: { min: 0, max: 10 },
+    hold: { min: 1, max: 30 },
+    sellPct: { min: 0, max: 12 },
+    reclassPct: { min: 0, max: 50 },
+    fee: { min: 0, max: 50000 },
+    idx: { min: 0, max: 15 },
+    ltcg: { min: 0, max: 40 }
+  };
+
+  let waterfallChart = null, wealthChart = null;
+
+  function fmt(n) {
+    const sign = n < 0 ? '-' : '';
+    return sign + '$' + Math.round(Math.abs(n)).toLocaleString();
+  }
+  function fmtK(n) {
+    const sign = n < 0 ? '-' : '';
+    const a = Math.abs(n);
+    if (a >= 1000000) return sign + '$' + (a/1000000).toFixed(2).replace(/\.?0+$/,'') + 'M';
+    if (a >= 1000) return sign + '$' + Math.round(a/1000) + 'k';
+    return sign + '$' + Math.round(a);
+  }
+  function formatMoneyValue(n) {
+    if (isNaN(n)) return '';
+    const sign = n < 0 ? '-' : '';
+    return sign + Math.round(Math.abs(n)).toLocaleString();
+  }
+  function pct1(v) {
+    return (Math.abs(v - Math.round(v)) < 0.05 ? Math.round(v) : v.toFixed(1)) + '%';
+  }
+  function clamp(val, min, max) {
+    if (isNaN(val)) return min;
+    return Math.min(max, Math.max(min, val));
+  }
+  function markValidity(el, value, min, max) {
+    const bad = isNaN(value) || value < min || value > max;
+    el.classList.toggle('invalid', bad);
+  }
+
+  function getInputs() {
+    const g = id => parseFloat(document.getElementById(id).value);
+    return {
+      w2: clamp(g('w2'), LIMITS.w2.min, LIMITS.w2.max),
+      mrate: clamp(g('mrate'), LIMITS.mrate.min, LIMITS.mrate.max),
+      price: clamp(g('price'), LIMITS.price.min, LIMITS.price.max),
+      landPct: clamp(g('land-pct'), LIMITS.landPct.min, LIMITS.landPct.max),
+      downPct: clamp(g('down-pct'), LIMITS.downPct.min, LIMITS.downPct.max),
+      closingPct: clamp(g('closing-pct'), LIMITS.closingPct.min, LIMITS.closingPct.max),
+      loanRate: clamp(g('loan-rate'), LIMITS.loanRate.min, LIMITS.loanRate.max),
+      term: Math.round(clamp(g('term'), LIMITS.term.min, LIMITS.term.max)),
+      rent: clamp(g('rent'), LIMITS.rent.min, LIMITS.rent.max),
+      vacancyPct: clamp(g('vacancy-pct'), LIMITS.vacancyPct.min, LIMITS.vacancyPct.max),
+      opexPct: clamp(g('opex-pct'), LIMITS.opexPct.min, LIMITS.opexPct.max),
+      appreciation: clamp(g('appreciation'), LIMITS.appreciation.min, LIMITS.appreciation.max),
+      rentGrowth: clamp(g('rent-growth'), LIMITS.rentGrowth.min, LIMITS.rentGrowth.max),
+      hold: Math.round(clamp(g('hold'), LIMITS.hold.min, LIMITS.hold.max)),
+      sellPct: clamp(g('sell-pct'), LIMITS.sellPct.min, LIMITS.sellPct.max),
+      mode: document.getElementById('mode').value === 'sl' ? 'sl' : 'cs',
+      reclassPct: clamp(g('reclass-pct'), LIMITS.reclassPct.min, LIMITS.reclassPct.max),
+      fee: clamp(g('fee'), LIMITS.fee.min, LIMITS.fee.max),
+      idx: clamp(g('idx-return'), LIMITS.idx.min, LIMITS.idx.max),
+      ltcg: clamp(g('ltcg'), LIMITS.ltcg.min, LIMITS.ltcg.max)
+    };
+  }
+
+  // Standard amortization payment.
+  function monthlyPayment(loan, annualRate, years) {
+    if (loan <= 0) return 0;
+    const n = years * 12;
+    const mr = annualRate / 100 / 12;
+    if (mr === 0) return loan / n;
+    const f = Math.pow(1 + mr, n);
+    return loan * mr * f / (f - 1);
+  }
+
+  // Straight-line depreciation taken through year y (full years, 27.5-yr life;
+  // year 28 takes the final half year). Mid-month convention ignored — footnoted.
+  function slFactor(y) {
+    return Math.min(y, 27) + (y >= 28 ? 0.5 : 0);
+  }
+
+  // ---- Core engine: pure function of the inputs object ----
+  function computeScenario(i) {
+    const down = i.price * i.downPct / 100;
+    const closing = i.price * i.closingPct / 100;
+    const fee = i.mode === 'cs' ? i.fee : 0;
+    const capital = down + closing + fee;          // cash both paths start with
+    const loan = i.price - down;
+    const pmt = monthlyPayment(loan, i.loanRate, i.term);
+    const buildingBasis = i.price * (1 - i.landPct / 100);
+    const bonus = i.mode === 'cs' ? buildingBasis * i.reclassPct / 100 : 0;
+    const slBasis = buildingBasis - bonus;
+    const slAnnual = slBasis / 27.5;
+    const mr = i.loanRate / 100 / 12;
+    const rate = i.mrate / 100;
+
+    const years = [];
+    let bal = loan, fund = 0, fundContrib = 0;
+    let cumCF = 0, cumSave = 0, cumPrin = 0;
+    let paperLossEndYear = null;
+
+    for (let y = 1; y <= i.hold; y++) {
+      let interest = 0, principal = 0;
+      for (let m = 0; m < 12; m++) {
+        if (bal <= 0.005) break;
+        const im = bal * mr;
+        let pr = pmt - im;
+        if (pr > bal) pr = bal;
+        interest += im; principal += pr; bal -= pr;
+      }
+      const f = Math.pow(1 + i.rentGrowth / 100, y - 1);
+      const gross = i.rent * 12 * f;
+      const vac = gross * i.vacancyPct / 100;
+      const opex = gross * i.opexPct / 100;
+      const noi = gross - vac - opex;
+      const dep = slAnnual * (y <= 27 ? 1 : (y === 28 ? 0.5 : 0)) + (y === 1 ? bonus : 0);
+      const taxable = noi - interest - dep - (y === 1 ? fee : 0);
+      const taxDelta = -taxable * rate;            // + = savings against W-2, − = tax owed
+      const cf = noi - (interest + principal);     // actual cash flow (debt service ends when loan does)
+      if (paperLossEndYear === null && taxable >= 0) paperLossEndYear = y;
+
+      fund = fund * (1 + i.idx / 100) + cf + taxDelta;
+      fundContrib += cf + taxDelta;
+      cumCF += cf; cumSave += taxDelta; cumPrin += principal;
+
+      years.push({
+        y, gross, vac, opex, noi, interest, principal, dep, taxable, taxDelta, cf,
+        balance: bal,
+        value: i.price * Math.pow(1 + i.appreciation / 100, y),
+        fund, fundContrib, cumCF, cumSave, cumPrin
+      });
+    }
+
+    // Sale at end of year y (uses per-year stored state).
+    function saleAt(y) {
+      const yr = years[y - 1];
+      const realized = yr.value * (1 - i.sellPct / 100);
+      const depTotal = bonus + slAnnual * slFactor(Math.min(y, i.hold));
+      const basis = i.price + closing - depTotal;
+      const gain = realized - basis;
+      let recapTax = 0, ltcgTax = 0, recapAmt = 0;
+      if (gain > 0) {
+        recapAmt = Math.min(depTotal, gain);
+        recapTax = recapAmt * 0.25;
+        ltcgTax = (gain - recapAmt) * i.ltcg / 100;
+      }
+      const net = realized - yr.balance - recapTax - ltcgTax;
+      const fundGain = Math.max(0, yr.fund - Math.max(0, yr.fundContrib));
+      const fundAfterTax = yr.fund - fundGain * i.ltcg / 100;
+      return { y, value: yr.value, realized, depTotal, basis, gain, recapAmt, recapTax, ltcgTax, net, fundAfterTax, total: net + fundAfterTax };
+    }
+
+    const exit = saleAt(i.hold);
+
+    // Index fund path.
+    function idxAfterTaxAt(y) {
+      const v = capital * Math.pow(1 + i.idx / 100, y);
+      return v - Math.max(0, v - capital) * i.ltcg / 100;
+    }
+    const idxValue = capital * Math.pow(1 + i.idx / 100, i.hold);
+    const idxAfterTax = idxAfterTaxAt(i.hold);
+
+    // Breakeven: first year the sell-now RE wealth matches the index path.
+    let breakeven = null;
+    for (let y = 1; y <= i.hold; y++) {
+      if (saleAt(y).total >= idxAfterTaxAt(y)) { breakeven = y; break; }
+    }
+
+    // IRRs.
+    const flows = [-capital];
+    for (let y = 1; y <= i.hold; y++) {
+      let fl = years[y - 1].cf + years[y - 1].taxDelta;
+      if (y === i.hold) fl += exit.net;
+      flows.push(fl);
+    }
+    const reIRR = irr(flows);
+    const idxIRR = capital > 0 ? Math.pow(idxAfterTax / capital, 1 / i.hold) - 1 : null;
+
+    // No-REPS baseline: $25k allowance phased out $100k–$150k MAGI (W-2 as proxy).
+    const y1Loss = years[0].taxable < 0 ? -years[0].taxable : 0;
+    const allowance = Math.max(0, 25000 - Math.max(0, i.w2 - 100000) * 0.5);
+    const baselineUsable = Math.min(y1Loss, allowance);
+    const baselineSavings = baselineUsable * rate;
+
+    return {
+      inputs: i, down, closing, fee, capital, loan, pmt, buildingBasis, bonus, slAnnual,
+      years, exit, idxValue, idxAfterTax, breakeven, reIRR, idxIRR,
+      paperLossEndYear, y1Loss, baselineUsable, baselineSavings,
+      y1: years[0]
+    };
+  }
+
+  function irr(flows) {
+    // NPV sign-change check, then bisection.
+    function npv(r) {
+      let s = 0;
+      for (let t = 0; t < flows.length; t++) s += flows[t] / Math.pow(1 + r, t);
+      return s;
+    }
+    let lo = -0.9999, hi = 10;
+    let nLo = npv(lo), nHi = npv(hi);
+    if (isNaN(nLo) || isNaN(nHi) || nLo * nHi > 0) return null;
+    for (let k = 0; k < 100; k++) {
+      const mid = (lo + hi) / 2;
+      const nMid = npv(mid);
+      if (Math.abs(nMid) < 0.01) return mid;
+      if (nLo * nMid < 0) { hi = mid; nHi = nMid; } else { lo = mid; nLo = nMid; }
+    }
+    return (lo + hi) / 2;
+  }
+
+  // --- Shareable link encode/decode (same pattern as the other Phases calculators) ---
+  function encodeState() {
+    const i = getInputs();
+    const state = { w: i.w2, r: i.mrate, p: i.price, l: i.landPct, d: i.downPct, c: i.closingPct,
+      lr: i.loanRate, t: i.term, m: i.rent, v: i.vacancyPct, o: i.opexPct, a: i.appreciation,
+      g: i.rentGrowth, h: i.hold, s: i.sellPct, md: i.mode, rc: i.reclassPct, f: i.fee,
+      x: i.idx, cg: i.ltcg };
+    const json = JSON.stringify(state);
+    const b64 = btoa(unescape(encodeURIComponent(json)));
+    return b64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  }
+  function decodeState(encoded) {
+    try {
+      const b64 = encoded.replace(/-/g, '+').replace(/_/g, '/');
+      const json = decodeURIComponent(escape(atob(b64)));
+      const state = JSON.parse(json);
+      if (!state || typeof state.p === 'undefined') return null;
+      return state;
+    } catch (e) { return null; }
+  }
+  function applyState(s) {
+    const set = (id, val, lim, isMoney) => {
+      if (typeof val === 'undefined') return;
+      const corrected = clamp(val, lim.min, lim.max);
+      document.getElementById(id).value = isMoney ? formatMoneyValue(corrected) : corrected;
+    };
+    set('w2', s.w, LIMITS.w2, true); set('mrate', s.r, LIMITS.mrate);
+    set('price', s.p, LIMITS.price, true); set('land-pct', s.l, LIMITS.landPct);
+    set('down-pct', s.d, LIMITS.downPct); set('closing-pct', s.c, LIMITS.closingPct);
+    set('loan-rate', s.lr, LIMITS.loanRate); set('term', s.t, LIMITS.term);
+    set('rent', s.m, LIMITS.rent, true); set('vacancy-pct', s.v, LIMITS.vacancyPct);
+    set('opex-pct', s.o, LIMITS.opexPct); set('appreciation', s.a, LIMITS.appreciation);
+    set('rent-growth', s.g, LIMITS.rentGrowth); set('hold', s.h, LIMITS.hold);
+    set('sell-pct', s.s, LIMITS.sellPct); set('reclass-pct', s.rc, LIMITS.reclassPct);
+    set('fee', s.f, LIMITS.fee, true); set('idx-return', s.x, LIMITS.idx);
+    set('ltcg', s.cg, LIMITS.ltcg);
+    if (s.md === 'sl' || s.md === 'cs') document.getElementById('mode').value = s.md;
+  }
+  function updateUrlSilently() {
+    const url = new URL(window.location.href);
+    url.searchParams.set('d', encodeState());
+    window.history.replaceState(null, '', url.toString());
+  }
+  let urlUpdateTimer = null;
+  function scheduleUrlUpdate() {
+    clearTimeout(urlUpdateTimer);
+    urlUpdateTimer = setTimeout(updateUrlSilently, 400);
+  }
+
+  function renderWarnings(r) {
+    const el = document.getElementById('warnings');
+    el.innerHTML = '';
+    function add(cls, text) {
+      const div = document.createElement('div');
+      div.className = cls;
+      div.textContent = text;
+      el.appendChild(div);
+    }
+    if (r.inputs.rent <= 0) {
+      add('warning', 'Enter a monthly rent above $0 to model the scenario.');
+      return;
+    }
+    if (r.y1.taxable >= 0) {
+      add('warning', 'No paper loss in year 1 at these numbers — NOI exceeds interest + depreciation, so there’s nothing to offset the W-2. Try the cost seg toggle, or this property is simply profitable (a fine problem).');
+    }
+    if (r.y1Loss > EBL_LIMIT_MFJ_2026) {
+      add('warning', '§461(l) alert: the year-1 loss of ' + fmt(r.y1Loss) + ' exceeds the 2026 excess business loss limit of ' + fmt(EBL_LIMIT_MFJ_2026) + ' (MFJ). Only losses up to the limit offset wages this year; the excess carries forward as an NOL.');
+    }
+    if (r.y1.cf < 0) {
+      const netY1 = r.y1.cf + r.y1.taxDelta;
+      add('info-note', 'Cash flow is ' + fmt(r.y1.cf / 12) + '/mo before taxes — the property costs money to hold. Net of year-1 tax savings the combined position is ' + fmt(netY1) + ' for the year' + (netY1 >= 0 ? ' (the offset carries it)' : ' (still negative — the tax tail isn’t wagging hard enough)') + '.');
+    }
+    if (r.paperLossEndYear !== null && r.paperLossEndYear > 1) {
+      add('info-note', 'Paper losses end in year ' + r.paperLossEndYear + ' — rent growth outruns the fixed interest + straight-line depreciation, and the rental starts adding taxable income instead of sheltering it.');
+    }
+    if (r.inputs.mrate < 24) {
+      add('info-note', 'At a ' + r.inputs.mrate + '% marginal rate, deductions are worth less than the 25% recapture rate you’ll repay at sale — the arbitrage inverts. This strategy scales with your bracket.');
+    }
+  }
+
+  function renderResults(r) {
+    const heroEl = document.getElementById('offset-y1');
+    const savings = r.y1.taxDelta;
+    heroEl.textContent = fmt(Math.max(0, savings));
+    heroEl.className = 'value ' + (savings > 0 ? 'positive' : 'negative');
+    document.getElementById('offset-sub').textContent = savings > 0
+      ? 'on ' + fmt(r.y1Loss) + ' paper loss · without REPS: ' + fmt(r.baselineSavings)
+      : 'no year-1 paper loss at these inputs';
+
+    document.getElementById('re-wealth').textContent = fmt(r.exit.total);
+    document.getElementById('re-irr').textContent = r.reIRR === null ? 'IRR n/a' : 'IRR ' + pct1(r.reIRR * 100) + ' · ' + fmt(r.capital) + ' invested';
+
+    document.getElementById('idx-wealth').textContent = fmt(r.idxAfterTax);
+    document.getElementById('idx-irr').textContent = r.idxIRR === null ? 'IRR n/a' : 'IRR ' + pct1(r.idxIRR * 100) + ' · same ' + fmt(r.capital) + ' in the market';
+
+    document.getElementById('breakeven').textContent = r.breakeven === null ? '—' : 'Year ' + r.breakeven;
+    document.getElementById('breakeven-sub').textContent = r.breakeven === null
+      ? 'RE never catches the index in this hold'
+      : 'first year a sale beats the index path';
+
+    document.getElementById('capital-note').innerHTML =
+      'All-in cash at closing: ' + fmt(r.down) + ' down + ' + fmt(r.closing) + ' closing' +
+      (r.fee > 0 ? ' + ' + fmt(r.fee) + ' cost seg study' : '') +
+      ' = <strong>' + fmt(r.capital) + '</strong> — the index fund path invests this same amount on day 1.';
+  }
+
+  function renderWaterfall(r) {
+    const ctx = document.getElementById('waterfall-chart');
+    if (waterfallChart) { waterfallChart.destroy(); waterfallChart = null; }
+    if (r.inputs.rent <= 0) { ctx.parentElement.style.display = 'none'; return; }
+    ctx.parentElement.style.display = 'block';
+
+    const y1 = r.y1;
+    const slDep = r.slAnnual;
+    const steps = [
+      { label: 'Rent', amt: y1.gross, color: AMBER, kind: 'in' },
+      { label: 'Vacancy', amt: y1.vac, color: '#9C523F', kind: 'out' },
+      { label: 'Opex', amt: y1.opex, color: WARN, kind: 'out' },
+      { label: 'Interest', amt: y1.interest, color: '#D4765F', kind: 'out' },
+      { label: '27.5-yr dep.', amt: slDep, color: COPPER, kind: 'out' },
+      { label: 'Bonus dep.', amt: r.bonus, color: '#8A5E38', kind: 'out' },
+      { label: 'Study fee', amt: r.fee, color: '#6E4A2C', kind: 'out' }
+    ].filter(s => s.kind === 'in' || s.amt > 0.005);
+
+    const labels = [], data = [], colors = [], metas = [];
+    let running = 0;
+    steps.forEach(s => {
+      if (s.kind === 'in') {
+        labels.push(s.label); data.push([0, s.amt]); running = s.amt;
+      } else {
+        labels.push(s.label); data.push([running - s.amt, running]); running -= s.amt;
+      }
+      colors.push(s.color); metas.push(s);
+    });
+
+    // Net taxable result bar.
+    const taxable = y1.taxable;
+    labels.push(taxable < 0 ? 'Paper loss' : 'Net income');
+    data.push(taxable < 0 ? [taxable, 0] : [0, taxable]);
+    colors.push(SLATE);
+    metas.push({ label: taxable < 0 ? 'Paper loss' : 'Taxable rental income', amt: taxable, kind: 'net' });
+
+    // Tax consequence bar: loss × marginal rate = W-2 offset (or tax owed).
+    const delta = y1.taxDelta;
+    labels.push(delta >= 0 ? 'W-2 offset' : 'Tax owed');
+    data.push(delta >= 0 ? [0, delta] : [delta, 0]);
+    colors.push(delta >= 0 ? AMBER : WARN);
+    metas.push({ label: delta >= 0 ? 'W-2 tax offset (loss × ' + r.inputs.mrate + '%)' : 'Tax owed on rental profit', amt: delta, kind: 'tax' });
+
+    waterfallChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          data,
+          backgroundColor: colors,
+          borderWidth: 0,
+          barPercentage: 0.82,
+          categoryPercentage: 0.9
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              title: items => items.length ? metas[items[0].dataIndex].label : '',
+              label: item => {
+                const m = metas[item.dataIndex];
+                if (m.kind === 'in') return 'Effective gross rent in: ' + fmt(m.amt) + '/yr';
+                if (m.kind === 'net') return (m.amt < 0 ? 'Year-1 paper loss: ' : 'Year-1 taxable income: ') + fmt(m.amt);
+                if (m.kind === 'tax') return (m.amt >= 0 ? 'Tax savings: ' : 'Tax cost: ') + fmt(m.amt);
+                return '-' + fmt(m.amt).replace('-', '');
+              }
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: PARCHMENT_DIM, font: { family: 'IBM Plex Mono', size: 10 }, maxRotation: 45, minRotation: 0 },
+            grid: { display: false }, border: { color: SEAM }
+          },
+          y: {
+            title: { display: true, text: '$/year (year 1)', color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            ticks: { callback: v => fmtK(v), color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            grid: { color: SEAM }, border: { color: SEAM }
+          }
+        }
+      },
+      plugins: [{
+        id: 'zeroLine',
+        afterDraw(c) {
+          const { ctx: g, chartArea, scales } = c;
+          const y0 = scales.y.getPixelForValue(0);
+          if (y0 < chartArea.top || y0 > chartArea.bottom) return;
+          g.save();
+          g.strokeStyle = PARCHMENT_FAINT;
+          g.lineWidth = 1;
+          g.setLineDash([3, 3]);
+          g.beginPath(); g.moveTo(chartArea.left, y0); g.lineTo(chartArea.right, y0); g.stroke();
+          g.restore();
+        }
+      }]
+    });
+  }
+
+  function renderWealthChart(r) {
+    const ctx = document.getElementById('wealth-chart');
+    if (wealthChart) { wealthChart.destroy(); wealthChart = null; }
+    if (r.inputs.rent <= 0) { ctx.parentElement.style.display = 'none'; return; }
+    ctx.parentElement.style.display = 'block';
+
+    const labels = r.years.map(y => 'Yr ' + y.y);
+    const initial = r.years.map(() => r.capital);
+    const paydown = r.years.map(y => y.cumPrin);
+    const apprec = r.years.map(y => y.value - r.inputs.price);
+    const cumCF = r.years.map(y => y.cumCF);
+    const cumSave = r.years.map(y => y.cumSave);
+    const idxLine = r.years.map(y => r.capital * Math.pow(1 + r.inputs.idx / 100, y.y));
+
+    wealthChart = new Chart(ctx, {
+      data: {
+        labels,
+        datasets: [
+          // order: line = 1 (drawn on top), bars = 2 (drawn behind)
+          { type: 'line', label: 'Index fund (pre-tax)', data: idxLine, borderColor: PARCHMENT, backgroundColor: PARCHMENT,
+            borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 3, tension: 0.25, order: 1 },
+          { type: 'bar', label: 'Initial equity', data: initial, backgroundColor: '#3A4A60', stack: 're', order: 2 },
+          { type: 'bar', label: 'Principal paydown', data: paydown, backgroundColor: COPPER, stack: 're', order: 2 },
+          { type: 'bar', label: 'Appreciation', data: apprec, backgroundColor: SLATE, stack: 're', order: 2 },
+          { type: 'bar', label: 'Cumulative cash flow', data: cumCF, backgroundColor: '#8A6E3D', stack: 're', order: 2 },
+          { type: 'bar', label: 'Cumulative tax savings', data: cumSave, backgroundColor: AMBER, stack: 're', order: 2 }
+        ]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: item => item.dataset.label + ': ' + fmt(item.raw)
+            }
+          }
+        },
+        scales: {
+          x: {
+            stacked: true,
+            ticks: { color: PARCHMENT_DIM, font: { family: 'IBM Plex Mono', size: 10 } },
+            grid: { display: false }, border: { color: SEAM }
+          },
+          y: {
+            stacked: true,
+            title: { display: true, text: 'wealth ($, pre-sale-tax)', color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            ticks: { callback: v => fmtK(v), color: PARCHMENT_FAINT, font: { family: 'IBM Plex Mono', size: 10 } },
+            grid: { color: SEAM }, border: { color: SEAM }
+          }
+        }
+      }
+    });
+  }
+
+  function renderProjection(r) {
+    const el = document.getElementById('projection-table');
+    if (r.inputs.rent <= 0) { el.innerHTML = ''; document.getElementById('assumptions-note').textContent = ''; return; }
+
+    // Show every year up to 10, then every other year.
+    const rows = r.years.filter(y => r.inputs.hold <= 12 || y.y <= 10 || y.y % 2 === 0 || y.y === r.inputs.hold);
+    let html = '<table><tr><th>Year</th><th>NOI</th><th>Interest</th><th>Depreciation</th><th>Taxable</th><th>Tax impact</th><th>Cash flow</th></tr>';
+    rows.forEach(y => {
+      html += '<tr><td>' + y.y + '</td>' +
+        '<td>' + fmt(y.noi) + '</td>' +
+        '<td>' + fmt(y.interest) + '</td>' +
+        '<td>' + fmt(y.dep) + '</td>' +
+        '<td class="' + (y.taxable < 0 ? 'hi' : '') + '">' + fmt(y.taxable) + '</td>' +
+        '<td class="' + (y.taxDelta >= 0 ? 'hi' : 'neg') + '">' + (y.taxDelta >= 0 ? '+' : '') + fmt(y.taxDelta) + '</td>' +
+        '<td class="' + (y.cf >= 0 ? '' : 'neg') + '">' + fmt(y.cf) + '</td></tr>';
+    });
+    html += '</table>';
+    el.innerHTML = html;
+
+    const i = r.inputs;
+    document.getElementById('assumptions-note').textContent =
+      'Assumes ' + fmt(r.pmt) + '/mo P&I on a ' + fmt(r.loan) + ' loan (' + i.loanRate + '%, ' + i.term + ' yrs). Building basis ' + fmt(r.buildingBasis) +
+      (i.mode === 'cs' ? '; ' + i.reclassPct + '% bonus-depreciated in year 1 (' + fmt(r.bonus) + '), remainder straight-line over 27.5 yrs.' : ', straight-line over 27.5 yrs.') +
+      ' Vacancy and opex as % of scheduled rent; year-1 depreciation conventions (mid-month) ignored; flat marginal rate; tax impact = −taxable × ' + i.mrate + '%. Estimate only.';
+  }
+
+  function renderExit(r) {
+    document.getElementById('exit-year').textContent = r.inputs.hold;
+    document.getElementById('exit-realized').textContent = fmt(r.exit.realized);
+    document.getElementById('exit-value-sub').textContent = fmt(r.exit.value) + ' − ' + r.inputs.sellPct + '% selling costs';
+    document.getElementById('exit-recapture').textContent = fmt(-r.exit.recapTax);
+    document.getElementById('exit-dep-sub').textContent = 'on ' + fmt(r.exit.recapAmt) + ' of depreciation taken';
+    document.getElementById('exit-ltcg').textContent = fmt(-r.exit.ltcgTax);
+    document.getElementById('exit-gain-sub').textContent = fmt(Math.max(0, r.exit.gain - r.exit.recapAmt)) + ' gain @ ' + r.inputs.ltcg + '%';
+    document.getElementById('exit-net').textContent = fmt(r.exit.net);
+    document.getElementById('exit-net-sub').textContent = 'after ' + fmt(r.years[r.inputs.hold - 1].balance) + ' loan payoff';
+
+    const exitTax = r.exit.recapTax + r.exit.ltcgTax;
+    document.getElementById('exit-1031').textContent = exitTax > 0
+      ? 'A 1031 exchange could defer this entire ' + fmt(exitTax) + ' tax bill by rolling into another property — but that’s a commitment to staying in real estate, not an exit. This calculator models a taxable sale on purpose, so the index fund comparison stays honest. Deferral mechanics are covered in the explainer.'
+      : 'No exit tax at these numbers — nothing for a 1031 exchange to defer.';
+  }
+
+  function syncModeFields() {
+    const isSL = document.getElementById('mode').value === 'sl';
+    document.getElementById('reclass-field').classList.toggle('dimmed', isSL);
+    document.getElementById('fee-field').classList.toggle('dimmed', isSL);
+  }
+
+  function update() {
+    trackCalculate();
+    const r = computeScenario(getInputs());
+    renderWarnings(r);
+    renderResults(r);
+    renderWaterfall(r);
+    renderWealthChart(r);
+    renderProjection(r);
+    renderExit(r);
+    scheduleUrlUpdate();
+  }
+
+  // Wire inputs with the same input/blur clamp pattern as the other Phases calculators.
+  [
+    ['w2', LIMITS.w2, true], ['mrate', LIMITS.mrate, false],
+    ['price', LIMITS.price, true], ['land-pct', LIMITS.landPct, false],
+    ['down-pct', LIMITS.downPct, false], ['closing-pct', LIMITS.closingPct, false],
+    ['loan-rate', LIMITS.loanRate, false], ['term', LIMITS.term, false],
+    ['rent', LIMITS.rent, true], ['vacancy-pct', LIMITS.vacancyPct, false],
+    ['opex-pct', LIMITS.opexPct, false], ['appreciation', LIMITS.appreciation, false],
+    ['rent-growth', LIMITS.rentGrowth, false], ['hold', LIMITS.hold, false],
+    ['sell-pct', LIMITS.sellPct, false], ['reclass-pct', LIMITS.reclassPct, false],
+    ['fee', LIMITS.fee, true], ['idx-return', LIMITS.idx, false], ['ltcg', LIMITS.ltcg, false]
+  ].forEach(([id, lim, isMoney]) => {
+    const el = document.getElementById(id);
+    el.addEventListener('input', () => {
+      markValidity(el, parseFloat(el.value), lim.min, lim.max);
+      update();
+    });
+    el.addEventListener('blur', () => {
+      const corrected = clamp(parseFloat(el.value), lim.min, lim.max);
+      el.value = isMoney ? formatMoneyValue(corrected) : corrected;
+      el.classList.remove('invalid');
+      update();
+    });
+  });
+
+  document.getElementById('mode').addEventListener('change', () => {
+    syncModeFields();
+    window.trackEvent && window.trackEvent('strategy_toggle', { calculator: 'real-estate-professional', mode: document.getElementById('mode').value });
+    update();
+  });
+
+  document.getElementById('copy-link').addEventListener('click', () => {
+    updateUrlSilently();
+    const statusEl = document.getElementById('copy-status');
+    navigator.clipboard.writeText(window.location.href).then(() => {
+      statusEl.textContent = 'link copied';
+      setTimeout(() => { statusEl.textContent = ''; }, 2200);
+    }).catch(() => {
+      statusEl.textContent = 'copy failed — select the URL bar';
+      setTimeout(() => { statusEl.textContent = ''; }, 2800);
+    });
+  });
+
+  (function hydrateFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    const encoded = params.get('d');
+    if (encoded) {
+      const state = decodeState(encoded);
+      if (state) applyState(state);
+    }
+  })();
+
+  syncModeFields();
+  update();
+
+  // ---- GA4: outbound-link + share tracking; enable calculate events ----
+  document.querySelectorAll('a[href*="monarch.com/referral"]').forEach(function (a) {
+    a.addEventListener('click', function () { window.trackEvent && window.trackEvent('affiliate_click', { link_id: 'monarch' }); });
+  });
+  document.querySelectorAll('a[href*="buymeacoffee.com"]').forEach(function (a) {
+    a.addEventListener('click', function () { window.trackEvent && window.trackEvent('bmac_click'); });
+  });
+  var _shareBtn = document.getElementById('copy-link');
+  if (_shareBtn) { _shareBtn.addEventListener('click', function () { window.trackEvent && window.trackEvent('share_copy'); }); }
+  _calcReady = true;
+})();
+</script>
+</body>
+</html>
