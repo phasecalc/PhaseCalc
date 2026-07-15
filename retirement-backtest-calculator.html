@@ -340,7 +340,9 @@
     width: 120px;
     transition: border-color 0.15s ease;
   }
-  input[type="text"] {
+  /* Name/label fields only — money fields stay type=text for comma formatting
+     but should keep the serif numeric treatment (matches other calculators). */
+  input[data-field="label"] {
     font-family: 'Inter', sans-serif;
     font-size: 14px;
     font-weight: 500;
