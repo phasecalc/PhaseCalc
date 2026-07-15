@@ -485,18 +485,20 @@
     margin: 28px 0 0;
   }
   .copy-link-btn {
-    background: none;
-    border: 1px solid var(--seam);
-    color: var(--parchment-dim);
+    background: var(--ink-raised);
+    border: none;
+    border-left: 3px solid var(--amber);
+    color: var(--parchment);
     font-family: 'IBM Plex Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.03em;
-    padding: 7px 14px;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 16px;
     cursor: pointer;
-    border-radius: 2px;
-    transition: all 0.15s ease;
+    border-radius: 0 2px 2px 0;
+    transition: background 0.15s ease, color 0.15s ease;
   }
-  .copy-link-btn:hover { border-color: var(--amber); color: var(--amber); }
+  .copy-link-btn:hover { background: var(--seam); color: var(--amber); }
   .copy-status {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 10.5px;
@@ -558,6 +560,59 @@
   }
   .support-line a:hover { border-bottom-color: var(--amber); }
 
+  /* ---- Email capture (Kit form 9676382; plain POST, ajax-enhanced) ---- */
+  .email-capture {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--seam);
+    max-width: 440px;
+  }
+  .email-capture-row { display: flex; gap: 8px; }
+  .email-capture input[type="email"] {
+    flex: 1;
+    min-width: 0;
+    background: var(--ink-raised);
+    border: 1px solid var(--seam);
+    border-radius: 2px;
+    color: var(--parchment);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    padding: 9px 12px;
+  }
+  .email-capture input[type="email"]:focus { outline: none; border-color: var(--amber); }
+  .email-capture input[type="email"]::placeholder { color: var(--parchment-faint); }
+  .email-capture-btn {
+    flex: 0 0 auto;
+    background: var(--ink-raised);
+    border: none;
+    border-left: 3px solid var(--amber);
+    color: var(--parchment);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 16px;
+    cursor: pointer;
+    border-radius: 0 2px 2px 0;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+  .email-capture-btn:hover { background: var(--seam); color: var(--amber); }
+  .email-capture-btn:disabled { opacity: 0.5; cursor: default; }
+  .email-capture-note {
+    font-family: 'Source Serif 4', serif;
+    font-size: 14px;
+    color: var(--parchment-dim);
+    margin: 8px 0 0;
+  }
+  .email-capture-success {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--seam);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--amber);
+  }
+
   @media (max-width: 620px) {
     .field-grid { grid-template-columns: 1fr 1fr; }
     .results-strip { grid-template-columns: 1fr 1fr; }
@@ -571,7 +626,7 @@
     <a class="wordmark" href="/"><svg width="21" height="21" viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="7" width="12" height="18" fill="#C9A45C"/><rect x="16.5" y="7" width="8.5" height="18" fill="#8A6E3D"/><rect x="27" y="7" width="3.5" height="18" fill="#5B7A9D"/></svg><span>Phases</span></a>
     <nav class="sitenav">
       <a href="/">Compound Interest</a>
-      <a href="/retirement-backtest-calculator">Retirement Backtest</a>
+      <a href="/retirement-backtest-calculator">Retirement Phases</a>
       <a href="/trump-account-calculator">Trump Account</a>
       <a href="/529-superfunding-calculator">529 Superfund</a>
       <a href="/roth-vs-traditional-calculator">Roth vs Trad</a>
@@ -750,6 +805,14 @@
     <p class="support-line">
       I also use <a href="https://monarch.com/referral/rk2olzfae9?r_source=copy" target="_blank" rel="noopener">Monarch</a> to track net worth and spending — that's a referral link, so if you sign up I get a discount on my own subscription. No pressure either way.
     </p>
+    <form class="email-capture" id="email-capture" action="https://app.kit.com/forms/9676382/subscriptions" method="post">
+      <div class="email-capture-row">
+        <input type="email" name="email_address" id="email-capture-input" placeholder="you@example.com" required aria-label="Email address" />
+        <button type="submit" class="email-capture-btn">subscribe</button>
+      </div>
+      <p class="email-capture-note">Get new calculators when they ship &mdash; no spam, no schedule.</p>
+    </form>
+    <p class="email-capture-success" id="email-capture-success" hidden>You&rsquo;re on the list &mdash; we&rsquo;ll email you when a new calculator ships.</p>
   </div>
 
 </div>
@@ -1144,6 +1207,28 @@
   document.querySelectorAll('a[href*="buymeacoffee.com"]').forEach(function (a) {
     a.addEventListener('click', function () { window.trackEvent && window.trackEvent('bmac_click'); });
   });
+
+  // ---- Email capture: ajax-enhance the Kit form for inline confirmation.
+  // The plain <form> POST works with JS off (lands on Kit's hosted success
+  // page — documented fallback, not accidental). Fires 'email_signup', a
+  // deliberate addition to the standard GA4 event set.
+  var _ecForm = document.getElementById('email-capture');
+  if (_ecForm) {
+    _ecForm.addEventListener('submit', function (e) {
+      if (!window.fetch || !window.FormData) return; // very old browser: plain POST
+      e.preventDefault();
+      var _ecBtn = _ecForm.querySelector('.email-capture-btn');
+      _ecBtn.disabled = true;
+      fetch(_ecForm.action, { method: 'POST', body: new FormData(_ecForm), headers: { Accept: 'application/json' } })
+        .then(function (res) { if (!res.ok) { throw new Error('subscribe failed'); } })
+        .then(function () {
+          _ecForm.hidden = true;
+          document.getElementById('email-capture-success').hidden = false;
+          window.trackEvent && window.trackEvent('email_signup');
+        })
+        .catch(function () { _ecBtn.disabled = false; _ecForm.submit(); });
+    });
+  }
   var _shareBtn = document.getElementById('copy-link');
   if (_shareBtn) { _shareBtn.addEventListener('click', function () { window.trackEvent && window.trackEvent('share_copy'); }); }
   _calcReady = true;
