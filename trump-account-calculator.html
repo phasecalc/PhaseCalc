@@ -21,7 +21,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Trump Account Calculator — project growth, tax-free basis, and taxable earnings</title>
-<meta name="description" content="Free Trump Account calculator. Project your child's account growth to age 18 and beyond — the $1,000 federal seed, the tax-free vs. taxable split at withdrawal, the age-18 Roth conversion strategy, and the kiddie tax trap to avoid." />
+<meta name="description" content="Free Trump Account calculator — the section 530A account, modelled properly. Project your child's §530A growth to age 18 and beyond: the $1,000 federal seed, the tax-free vs. taxable split at withdrawal, the age-18 Roth conversion strategy, and the kiddie tax trap to avoid." />
 <link rel="canonical" href="https://phasecalc.com/trump-account-calculator" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta property="og:type" content="website" />
@@ -51,6 +51,14 @@
       "acceptedAnswer": {
         "@type": "Answer",
         "text": "The combined annual limit is $5,000 per child (2026 and 2027, indexed for inflation afterward). This cap covers contributions from parents, family, friends, and employers together. Employers can contribute up to $2,500 per year, but employer dollars count toward the same $5,000 cap — and that $2,500 is per employee, not per child, so an employee with three children has $2,500 in total to spread across all three accounts. The one-time $1,000 federal pilot contribution and qualified general contributions from charities and governments do NOT count against the annual limit."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is a 530A account?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A section 530A account and a Trump Account are the same thing. Section 530A of the Internal Revenue Code creates them, added by section 70204 of P.L. 119-21 (the One Big Beautiful Bill Act) on July 4, 2025, alongside section 128 for the employer contribution exclusion and section 6434 for the $1,000 pilot program contribution. A 530A account is a traditional IRA for a child with special rules that apply during the growth period — capped contributions, restricted investments, and almost no permitted distributions — after which the ordinary section 408 traditional IRA rules govern."
       }
     },
     {
@@ -1211,30 +1219,39 @@
   <div class="embed-section" id="embed-panel" hidden>
     <p class="embed-note">Paste this into any blog post, newsletter page, or sidebar — the calculator runs entirely inside the iframe, no scripts needed on your site. Works down to ~300px wide. A small "powered by phasecalc" bar credits the source, and the unaffiliated-tool disclaimer travels with it.</p>
     <!-- Height is MEASURED, not inherited from the Coast FIRE snippet (650).
+         Re-measured 2026-07-26 against the live page after the tax-audit and
+         depth passes; the longer assumptions note under the chart sits inside
+         the embed-visible region and added ~100px at every width.
          Embed-mode content height by iframe width, Chrome, default state:
-           300px -> 4396   375px -> 4076   500px -> 3213   600px -> 3014
-           700px -> 2787   760px+ -> 2629 (capped by .wrap max-width)
-         2900 clears the content with no internal scroll at ~660px and wider,
-         which covers the typical blog article column, and leaves ~270px of
-         slack at full width. Narrower placements scroll internally by design
-         (fixed height, no postMessage handshake). -->
-    <textarea class="embed-code" id="embed-code" readonly rows="4" spellcheck="false">&lt;iframe src="https://phasecalc.com/trump-account-calculator?embed=1" width="100%" height="2900" style="border:none;" title="Trump Account Calculator by phasecalc.com" loading="lazy"&gt;&lt;/iframe&gt;</textarea>
+           300px -> 4497   375px -> 4161   500px -> 3263   600px -> 3114
+           650px -> 2871   700px -> 2820   760px+ -> 2736 (capped by .wrap max-width)
+         3150 clears the content with no internal scroll from ~620px up, which
+         covers the typical blog article column, and leaves ~410px of slack at
+         full width. Narrower placements scroll internally by design (fixed
+         height, no postMessage handshake). Re-measure whenever copy inside the
+         calculator body or the assumptions note changes. -->
+    <textarea class="embed-code" id="embed-code" readonly rows="4" spellcheck="false">&lt;iframe src="https://phasecalc.com/trump-account-calculator?embed=1" width="100%" height="3150" style="border:none;" title="Trump Account Calculator by phasecalc.com" loading="lazy"&gt;&lt;/iframe&gt;</textarea>
     <button class="copy-link-btn" id="copy-embed">copy embed code</button>
     <span class="copy-status" id="embed-copy-status"></span>
   </div>
 
   <article class="article">
-    <h2>How this Trump Account calculator works</h2>
+    <h2>How this Trump Account (§530A) calculator works</h2>
     <p>Trump Accounts — formally section 530A accounts, created by the One Big Beautiful Bill Act of 2025 — opened for contributions on <strong>July 4, 2026</strong>. They're a new kind of custodial traditional IRA for children: anyone can contribute up to a <strong>combined $5,000 per year</strong> (indexed for inflation after 2027), with no earned-income requirement, and the money must sit in index funds tracking primarily U.S. companies until the year the child turns 18.</p>
 
     <p class="callout-note"><strong>Every figure on this page is in future (nominal) dollars.</strong> There's no inflation adjustment: a balance shown at age 18 is denominated in the dollars of that future year, not today's. At 2.5% inflation, the default $85,656 at age 18 in 2043 is worth roughly $54,000 in 2026 purchasing power. Returns are also gross of fees — see the assumptions note under the chart.</p>
     <p>This calculator models contributions from your child's first eligible year (2026 at the earliest) through December 31 of the year they turn 17 — the last year outside money can go in. It compounds annually at your chosen return, applies the one-time <strong>$1,000 federal seed</strong> for eligible children born 2025–2028, optionally adds the <strong>$250 Dell / Invest America contribution</strong> for eligible children born before 2025, and then lets the balance ride untouched to whatever age you choose. The two are mutually exclusive — see below. The default 7% return is a common long-run assumption for U.S. equities; it is not a prediction.</p>
     <p><strong>Why the result differs from a plain compound-interest calculator.</strong> Two structural reasons, both deliberate. First, contributions can't start before the program opened in 2026 — so a child born in 2025 gets only <strong>17 contribution years</strong> before 18, not 18 (children born 2026 or later get the full 18). Second, this calculator deposits each contribution at the <strong>start</strong> of the calendar year, matching the incentive to contribute early; most generic calculators assume end-of-year deposits, and some compound monthly. At the defaults ($1,000 seed, $2,500/year, 7%, born 2025), this page shows about $85,700 at 18, while a generic 18-year end-of-year calculator shows about $88,400. Same compounding math — different assumptions about when the money arrives.</p>
 
+    <h2>What is a §530A account, and why does it have two names?</h2>
+    <p>If you searched for a <strong>530A calculator</strong> rather than a Trump Account calculator, you're in the right place — they are the same thing, and you probably already know more about this than most people writing about it.</p>
+    <p><strong>Section 530A</strong> is the provision of the Internal Revenue Code that creates these accounts. It was added by §70204 of P.L. 119-21 — the One Big Beautiful Bill Act — signed July 4, 2025, along with §128 (the employer contribution exclusion) and §6434 (the $1,000 pilot program contribution). The IRS calls them Trump accounts in its own guidance, so both names are official; "§530A account" is simply the statutory one, and it's the term you'll see in Notice 2025-68, in the March 2026 proposed regulations, and on Form 4547.</p>
+    <p>The practical reason the distinction matters: a §530A account is a <strong>traditional IRA with special childhood rules bolted on</strong>, not a new category of savings account. Almost every misunderstanding on this page — the tax treatment, the age-18 question, the pro-rata rule, the withdrawal penalties — dissolves once you hold that in mind. The special rules apply during the growth period; after it, §408 takes over.</p>
+
     <h3>What this calculator assumes</h3>
     <ul>
       <li><strong>Two distinct periods,</strong> because the code treats them differently. The <em>growth period</em> runs from opening until December 31 of the year the beneficiary turns 17 — formally, it ends before January 1 of the calendar year they attain 18. The IRS worked example: born October 1 2025 → turns 18 on October 1 2043 → growth period ends December 31 2042. Contributions are capped, investments restricted, distributions almost entirely prohibited. After it ends, most special rules fall away.</li>
-      <li><strong>Contributions applied at the start of each year,</strong> with annual compounding. Year-end application runs lower — see the comparison below.</li>
+      <li><strong>Contributions applied at the start of each year,</strong> with annual compounding. Year-end application runs lower — see the comparison above.</li>
       <li><strong>A constant annual return,</strong> not a simulated sequence. This is a real simplification and it matters more here than in most calculators — see the forced-equity section below.</li>
       <li><strong>Nominal dollars, gross of fees.</strong> No inflation adjustment; the 0.10% fee ceiling is not deducted (it would trim roughly 1% off the ending balance).</li>
       <li><strong>Balances are pre-tax.</strong> How much is actually kept depends entirely on which dollars went in — that's what the basis line on the chart tracks.</li>
@@ -1327,6 +1344,10 @@
     <div class="faq-item">
       <h3>How much can you contribute to a Trump Account per year?</h3>
       <p>$5,000 combined per child in 2026–2027 (indexed afterward), covering family and employer contributions together. Employers max out at $2,500 within that cap — and that $2,500 is per employee, not per child, so it's shared across all of an employee's children. The federal seed and qualified general contributions from governments and charities don't count against the cap.</p>
+    </div>
+    <div class="faq-item">
+      <h3>What is a 530A account?</h3>
+      <p>A §530A account and a Trump Account are the same thing. Section 530A of the Internal Revenue Code creates them; it was added by §70204 of P.L. 119-21 (the One Big Beautiful Bill Act) on July 4, 2025, alongside §128 for employer contributions and §6434 for the $1,000 pilot contribution. It is a traditional IRA for a child with special rules that apply during the growth period, after which §408 governs.</p>
     </div>
     <div class="faq-item">
       <h3>Who gets the $1,000 federal seed?</h3>
