@@ -1056,7 +1056,8 @@
 
     document.getElementById('assumptions-note').textContent =
       'Assumes dividends paid annually at year end (real payers are usually quarterly), dividend per share growing ' + r.inputs.divGrowth +
-      '%/yr from a ' + r.inputs.yield + '% starting yield, price growing ' + r.inputs.pxGrowth + '%/yr, reinvestment at year-end prices, and no taxes or fees. Starting share count normalized to a $100 share price.';
+      '%/yr from a ' + r.inputs.yield + '% starting yield, price growing ' + r.inputs.pxGrowth + '%/yr, reinvestment at year-end prices, and no taxes or fees. Starting share count normalized to a $100 share price. ' +
+      'All figures are in future (nominal) dollars — there is no inflation adjustment, so a value ' + r.inputs.years + (r.inputs.years === 1 ? ' year' : ' years') + ' out is in that year’s dollars, not today’s. At 2.5% inflation, prices would be about ' + Math.pow(1.025, r.inputs.years).toFixed(1) + '× today’s level by then.';
   }
 
   function renderCharts(r) {

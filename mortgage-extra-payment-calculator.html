@@ -992,11 +992,27 @@
       series.push({ m: horizon, std: 0, acc: 0, stdInt: std.totalInterest, accInt: acc.totalInterest });
     }
 
+    // Present value of the interest saved, discounted at 2.5%/yr. The saving
+    // accrues month by month across the whole loan and the largest amounts land
+    // latest — in the months the loan no longer exists — so the headline total
+    // sums dollars of many different vintages. Discounting restates it in the
+    // same dollars as the payment. This is a units restatement only; it takes
+    // no position on whether prepaying is worthwhile.
+    const PV_RATE = 0.025;
+    let pvInterestSaved = 0;
+    for (let m = 1; m <= std.months; m++) {
+      const sPrev = std.cumInts[Math.min(m - 1, std.cumInts.length - 1)];
+      const sCur = std.cumInts[Math.min(m, std.cumInts.length - 1)];
+      const aPrev = acc.cumInts[Math.min(m - 1, acc.cumInts.length - 1)];
+      const aCur = acc.cumInts[Math.min(m, acc.cumInts.length - 1)];
+      pvInterestSaved += ((sCur - sPrev) - (aCur - aPrev)) / Math.pow(1 + PV_RATE, m / 12);
+    }
+
     return {
       inputs: i, pmt, broken: false,
       stdMonths: std.months, accMonths: acc.months,
       stdInterest: std.totalInterest, accInterest: acc.totalInterest,
-      interestSaved, monthsSaved, totalExtra, series
+      interestSaved, monthsSaved, totalExtra, pvInterestSaved, series
     };
   }
 
@@ -1081,7 +1097,10 @@
     document.getElementById('assumptions-note').textContent =
       'Assumes a fixed ' + r.inputs.rate + '% rate, the required P&I payment of ' + fmt(r.pmt) + ' from the original ' + r.inputs.term +
       '-year terms, extra payments applied straight to principal' + (r.inputs.lump > 0 ? ' (lump applied this month)' : '') +
-      ', and no taxes, insurance, escrow, or prepayment penalties. Dates count from this month.';
+      ', and no taxes, insurance, escrow, or prepayment penalties. Dates count from this month. ' +
+      'Figures are nominal, correctly so: a fixed-rate payment is set in nominal dollars and doesn’t move with inflation. But the interest saved accrues month by month over the life of the loan, with the largest amounts landing latest, so the headline total sums dollars of many different vintages.' +
+      (r.interestSaved > 0.5 ? ' Discounted at 2.5%/yr, the ' + fmt(r.interestSaved) + ' saved is about ' + fmt(r.pvInterestSaved) + ' in today’s dollars.' : '') +
+      ' Whether that changes the case for prepaying depends on what the money would otherwise do — not modeled here.';
   }
 
   function renderChart(r) {

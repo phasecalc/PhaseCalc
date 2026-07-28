@@ -1132,7 +1132,8 @@
     document.getElementById('assumptions-note').textContent =
       'Assumes ' + fmt(r.contrib) + '/mo contributions landing at the end of each month, a constant ' + r.inputs.rate +
       '% annual rate compounded monthly, starting from ' + fmt(r.inputs.balance) + ' toward a ' + fmt(r.inputs.goal) +
-      ' goal. Deterministic projection — real savings rates move with the market and Fed policy.';
+      ' goal. Deterministic projection — real savings rates move with the market and Fed policy. ' +
+      'Figures are in nominal dollars: the goal you entered is treated as a fixed amount, not one that rises with inflation. For a goal a year or two out that is fine; for one a decade away, the thing you are saving for will likely cost more by then, so set the goal in the dollars you expect to need rather than today’s price.';
   }
 
   function renderChart(r) {

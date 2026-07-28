@@ -90,7 +90,15 @@
       "name": "What does the 10th, 50th, and 90th percentile ending balance mean?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Each historical starting year produces one ending balance (zero, if depleted). Sorting all of those ending balances and reading off the 10th percentile shows a pessimistic outcome - only 10% of historical cycles ended lower. The 50th percentile (median) is the typical outcome, and the 90th percentile shows an optimistic outcome where markets were unusually kind. Looking at the spread, not just the median, is the point: retirement planning is about surviving the bad cycles, not just the average one."
+        "text": "Each historical starting year produces one ending balance (zero, if depleted). Sorting all of those ending balances and reading off the 10th percentile shows a pessimistic outcome - only 10% of historical cycles ended lower. The 50th percentile (median) is the typical outcome, and the 90th percentile shows an optimistic outcome where markets were unusually kind. All three are expressed in today's dollars. Looking at the spread, not just the median, is the point: retirement planning is about surviving the bad cycles, not just the average one."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Are the results shown in today's dollars or future dollars?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Today's dollars - the same purchasing power as the withdrawal you entered. The simulation itself runs in nominal terms, using nominal stock and bond returns with the withdrawal rising by each cycle's own actual CPI, and then every ending balance is deflated by that cycle's cumulative inflation and by your assumed upstream inflation rate. This is necessary rather than cosmetic: because each historical cycle ends in a different calendar year, cumulative inflation over a 35-year drawdown ranges from about 1.7 times for a 1928 start to 5.5 times for a 1966 start, so nominal ending balances from different cycles are not comparable to one another and roughly three quarters of cycles change rank when deflated. The success rate is unaffected, because depletion is a nominal-versus-nominal test inside a single cycle. FIRECalc and cFIREsim report in constant dollars for the same reason. The upstream projection is the one figure left in nominal terms, with its today's-dollars equivalent shown directly beneath it."
       }
     },
     {
@@ -875,19 +883,19 @@
 
   <div class="stat-row">
     <div class="stat-box">
-      <p class="label">10th percentile ending balance</p>
+      <p class="label">10th percentile ending balance <span class="hint">(today's $)</span></p>
       <p class="value" id="p10-value">—</p>
     </div>
     <div class="stat-box">
-      <p class="label">Median (50th) ending balance</p>
+      <p class="label">Median (50th) ending balance <span class="hint">(today's $)</span></p>
       <p class="value" id="p50-value">—</p>
     </div>
     <div class="stat-box">
-      <p class="label">90th percentile ending balance</p>
+      <p class="label">90th percentile ending balance <span class="hint">(today's $)</span></p>
       <p class="value" id="p90-value">—</p>
     </div>
   </div>
-  <p class="footnote">Ending balances are nominal dollars in each cycle's own end year — not adjusted back to today's purchasing power.</p>
+  <p class="footnote">Every ending balance on this page is in <strong>today's dollars</strong> — each cycle's nominal result is deflated by that cycle's own actual CPI over the drawdown, then back through your assumed upstream inflation, so all figures are in the same purchasing power as the withdrawal you entered. This matters more than it sounds: cumulative inflation over a 35-year drawdown ranges from 1.7&times; (a 1928 start) to 5.5&times; (a 1966 start), so nominal ending balances from different cycles cannot be compared to each other at all.</p>
 
   <div class="chart-wrap">
     <canvas id="chart-retire" role="img" aria-label="Line chart starting from the balance entering retirement, fanning out into one line per historical cycle plus 10th, 50th and 90th percentile bands across the drawdown.">From the balance entering retirement, each historical cycle's actual path fans out, with 10th, 50th and 90th percentile bands.</canvas>
@@ -914,6 +922,13 @@
     <h3>Reading the chart and the percentiles</h3>
     <p>The single amber line is the deterministic upstream projection. Once the terminal phase begins, thin lines fan out — one per historical starting year, each tracing that cycle's actual balance path. The bold overlay lines mark the 10th, 50th (median), and 90th percentile ending balances across all cycles. A wide gap between the 10th and 90th percentile is the visual signature of sequence-of-returns risk: the same withdrawal plan can end in wildly different places purely because of which years the retirement happened to start in.</p>
 
+    <h3>Why the results are shown in today's dollars</h3>
+    <p>The simulation itself runs entirely in nominal terms — nominal stock and bond returns, with your withdrawal rising each year by that cycle's own actual CPI. That is the correct way to run it, and it is how the success rate is determined. But <strong>displaying</strong> the results in nominal dollars would be misleading, for a reason specific to historical-cycle backtesting.</p>
+    <p>Each cycle ends in a different calendar year, having lived through a different inflation history. Over a 35-year drawdown, cumulative inflation ranges from about <strong>1.7&times;</strong> for a cycle starting in 1928 to <strong>5.5&times;</strong> for one starting in 1966 — a threefold difference in what a dollar means at the finish line. Sorting nominal ending balances across those cycles and reading off a median is sorting quantities measured in different units.</p>
+    <p>It also produces false rankings. Take two cycles that both survived: a 1928 start ends at roughly $6.8M nominal, a 1941 start at $9.2M. The nominal figures say 1941 was the better retirement. Converted to constant purchasing power, 1928 ends around $1.57M and 1941 around $0.96M — 1928 was better by more than half again. Roughly three quarters of all cycles change rank when you deflate them.</p>
+    <p>So every ending balance here is deflated by its own cycle's actual CPI and then back through your assumed upstream inflation rate, putting it in the same dollars you typed the withdrawal in. <strong>The success rate is unaffected</strong> — whether a portfolio hits zero is a nominal-versus-nominal question inside a single cycle, and the answer is identical either way. This also matches how FIRECalc and cFIREsim report: both present results in constant dollars rather than end-year nominal.</p>
+    <p>The one figure on this page that remains nominal is the upstream <em>projection</em> — the balance entering retirement — because it is a single deterministic path with no cross-cycle comparison problem, and it is the number you would actually see on a statement. Its today's-dollars equivalent is stated directly beneath it so the handoff between the two sections is explicit.</p>
+
     <h2>Frequently asked questions</h2>
     <div class="faq-item">
       <h3>What is historical-cycle backtesting?</h3>
@@ -937,7 +952,11 @@
     </div>
     <div class="faq-item">
       <h3>What do the 10th/50th/90th percentile balances mean?</h3>
-      <p>Sorting every historical cycle's ending balance, the 10th percentile is a pessimistic outcome, the 50th (median) is typical, and the 90th is an optimistic one. The spread between them matters more than any single number.</p>
+      <p>Sorting every historical cycle's ending balance, the 10th percentile is a pessimistic outcome, the 50th (median) is typical, and the 90th is an optimistic one. The spread between them matters more than any single number. All three are in today's dollars.</p>
+    </div>
+    <div class="faq-item">
+      <h3>Are the results in today's dollars or future dollars?</h3>
+      <p>Today's dollars — the same purchasing power as the withdrawal you entered. The simulation runs in nominal terms, then each cycle's ending balance is deflated by that cycle's own actual CPI and by your assumed upstream inflation. This is necessary rather than cosmetic: cycles end in different years with 1.7&times; to 5.5&times; cumulative inflation, so nominal results aren't comparable across cycles. The success rate is identical either way. The upstream projection is the one figure left nominal, with its today's-dollars equivalent shown beneath it.</p>
     </div>
     <div class="faq-item">
       <h3>How are withdrawals inflation-adjusted?</h3>
@@ -1190,7 +1209,15 @@
       let depleted = false;
       let depletionYear = null;
       let withdrawal = withdrawalYearOne;
-      const path = [{ year: 0, balance: balance }];
+      // Price index within this cycle, relative to retirement start (1.00 at
+      // year 0). Dividing a nominal balance by priceIdx expresses it in
+      // retirement-start dollars; dividing again by upstreamMultiplier carries
+      // it back to plan-start (today's) dollars — the same unit the user typed
+      // the withdrawal in. Cycles run 1.74x (1928 start) to 5.47x (1966 start)
+      // over a 35-year drawdown, so nominal ending balances from different
+      // cycles are NOT comparable to each other. Everything displayed is real.
+      let priceIdx = 1;
+      const path = [{ year: 0, balance: balance, real: balance / upstreamMultiplier }];
       for (let y = 0; y < years; y++) {
         if (y > 0) withdrawal *= (1 + HIST[i + y - 1].i / 100);
         // Determine shortfall BEFORE subtracting: a cycle is depleted only if the
@@ -1206,19 +1233,32 @@
         const net = blended - (feeDrag / 100);
         balance = balance * (1 + net);
         if (balance < 0) balance = 0;
-        path.push({ year: y + 1, balance: balance });
+        // Advance the price index by this year's actual CPI, then record both
+        // the nominal balance and its plan-start-dollar equivalent.
+        priceIdx *= (1 + yd.i / 100);
+        path.push({ year: y + 1, balance: balance, real: balance / priceIdx / upstreamMultiplier });
       }
-      results.push({ startYear: startYear, finalBalance: balance, depleted: depleted, depletionYear: depletionYear, path: path });
+      results.push({
+        startYear: startYear,
+        finalBalance: balance,                                        // nominal, end-year dollars
+        realFinalBalance: balance / priceIdx / upstreamMultiplier,    // plan-start (today's) dollars
+        cumCPI: priceIdx,
+        depleted: depleted, depletionYear: depletionYear, path: path
+      });
     }
 
     const successCount = results.filter(function (r) { return !r.depleted; }).length;
     const successRate = results.length ? (successCount / results.length) * 100 : null;
-    const finalSorted = results.map(function (r) { return r.finalBalance; }).sort(function (a, b) { return a - b; });
+    // Percentiles are computed on REAL ending balances. Sorting nominal ending
+    // balances would be sorting dollars of different sizes — cycles end in
+    // different years with up to 3x different cumulative inflation, which
+    // inverts the ranking of ~three quarters of them.
+    const finalSorted = results.map(function (r) { return r.realFinalBalance; }).sort(function (a, b) { return a - b; });
 
-    // Per-year percentile bands across all cycles, for the chart's fan.
+    // Per-year percentile bands across all cycles, for the chart's fan. Real, for the same reason.
     const yearlyBands = [];
     for (let y = 0; y <= years; y++) {
-      const vals = results.map(function (r) { return r.path[y] ? r.path[y].balance : null; }).filter(function (v) { return v !== null; }).sort(function (a, b) { return a - b; });
+      const vals = results.map(function (r) { return r.path[y] ? r.path[y].real : null; }).filter(function (v) { return v !== null; }).sort(function (a, b) { return a - b; });
       yearlyBands.push({ year: y, p10: percentile(vals, 10), p50: percentile(vals, 50), p90: percentile(vals, 90) });
     }
 
@@ -1534,8 +1574,14 @@
   function renderResultsHeader(upstream, terminalResult) {
     document.getElementById('projection-value').textContent = fmt(upstream.finalBalance);
     document.getElementById('projection-detail').textContent = fmt(upstream.finalBalance);
+    // The upstream projection is nominal (future dollars). Everything in the
+    // retirement section below is expressed in plan-start dollars, so state the
+    // handoff explicitly rather than letting the reader compare two units.
+    const _ui = clamp(parseFloat(document.getElementById('upstream-inflation').value), LIMITS.upstreamInflation.min, LIMITS.upstreamInflation.max);
+    const _upMult = Math.pow(1 + (_ui || 0) / 100, Math.max(0, Math.round(upstream.totalYears || 0)));
+    const _todaysProjection = upstream.finalBalance / _upMult;
     document.getElementById('projection-sub').textContent = upstream.totalYears > 0
-      ? 'After ' + upstream.totalYears + ' upstream year' + (upstream.totalYears === 1 ? '' : 's') + ' of deterministic, straight-line growth.'
+      ? 'After ' + upstream.totalYears + ' upstream year' + (upstream.totalYears === 1 ? '' : 's') + ' of deterministic, straight-line growth. That is a nominal figure — about ' + fmt(_todaysProjection) + ' in today’s purchasing power at ' + _ui + '% inflation. Every retirement figure below is in today’s dollars.'
       : 'No upstream phases — retirement starts from the starting balance directly.';
 
     if (terminalResult.cyclesRun === 0) {
@@ -1557,11 +1603,11 @@
   function renderCycleTable(terminalResult) {
     const el = document.getElementById('cycle-table');
     if (terminalResult.cyclesRun === 0) { el.innerHTML = ''; return; }
-    let html = '<thead><tr><th>Start year</th><th>End year</th><th>Ending balance</th><th>Status</th></tr></thead><tbody>';
+    let html = '<thead><tr><th>Start year</th><th>End year</th><th>Ending balance (today\'s $)</th><th>Status</th></tr></thead><tbody>';
     terminalResult.results.forEach(function (r) {
       const endYear = r.startYear + terminal.years - 1;
       const status = r.depleted ? ('<span class="status-fail">depleted ' + r.depletionYear + '</span>') : '<span class="status-ok">survived</span>';
-      html += '<tr><td>' + r.startYear + '</td><td>' + endYear + '</td><td>' + fmt(r.finalBalance) + '</td><td>' + status + '</td></tr>';
+      html += '<tr><td>' + r.startYear + '</td><td>' + endYear + '</td><td>' + fmt(r.realFinalBalance) + '</td><td>' + status + '</td></tr>';
     });
     html += '</tbody>';
     el.innerHTML = html;
@@ -1645,7 +1691,7 @@
     const datasets = [];
     terminalResult.results.forEach(function (r) {
       const arr = new Array(termYears + 1).fill(null);
-      r.path.forEach(function (pt) { arr[pt.year] = Math.round(pt.balance); });
+      r.path.forEach(function (pt) { arr[pt.year] = Math.round(pt.real); });
       datasets.push({ data: arr, borderColor: 'rgba(91,122,157,0.18)', borderWidth: 1, fill: false, tension: 0, pointRadius: 0, order: 3 });
     });
     function bandDataset(key, color) {

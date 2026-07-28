@@ -1395,7 +1395,8 @@
     document.getElementById('drawdown-note').textContent =
       'Withdrawals entered in today’s dollars and grown at ' + r.inputs.tuitionInf + '%/yr college cost inflation to each withdrawal year, taken at the start of the year; the remaining balance compounds at ' + r.inputs.rate +
       '%/yr straight-line (no historical backtesting — sequence risk over a ' + r.totalDrawYears +
-      '-year window is modest compared to a multi-decade retirement). Estimate only.';
+      '-year window is modest compared to a multi-decade retirement). Estimate only. ' +
+      'Dollar balances are nominal — in the dollars of the year they occur, not today’s. The percentage of tuition covered is the figure to read instead: costs are grown at college inflation and the balance at your investment return, so that ratio already compares like with like. Note the relevant deflator here is tuition inflation, not CPI — college costs have historically outrun general prices.';
   }
 
   function renderScheduleTable(r) {

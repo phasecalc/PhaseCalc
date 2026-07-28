@@ -1131,7 +1131,8 @@
       'Assumes ' + fmt(r.inputs.amount) + ' invested ' + freqName + ' at the start of each interval for ' + r.inputs.deployMonths +
       ' months (' + fmt(r.total) + ' total), then held with no further contributions through year ' + r.inputs.horizonYears +
       '. Returns are log-normal with a ' + r.inputs.rate + '% long-run CAGR and ' + r.inputs.vol +
-      '% annual volatility, across ' + SIMS + ' simulated markets with a fixed seed (reproducible). The lump-sum comparison invests the same total on day one into the same markets and holds it for the same horizon. No taxes, fees, or dividends modeled.';
+      '% annual volatility, across ' + SIMS + ' simulated markets with a fixed seed (reproducible). The lump-sum comparison invests the same total on day one into the same markets and holds it for the same horizon. No taxes, fees, or dividends modeled. ' +
+      'Outcomes are in future (nominal) dollars at year ' + r.inputs.horizonYears + ' — not adjusted to today’s purchasing power. The DCA-versus-lump-sum comparison is unaffected either way, since both sides are measured in the same dollars.';
   }
 
   function renderChart(r) {
