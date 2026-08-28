@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2262583425156336"
-     crossorigin="anonymous"></script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-MH7FWJX2M3"></script>
 <script>
@@ -758,6 +756,19 @@
     .controls-row { flex-direction: column; align-items: flex-start; }
     .result-block { text-align: left; }
   }
+  .site-links {
+    margin-top: 18px;
+    padding-top: 14px;
+    border-top: 1px solid var(--seam);
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    letter-spacing: 0.04em;
+  }
+  .site-links a { color: var(--parchment-faint); text-decoration: none; border-bottom: 1px solid transparent; }
+  .site-links a:hover { color: var(--amber); border-bottom-color: var(--amber); }
 </style>
 </head>
 <body>
@@ -900,6 +911,12 @@
       <p class="email-capture-note">Get new calculators when they ship &mdash; no spam, no schedule.</p>
     </form>
     <p class="email-capture-success" id="email-capture-success" hidden>You&rsquo;re on the list &mdash; we&rsquo;ll email you when a new calculator ships.</p>
+    <nav class="site-links" aria-label="Site links">
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </nav>
   </div>
 
 </div>
