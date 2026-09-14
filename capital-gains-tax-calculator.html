@@ -604,6 +604,33 @@
   }
   .site-links a { color: var(--parchment-faint); text-decoration: none; border-bottom: 1px solid transparent; }
   .site-links a:hover { color: var(--amber); border-bottom-color: var(--amber); }
+  /* ---- Affiliate placement (see AFFILIATE-DISCLOSURE-SNIPPET.md).
+     Disclosure is part of the block by design: never ship the link without it. */
+  .affiliate-block {
+    background: var(--ink-raised);
+    border-left: 2px solid var(--amber-dim);
+    padding: 14px 16px;
+    margin: 22px 0;
+  }
+  .affiliate-block p { margin: 0; }
+  .affiliate-block .affiliate-offer {
+    font-size: 15px;
+    color: var(--parchment-dim);
+    line-height: 1.6;
+  }
+  .affiliate-block .affiliate-offer a {
+    color: var(--amber);
+    text-decoration: none;
+    border-bottom: 1px solid var(--amber-dim);
+  }
+  .affiliate-block .affiliate-offer a:hover { border-bottom-color: var(--amber); }
+  .affiliate-block .affiliate-disclosure {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    line-height: 1.6;
+    color: var(--parchment-faint);
+    margin-top: 8px;
+  }
 </style>
 </head>
 <body>
@@ -740,6 +767,15 @@
 
     <h2>What this calculator doesn't model</h2>
     <p>Real tax returns have edges this estimate rounds off. <strong>State and local taxes</strong> aren't included — California taxes gains as ordinary income at up to 13.3%, while Texas, Florida, and Nevada take nothing. Collectibles held long-term are taxed at up to 28%, unrecaptured depreciation on rental real estate at up to 25%, and Qualified Small Business Stock may be partly excluded. Capital losses, loss carryforwards, the wash-sale rule, the $250,000/$500,000 home-sale exclusion, and the interaction of gains with credits and phase-outs are all out of scope. Treat the output as a well-informed estimate for ordinary stock, fund, and crypto sales — not a filing.</p>
+    <div class="affiliate-block">
+      <p class="affiliate-offer">
+        Filing this yourself? <a href="https://www.kqzyfj.com/click-101823853-12302452" data-affiliate="freetaxusa" target="_blank" rel="sponsored noopener">FreeTaxUSA</a> covers investment sales — Schedule D and Form 8949 — on its $0 federal tier; state returns are $15.99.
+      </p>
+      <p class="affiliate-disclosure">
+        That's an affiliate link: if you file through it, this site earns a commission. It costs you nothing extra, and it doesn't change any number on this page.
+      </p>
+    </div>
+
     <p>Once you know the tax cost of trading, the natural next question is what patient money does instead: the <a href="/">multi-phase compound interest calculator</a> shows what an unsold, compounding position grows into, and the <a href="/dca-calculator">dollar-cost averaging calculator</a> shows what steady buying does to your cost basis — which is, after all, the other half of every capital gains equation.</p>
 
     <h2>Frequently asked questions</h2>
@@ -1310,6 +1346,13 @@
   update();
 
   // ---- GA4: outbound-link + share tracking; enable calculate events ----
+  // ---- Affiliate click tracking (delegated; pairs with .affiliate-block).
+  // Matches only a[data-affiliate], so the bespoke Monarch handler below cannot double-fire.
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[data-affiliate]');
+    if (!a) return;
+    window.trackEvent && window.trackEvent('affiliate_click', { link_id: a.dataset.affiliate });
+  });
   document.querySelectorAll('a[href*="monarch.com/referral"]').forEach(function (a) {
     a.addEventListener('click', function () { window.trackEvent && window.trackEvent('affiliate_click', { link_id: 'monarch' }); });
   });
