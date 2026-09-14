@@ -17,7 +17,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Privacy Policy — Phases</title>
-<meta name="description" content="Privacy policy for phasecalc.com: what data is collected, how calculator inputs are handled, and how advertising and analytics may work on this site." />
+<meta name="description" content="Privacy policy for phasecalc.com: what Google Analytics collects, how calculator inputs stay in your browser, how shareable links work, and how email and affiliate links handle data." />
 <link rel="canonical" href="https://phasecalc.com/privacy" />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta property="og:type" content="website" />
@@ -202,7 +202,7 @@
 
   <div class="masthead">
     <h1>Privacy Policy</h1>
-    <p class="updated">Last updated: July 2026</p>
+    <p class="updated">Last updated: September 2026</p>
   </div>
 
   <article class="article">
@@ -210,28 +210,41 @@
     <p>Phases (phasecalc.com) is a collection of free financial calculators. This policy explains what information is collected when you use the site and how it's handled.</p>
 
     <h2>Calculator inputs</h2>
-    <p>Numbers you enter into a calculator — balances, contribution amounts, rates, dates — are processed <strong>entirely in your browser</strong>. They are not sent to, stored on, or logged by any server operated by this site. When you use "copy shareable link," your inputs are encoded directly into the URL itself (not stored in a database), so a link only reveals what you choose to share, with whoever you send it to.</p>
+    <p>Numbers you enter into a calculator — balances, contribution amounts, rates, dates — are processed <strong>entirely in your browser</strong>. They are never stored in a database, and they are not included in the analytics described below. Nothing you type is transmitted anywhere as you use the tool.</p>
+    <p><strong>One exception, worth understanding.</strong> When you use "copy shareable link," your inputs are encoded directly into the URL itself — that is what makes the link work, and it is why nothing has to be saved on a server. But it does mean that when such a link is <em>visited</em>, those inputs travel inside that web address, the same as any other URL, and appear in the host's ordinary server logs. A shared link contains only what you put into the calculator, and reaches only whoever you send it to. If you would rather that didn't happen at all, simply don't use the share button — the calculator works exactly the same without it.</p>
 
     <h2>Analytics</h2>
-    <p>This site may use standard web analytics (such as Netlify Analytics or a similar privacy-respecting service) to understand aggregate traffic — for example, how many people visit a page, or which calculator is most used. This data is aggregated and not tied to your calculator inputs. If cookie-based analytics or advertising is added in the future, this policy will be updated and a cookie consent notice will appear.</p>
+    <p>This site uses <strong>Google Analytics 4</strong> to understand aggregate traffic — how many people visit a page, which calculators get used, and which links get clicked.</p>
+    <p>Google Analytics sets first-party cookies (named <code>_ga</code> and <code>_ga_*</code>) to distinguish one visit from another. Through it, this site receives aggregated information including pages viewed, approximate location derived from your IP address, device and browser type, and referring site. Google Analytics 4 does not log or store IP addresses.</p>
+    <p>Page addresses are sent to Google with the query string removed. That matters here: because a shareable link carries your calculator inputs in its URL, stripping the query string is what keeps those inputs out of analytics entirely.</p>
+    <p>Alongside pageviews, this site records a small number of named events so it can tell which parts of a page are actually used — for example when a calculation is run (recording only which calculator, never the numbers you entered), when a shareable link or embed snippet is copied, when a template is downloaded, and when an outbound tip or affiliate link is clicked. None of these events carry your calculator inputs or any information that identifies you.</p>
+    <p>Google processes this data as described in <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>. You can opt out across all sites using the <a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener">Google Analytics Opt-out Browser Add-on</a>, or by using your browser's tracking-protection settings.</p>
+
+    <h2>Email</h2>
+    <p>The site has an optional signup form for a short notice when new calculators ship. If you enter your email address there, it is stored and sent by <a href="https://kit.com/privacy" target="_blank" rel="noopener">Kit</a> (formerly ConvertKit), which acts as the email provider for this site. Your address is used only to send those notices — it is never sold, rented, or used for anything else. Every email includes an unsubscribe link, and unsubscribing removes your address. You can also ask for it to be deleted by emailing the address at the bottom of this page.</p>
+    <p>Signing up is entirely optional. Every calculator on this site works fully without it.</p>
 
     <h2>Advertising</h2>
-    <p>This site does not currently run display advertising. If advertising is added in the future (for example, through Google AdSense), this section will be updated to describe what data the ad provider collects (such as cookies for ad personalization) and how to opt out, in line with that provider's own policies.</p>
+    <p>This site does not run display advertising and has no current plans to.</p>
 
     <h2>Affiliate and referral links</h2>
-    <p>Some links on this site (for example, to Buy Me a Coffee or Monarch) are referral links, clearly marked where they appear. If you click one and sign up for a product, the site's operator may receive a commission or discount. This does not cost you anything extra, and it never affects what a calculator shows you.</p>
+    <p>Some links on this site are affiliate or referral links, marked clearly where they appear. If you click one and sign up for a product, the site's operator may receive a commission or a discount. This costs you nothing extra, and it never affects what a calculator shows you or which option a calculator says is better.</p>
+    <p>Clicking an affiliate link takes you to a third party — the advertiser, or a network that forwards you to them — which will have its own privacy practices and will typically set its own cookies to attribute the referral. Those practices are governed by that company's policy, not this one.</p>
 
     <h2>Third-party services</h2>
-    <p>This site is hosted on <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener">Netlify</a>, and fonts are served by <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Fonts</a>. Both may collect standard technical data (such as IP address) as part of delivering the site to your browser. Neither has access to your calculator inputs.</p>
+    <p>This site is hosted on <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener">Netlify</a>. Fonts are served by <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Fonts</a>, and the charting library used on most calculator pages is served by <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare</a>'s public CDN. Each of these may collect standard technical data (such as IP address) as part of delivering the site to your browser. None of them has access to your calculator inputs.</p>
+
+    <h2>Your choices</h2>
+    <p>Regardless of where you live, you can: opt out of analytics using the methods above, unsubscribe from email at any time, and email to ask what is held about you or to have it deleted. Because this site does not require an account and does not store your calculator inputs, the amount of data tied to you is small by design — for most visitors it is a cookie and an aggregate pageview.</p>
 
     <h2>Children's privacy</h2>
-    <p>This site is not directed at children and does not knowingly collect personal information from anyone, including children under 13.</p>
+    <p>This site is not directed at children and does not knowingly collect personal information from anyone under 13. Some calculators model accounts held for children, but the numbers are entered by the adult using the tool and never leave the browser.</p>
 
     <h2>Changes to this policy</h2>
-    <p>This policy may be updated as the site grows — for instance, if advertising or additional analytics are added. The "last updated" date at the top will always reflect the most recent version.</p>
+    <p>This policy may be updated as the site grows. The "last updated" date at the top will always reflect the most recent version.</p>
 
     <h2>Contact</h2>
-    <p>Questions about this policy can be sent to <a href="mailto:hello@phasecalc.com">hello@phasecalc.com</a>.</p>
+    <p>Questions about this policy can be sent to <a href="mailto:hello@phasecalc.com">hello@phasecalc.com</a>. See also the <a href="/terms">Terms of Use</a>.</p>
   </article>
 
 
