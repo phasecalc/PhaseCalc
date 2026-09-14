@@ -7,6 +7,11 @@
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
+  // Strip the query string before anything reaches GA4. Calculator inputs are
+  // encoded into ?d= for shareable permalinks, and page_location rides on EVERY
+  // event (page_view and calculate alike) — so without this, each recalculation
+  // ships the user's full input set to Google. Verified 2026-09-14.
+  gtag('set', { page_location: location.origin + location.pathname });
   gtag('config', 'G-MH7FWJX2M3');
 
   // ---- GA4 custom event helper ----
