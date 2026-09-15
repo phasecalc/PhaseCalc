@@ -117,7 +117,7 @@
       "name": "Can a child get both the $1,000 federal seed and the $250 Dell contribution?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "No. The $1,000 federal pilot contribution goes to children born after December 31, 2024. The $250 Dell / Invest America contribution goes to children born before January 1, 2025 who are roughly age 10 and under and live in a qualifying ZIP code. The two groups do not overlap, so no child can receive both — despite a great deal of coverage that adds the two figures together. The $250 is also capped at the first 25 million activated accounts and is administered by the Invest America Charitable Foundation, not the Michael & Susan Dell Foundation."
+        "text": "No. The $1,000 federal pilot contribution goes to children born 2025 through 2028. The $250 Dell / Invest America contribution goes to children born 2016 through 2024 who live in a ZIP code with a median family income of $150,000 or less. The two birth-year windows do not overlap, so no child can receive both — despite coverage that adds the two figures together and quotes a $1,250 starting balance for a newborn. The $250 is also capped at the first 25 million activated accounts and is administered by the Invest America Charitable Foundation, not the Michael & Susan Dell Foundation."
       }
     },
     {
@@ -1055,7 +1055,7 @@
       </div>
       <div class="seed-band">
         <div class="field">
-          <label>Child's birth year<span class="tip" tabindex="0" aria-label="Help: child's birth year"><span class="tip-icon">?</span><span class="tip-box">Any U.S. child under 18 with a Social Security number can have a Trump Account, but only children born 2025–2028 get the $1,000 federal seed. The $250 Dell / Invest America contribution runs the other way — children born before 2025 — so no child can receive both. A 2025 baby gets 17 contribution years (the program opened in 2026); 2026 and later get 18. The election to open the account must be made by December 31 of the year the child turns 17.</span></span></label>
+          <label>Child's birth year<span class="tip" tabindex="0" aria-label="Help: child's birth year"><span class="tip-icon">?</span><span class="tip-box">Any U.S. child under 18 with a Social Security number can have a Trump Account, but only children born 2025–2028 get the $1,000 federal seed. The $250 Dell / Invest America contribution runs the other way — children born 2016–2024 — so no child can receive both. A 2025 baby gets 17 contribution years (the program opened in 2026); 2026 and later get 18. The election to open the account must be made by December 31 of the year the child turns 17.</span></span></label>
           <input type="number" id="birth-year" value="2025" min="2009" max="2028" step="1" />
         </div>
         <div class="toggles">
@@ -1065,7 +1065,7 @@
           </label>
           <label class="toggle">
             <input type="checkbox" id="dell-grant" />
-            <span>$250 Dell / Invest America <span class="hint">(born 2015–2024, ZIP-based)</span></span>
+            <span>$250 Dell / Invest America <span class="hint">(born 2016–2024, ZIP-based)</span></span>
           </label>
         </div>
         <div class="seed-out">
@@ -1256,7 +1256,7 @@
     <p>Trump Accounts — formally section 530A accounts, created by the One Big Beautiful Bill Act of 2025 — opened for contributions on <strong>July 4, 2026</strong>. They're a new kind of custodial traditional IRA for children: anyone can contribute up to a <strong>combined $5,000 per year</strong> (indexed for inflation after 2027), with no earned-income requirement, and the money must sit in index funds tracking primarily U.S. companies until the year the child turns 18.</p>
 
     <p class="callout-note"><strong>Every figure on this page is in future (nominal) dollars.</strong> There's no inflation adjustment: a balance shown at age 18 is denominated in the dollars of that future year, not today's. At 2.5% inflation, the default $85,656 at age 18 in 2043 is worth roughly $54,000 in 2026 purchasing power. Returns are also gross of fees — see the assumptions note under the chart.</p>
-    <p>This calculator models contributions from your child's first eligible year (2026 at the earliest) through December 31 of the year they turn 17 — the last year outside money can go in. It compounds annually at your chosen return, applies the one-time <strong>$1,000 federal seed</strong> for eligible children born 2025–2028, optionally adds the <strong>$250 Dell / Invest America contribution</strong> for eligible children born before 2025, and then lets the balance ride untouched to whatever age you choose. The two are mutually exclusive — see below. The default 7% return is a common long-run assumption for U.S. equities; it is not a prediction.</p>
+    <p>This calculator models contributions from your child's first eligible year (2026 at the earliest) through December 31 of the year they turn 17 — the last year outside money can go in. It compounds annually at your chosen return, applies the one-time <strong>$1,000 federal seed</strong> for eligible children born 2025–2028, optionally adds the <strong>$250 Dell / Invest America contribution</strong> for eligible children born 2016–2024, and then lets the balance ride untouched to whatever age you choose. The two are mutually exclusive — see below. The default 7% return is a common long-run assumption for U.S. equities; it is not a prediction.</p>
     <p><strong>Why the result differs from a plain compound-interest calculator.</strong> Two structural reasons, both deliberate. First, contributions can't start before the program opened in 2026 — so a child born in 2025 gets only <strong>17 contribution years</strong> before 18, not 18 (children born 2026 or later get the full 18). Second, this calculator deposits each contribution at the <strong>start</strong> of the calendar year, matching the incentive to contribute early; most generic calculators assume end-of-year deposits, and some compound monthly. At the defaults ($1,000 seed, $2,500/year, 7%, born 2025), this page shows about $85,700 at 18, while a generic 18-year end-of-year calculator shows about $88,400. Same compounding math — different assumptions about when the money arrives.</p>
 
     <h2>What is a §530A account, and why does it have two names?</h2>
@@ -1320,8 +1320,9 @@
 
     <h2>The $250 Dell contribution — who actually gets it, and one unresolved question</h2>
     <p>Michael and Susan Dell pledged $6.25 billion to put <strong>$250</strong> into 25 million children's Trump Accounts. Two things about it are widely misreported, and one is genuinely unsettled.</p>
-    <p><strong>It is not the same money as the federal seed, and no child gets both.</strong> The $1,000 federal pilot contribution goes to children born <em>after</em> December 31, 2024. The $250 goes to children born <em>before</em> January 1, 2025 who are roughly age 10 and under. Those two groups do not overlap at all. If your child qualifies for one, they are automatically disqualified from the other. This calculator now enforces that; plenty of coverage adds the two together.</p>
-    <p><strong>It's also first-come, and it's not the Dell Foundation.</strong> The gift is capped at the first 25 million <em>activated</em> accounts, so it behaves like a queue rather than an entitlement. And it is administered through the Invest America Charitable Foundation, a 501(c)(3) — not the Michael &amp; Susan Dell Foundation, which is a separate organisation. Eligibility also depends on your ZIP code; the official checker is at investamerica.org/dell.</p>
+    <p><strong>It is not the same money as the federal seed, and no child gets both.</strong> The $1,000 federal pilot contribution goes to children born <em>after</em> December 31, 2024. The $250 goes to children born <strong>2016 through 2024</strong>. Those two groups do not overlap at all. If your child qualifies for one, they are automatically disqualified from the other. This calculator enforces that; some coverage still adds the two together and reports a $1,250 starting balance for a newborn, which no child can actually receive.</p>
+    <p><strong>It's also first-come, and it's not the Dell Foundation.</strong> The gift is capped at the first 25 million <em>activated</em> accounts, so it behaves like a queue rather than an entitlement. And it is administered through the Invest America Charitable Foundation, a 501(c)(3) — not the Michael &amp; Susan Dell Foundation, which is a separate organisation.</p>
+    <p><strong>The ZIP test is the part most likely to trip you up.</strong> On top of the birth-year window, the child's ZIP code must have a median <em>family</em> income of $150,000 or less, based on the Census Bureau's 2020–2024 ACS 5-year estimates. Family income is not household income — household income is usually the lower of the two, so checking the wrong one near the cutoff will give you the wrong answer in the optimistic direction. This calculator does not model the ZIP test; verify it yourself with the official checker at <a href="https://investamerica.org/dell" target="_blank" rel="noopener">investamerica.org/dell</a>.</p>
     <p class="callout-note unresolved"><strong>The unresolved part, stated plainly.</strong> For charitable money to sit outside the $5,000 cap it has to be a <em>qualified general contribution</em>, and section 530A(f)(3)(A) allows only three ways to define who receives one: all beneficiaries in the growth period, those living in specified states or a Treasury-designated "qualified geographic area", or those born in specified calendar years. The IRS has said flatly that <strong>no additional eligibility criteria may be imposed</strong>, and separately that Treasury <strong>will not designate any qualified geographic area during the initial rollout</strong>. A screen based on ZIP-code median income doesn't obviously fit any of the three. Invest America's position is that ZIP-code and age criteria are lawful proxies reaching at least 5,000 children at a time. That may be resolved in the final regulations, or the program may be restructured. <strong>Why it matters to your numbers:</strong> if the $250 turns out not to be a qualified general contribution, it would instead be a contribution "from other sources" — which means it would count against the $5,000 annual cap <em>and</em> create basis, making it tax-free at withdrawal rather than taxable. This calculator currently models it the other way (outside the cap, inside the taxable pool), because that is how the program is being presented. At $250 the dollar stakes are small; the point is that nobody should present this as settled.</p>
 
     <h2>The age-18 Roth conversion play — and the kiddie tax trap</h2>
@@ -1371,7 +1372,7 @@
     </div>
     <div class="faq-item">
       <h3>Can a child get both the $1,000 federal seed and the $250 Dell contribution?</h3>
-      <p>No. The federal seed goes to children born after December 31, 2024; the Dell / Invest America $250 goes to children born before January 1, 2025 who are roughly 10 and under and live in a qualifying ZIP code. The two groups don't overlap, so no child can receive both — despite a lot of coverage that adds them together.</p>
+      <p>No. The federal seed goes to children born 2025 through 2028; the Dell / Invest America $250 goes to children born 2016 through 2024 who live in a ZIP code with a median family income of $150,000 or less. The two birth-year windows don't overlap, so no child can receive both — despite coverage that adds them together and quotes a $1,250 starting balance for a newborn.</p>
     </div>
     <div class="faq-item">
       <h3>Are withdrawals tax-free?</h3>
@@ -1466,12 +1467,15 @@
 
   const PROGRAM_START = 2026;      // first year contributions are allowed
   const SEED_MIN = 2025, SEED_MAX = 2028;
-  // Dell/Invest America $250: children roughly age 10 and under who were born
-  // BEFORE Jan 1 2025. The lower bound is the age-10 ceiling (approximate — the
-  // program has not published a fixed measurement date); the upper bound is hard
-  // and is what makes this mutually exclusive with the federal seed, which
-  // requires birth AFTER Dec 31 2024. A child can never qualify for both.
-  const DELL_MIN = 2015, DELL_MAX = 2024;
+  // Dell/Invest America $250: Invest America states the window explicitly as
+  // children born 2016 through 2024, plus a ZIP-code median FAMILY income test
+  // of $150,000 or less (2020-2024 ACS 5-year estimates). Both bounds are the
+  // published figures, not an age approximation. The upper bound is what makes
+  // this mutually exclusive with the federal seed, which requires birth AFTER
+  // Dec 31 2024 — a child can never qualify for both.
+  // Source: https://investamerica.org/dell  (verified 15 Sep 2026)
+  // Note: the ZIP test is NOT modelled here — see the info-note in renderNotes().
+  const DELL_MIN = 2016, DELL_MAX = 2024;
   const COMBINED = 5000;           // shared family+employer annual cap
   const MAX_SEGMENTS = 3;
   const IRA_LIMIT = 7500;          // 2026 traditional/Roth IRA annual limit (under 50)
@@ -1803,9 +1807,9 @@
     if (r.inputs.fedSeed && !r.seedEligible) add('info-note', 'The $1,000 federal seed only applies to children born 2025–2028, so it was not included for a ' + r.inputs.birthYear + ' birth year.');
     if (r.inputs.dell && !r.dellEligible) {
       const why = r.inputs.birthYear > DELL_MAX
-        ? 'that gift goes to children born before 2025, and the federal seed goes to children born 2025–2028 — no child can receive both'
-        : 'that gift is limited to children roughly age 10 and under';
-      add('info-note', 'The $250 Dell/Invest America contribution was not included for a ' + r.inputs.birthYear + ' birth year: ' + why + '. Eligibility also depends on your ZIP code — check it at investamerica.org/dell.');
+        ? 'that gift goes to children born ' + DELL_MIN + '–' + DELL_MAX + ', and the federal seed goes to children born ' + SEED_MIN + '–' + SEED_MAX + ' — no child can receive both'
+        : 'that gift starts at the ' + DELL_MIN + ' birth year';
+      add('info-note', 'The $250 Dell/Invest America contribution was not included for a ' + r.inputs.birthYear + ' birth year: ' + why + '. Eligibility also requires a ZIP code with a median family income of $150,000 or less, which this calculator does not check — verify it at investamerica.org/dell.');
     }
     if (r.scheduledYears > r.window) add('info-note', 'Your contribution periods add up to ' + r.scheduledYears + ' years, but only ' + r.window + ' eligible years exist before age 18 — the extra years were trimmed.');
     else if (r.underfilled > 0) add('info-note', 'Contributions stop ' + r.underfilled + ' year' + (r.underfilled > 1 ? 's' : '') + ' before age 18; those remaining years just compound with no new money added.');
